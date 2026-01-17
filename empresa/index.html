@@ -399,23 +399,8 @@
                     <p>Consolida superficies arenosas y polvorientas.</p>
                     <a href="fortificador.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-fortificador" onchange="updatePrice('fortificador')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="19.00">1 Litro - $19.00</option>
-                            <option value="1" data-price="52.00">Galón - $52.00</option>
-                            <option value="2" data-price="254.50">Cuñete - $254.50</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-fortificador" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-fortificador" style="font-weight: bold;">$19.00</span>
-                        </div>
-                        <button onclick="addToCartStatic('fortificador')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-fortificador" style="margin-top: 1rem;"></div>
                 </div>
                 <div class="feature-card glass-panel">
                     <img src="images/exteriores.jpg" alt="Exteriores"
@@ -424,24 +409,8 @@
                     <p>Protección invisible para fachadas y pisos externos.</p>
                     <a href="exteriores.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-solucion-exterior" onchange="updatePrice('solucion-exterior')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="16.99">1 Litro - $16.99</option>
-                            <option value="1" data-price="17.99">1 Litro (Atomizador) - $17.99</option>
-                            <option value="2" data-price="48.00">Galón (3.785L) - $48.00</option>
-                            <option value="3" data-price="217.50">Cuñete (18L) - $217.50</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-solucion-exterior" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-solucion-exterior" style="font-weight: bold;">$16.99</span>
-                        </div>
-                        <button onclick="addToCartStatic('solucion-exterior')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-solucion-exterior" style="margin-top: 1rem;"></div>
                 </div>
                 <div class="feature-card glass-panel">
                     <img src="images/interiores.jpg" alt="Interiores"
@@ -450,24 +419,8 @@
                     <p>Impermeabilizante para baños, cocinas y zonas internas.</p>
                     <a href="interiores.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-solucion-interior" onchange="updatePrice('solucion-interior')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="13.99">1 Litro - $13.99</option>
-                            <option value="1" data-price="14.99">1 Litro (Atomizador) - $14.99</option>
-                            <option value="2" data-price="38.00">Galón (3.785L) - $38.00</option>
-                            <option value="3" data-price="170.00">Cuñete (18L) - $170.00</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-solucion-interior" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-solucion-interior" style="font-weight: bold;">$13.99</span>
-                        </div>
-                        <button onclick="addToCartStatic('solucion-interior')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-solucion-interior" style="margin-top: 1rem;"></div>
                 </div>
                 <div class="feature-card glass-panel">
                     <img src="images/pintura.jpg" alt="Pintura"
@@ -476,21 +429,8 @@
                     <p>Pintura que repele el agua y la suciedad.</p>
                     <a href="pintura.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-pintura-hidrofobica" onchange="updatePrice('pintura-hidrofobica')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="34.00">Galón - $34.00</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-pintura-hidrofobica" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-pintura-hidrofobica" style="font-weight: bold;">$34.00</span>
-                        </div>
-                        <button onclick="addToCartStatic('pintura-hidrofobica')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-pintura-hidrofobica" style="margin-top: 1rem;"></div>
                 </div>
                 <div class="feature-card glass-panel">
                     <img src="images/nano-aditivo.jpg" alt="Nano Aditivo"
@@ -499,21 +439,8 @@
                     <p>Aditivo nanotecnológico para concreto y morteros de alto rendimiento.</p>
                     <a href="nano-aditivo.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-nano-aditivo" onchange="updatePrice('nano-aditivo')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="15.00">600gr - $15.00</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-nano-aditivo" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-nano-aditivo" style="font-weight: bold;">$15.00</span>
-                        </div>
-                        <button onclick="addToCartStatic('nano-aditivo')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-nano-aditivo" style="margin-top: 1rem;"></div>
                 </div>
             </div>
 
@@ -562,22 +489,8 @@
                     <p>Encapsula la suciedad para un lavado rápido y seguro.</p>
                     <a href="champu.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-champu" onchange="updatePrice('champu')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="12.00">1 Litro - $12.00</option>
-                            <option value="1" data-price="35.00">Galón - $35.00</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-champu" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-champu" style="font-weight: bold;">$12.00</span>
-                        </div>
-                        <button onclick="addToCartStatic('champu')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-champu" style="margin-top: 1rem;"></div>
                 </div>
             </div>
 
@@ -590,21 +503,8 @@
                     <p>Brillo y protección duradera para superficies del hogar.</p>
                     <a href="cera.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-cera-protectora" onchange="updatePrice('cera-protectora')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="15.00">500ml - $15.00</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-cera-protectora" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-cera-protectora" style="font-weight: bold;">$15.00</span>
-                        </div>
-                        <button onclick="addToCartStatic('cera-protectora')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-cera-protectora" style="margin-top: 1rem;"></div>
                 </div>
                 <div class="feature-card glass-panel">
                     <img src="images/escudo.jpg" alt="Escudo"
@@ -613,21 +513,8 @@
                     <p>Protección extrema contra manchas y rayones.</p>
                     <a href="escudo.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <div class="product-controls" style="margin-top: 1rem;">
-                        <select id="opt-escudo-ceramico" onchange="updatePrice('escudo-ceramico')"
-                            style="padding: 5px; border-radius: 5px; width: 100%; margin-bottom: 5px;">
-                            <option value="0" data-price="45.00">1 Litro - $45.00</option>
-                        </select>
-                        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
-                            <input type="number" id="qty-escudo-ceramico" value="1" min="1"
-                                style="width: 60px; padding: 5px; border-radius: 5px;">
-                            <span id="price-escudo-ceramico" style="font-weight: bold;">$45.00</span>
-                        </div>
-                        <button onclick="addToCartStatic('escudo-ceramico')" class="cta-button"
-                            style="width: 100%; font-size: 0.9rem; background: var(--primary-color);">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-escudo-ceramico" style="margin-top: 1rem;"></div>
                 </div>
             </div>
         </section>
