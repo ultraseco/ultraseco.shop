@@ -1,0 +1,788 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estuco Premium | Fusión Estructural Molecular | Ultra Seco</title>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Inter:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-vivid: #00a8e8;
+            --dark-navy: #003459;
+            --soft-blue: #f0f9ff;
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--dark-navy);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Safe Guard for Scroll */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999;
+            padding: 1.5rem 5%;
+            transition: var(--transition);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-button {
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button:hover {
+            background: var(--primary-vivid);
+            transform: translateY(-2px);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 90vh;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1000px;
+            padding: 0 5%;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            max-width: 600px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .hero-image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 40px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: var(--transition);
+        }
+
+        .hero-image-container:hover img {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+        }
+
+        /* --- UI COMPONENTS --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .benefit-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--soft-blue);
+            color: var(--primary-vivid);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-vivid), #007ea7);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(0, 168, 224, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 168, 224, 0.5);
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating-badge {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: absolute;
+            z-index: 10;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* --- GRID UTILITIES --- */
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-8 {
+            gap: 2rem;
+        }
+
+        .gap-12 {
+            gap: 3rem;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        section {
+            padding: 60px 10% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 99999; background: #0f172a; padding: 16px 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: block !important; visibility: visible !important; opacity: 1 !important;"
+        id="main-header">
+        <div
+            style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+            <!-- Logo -->
+            <a href="index.html"
+                style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); text-decoration: none; background: rgba(30,41,59,0.8);">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+            </a>
+
+            <!-- Menu Items -->
+            <div
+                style="display: flex; gap: 4px; padding: 8px 12px; background: rgba(30,41,59,0.9); border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); overflow-x: auto; max-width: 600px;">
+                <a href="index.html#page-inicio"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Inicio</a>
+                <a href="index.html#page-asesor"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">🧠 Asesor IA</a>
+                <a href="index.html#page-productos"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Productos</a>
+                <a href="index.html#page-pilares"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Pilares</a>
+                <a href="index.html#page-contacto"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Contacto</a>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <button onclick="window.history.back()"
+                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(30,41,59,0.8); color: white; border-radius: 9999px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 14px; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                    onmouseout="this.style.background='rgba(30,41,59,0.8)'">
+                    <i class="fa-solid fa-arrow-left" style="font-size: 14px;"></i> <span>Volver</span>
+                </button>
+                <a href="https://wa.me/584146023797" target="_blank"
+                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(to right, #10b981, #059669); color: white; border-radius: 9999px; font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.2);">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> <span>Asesor</span>
+                </a>
+                <button onclick="window.location.href='index.html#cart'"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #1e293b; color: white; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacer to prevent content from going under fixed nav -->
+    <div style="height: 80px;"></div>
+
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <img src="images/estuco-bg.jpg" alt="Estuco Texture Background" class="hero-video-bg">
+            <div class="hero-grid">
+                <div class="hero-content" style="text-align: left; padding: 0;">
+                    <div class="reveal"
+                        style="display: inline-flex; align-items: center; background: rgba(255,255,255,0.1); padding: 0.5rem 1.5rem; border-radius: 50px; backdrop-filter: blur(10px); margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.2);">
+                        <span style="font-size: 0.8rem; font-weight: 800; letter-spacing: 2px;">NUEVA ERA
+                            ARQUITECTÓNICA</span>
+                    </div>
+                    <h1 class="reveal" style="text-align: left;">Fusión Estructural<br><span
+                            style="color: var(--primary-vivid);">Molecular</span>
+                    </h1>
+                    <p class="reveal">Experimenta la perfección del acabado profesional con nuestra pasta
+                        nano-reforzada.
+                        Nivelación milimétrica y sellado absoluto en un solo paso.</p>
+                    <div class="reveal">
+                        <a href="#comprar" class="cta-button">
+                            PEDIR AHORA <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+
+                    <!-- Compact Pillars Strip -->
+                    <div class="reveal"
+                        style="margin-top: 3rem; display: flex; gap: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-flask" style="color: var(--primary-vivid); font-size: 1.2rem;"></i>
+                            <div style="font-size: 0.75rem; font-weight: 700; opacity: 0.8;">Resinas Nano</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-atom" style="color: #6366f1; font-size: 1.2rem;"></i>
+                            <div style="font-size: 0.75rem; font-weight: 700; opacity: 0.8;">Matriz Mineral</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-mountain" style="color: #94a3b8; font-size: 1.2rem;"></i>
+                            <div style="font-size: 0.75rem; font-weight: 700; opacity: 0.8;">Caolín Puro</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image-container reveal">
+                    <div class="floating-badge" style="top: -10%; right: 0;">
+                        <i class="fa-solid fa-shield-halved"
+                            style="color: var(--primary-vivid); font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-weight: 800; color: var(--dark-navy);">100% Estanqueidad</div>
+                            <div style="font-size: 0.7rem; color: #64748b;">Certificado ASTM</div>
+                        </div>
+                    </div>
+                    <img src="images/productos/estuco-product.jpg" alt="Estuco Ultra Seco Premium Presentation">
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 2. RISING DAMP CONTROL (PROBLEM/SOLUTION) -->
+        <section style="padding: 100px 5%; background: white; overflow: hidden;">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <div class="benefit-tag">Especialidad Técnica</div>
+                    <h2 style="font-size: 3.5rem; margin-bottom: 2rem;">Adiós a la Humedad <span
+                            style="color: var(--primary-vivid);">Ascendente</span></h2>
+                    <p style="color: #64748b; font-size: 1.25rem; line-height: 1.8; margin-bottom: 3rem;">
+                        La humedad por capilaridad es el cáncer de las bases. Nuestra fórmula actúa como un tapón
+                        molecular, bloqueando el ascenso del agua desde los cimientos y eliminando el salitre para
+                        siempre.
+                    </p>
+                    <div class="glass-panel"
+                        style="padding: 2.5rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 32px;">
+                        <h5
+                            style="color: var(--dark-navy); font-weight: 800; margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">
+                            <i class="fa-solid fa-clipboard-check" style="color: var(--primary-vivid);"></i> PROTOCOLO
+                            DE BLINDAJE MAESTRO
+                        </h5>
+
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div
+                                    style="width: 30px; height: 30px; background: var(--soft-blue); color: var(--primary-vivid); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; margin-top: 5px;">
+                                    1</div>
+                                <div>
+                                    <h6 style="font-weight: 800; margin-bottom: 0.3rem;">Penetración Profunda</h6>
+                                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">Aplicar
+                                        <strong>Ultra Seco Solución Interior</strong>. Su nanotecnología penetra el poro
+                                        del bloque neutralizando el salitre desde la raíz.
+                                    </p>
+                                    <a href="interiores.html"
+                                        style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--primary-vivid); text-decoration: none; font-weight: 800; background: var(--soft-blue); padding: 8px 16px; border-radius: 8px; transition: var(--transition);">
+                                        <i class="fa-solid fa-droplet"></i> VER SOLUCIÓN INTERIOR
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div
+                                    style="width: 30px; height: 30px; background: var(--soft-blue); color: var(--primary-vivid); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; margin-top: 5px;">
+                                    2</div>
+                                <div>
+                                    <h6 style="font-weight: 800; margin-bottom: 0.3rem;">Sellado Estructural</h6>
+                                    <p style="font-size: 0.85rem; color: #64748b;">Nivelar con <strong>Estuco Ultra
+                                            Seco</strong>. Crea el escudo preventivo final que impide el retorno de la
+                                        humedad.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Synergy Diagram -->
+                        <div
+                            style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px dashed #e2e8f0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+                            <div>
+                                <div
+                                    style="width: 60px; height: 60px; background: #e0f2fe; border: 2px solid #bae6fd; border-radius: 12px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center;">
+                                    <div
+                                        style="width: 20px; height: 20px; background: var(--primary-vivid); border-radius: 50%; filter: blur(4px); opacity: 0.6;">
+                                    </div>
+                                </div>
+                                <span
+                                    style="font-size: 0.65rem; font-weight: 800; opacity: 0.6; text-transform: uppercase;">Paso
+                                    1: Líquido</span>
+                                <div style="font-size: 0.75rem; font-weight: 700;">Penetra el Poro</div>
+                            </div>
+                            <div>
+                                <div
+                                    style="width: 60px; height: 60px; background: #fef9c3; border: 2px solid #fef08a; border-radius: 12px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center;">
+                                    <div style="width: 40px; height: 10px; background: #f59e0b; border-radius: 4px;">
+                                    </div>
+                                </div>
+                                <span
+                                    style="font-size: 0.65rem; font-weight: 800; opacity: 0.6; text-transform: uppercase;">Paso
+                                    2: Pasta</span>
+                                <div style="font-size: 0.75rem; font-weight: 700;">Sella la Superficie</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal" style="position: relative;">
+                    <div
+                        style="border-radius: 40px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.15); position: relative;">
+                        <!-- Patch Overlays to cover DAMAGE/REPAIR labels baked in image -->
+                        <div
+                            style="position: absolute; top: 51%; left: 26.5%; transform: translate(-50%, -50%); background: rgba(209, 213, 219, 0.98); backdrop-filter: blur(12px); padding: 50px 40px; border-radius: 12px; font-weight: 800; font-size: 1.2rem; color: #1e293b; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 2px; z-index: 5; text-align: center; min-width: 280px; display: flex; align-items: center; justify-content: center;">
+                            Sin Tratamiento
+                        </div>
+                        <div
+                            style="position: absolute; top: 51%; left: 73.5%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); padding: 50px 40px; border-radius: 12px; font-weight: 800; font-size: 1.2rem; color: var(--dark-navy); box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid white; text-transform: uppercase; letter-spacing: 2px; z-index: 5; text-align: center; min-width: 280px; display: flex; align-items: center; justify-content: center;">
+                            Sistema Ultra Seco
+                        </div>
+
+                        <img src="images/estuco-damp-comparative.png" alt="Protocolo de Humedad Ascendente Ultra Seco"
+                            style="width: 100%; display: block;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 60px 10%; background: #000; color: white; position: relative; overflow: hidden;">
+            <img src="images/estuco-luxury-exterior.png" alt="Luxury Stucco Finish"
+                style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4;">
+            <div style="position: relative; z-index: 2; max-width: 800px;" class="reveal">
+                <h2 style="color: white; font-size: 3rem; margin-bottom: 1.5rem;">Perfección que se <span
+                        style="color: var(--primary-vivid);">Siente</span></h2>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem; line-height: 1.7;">
+                    Diseñado para exteriores de alto impacto. Nuestro estuco se funde con la fachada, creando una piel
+                    protectora que no se desprende al frotar con agua y mantiene su blancura ante el sol más inclemente.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. PURCHASE & TECHNICAL SUITE -->
+        <section id="comprar" style="padding: 60px 5%; background: white;">
+            <div class="glass-panel reveal"
+                style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 0; overflow: hidden; border-radius: 40px; border: 1px solid #f1f5f9; background: white;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+
+                    <!-- Configurator Left -->
+                    <div style="padding: 3.5rem; border-right: 1px solid #f1f5f9;">
+                        <h2 style="font-size: 2rem; margin-bottom: 2rem;">Configura tu Selección</h2>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <label
+                                style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Presentación:</label>
+                            <select id="opt-estuco-bloqueador" onchange="updatePrice('estuco-bloqueador')"
+                                style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1rem; font-weight: 600; background: #fff;">
+                                <option value="0" data-price="6.40">1/4 Galón (0.95 L)</option>
+                                <option value="1" data-price="19.00" selected>Galón (3.78 L)</option>
+                                <option value="2" data-price="85.00">Cuñete (18 L)</option>
+                            </select>
+                        </div>
+
+                        <div
+                            style="margin-bottom: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: flex-end;">
+                            <div>
+                                <label
+                                    style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Cantidad:</label>
+                                <input type="number" id="qty-estuco-bloqueador" value="1" min="1"
+                                    oninput="updatePrice('estuco-bloqueador')"
+                                    style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1.2rem; font-weight: 800; text-align: center;">
+                            </div>
+                            <div style="text-align: right;">
+                                <span
+                                    style="font-size: 0.8rem; color: #64748b; font-weight: bold; text-transform: uppercase; display: block;">Total
+                                    Ref.</span>
+                                <span id="price-estuco-bloqueador"
+                                    style="font-size: 2.2rem; font-weight: 900; color: var(--dark-navy);">$19.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Recommended Upsell -->
+                        <div
+                            style="margin-bottom: 2.5rem; padding: 1.2rem; background: #f0f9ff; border: 1.5px dashed #00a8e8; border-radius: 20px; position: relative;">
+                            <span
+                                style="position: absolute; top: -10px; left: 15px; background: var(--primary-vivid); color: white; font-size: 0.6rem; font-weight: 900; padding: 3px 10px; border-radius: 50px; letter-spacing: 1px;">RECOMENDACIÓN
+                                MAESTRA</span>
+                            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                                <div
+                                    style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                                    <i class="fa-solid fa-shield-plus" style="color: var(--primary-vivid);"></i>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <h6 style="font-size: 0.8rem; font-weight: 800; margin-bottom: 0.1rem;">Kit Blindaje
+                                        de Humedad</h6>
+                                    <p style="font-size: 0.7rem; opacity: 0.7; line-height: 1.2;">Para humedad
+                                        ascendente, lleva también <b>Solución Interior</b>.</p>
+                                </div>
+                                <a href="interiores.html"
+                                    style="background: white; color: var(--primary-vivid); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                                    <i class="fa-solid fa-plus" style="font-size: 0.8rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <button onclick="addToCartStatic('estuco-bloqueador')" class="cta-button"
+                            style="width: 100%; padding: 1.2rem; justify-content: center; font-size: 1.1rem;">
+                            <i class="fa-solid fa-cart-shopping"></i> AÑADIR AL CARRITO
+                        </button>
+                    </div>
+
+                    <!-- Technical Middle -->
+                    <div style="padding: 3.5rem; background: #f8fafc; border-right: 1px solid #e2e8f0;">
+                        <h4
+                            style="margin-bottom: 1.5rem; font-weight: 800; opacity: 0.6; letter-spacing: 1px; font-size: 0.8rem;">
+                            ESPECIFICACIONES</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 2rem;">
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 0.8rem 0; font-weight: 600;">Impermeabilidad</td>
+                                <td style="padding: 0.8rem 0; text-align: right; color: #10b981; font-weight: 800;">100%
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 0.8rem 0; font-weight: 600;">Secado Tacto</td>
+                                <td style="padding: 0.8rem 0; text-align: right; font-weight: 800;">2-4h</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 0.8rem 0; font-weight: 600;">Lijado</td>
+                                <td
+                                    style="padding: 0.8rem 0; text-align: right; color: var(--primary-vivid); font-weight: 800;">
+                                    Superior</td>
+                            </tr>
+                        </table>
+
+                        <div
+                            style="padding: 2rem; background: var(--dark-navy); color: white; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,52,89,0.15);">
+                            <h5
+                                style="font-size: 0.7rem; font-weight: 800; opacity: 0.5; margin-bottom: 1rem; text-transform: uppercase;">
+                                Calculadora de Consumo</h5>
+                            <div
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div>
+                                    <label
+                                        style="font-size: 0.6rem; opacity: 0.6; display: block; margin-bottom: 0.4rem;">Área
+                                        m²</label>
+                                    <input type="number" id="calc-area" value="20" oninput="runCalculator()"
+                                        style="width: 100%; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-weight: 700; font-size: 0.9rem;">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size: 0.6rem; opacity: 0.6; display: block; margin-bottom: 0.4rem;">Espesor</label>
+                                    <select id="calc-depth" onchange="runCalculator()"
+                                        style="width: 100%; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 0.8rem;">
+                                        <option value="1">1mm</option>
+                                        <option value="2" selected>2mm</option>
+                                        <option value="3">3mm</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div
+                                style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                                <span style="font-size: 0.65rem; opacity: 0.5; text-transform: uppercase;">Necesitas
+                                    Aproximadamente:</span>
+                                <div id="calc-result"
+                                    style="font-size: 1.8rem; font-weight: 900; color: var(--primary-vivid);">2.5
+                                    Galones</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <a href="docs/estuco-ficha-tecnica.html" target="_blank"
+                                class="inline-flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-bold py-3 px-8 rounded-full hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 transition shadow-sm">
+                                <i class="fa-solid fa-file-invoice" style="color: var(--primary-vivid);"></i>
+                                FICHA TÉCNICA (HTML)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact/Support Right -->
+                    <div
+                        style="background: var(--dark-navy); padding: 3.5rem; color: white; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="images/productos/estuco-product.jpg" alt="Estuco Product"
+                            style="position: absolute; right: -40px; bottom: -40px; width: 220px; opacity: 0.08; filter: grayscale(1) brightness(2); transform: rotate(-15deg);">
+                        <div style="position: relative; z-index: 2;">
+                            <h4 style="color: white; font-size: 1.5rem; margin-bottom: 1rem;">Asistencia Élite</h4>
+                            <p style="opacity: 0.6; font-size: 0.9rem; margin-bottom: 2.5rem; line-height: 1.6;">Nuestro
+                                equipo técnico está disponible para validar tus cubicaciones y recomendar el mejor
+                                sistema de aplicación para tu obra.</p>
+                            <a href="https://wa.me/584146023797" target="_blank"
+                                style="text-decoration: none; color: white; display: flex; align-items: center; gap: 1rem; font-weight: 800; background: rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 16px; transition: var(--transition); justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem; color: #25d366;"></i>
+                                CONSULTAR EXPERTO
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="background: var(--dark-navy); color: white; padding: 60px 5%; text-align: center;">
+            <div
+                style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="images/logo.png" alt="Ultra Seco" style="height: 35px; filter: brightness(0) invert(1);">
+                    <span style="font-weight: 300; opacity: 0.5;">|</span>
+                    <span style="font-weight: 800; letter-spacing: 2px; font-size: 0.8rem;">ESTUCO PREMIUM</span>
+                </div>
+                <p style="font-size: 0.85rem; opacity: 0.6;">&copy; 2025 Ultra Seco. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
+    <script>
+        // Header Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(15px)';
+                header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
+                header.style.padding = '1rem 5%';
+            } else {
+                header.style.background = 'transparent';
+                header.style.backdropFilter = 'none';
+                header.style.boxShadow = 'none';
+                header.style.padding = '1.5rem 5%';
+            }
+        });
+
+        // Price Logic
+        function updatePrice(id) {
+            const opt = document.getElementById(`opt-${id}`);
+            const qty = document.getElementById(`qty-${id}`);
+            const display = document.getElementById(`price-${id}`);
+            if (opt && qty && display) {
+                const price = parseFloat(opt.options[opt.selectedIndex].dataset.price);
+                display.textContent = `$${(price * qty.value).toFixed(2)}`;
+            }
+        }
+
+        // Calculator Logic
+        function runCalculator() {
+            const area = parseFloat(document.getElementById('calc-area').value) || 0;
+            const depth = parseFloat(document.getElementById('calc-depth').value) || 2;
+            const resultDiv = document.getElementById('calc-result');
+
+            // Yield: ~1.5kg per m2 per mm depth. 1 Galon ~= 6kg weight approx.
+            // 1.5 * area * depth = total kg needed
+            // kg / 6 = gallons needed approx
+            const kgNeeded = 1.5 * area * depth;
+            const gallons = (kgNeeded / 6).toFixed(1);
+
+            resultDiv.textContent = `${gallons} Galones`;
+        }
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Global addToCart override for visual feedback
+        const originalAddToCart = typeof addToCartStatic === 'function' ? addToCartStatic : null;
+        window.addToCartStatic = function (id) {
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+
+            // Collect item data
+            const opt = document.getElementById(`opt-${id}`);
+            const qty = document.getElementById(`qty-${id}`);
+            const item = {
+                id: id,
+                name: 'Estuco Premium',
+                variant: opt.options[opt.selectedIndex].text,
+                price: parseFloat(opt.options[opt.selectedIndex].dataset.price),
+                quantity: parseInt(qty.value),
+                image: 'images/productos/estuco-product.jpg'
+            };
+
+            // Dispatch event for cart-integration.js
+            document.dispatchEvent(new CustomEvent('add-to-cart', { detail: item }));
+
+            // Feedback
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> AGREGADO EXITOSAMENTE';
+            btn.style.background = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        };
+
+        window.onload = runCalculator;
+    </script>
+</body>
+
+</html>

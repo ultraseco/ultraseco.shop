@@ -1,0 +1,851 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintura Súper Hidrofóbica | Ultra Seco</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-vivid: #00a8e8;
+            --secondary-deep: #007ea7;
+            --dark-navy: #003459;
+            --soft-blue: rgba(0, 168, 232, 0.1);
+        }
+
+        body {
+            background: #f8fafc;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Safe Guard for Scroll */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        /* --- PREMIUN HEADER OVERRIDE --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999;
+            padding: 1.5rem 5%;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- PREMIUM HERO --- */
+        .premium-hero {
+            position: relative;
+            padding: 160px 5% 100px;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 168, 232, 0.15), transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(0, 52, 89, 0.05), transparent 40%);
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(3rem, 8vw, 4.5rem);
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--dark-navy);
+        }
+
+        .hero-image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            max-width: 550px;
+            border-radius: 32px;
+            box-shadow: 0 40px 80px rgba(0, 52, 89, 0.15);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-image-container:hover img {
+            transform: scale(1.02) translateY(-10px);
+            box-shadow: 0 50px 100px rgba(0, 52, 89, 0.2);
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10;
+            animation: float 4s ease-in-out infinite;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+
+        @keyframes float-box {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating-refined {
+            animation: float-box 4s ease-in-out infinite;
+        }
+
+        .benefit-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--soft-blue);
+            color: var(--secondary-deep);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- UTILITIES --- */
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .gap-8 {
+            gap: 2rem;
+        }
+
+        .gap-12 {
+            gap: 3rem;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .items-start {
+            align-items: flex-start;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* --- EVIDENCE SECTION --- */
+        .evidence-section {
+            padding: 80px 10%;
+            background: white;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--dark-navy);
+            margin-bottom: 1rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .video-card {
+            background: #f8fafc;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .video-card video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-content {
+            padding: 2.5rem;
+        }
+
+        .video-content h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 1rem;
+        }
+
+        /* --- PURCHASE CARD --- */
+        .purchase-card {
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            max-width: 1100px;
+            margin: 0 auto;
+            border: 1px solid #f1f5f9;
+        }
+
+        .purchase-form {
+            padding: 5rem;
+        }
+
+        .purchase-visual {
+            background: var(--dark-navy);
+            color: white;
+            padding: 5rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .purchase-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('images/pintura-demo.jpg') center/cover;
+            opacity: 0.2;
+            mix-blend-mode: overlay;
+        }
+
+        .price-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary-vivid);
+            margin: 1rem 0;
+            display: block;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+
+            .hero-grid,
+            .purchase-card,
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .purchase-form,
+            .purchase-visual {
+                padding: 3rem;
+            }
+
+            .hero-text {
+                order: 2;
+                text-align: center;
+            }
+
+            .hero-image-container {
+                order: 1;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 99999; background: #0f172a; padding: 16px 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: block !important; visibility: visible !important; opacity: 1 !important;"
+        id="main-header">
+        <div
+            style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+            <!-- Logo -->
+            <a href="index.html"
+                style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); text-decoration: none; background: rgba(30,41,59,0.8);">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+            </a>
+
+            <!-- Menu Items -->
+            <div
+                style="display: flex; gap: 4px; padding: 8px 12px; background: rgba(30,41,59,0.9); border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); overflow-x: auto; max-width: 600px;">
+                <a href="index.html#page-inicio"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Inicio</a>
+                <a href="index.html#page-asesor"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">🧠 Asesor IA</a>
+                <a href="index.html#page-productos"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Productos</a>
+                <a href="index.html#page-pilares"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Pilares</a>
+                <a href="index.html#page-contacto"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Contacto</a>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <button onclick="window.history.back()"
+                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(30,41,59,0.8); color: white; border-radius: 9999px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 14px; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                    onmouseout="this.style.background='rgba(30,41,59,0.8)'">
+                    <i class="fa-solid fa-arrow-left" style="font-size: 14px;"></i> <span>Volver</span>
+                </button>
+                <a href="https://wa.me/584146023797" target="_blank"
+                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(to right, #10b981, #059669); color: white; border-radius: 9999px; font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.2);">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> <span>Asesor</span>
+                </a>
+                <button onclick="window.location.href='index.html#cart'"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #1e293b; color: white; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacer to prevent content from going under fixed nav -->
+    <div style="height: 80px;"></div>
+
+    <main>
+        <!-- HERO -->
+        <section class="premium-hero">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <div class="benefit-tag">
+                        <i class="fa-solid fa-microchip"></i> Nanotecnología de Sílice
+                    </div>
+                    <h1>Pintura<br><span style="color: var(--primary-vivid)">Súper</span> Hidrofóbica</h1>
+                    <p
+                        style="font-size: 1.4rem; color: #475569; margin-bottom: 3rem; max-width: 600px; line-height: 1.6;">
+                        Recubrimiento inteligente diseñado con resinas acrílicas puras y nanopartículas de silicio para
+                        un blindaje molecular total.
+                    </p>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <a href="#comprar" class="cta-button" style="padding: 1.2rem 3rem;">Configurar Pedido</a>
+                        <a href="#analisis-tecnico" class="nav-button"
+                            style="border: 2px solid #e2e8f0; display: flex; align-items: center; gap: 10px; padding: 1.1rem 2rem;">
+                            <i class="fa-solid fa-chart-line"
+                                style="color: var(--primary-vivid); font-size: 1.5rem;"></i> Análisis Técnico
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image-container">
+                    <div class="floating-badge" style="top: 10%; left: -5%;">
+                        <i class="fa-solid fa-droplet-slash" style="color: #3b82f6; font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-weight: 800; color: var(--dark-navy);">Hidrofobia Extrema</div>
+                            <div style="font-size: 0.7rem; color: #64748b;">Ángulo de contacto > 150°</div>
+                        </div>
+                    </div>
+                    <div class="floating-badge" style="bottom: 10%; right: -5%;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-weight: 800; color: var(--dark-navy);">Auto-Limpiante</div>
+                            <div style="font-size: 0.7rem; color: #64748b;">Efecto Loto Molecular</div>
+                        </div>
+                    </div>
+                    <img src="images/pintura-hero.jpg" alt="Pintura Ultra Seco Premium Presentation">
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. TECH INSIGHT: MOLECULAR SHIELDS -->
+        <section style="padding: 80px 10%; background: #f8fafc; border-bottom: 1px solid #f1f5f9;">
+            <div class="section-header reveal">
+                <div class="benefit-tag">Ingeniería Molecular</div>
+                <h2>Tecnología de Blindaje</h2>
+                <p style="color: #64748b;">La ciencia detrás de la invulnerabilidad de nuestras superficies.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel reveal" style="padding: 2.5rem; background: white; border-radius: 24px;">
+                    <i class="fa-solid fa-shield-halved"
+                        style="font-size: 2rem; color: var(--primary-vivid); margin-bottom: 1.5rem;"></i>
+                    <h4 style="margin-bottom: 1rem;">Escudo Polímero Pro</h4>
+                    <p style="font-size: 0.9rem; color: #64748b;">Red elástica de alta densidad que se adapta a la
+                        micro-estructura del sustrato, bloqueando filtraciones.</p>
+                </div>
+                <div class="glass-panel reveal" style="padding: 2.5rem; background: white; border-radius: 24px;">
+                    <i class="fa-solid fa-sun" style="font-size: 2rem; color: #f59e0b; margin-bottom: 1.5rem;"></i>
+                    <h4 style="margin-bottom: 1rem;">Matriz Reflectiva UV</h4>
+                    <p style="font-size: 0.9rem; color: #64748b;">Dispersión inteligente de radiación térmica para
+                        mantener colores vibrantes y reducir el calor en interiores.</p>
+                </div>
+                <div class="glass-panel reveal" style="padding: 2.5rem; background: white; border-radius: 24px;">
+                    <i class="fa-solid fa-droplet" style="font-size: 2rem; color: #10b981; margin-bottom: 1.5rem;"></i>
+                    <h4 style="margin-bottom: 1rem;">Tensión Super-Hidrofóbica</h4>
+                    <p style="font-size: 0.9rem; color: #64748b;">Ángulo de contacto superior a 150° que obliga al agua
+                        a deslizarse en esferas, limpiando todo a su paso.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. AESTHETIC REVEAL: LUXURY VILLA -->
+        <section style="padding: 100px 5%; background: white;">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal" style="position: relative;">
+                    <div style="border-radius: 40px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.12);">
+                        <img src="images/luxury-villa.png" alt="Luxury Villa" style="width: 100%; display: block;">
+                    </div>
+                    <!-- Improved Resultado Real Panel -->
+                    <div class="reveal floating-refined"
+                        style="position: absolute; bottom: -30px; right: -30px; background: rgba(0, 52, 89, 0.8); backdrop-filter: blur(15px); color: white; padding: 2.5rem; border-radius: 32px; max-width: 340px; box-shadow: 0 40px 80px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); z-index: 20;">
+                        <span
+                            style="font-size: 0.75rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 2px; font-weight: 800; display: block; margin-bottom: 1rem; color: var(--primary-vivid);">
+                            <i class="fa-solid fa-microscope"></i> RESULTADO REAL
+                        </span>
+                        <h4 style="font-size: 1.4rem; margin-bottom: 1.5rem; line-height: 1.2; font-weight: 700;">
+                            Ingeniería de vanguardia certificada.</h4>
+
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                            <div>
+                                <div style="font-size: 1.2rem; font-weight: 900; color: var(--primary-vivid);">94%</div>
+                                <div
+                                    style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; font-weight: 800;">
+                                    Reflectividad UV</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.2rem; font-weight: 900; color: #10b981;">150°+</div>
+                                <div
+                                    style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; font-weight: 800;">
+                                    Efecto Loto</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal" style="padding-left: 2rem;">
+                    <div class="benefit-tag">Visión Arquitectónica</div>
+                    <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Blancura <span
+                            style="color: var(--primary-vivid)">Inalterable</span></h2>
+                    <p style="color: #64748b; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                        No pintamos paredes, creamos monumentos a la limpieza. Nuestra tecnología de autolimpieza
+                        asegura que el blanco radiante de hoy sea el mismo dentro de 5 años.
+                    </p>
+                    <ul style="list-style: none; padding: 0; display: grid; gap: 1rem;">
+                        <li
+                            style="display: flex; gap: 10px; align-items: center; color: var(--dark-navy); font-weight: 600;">
+                            <i class="fa-solid fa-check-circle" style="color: var(--primary-vivid);"></i> Resistencia al
+                            salitre y humedad
+                        </li>
+                        <li
+                            style="display: flex; gap: 10px; align-items: center; color: var(--dark-navy); font-weight: 600;">
+                            <i class="fa-solid fa-check-circle" style="color: var(--primary-vivid);"></i> Máxima
+                            reflectividad lumínica
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PERFORMANCE PROOF: VIDEOS -->
+        <section id="demostracion" class="evidence-section" style="background: #f1f5f9;">
+            <div class="section-header reveal">
+                <div class="benefit-tag">Certificación Visual</div>
+                <h2>Desempeño en Tiempo Real</h2>
+            </div>
+
+            <div class="demo-grid reveal">
+                <div class="video-card">
+                    <video controls muted poster="images/pintura-demo.jpg">
+                        <source src="videos/pintura-antimanchas.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-content" style="padding: 1.5rem;">
+                        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Efecto Antimanchas</h4>
+                        <p style="font-size: 0.85rem; color: #64748b;">Observa cómo los contaminantes resbalan sin dejar
+                            rastro.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <video controls muted>
+                        <source src="videos/pintura-temperatura.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-content" style="padding: 1.5rem;">
+                        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Resistencia Térmica</h4>
+                        <p style="font-size: 0.85rem; color: #64748b;">Control de temperatura superficial ante
+                            exposición extrema.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MACRO VISUAL SECTION (COMPACT) -->
+        <section
+            style="height: 400px; position: relative; overflow: hidden; display: flex; align-items: center; background: #000;">
+            <img src="images/pintura-macro.png" alt="Macro Hydrophobic"
+                style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+            <div style="position: relative; z-index: 2; padding: 0 10%; max-width: 800px;" class="reveal">
+                <h2 style="color: white; font-size: 2.8rem; line-height: 1.1; margin-bottom: 1rem;">La ciencia de
+                    la<br><span style="color: var(--primary-vivid)">Impenetrabilidad</span></h2>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">Nuestra tecnología molecular redefine la
+                    protección arquitectónica moderna.</p>
+            </div>
+        </section>
+
+        <!-- 4. TECHNICAL DASHBOARD -->
+        <section id="analisis-tecnico" style="padding: 100px 10%; background: white;">
+            <div class="section-header reveal">
+                <div class="benefit-tag">Datos Maestros</div>
+                <h2>Suite de Rendimiento</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Matrix -->
+                <div class="reveal">
+                    <div class="glass-panel" style="background: #f8fafc; padding: 2rem; border-radius: 32px;">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #e2e8f0;">
+                                    <th style="padding: 1rem 0;">Atributo</th>
+                                    <th style="padding: 1rem 0;">Línea AA</th>
+                                    <th style="padding: 1rem 0; color: var(--primary-vivid);">Línea AAA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #e2e8f0;">
+                                    <td style="padding: 1rem 0; font-weight: 700;">Vida Útil</td>
+                                    <td style="padding: 1rem 0;">3-4 Años</td>
+                                    <td style="padding: 1rem 0; font-weight: 800; color: var(--primary-vivid);">7 Años
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e2e8f0;">
+                                    <td style="padding: 1rem 0; font-weight: 700;">Lavabilidad</td>
+                                    <td style="padding: 1rem 0;">5k Ciclos</td>
+                                    <td style="padding: 1rem 0; font-weight: 800; color: var(--primary-vivid);">15k
+                                        Ciclos</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem 0; font-weight: 700;">Cobertura</td>
+                                    <td style="padding: 1rem 0;">10m²/gal</td>
+                                    <td style="padding: 1rem 0; font-weight: 800; color: var(--primary-vivid);">14m²/gal
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <a href="docs/pintura-ficha-tecnica.html" target="_blank"
+                                class="inline-flex items-center gap-2 bg-white border border-gray-200 text-cyan-600 font-bold py-3 px-8 rounded-full hover:bg-cyan-50 hover:border-cyan-300 transition shadow-sm">
+                                <i class="fa-solid fa-file-invoice"></i> FICHA TÉCNICA DINÁMICA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator -->
+                <div class="reveal">
+                    <div class="glass-panel"
+                        style="background: var(--dark-navy); color: white; padding: 3rem; border-radius: 32px; box-shadow: 0 30px 60px rgba(0,52,89,0.2);">
+                        <h4 style="margin-bottom: 2rem; text-align: center; letter-spacing: 2px; opacity: 0.8;">CÁLCULO
+                            DE PROYECTO</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.7rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.5; text-transform: uppercase;">Área
+                                    Estimada (m²)</label>
+                                <input type="number" id="calc-area" value="30" oninput="runCalculator()"
+                                    style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-weight: 800;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.7rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.5; text-transform: uppercase;">Calidad
+                                    de Selección</label>
+                                <select id="calc-quality" onchange="runCalculator()"
+                                    style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-weight: 600;">
+                                    <option value="AAA">Línea AAA (+Rendimiento)</option>
+                                    <option value="AA">Línea AA (Residencial)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 3rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;">
+                            <span
+                                style="display: block; font-size: 0.9rem; opacity: 0.6; margin-bottom: 0.5rem;">CANTIDAD
+                                RECOMENDADA:</span>
+                            <span id="calc-result"
+                                style="font-size: 3.5rem; font-weight: 900; color: var(--primary-vivid);">2.5
+                                Galones</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PURCHASE -->
+        <section id="comprar" style="padding: 100px 5%; background: #f8fafc;">
+            <div class="purchase-card">
+                <div class="purchase-form">
+                    <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; color: var(--dark-navy);">
+                        Configura tu pedido</h3>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label
+                            style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Selecciona
+                            Calidad:</label>
+                        <select id="opt-calidad" onchange="updatePrice('pintura-hidrofobica')"
+                            style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1rem; font-weight: 600; background: #fff; margin-bottom: 1rem;">
+                            <option value="AAA">Línea AAA (Ultra Premium)</option>
+                            <option value="AA">Línea AA (Estándar Alto)</option>
+                        </select>
+                        <label
+                            style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Presentación:</label>
+                        <select id="opt-pintura-hidrofobica" onchange="updatePrice('pintura-hidrofobica')"
+                            style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1rem; font-weight: 600; background: #fff;">
+                            <option value="0" data-price-aaa="34.00" data-price-aa="25.00">Galón (3.78 Litros)</option>
+                        </select>
+                    </div>
+
+                    <div
+                        style="margin-bottom: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: flex-end;">
+                        <div>
+                            <label
+                                style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Cantidad:</label>
+                            <input type="number" id="qty-pintura-hidrofobica" value="1" min="1"
+                                style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1.2rem; font-weight: 800; text-align: center;">
+                        </div>
+                        <div style="text-align: right;">
+                            <span
+                                style="font-size: 0.9rem; color: #64748b; font-weight: bold; text-transform: uppercase;">Total
+                                Ref.</span>
+                            <span id="price-pintura-hidrofobica" class="price-display">$34.00</span>
+                        </div>
+                    </div>
+
+                    <button onclick="addToCartStatic('pintura-hidrofobica')" class="cta-button"
+                        style="width: 100%; padding: 1.5rem; border-radius: 20px; font-size: 1.2rem; box-shadow: 0 20px 40px rgba(0, 168, 232, 0.25);">
+                        <i class="fa-solid fa-cart-shopping mr-2"></i> Añadir al Carrito
+                    </button>
+
+                    <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 2rem; opacity: 0.6;">
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-truck"></i> Envío Nacional
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-certificate"></i> Garantía Ultra Seco
+                        </div>
+                    </div>
+                </div>
+                <div class="purchase-visual">
+                    <div style="position: relative; z-index: 10;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 2rem;">Especificaciones Maestras</h4>
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem;">
+                                <div
+                                    style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </div>
+                                <div>
+                                    <h5 style="font-weight: 700;">Acabado Mate Sedoso</h5>
+                                    <p style="font-size: 0.85rem; opacity: 0.8;">Textura ultra-fina que disimula
+                                        imperfecciones.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <div
+                                    style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fa-solid fa-wind"></i>
+                                </div>
+                                <div>
+                                    <h5 style="font-weight: 700;">Bajo VOC / Sin Olor</h5>
+                                    <p style="font-size: 0.85rem; opacity: 0.8;">Amigable con el ambiente y la salud
+                                        familiar.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 4rem;">
+                            <a href="docs/pintura-ficha-tecnica.html" target="_blank" class="nav-button"
+                                style="background: rgba(255,255,255,0.9); color: var(--dark-navy); width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 1.2rem; border-radius: 16px; font-weight: 700;">
+                                <i class="fa-solid fa-file-invoice"
+                                    style="font-size: 1.2rem; color: var(--primary-vivid);"></i>
+                                Visualizar Ficha Técnica Interactiva
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section style="padding: 100px 10%; text-align: center;">
+            <div class="glass-panel" style="padding: 5rem; max-width: 900px; margin: 0 auto; border-radius: 40px;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">¿Necesitas asesoría personalizada?</h2>
+                <p style="font-size: 1.1rem; color: #64748b; margin-bottom: 3rem;">Nuestro equipo técnico está listo
+                    para ayudarte a calcular la cantidad exacta y elegir el color perfecto.</p>
+                <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://wa.me/584146023797" target="_blank" class="cta-button"
+                        style="background: #25d366; display: flex; align-items: center; gap: 10px; padding: 1.2rem 3rem;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> Consultar por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: var(--dark-navy); color: white; padding: 60px 5%;">
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 35px; filter: brightness(0) invert(1);">
+                <span style="font-weight: 300; opacity: 0.5;">|</span>
+                <span style="font-weight: 800; letter-spacing: 2px; font-size: 0.8rem;">PINTURA PREMIUM</span>
+            </div>
+            <p style="font-size: 0.85rem; opacity: 0.6;">&copy; 2025 Ultra Seco. Maracaibo, Venezuela. Todos los
+                derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
+    <script>
+        // Header Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(15px)';
+                header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
+                header.style.padding = '1rem 5%';
+            } else {
+                header.style.background = 'transparent';
+                header.style.backdropFilter = 'none';
+                header.style.boxShadow = 'none';
+                header.style.padding = '1.5rem 5%';
+            }
+        });
+
+        // Price Sync with Quality
+        function updatePrice(id) {
+            const opt = document.getElementById(`opt-${id}`);
+            const qty = document.getElementById(`qty-${id}`);
+            const quality = document.getElementById(`opt-calidad`);
+            const display = document.getElementById(`price-${id}`);
+
+            if (opt && qty && quality && display) {
+                const isAAA = quality.value === 'AAA';
+                const basePrice = parseFloat(isAAA ? opt.options[0].dataset.priceAaa : opt.options[0].dataset.priceAa);
+                display.textContent = `$${(basePrice * qty.value).toFixed(2)}`;
+            }
+        }
+
+        // Coverage Calculator
+        function runCalculator() {
+            const area = parseFloat(document.getElementById('calc-area').value) || 0;
+            const quality = document.getElementById('calc-quality').value;
+            const resultDiv = document.getElementById('calc-result');
+
+            // Theoretically 2 coats is the standard for hidrofobicity
+            const yields = { 'AAA': 12, 'AA': 10 }; // m2 per gallon finished (2 coats)
+            const gallons = (area / yields[quality]).toFixed(1);
+
+            resultDiv.textContent = `${gallons} Galones`;
+        }
+
+        // Scroll Reveal Observer
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Initial run
+        window.onload = () => {
+            runCalculator();
+            // Sync cart badge if possible
+            if (typeof updateCartBadge === 'function') updateCartBadge();
+        };
+    </script>
+</body>
+
+</html>

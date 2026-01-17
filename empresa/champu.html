@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Shield Champú | Ultra Seco</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --deep-space: #020617;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-space);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Automotive Lux Theme */
+        .luxury-bg {
+            background: radial-gradient(circle at 50% 10%, #0f172a 0%, #000000 100%);
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #2563eb 0%, #00f3ff 100%);
+            color: #000;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            height: 350px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 1rem;
+            border-radius: 14px;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .chat-user {
+            background: #2563eb;
+            color: #fff;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-bot {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            border-bottom-left-radius: 2px;
+        }
+
+        .glowing-text {
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body class="luxury-bg">
+
+    <header class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300" id="main-header">
+        <nav class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="bg-white/10 p-2 rounded-full border border-white/5 group-hover:bg-white/20 transition">
+                    <img src="images/logo.png" alt="Ultra Seco" style="height: 24px; filter: invert(1);">
+                </div>
+                <span class="font-bold text-white tracking-widest text-sm hidden sm:block">ULTRA SECO</span>
+            </a>
+
+            <div class="flex items-center gap-4">
+                <a href="index.html"
+                    class="text-slate-400 hover:text-white transition text-sm font-bold uppercase tracking-widest hidden md:block">Inicio</a>
+                <a href="index.html#page-productos"
+                    class="text-slate-400 hover:text-white transition text-sm font-bold uppercase tracking-widest hidden md:block">Productos</a>
+
+                <button onclick="toggleCart()"
+                    class="relative w-10 h-10 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full hover:bg-blue-600 hover:text-white transition shadow-[0_0_15px_rgba(37,99,235,0.3)]">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="min-h-screen flex items-center relative overflow-hidden pt-24 pb-12">
+            <!-- Background Image with Fade -->
+            <div class="absolute inset-0">
+                <img src="images/champu/hero.jpg" alt="Car Detailing Background"
+                    class="w-full h-full object-cover opacity-40">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/50 to-transparent"></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+
+                <!-- Content -->
+                <div class="order-2 lg:order-1">
+                    <div
+                        class="inline-flex items-center gap-2 mb-6 border border-cyan-500/30 px-4 py-1.5 rounded-full bg-cyan-900/20 backdrop-blur-md">
+                        <i class="fa-solid fa-car-on text-cyan-400 animate-pulse"></i>
+                        <span class="text-cyan-400 font-bold text-xs tracking-[0.2em] uppercase">División
+                            Vehicular</span>
+                    </div>
+
+                    <h1
+                        class="font-['Montserrat'] text-5xl md:text-7xl font-black leading-[0.9] mb-8 text-white italic tracking-tighter">
+                        NANO<br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 glowing-text">SHIELD</span><br>
+                        SHAMPOO
+                    </h1>
+
+                    <p class="text-lg text-slate-300 mb-10 max-w-xl border-l-2 border-cyan-500/50 pl-6 font-light">
+                        El primer <strong class="text-white">Autolavado en una Botella</strong>. Fórmula
+                        nano-concentrada que limpia, genera hidrofobicidad extrema y brillo espejo en un solo paso.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                        <a href="#comprar" class="cta-button px-8 py-4 rounded-lg flex items-center gap-3">
+                            Comprar Ahora <i class="fa-solid fa-bolt"></i>
+                        </a>
+                        <div class="flex items-center gap-4 text-slate-400 text-sm font-semibold">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-500"></i> pH
+                                Neutro</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-500"></i>
+                                Biodegradable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Showcase -->
+                <div class="order-1 lg:order-2 flex justify-center relative">
+                    <div class="relative w-[300px] md:w-[400px] h-[500px] md:h-[600px] group">
+                        <!-- Glow Effect -->
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-blue-600/20 blur-[80px] rounded-full group-hover:bg-cyan-500/30 transition duration-1000">
+                        </div>
+
+                        <!-- Floating Image -->
+                        <img src="images/champu/product.jpg" alt="Nano Shield Bottle"
+                            class="absolute inset-0 w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] animate-[float_6s_ease-in-out_infinite] z-10">
+
+                        <!-- Floating Particles (CSS Only) -->
+                        <div class="absolute top-1/4 right-0 w-2 h-2 bg-cyan-400 rounded-full blur-[1px] animate-ping">
+                        </div>
+                        <div
+                            class="absolute bottom-1/4 left-10 w-1.5 h-1.5 bg-blue-500 rounded-full blur-[1px] animate-pulse">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES GRID -->
+        <section class="py-20 relative bg-black/50">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+
+                    <div class="glass-panel p-8 hover:bg-white/5 transition duration-300 group">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-2xl text-white mb-6 shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Efecto Hidrofóbico</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Tecnología "Lotus Effect". El agua se agrupa
+                            en perlas perfectas y resbala instantáneamente, llevándose la suciedad.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 hover:bg-white/5 transition duration-300 group">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-2xl text-white mb-6 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Brillo Profundo</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Nanopartículas que rellenan micro-rayones en
+                            el barniz, devolviendo un acabado espejo showroom a tu vehículo.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 hover:bg-white/5 transition duration-300 group">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-2xl text-white mb-6 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Escudo UV</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Crea una capa de sacrificio que protege la
+                            pintura contra los rayos solares y la lluvia ácida por semanas.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEO DEMO SECTION -->
+        <section class="py-24 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+
+                    <div class="w-full md:w-1/2 relative group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-500">
+                        </div>
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-black aspect-video cursor-pointer"
+                            onclick="document.getElementById('promo-video').play()">
+                            <video id="promo-video" src="images/champu/promo.mp4" class="w-full h-full object-cover"
+                                controls poster="images/champu/hero.jpg"></video>
+                            <div
+                                class="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition">
+                                <div
+                                    class="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                                    <i class="fa-solid fa-play text-3xl text-white ml-2"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-1/2 md:pl-10">
+                        <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-2 block">Evidencia
+                            Real</span>
+                        <h2 class="text-4xl font-black text-white mb-6 italic">MIRA CÓMO EL AGUAS<br>HUYE DE TU AUTO
+                        </h2>
+                        <p class="text-slate-400 mb-8 leading-relaxed">
+                            No es magia, es ingeniería química. En este video demostrativo puedes ver cómo una sola
+                            aplicación de Nano Shield transforma una superficie hidrófila (que retiene agua) en una
+                            superficie súper-hidrofóbica.
+                        </p>
+
+                        <div class="flex gap-4 mb-8">
+                            <div class="text-center px-4 py-3 bg-white/5 rounded-lg border border-white/10">
+                                <span class="block text-2xl font-bold text-white">4 Semanas</span>
+                                <span class="text-[10px] text-slate-500 uppercase tracking-wider">Duración</span>
+                            </div>
+                        </div>
+
+                        <a href="#comprar"
+                            class="text-cyan-400 font-bold hover:text-white transition flex items-center gap-2">
+                            Ver ofertas disponibles <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PURCHASE SECTION -->
+        <section id="comprar" class="py-20 bg-[#050b1d]">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="glass-panel p-8 md:p-12 md:flex gap-12 items-start relative overflow-hidden">
+
+                    <!-- Decorative BG -->
+                    <div
+                        class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] -z-10">
+                    </div>
+
+                    <!-- Configurator -->
+                    <div class="w-full md:w-1/2 mb-10 md:mb-0">
+                        <span
+                            class="inline-block px-3 py-1 rounded bg-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-6 border border-blue-500/30">Venta
+                            Directa de Fábrica</span>
+
+                        <h2 class="text-3xl font-black text-white mb-2">Configura tu Pack</h2>
+                        <p class="text-slate-400 mb-8 text-sm">Selecciona la presentación ideal para tu negocio o uso
+                            personal.</p>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase mb-2">Presentación</label>
+                                <div class="relative">
+                                    <select id="opt-champu" onchange="updatePrice('champu')"
+                                        class="w-full p-4 bg-slate-900 border border-slate-700 rounded-xl text-white appearance-none cursor-pointer focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition outline-none font-medium">
+                                        <option value="0" data-price="12.00">1 Litro (Concentrado)</option>
+                                        <option value="1" data-price="35.00">Galón (3.78 Litros)</option>
+                                    </select>
+                                    <div
+                                        class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-slate-500 uppercase mb-2">Cantidad</label>
+                                    <div class="flex items-center bg-slate-900 border border-slate-700 rounded-xl p-1">
+                                        <button
+                                            class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white"
+                                            onclick="updateQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                                        <input type="number" id="qty-champu" value="1" min="1" readonly
+                                            class="w-full bg-transparent text-center text-white font-bold outline-none">
+                                        <button
+                                            class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white"
+                                            onclick="updateQty(1)"><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Total
+                                        Estimado</label>
+                                    <div class="h-[50px] flex items-center text-3xl font-black text-cyan-400"
+                                        id="price-champu">
+                                        $12.00
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onclick="addToCartStatic('champu')"
+                                class="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl text-white font-black uppercase tracking-wider hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition transform active:scale-95 flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Calculator / Info -->
+                    <div class="w-full md:w-1/2 bg-slate-900/50 rounded-2xl p-8 border border-white/5">
+                        <h3 class="text-white font-bold mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-slate-400"></i> Calculadora de Rendimiento
+                        </h3>
+
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm text-slate-400 mb-2">
+                                <span>1 Litro Concentrado</span>
+                                <span class="text-white font-bold">= 20 Lavadas</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-2">
+                                <div class="bg-cyan-500 h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2 italic">Basado en 50ml por cubeta de agua.</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-slate-800/50 p-4 rounded-lg text-center">
+                                <span class="block text-2xl font-bold text-white">$0.60</span>
+                                <span class="text-xs text-slate-500 uppercase">Costo por Lavada</span>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-lg text-center">
+                                <span class="block text-2xl font-bold text-green-400">x5</span>
+                                <span class="text-xs text-slate-500 uppercase">Rentabilidad</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-blue-900/20 border border-blue-500/20 rounded-lg">
+                            <p class="text-sm text-blue-200">
+                                <i class="fa-solid fa-circle-info mr-2"></i> Ideal para <strong>Car Wash</strong> y
+                                <strong>Detailers</strong>. Ofrece un servicio "Premium Wash" cobrando más por el
+                                acabado encerado instantáneo.
+                            </p>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <a href="docs/champu-ficha-tecnica.html" target="_blank"
+                                class="inline-flex items-center gap-2 bg-slate-800 text-cyan-400 border border-cyan-500/30 font-bold py-3 px-8 rounded-full hover:bg-slate-700 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">
+                                <i class="fa-solid fa-file-invoice"></i> Ver Ficha Técnica (HTML)
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- AI ASSISTANT -->
+        <section class="py-20 px-6">
+            <div class="max-w-4xl mx-auto glass-panel p-1 rounded-2xl shadow-2xl relative">
+                <div
+                    class="absolute -top-4 -left-4 bg-cyan-500 text-black font-bold px-4 py-1 rounded-lg shadow-lg rotate-[-5deg] z-20">
+                    <i class="fa-solid fa-robot"></i> Nano-Assistant
+                </div>
+
+                <div class="bg-[#0f172a] rounded-xl p-6 md:p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div
+                            class="w-12 h-12 bg-blue-600/20 rounded-full flex items-center justify-center text-blue-400 border border-blue-500/30">
+                            <i class="fa-solid fa-microchip text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">¿Dudas sobre la aplicación?</h3>
+                            <p class="text-sm text-slate-400">Pregunta a nuestra IA experta en Detailing.</p>
+                        </div>
+                    </div>
+
+                    <div id="chat-box" class="chat-container mb-4">
+                        <div class="chat-bubble chat-bot">
+                            ¡Hola! Soy el experto en Nano Shield. Puedo ayudarte con:
+                            <ul class="list-disc ml-5 mt-2 opacity-80">
+                                <li>Instrucciones de dilución correcta</li>
+                                <li>Tips para evitar marcas de agua</li>
+                                <li>Compatibilidad con cerámicos y ceras</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="user-input" placeholder="Ej: ¿Puedo usarlo bajo el sol?"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-5 pr-14 py-4 text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition"
+                            onkeypress="handleKeyPress(event)">
+                        <button onclick="sendMessage()"
+                            class="absolute right-2 top-2 bottom-2 w-10 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg flex items-center justify-center transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SIMPLE -->
+    <footer class="bg-black py-10 border-t border-slate-900 text-center text-slate-600 text-sm">
+        <p>&copy; 2026 Ultra Seco Ecosystem. División Vehicular.</p>
+    </footer>
+
+    <!-- LOGIC SCRIPTS -->
+    <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
+    <script>
+        // --- CONTEXTO IA ---
+        const systemContextChat = `Eres el Especialista en Detailing de Ultra Seco.
+        PRODUCTO: Nano Shield Champú Concentrado.
+        BENEFICIOS: Limpieza pH neutro, Hidrofobicidad inmediata (efecto loto), Brillo profundo.
+        USO: Producto CONCENTRADO, se usa PURO (aproximadamente 50ml en un balde de 5L de agua). Lavar el auto a la sombra, usar guante de microfibra, enjuagar con agua a presión.
+        PRECIO: $12.00 (Litro), $35.00 (Galón).
+        COMPATIBILIDAD: Seguro para autos con recubrimientos cerámicos (booster) y ceras.`;
+
+        // --- LÓGICA DE COMPRA ---
+        function updateQty(change) {
+            const input = document.getElementById('qty-champu');
+            let val = parseInt(input.value) + change;
+            if (val < 1) val = 1;
+            input.value = val;
+            updatePrice('champu');
+        }
+
+        // --- CHATBOT ---
+        const apiKey = "AIzaSyC5X0qazPsUbwqo0jfDDSMhV7V-Y9ZIICo";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
+            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            appendMessage(text, 'user');
+            userInput.value = '';
+
+            // Loading
+            const loadingDiv = document.createElement('div');
+            loadingDiv.classList.add('chat-bubble', 'chat-bot');
+            loadingDiv.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-cyan-400"></i> Procesando...';
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: systemContextChat + "\n\nCliente: " + text }] }]
+                    })
+                });
+                const data = await response.json();
+                chatBox.removeChild(loadingDiv);
+
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Lo siento, intentalo de nuevo.";
+                appendMessage(reply, 'bot');
+            } catch (error) {
+                if (loadingDiv.parentNode) chatBox.removeChild(loadingDiv);
+                appendMessage("Error de conexión.", 'bot');
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        // --- SCROLL EFFECT ---
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-black/90', 'backdrop-blur-md', 'shadow-lg');
+                header.classList.remove('py-4');
+                header.classList.add('py-2');
+            } else {
+                header.classList.remove('bg-black/90', 'backdrop-blur-md', 'shadow-lg');
+                header.classList.add('py-4');
+                header.classList.remove('py-2');
+            }
+        });
+    </script>
+</body>
+
+</html>

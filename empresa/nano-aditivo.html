@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra Seco - Nano Aditivo para Concreto y Morteros</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn-primary {
+            @apply bg-blue-900 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300;
+        }
+
+        /* Safe Guard for Scroll */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Navigation Bar -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 99999; background: #0f172a; padding: 16px 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: block !important; visibility: visible !important; opacity: 1 !important;"
+        id="main-header">
+        <div
+            style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+            <!-- Logo -->
+            <a href="index.html"
+                style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); text-decoration: none; background: rgba(30,41,59,0.8);">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+            </a>
+
+            <!-- Menu Items -->
+            <div
+                style="display: flex; gap: 4px; padding: 8px 12px; background: rgba(30,41,59,0.9); border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); overflow-x: auto; max-width: 600px;">
+                <a href="index.html#page-inicio"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Inicio</a>
+                <a href="index.html#page-asesor"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">🧠 Asesor IA</a>
+                <a href="index.html#page-productos"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Productos</a>
+                <a href="index.html#page-pilares"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Pilares</a>
+                <a href="index.html#page-contacto"
+                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='transparent'">Contacto</a>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <a href="https://wa.me/584146023797" target="_blank"
+                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(to right, #10b981, #059669); color: white; border-radius: 9999px; font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.2);">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> <span>Asesor</span>
+                </a>
+                <button onclick="window.location.href='index.html#cart'"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #1e293b; color: white; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacer to prevent content from going under fixed nav -->
+    <div style="height: 80px;"></div>
+
+
+    <!-- Hero Section -->
+    <header class="relative bg-gray-900 text-white" style="min-height: 500px; max-height: 80vh; overflow: hidden;">
+        <div class="absolute inset-0"
+            style="background-image: url('images/portada_nano_aditivo.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        </div>
+
+        <div class="container mx-auto px-6 py-24 relative z-10 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <!-- Added segmented background filter for readability -->
+                <div class="bg-gray-900/60 backdrop-blur-sm p-8 rounded-2xl border border-white/10 shadow-2xl">
+                    <div
+                        class="inline-block bg-green-500 text-blue-900 font-bold px-2 py-1 mb-4 text-xs tracking-wide rounded">
+                        NANOTECNOLOGÍA PARA CONSTRUCCIÓN
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4">
+                        <span class="text-white">NANO ADITIVO</span> <br>
+                        <span class="text-green-400">CONCRETO Y MORTEROS</span>
+                    </h1>
+
+                    <!-- Product Name Highlight -->
+                    <p class="text-lg text-gray-200 mb-8 max-w-lg font-medium">
+                        <span class="block text-green-400 font-black text-2xl mb-2 tracking-wide drop-shadow-md">ULTRA
+                            SECO
+                            NANO ADITIVO</span>
+                        Nanotecnología que incrementa resistencia, impermeabilidad y durabilidad en tus mezclas de
+                        concreto
+                        y mortero.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#aplicacion"
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg inline-flex items-center transition shadow-lg hover:shadow-green-500/30">
+                            <i class="fas fa-flask mr-2"></i>
+                            Modo de Uso
+                        </a>
+                        <a href="https://wa.me/584146023797" target="_blank"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg inline-flex items-center transition shadow-lg hover:shadow-blue-600/30">
+                            <i class="fab fa-whatsapp mr-2"></i>
+                            Consultar Asesor
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Image -->
+            <div class="md:w-1/2 flex justify-center">
+                <img src="images/nano-aditivo.jpg" alt="Nano Aditivo"
+                    class="rounded-lg shadow-2xl max-w-md w-full border-4 border-white/10">
+            </div>
+        </div>
+    </header>
+
+    <!-- Key Benefits Bar -->
+    <section class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <i class="fas fa-shield-alt text-4xl mb-2 text-green-400"></i>
+                    <h4 class="font-bold">+30% Resistencia</h4>
+                    <p class="text-sm text-gray-300">Estructural</p>
+                </div>
+                <div>
+                    <i class="fas fa-droplet-slash text-4xl mb-2 text-blue-400"></i>
+                    <h4 class="font-bold">100% Impermeable</h4>
+                    <p class="text-sm text-gray-300">Protección total</p>
+                </div>
+                <div>
+                    <i class="fas fa-leaf text-4xl mb-2 text-green-400"></i>
+                    <h4 class="font-bold">Biodegradable</h4>
+                    <p class="text-sm text-gray-300">Ecológico</p>
+                </div>
+                <div>
+                    <i class="fas fa-clock text-4xl mb-2 text-yellow-400"></i>
+                    <h4 class="font-bold">Durabilidad ++</h4>
+                    <p class="text-sm text-gray-300">Larga vida útil</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Instructions -->
+    <section id="aplicacion" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-black text-center mb-12 text-gray-800">
+                <i class="fas fa-flask text-blue-600 mr-3"></i>
+                Modo de Uso
+            </h2>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Dosage Card -->
+                <div
+                    class="bg-gradient-to-br from-green-50 to-blue-50 border-l-8 border-green-500 p-8 rounded-lg shadow-lg mb-8">
+                    <h3 class="text-2xl font-black mb-4 text-gray-800 flex items-center">
+                        <i class="fas fa-prescription-bottle text-green-600 mr-3"></i>
+                        Dosificación
+                    </h3>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-xl font-bold text-blue-900 mb-4">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            1 Sobre de 600gr por cada saco de cemento
+                        </p>
+                        <p class="text-gray-600">
+                            Mezclar el contenido de un sobre (600gr) de Ultra Seco Nano Aditivo por cada saco de cemento
+                            (42.5
+                            kg) que agregues a tu mezcla de concreto o mortero.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step by Step Instructions -->
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Step 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-blue-500">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-blue-900 text-2xl font-black">1</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-3 text-center">Preparar Mezcla</h4>
+                        <p class="text-gray-600 text-center">
+                            Prepara tu mezcla de concreto o mortero como lo haces normalmente.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-green-500">
+                        <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-green-900 text-2xl font-black">2</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-3 text-center">Agregar Nano Aditivo</h4>
+                        <p class="text-gray-600 text-center">
+                            Añade 1 sobre completo por cada saco de cemento y mezcla uniformemente.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-500">
+                        <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-yellow-900 text-2xl font-black">3</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-3 text-center">Aplicar</h4>
+                        <p class="text-gray-600 text-center">
+                            Utiliza la mezcla de forma habitual. Los beneficios son permanentes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="docs/nano-aditivo-ficha-tecnica.html" target="_blank"
+                        class="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold py-3 px-8 rounded-full inline-flex items-center transition shadow-lg hover:shadow-blue-200">
+                        <i class="fas fa-file-invoice mr-2"></i>
+                        Ver Ficha Técnica (HTML)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Details -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-black text-center mb-12 text-gray-800">
+                Beneficios Técnicos
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Benefit 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-shield-alt text-blue-600 text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">Mayor Resistencia Mecánica</h4>
+                            <p class="text-gray-600">
+                                Las nanopartículas aumentan la resistencia a compresión y flexión del concreto,
+                                reduciendo fisuras y microfracturas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefit 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-droplet-slash text-green-600 text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">Impermeabilización Total</h4>
+                            <p class="text-gray-600">
+                                Crea una barrera superhidrofóbica que repele el agua, evitando infiltraciones y humedad
+                                ascendente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefit 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-yellow-100 p-3 rounded-lg">
+                            <i class="fas fa-atom text-yellow-600 text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">Modificación Molecular</h4>
+                            <p class="text-gray-600">
+                                Penetra en la estructura del cemento a nivel nanométrico, modificando sus propiedades
+                                físicas de forma permanente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefit 4 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-clock text-purple-600 text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">Durabilidad Extendida</h4>
+                            <p class="text-gray-600">
+                                Protege contra sulfatos, cloruros y carbonatación, prolongando significativamente la
+                                vida útil de la estructura.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-black text-center mb-12 text-gray-800">
+                Aplicaciones
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg shadow-lg text-center">
+                    <i class="fas fa-building text-blue-600 text-4xl mb-4"></i>
+                    <h4 class="font-bold text-lg mb-2">Concreto Estructural</h4>
+                    <p class="text-gray-600 text-sm">Columnas, vigas, losas y cimientos</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-white p-6 rounded-lg shadow-lg text-center">
+                    <i class="fas fa-brick-wall text-green-600 text-4xl mb-4"></i>
+                    <h4 class="font-bold text-lg mb-2">Morteros de Pega</h4>
+                    <p class="text-gray-600 text-sm">Unión de bloques y ladrillos</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-yellow-50 to-white p-6 rounded-lg shadow-lg text-center">
+                    <i class="fas fa-paint-roller text-yellow-600 text-4xl mb-4"></i>
+                    <h4 class="font-bold text-lg mb-2">Acabados</h4>
+                    <p class="text-gray-600 text-sm">Frisos y revoques impermeables</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-white p-6 rounded-lg shadow-lg text-center">
+                    <i class="fas fa-warehouse text-purple-600 text-4xl mb-4"></i>
+                    <h4 class="font-bold text-lg mb-2">Pisos Industriales</h4>
+                    <p class="text-gray-600 text-sm">Alto tráfico y resistencia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-blue-900 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-black mb-6">
+                Solicita Asesoría Técnica Personalizada
+            </h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                Nuestro equipo técnico te guiará en la aplicación correcta del Nano Aditivo según tu proyecto
+                específico.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://wa.me/584146023797" target="_blank"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-lg inline-flex items-center transition">
+                    <i class="fab fa-whatsapp mr-2 text-2xl"></i>
+                    Contactar por WhatsApp
+                </a>
+                <a href="index.html"
+                    class="bg-white hover:bg-gray-100 text-blue-900 font-bold py-4 px-8 rounded-lg inline-flex items-center transition">
+                    <i class="fas fa-home mr-2"></i>
+                    Volver al Catálogo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Ultra Seco</h3>
+                    <p class="text-sm">
+                        Nanotecnología venezolana al servicio de la construcción sostenible.
+                    </p>
+                    <p class="mt-4">
+                        🇻🇪 Innovación Venezolana<br>
+                        🌱 100% Biodegradable
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Contacto</h3>
+                    <p class="text-sm">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        <a href="https://wa.me/584146023797" class="hover:text-white">+58 414-6023797</a>
+                    </p>
+                    <p class="text-sm mt-2">
+                        <i class="fab fa-instagram mr-2"></i>
+                        <a href="https://instagram.com/ultraseco" target="_blank"
+                            class="hover:text-white">@ultraseco</a>
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Enlaces Rápidos</h3>
+                    <ul class="text-sm space-y-2">
+                        <li><a href="index.html" class="hover:text-white">Inicio</a></li>
+                        <li><a href="index.html#page-productos" class="hover:text-white">Productos</a></li>
+                        <li><a href="titan.html" class="hover:text-white">Asesor IA</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 text-center text-sm">
+                <p>&copy; 2025 Ultra Seco. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+
+</html>

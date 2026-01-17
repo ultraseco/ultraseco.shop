@@ -1,0 +1,61 @@
+﻿<!-- SECCIÓN DE PODCAST PARA ECO CAPTURADOR -->
+<!-- Pegar DESPUÉS de la sección de Documentación Técnica y ANTES de la sección de Contacto -->
+
+    <!-- PODCAST SECTION -->
+    <section class="py-20 bg-gradient-to-br from-slate-900 to-slate-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 text-sm font-bold mb-6">
+                    <i data-lucide="headphones" size="20"></i>
+                    ESCUCHA NUESTRA HISTORIA
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Del Laboratorio a la Mina Real
+                </h2>
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto">
+                    Descubre cómo nació Eco Capturador, los desafíos que enfrentamos y por qué los mineros venezolanos están cambiando mercurio por nanotecnología.
+                </p>
+            </div>
+
+            <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700 shadow-2xl">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center shrink-0">
+                        <i data-lucide="mic" class="text-slate-900 w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Podcast: La Revolución del Oro Limpio</h3>
+                        <p class="text-slate-400 text-sm">Duración: ~5 minutos</p>
+                    </div>
+                </div>
+
+                <audio controls class="w-full mb-6" style="filter: hue-rotate(30deg);">
+                    <source src="audio/podcast eco capturador.mp3" type="audio/mpeg">
+                    Tu navegador no soporta el elemento de audio.
+                </audio>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <i data-lucide="lightbulb" class="text-yellow-400 w-6 h-6 mx-auto mb-2"></i>
+                        <p class="text-white font-semibold text-sm">Innovación Real</p>
+                        <p class="text-slate-400 text-xs">Tecnología probada en campo</p>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <i data-lucide="users" class="text-yellow-400 w-6 h-6 mx-auto mb-2"></i>
+                        <p class="text-white font-semibold text-sm">Casos de Éxito</p>
+                        <p class="text-slate-400 text-xs">Mineros reales, resultados reales</p>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <i data-lucide="leaf" class="text-yellow-400 w-6 h-6 mx-auto mb-2"></i>
+                        <p class="text-white font-semibold text-sm">Minería Limpia</p>
+                        <p class="text-slate-400 text-xs">Sin mercurio, sin culpa</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <p class="text-slate-400 text-sm italic">
+                    "No vendemos promesas, vendemos resultados que puedes medir en gramos de oro."
+                </p>
+            </div>
+        </div>
+    </section>

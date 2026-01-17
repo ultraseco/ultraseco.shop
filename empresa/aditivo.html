@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra Seco - Aditivo Asfáltico Nanotecnológico</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            /* Base height */
+            max-height: 400px;
+            /* Max height constraint */
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .btn-primary {
+            @apply bg-blue-900 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300;
+        }
+
+        .card-hover {
+            @apply transition duration-300 transform hover:-translate-y-1 hover:shadow-xl;
+        }
+
+        /* Custom scrollbar for aesthetic integration */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a8a;
+            border-radius: 4px;
+        }
+    </style>
+    <style>
+        /* Safe Guard for Scroll - Force page scrollability */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+            overflow-x: hidden;
+        }
+
+        /* Ensure specific overrides */
+        header.relative {
+            position: relative !important;
+            transform: none !important;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Navigation / Header -->
+    <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 text-white no-underline">
+                    <div class="bg-white p-1 rounded">
+                        <img src="images/logo.png" alt="Ultra Seco" style="height: 35px;">
+                    </div>
+                    <!-- <span class="text-xl font-black tracking-wider">ULTRA SECO®</span> -->
+                </a>
+            </div>
+            <div class="flex flex-wrap space-x-4 md:space-x-6 text-xs md:text-sm font-medium text-white">
+                <a href="index.html" class="hover:text-yellow-400 transition">Inicio</a>
+                <a href="index.html#page-asesor" class="hover:text-yellow-400 transition">Asesor IA</a>
+                <a href="#problema" class="hover:text-yellow-400 transition">El Problema</a>
+                <a href="#solucion" class="hover:text-yellow-400 transition">La Solución</a>
+                <a href="#calculadora" class="hover:text-yellow-400 transition">Calculadora</a>
+                <a href="#impacto" class="hover:text-yellow-400 transition">ROI & Impacto</a>
+            </div>
+            <button onclick="scrollToContact()"
+                class="bg-yellow-500 text-blue-900 px-4 py-1 rounded font-bold text-sm hover:bg-yellow-400 transition">
+                Prueba Piloto
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-gray-900 text-white"
+        style="position: relative; z-index: 20; min-height: 500px; max-height: 80vh; overflow: hidden;">
+        <div class="absolute inset-0 opacity-40"
+            style="background-image: url('images/aditivo_asfaltico.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        </div>
+
+        <div class="container mx-auto px-6 py-24 relative z-10 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <div
+                    class="inline-block bg-yellow-500 text-blue-900 font-bold px-2 py-1 mb-4 text-xs tracking-wide rounded">
+                    NANOTECNOLOGÍA VIAL
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4">
+                    <span class="text-white">MÁS QUE ASFALTO.</span> <br>
+                    <span class="text-yellow-400">ES BLINDAJE VIAL.</span>
+                </h1>
+
+                <!-- Updated Product Name Highlight -->
+                <p class="text-lg text-gray-300 mb-8 max-w-lg">
+                    <span class="block text-yellow-400 font-black text-2xl mb-2 tracking-wide drop-shadow-md">ULTRA SECO
+                        ADITIVO ASFÁLTICO</span>
+                    Tecnología funcionalizada que modifica la estructura molecular del pavimento para repeler el agua y
+                    resistir el sol.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#solucion"
+                        class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded text-center transition">
+                        Ver Tecnología
+                    </a>
+                    <a href="#impacto"
+                        class="border border-white hover:bg-white hover:text-gray-900 text-white font-bold py-3 px-6 rounded text-center transition">
+                        Ver Rentabilidad
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <div style="height:80px;"></div>
+
+    <!-- Podcast Section -->
+    <section class="bg-gray-100 py-8 border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="bg-blue-900 text-white p-4 rounded-full">
+                        <i class="fas fa-podcast text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-lg">Escucha la Innovación</h3>
+                        <p class="text-sm text-gray-600">Descubre cómo la nanotecnología zuliana elimina los baches.
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <audio controls class="w-full">
+                        <source src="audio/podcast_aditivo.mp3" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-12 space-y-20">
+
+        <!-- SECTION 1: THE PROBLEM -->
+        <section id="problema">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-black text-gray-800 uppercase tracking-tight">¿Por qué fallan nuestras
+                    carreteras?</h2>
+                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
+                    Entender el ciclo de destrucción es el primer paso para detenerlo. El 90% de los fallos viales
+                    comienzan por la combinación de agua y oxidación.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Interactive Cycle Tabs -->
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-red-500">
+                    <h3 class="text-xl font-bold mb-6 text-gray-700">El Ciclo de Destrucción</h3>
+                    <div class="flex space-x-2 mb-6 overflow-x-auto pb-2">
+                        <button onclick="setCycle(0)"
+                            class="cycle-btn active px-4 py-2 rounded bg-gray-200 text-sm font-bold whitespace-nowrap hover:bg-blue-100 transition focus:outline-none"
+                            data-index="0">1. Infiltración</button>
+                        <button onclick="setCycle(1)"
+                            class="cycle-btn px-4 py-2 rounded bg-gray-200 text-sm font-bold whitespace-nowrap hover:bg-blue-100 transition focus:outline-none"
+                            data-index="1">2. Presión Térmica</button>
+                        <button onclick="setCycle(2)"
+                            class="cycle-btn px-4 py-2 rounded bg-gray-200 text-sm font-bold whitespace-nowrap hover:bg-blue-100 transition focus:outline-none"
+                            data-index="2">3. Ruptura</button>
+                        <button onclick="setCycle(3)"
+                            class="cycle-btn px-4 py-2 rounded bg-gray-200 text-sm font-bold whitespace-nowrap hover:bg-blue-100 transition focus:outline-none"
+                            data-index="3">4. Bache</button>
+                    </div>
+
+                    <div id="cycle-content" class="min-h-[150px]">
+                        <!-- Content injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Problem Chart -->
+                <div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-sm font-bold text-gray-500 uppercase mb-4 text-center">Causas Principales de
+                            Fallo Vial</h4>
+                        <div class="chart-container">
+                            <canvas id="failureChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="text-red-600 font-bold text-lg">Dato Crítico:</span>
+                            <span class="text-gray-600">El agua y el sol son los enemigos silenciosos del
+                                presupuesto.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE SOLUTION -->
+        <section id="solucion" class="bg-blue-50 -mx-4 px-4 py-16">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-blue-600 font-bold tracking-widest text-sm uppercase">Innovación a Escala
+                        Molecular</span>
+                    <h2 class="text-4xl font-black text-gray-900 mt-2">LA SOLUCIÓN ULTRA SECO</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                        No utilizamos selladores superficiales. Nuestras nanopartículas funcionalizadas cambian la
+                        química interna del asfalto.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div
+                        class="bg-white p-8 rounded-xl shadow-md card-hover border-t-4 border-blue-600 relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-100 rounded-full opacity-50 group-hover:scale-150 transition duration-500">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 text-2xl">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Anclaje Molecular</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Nuestras partículas se fusionan químicamente con el ligante asfáltico. A diferencia
+                                de
+                                otros aditivos, <strong>no se lavan</strong> con la lluvia ni el tiempo.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div
+                        class="bg-white p-8 rounded-xl shadow-md card-hover border-t-4 border-blue-600 relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-100 rounded-full opacity-50 group-hover:scale-150 transition duration-500">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 text-2xl">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Súper Hidrofobicidad</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Modificamos la tensión superficial de toda la mezcla. El agua simplemente resbala,
+                                eliminando la filtración que causa la separación de los agregados.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div
+                        class="bg-white p-8 rounded-xl shadow-md card-hover border-t-4 border-blue-600 relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-100 rounded-full opacity-50 group-hover:scale-150 transition duration-500">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 text-2xl">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Escudo UV</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Retarda el envejecimiento y la oxidación del pavimento causada por el sol extremo
+                                (>50°C). Mantiene la flexibilidad natural del betún.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: DOSAGE CALCULATOR & USAGE -->
+        <section id="calculadora" class="bg-gray-800 text-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="flex flex-col md:flex-row">
+                <!-- Info Side -->
+                <div class="md:w-1/2 p-10 bg-gray-900 flex flex-col justify-center">
+                    <h2 class="text-3xl font-bold mb-6 text-yellow-400">Integración en Planta</h2>
+                    <p class="text-gray-300 mb-8">
+                        La simplicidad es clave. No requieres maquinaria extra. El aditivo se vierte directamente en
+                        el
+                        tanque o mezclador.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Mezclas en Caliente (Resiste hasta 180°C)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Emulsiones y Riegos de Liga</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Bacheo en Frío</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Calculator Side -->
+                <div class="md:w-1/2 p-10 bg-gray-800 border-l border-gray-700">
+                    <h3 class="text-2xl font-bold mb-2">Calculadora de Dosificación</h3>
+                    <p class="text-sm text-gray-400 mb-6">Regla del 2%: Calcula cuánto aditivo necesitas para tu
+                        obra.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-gray-400 text-sm font-bold mb-2" for="asphaltWeight">
+                                Peso Cemento Asfáltico (Toneladas)
+                            </label>
+                            <input type="text" inputmode="decimal" id="asphaltWeight" placeholder="Ej: 10,5"
+                                class="w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 focus:outline-none focus:border-yellow-400 transition"
+                                oninput="calculateDosage()">
+                        </div>
+
+                        <div class="bg-gray-900 p-4 rounded border border-gray-700">
+                            <label class="block text-yellow-400 text-xs font-bold uppercase mb-1">
+                                Cantidad de Aditivo Requerida (Kg)
+                            </label>
+                            <div class="text-4xl font-mono font-bold text-white" id="resultOutput">0.00 Kg</div>
+                            <p class="text-xs text-gray-500 mt-2">*Basado en dosificación estándar del 2% por peso.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ROI & IMPACT -->
+        <section id="impacto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-black text-gray-800 uppercase">Rentabilidad y Sostenibilidad</h2>
+                <p class="text-gray-600 mt-2">Datos para la toma de decisiones. Extender la vida útil significa
+                    liberar
+                    presupuesto.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- ROI Chart -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">Comparativa de Vida Útil Estimada
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="lifespanChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Textual Impact -->
+                <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Beneficios Estratégicos</h3>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-3 rounded-lg mr-4 text-green-600">
+                                <i class="fas fa-coins text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Ahorro Presupuestario</h4>
+                                <p class="text-sm text-gray-600">Al reducir la frecuencia de mantenimiento y bacheo,
+                                    el
+                                    costo total de propiedad de la vía disminuye drásticamente a 5 y 10 años.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 p-3 rounded-lg mr-4 text-yellow-600">
+                                <i class="fas fa-car-crash text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Seguridad Vial</h4>
+                                <p class="text-sm text-gray-600">Menos acumulación de agua reduce el aquaplaning.
+                                    Menos
+                                    baches significan menos accidentes y daños a vehículos.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4 text-blue-600">
+                                <i class="fas fa-leaf text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Sostenibilidad</h4>
+                                <p class="text-sm text-gray-600">Una carretera que dura más requiere menos
+                                    extracción de
+                                    nuevos áridos y petróleo. Menos obras = Menos huella de carbono.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="docs/aditivo-asfaltico-ficha-tecnica.html" target="_blank"
+                    class="inline-flex items-center gap-2 bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-full hover:bg-yellow-400 transition shadow-lg hover:shadow-yellow-500/30">
+                    <i class="fas fa-file-invoice" style="margin-right: 8px;"></i> Ver Ficha Técnica (HTML)
+                </a>
+            </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 border-t-4 border-yellow-500">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center space-x-2 mb-6">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 50px;">
+                <!-- <span class="text-3xl font-black tracking-wider">ULTRA SECO®</span> -->
+            </div>
+            <p class="text-gray-400 mb-8 max-w-lg mx-auto">
+                Tecnología industrial hecha en Venezuela. Transformando la infraestructura vial desde la raíz
+                molecular.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-8 text-gray-400">
+                <div>
+                    <i class="fas fa-map-marker-alt text-yellow-500 mb-2"></i>
+                    <p>C.C. Doral Center, Nivel PB, Local PB-24.<br>Maracaibo, Estado Zulia.</p>
+                </div>
+                <div>
+                    <i class="fas fa-envelope text-yellow-500 mb-2"></i>
+                    <p>ultraseco.vzla@gmail.com</p>
+                </div>
+                <div>
+                    <i class="fas fa-phone text-yellow-500 mb-2"></i>
+                    <p>+58 414-6023797</p>
+                </div>
+            </div>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="https://instagram.com/ultraseco" target="_blank"
+                    class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition"><i
+                        class="fab fa-linkedin text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition"><i class="fas fa-globe text-2xl"></i></a>
+            </div>
+            <div class="mb-8">
+                <a href="docs/aditivo-asfaltico-ficha-tecnica.html" target="_blank"
+                    class="inline-block bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded shadow-lg hover:bg-yellow-400 transition transform hover:scale-105">
+                    Ver Ficha Técnica Completa
+                </a>
+            </div>
+            <div class="text-sm text-gray-600">
+                &copy; 2025 Ultra Seco. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Cycle Tabs Logic ---
+        const cycleData = [
+            {
+                title: "1. Infiltración",
+                icon: "fa-cloud-rain",
+                desc: "El asfalto tradicional es poroso. El agua de lluvia percola y se filtra dentro de la estructura, saturando la base y debilitando la mezcla.",
+                color: "text-blue-500"
+            },
+            {
+                title: "2. Presión Térmica",
+                icon: "fa-temperature-high",
+                desc: "Sale el sol en Maracaibo (>50°C). El agua atrapada dentro del asfalto intenta evaporarse, generando una presión de vapor interna inmensa.",
+                color: "text-red-500"
+            },
+            {
+                title: "3. Ruptura",
+                icon: "fa-compress-arrows-alt",
+                desc: "Esta presión interna rompe la unión química (adhesión) entre la piedra (árido) y el betún. El pegamento natural del asfalto falla.",
+                color: "text-orange-500"
+            },
+            {
+                title: "4. Bache",
+                icon: "fa-road",
+                desc: "Sin cohesión, el tráfico arranca los pedazos de asfalto sueltos. La estructura colapsa y nace el bache. El ciclo se repite.",
+                color: "text-gray-800"
+            }
+        ];
+
+        function setCycle(index) {
+            // Update buttons
+            document.querySelectorAll('.cycle-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-800');
+                if (parseInt(btn.dataset.index) === index) {
+                    btn.classList.remove('bg-gray-200', 'text-gray-800');
+                    btn.classList.add('bg-blue-600', 'text-white');
+                }
+            });
+
+            // Update Content with Animation
+            const contentDiv = document.getElementById('cycle-content');
+            const data = cycleData[index];
+
+            contentDiv.innerHTML = `
+                <div class="flex items-start animate-fade-in-up">
+                    <div class="mr-6 mt-1">
+                        <i class="fas ${data.icon} text-4xl ${data.color}"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-2 text-gray-800">${data.title}</h4>
+                        <p class="text-gray-600 leading-relaxed">${data.desc}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize first cycle
+        setCycle(0);
+
+
+        // --- 2. Charts Initialization ---
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Chart 1: Failure Causes (Pie)
+            const ctxFail = document.getElementById('failureChart').getContext('2d');
+            new Chart(ctxFail, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Agua y Oxidación UV', 'Cargas Pesadas', 'Otros'],
+                    datasets: [{
+                        data: [90, 8, 2],
+                        backgroundColor: ['#1e3a8a', '#fbbf24', '#9ca3af'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Chart 2: Lifespan (Bar)
+            const ctxLife = document.getElementById('lifespanChart').getContext('2d');
+            new Chart(ctxLife, {
+                type: 'bar',
+                data: {
+                    labels: ['Asfalto Tradicional', 'Asfalto Ultra Seco'],
+                    datasets: [{
+                        label: 'Vida Útil Estimada (Años)',
+                        data: [2.5, 4.2], // Represents +40-60% increase
+                        backgroundColor: ['#9ca3af', '#1e3a8a'],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Años antes de Mantenimiento Mayor' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // Hero Animation (Simple Canvas Rain)
+            initRainAnimation();
+        });
+
+        // --- 3. Dosage Calculator ---
+        function calculateDosage() {
+            // Get value and replace comma with dot for calculation
+            const rawValue = document.getElementById('asphaltWeight').value;
+            const tons = parseFloat(rawValue.replace(',', '.')) || 0;
+
+            // 2% of weight. 
+            // 1 Ton = 1000 Kg. 
+            // Dosage = 1000 * 0.02 = 20 Kg per Ton.
+            const dosageKg = tons * 1000 * 0.02;
+
+            // Format number
+            const formatted = dosageKg.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Animate result change slightly
+            const output = document.getElementById('resultOutput');
+            output.innerText = formatted + " Kg";
+            output.classList.add('text-yellow-300');
+            setTimeout(() => output.classList.remove('text-yellow-300'), 200);
+        }
+
+        // --- 4. Rain Animation for Hero ---
+        function initRainAnimation() {
+            const canvas = document.getElementById('rainCanvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            const drops = [];
+
+            function resize() {
+                w = canvas.width = canvas.parentElement.offsetWidth;
+                h = canvas.height = canvas.parentElement.offsetHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            function createDrop() {
+                return {
+                    x: Math.random() * w,
+                    y: 0,
+                    l: Math.random() * 10 + 5,
+                    v: Math.random() * 4 + 2
+                };
+            }
+
+            for (let i = 0; i < 30; i++) drops.push(createDrop());
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                ctx.strokeStyle = 'rgba(174, 216, 255, 0.6)';
+                ctx.lineWidth = 1;
+                ctx.lineCap = 'round';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const d = drops[i];
+                    ctx.beginPath();
+                    ctx.moveTo(d.x, d.y);
+                    ctx.lineTo(d.x, d.y + d.l);
+                    ctx.stroke();
+
+                    d.y += d.v;
+                    if (d.y > h) {
+                        drops[i] = createDrop();
+                        drops[i].y = -10; // restart above
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // --- 5. Navigation Scroll ---
+        function scrollToContact() {
+            const footer = document.querySelector('footer');
+            footer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+    </script>
+</body>
+
+</html>

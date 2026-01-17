@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra Seco | Impermeabilizante Super Hidrofóbico</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
+            </a>
+            <ul class="nav-links">
+                <li><button class="nav-button active" data-page="inicio">Inicio</button></li>
+                <li><button class="nav-button" data-page="asesor">🧠 Asesor IA</button></li>
+                <li><button class="nav-button" data-page="productos">Productos</button></li>
+                <li><button class="nav-button" data-page="pilares">Pilares</button></li>
+                <li><button class="nav-button" data-page="contacto">Contacto</button></li>
+                <li><a href="https://wa.me/5804146023797" target="_blank" class="cta-button"
+                        style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 1rem;">
+                        <i class="fa-brands fa-whatsapp"></i> Hablar con un asesor
+                    </a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ======================= -->
+        <!-- ====== INICIO ========= -->
+        <!-- ======================= -->
+        <section id="page-inicio" class="page-content animate-in">
+            <div class="hero">
+                <div class="hero-content glass-panel">
+                    <h1>Ultra Seco</h1>
+                    <p class="mb-4">Nanotecnología Verde e Inteligencia Aplicada.</p>
+                    <p class="text-sm mb-6" style="font-size: 1rem; opacity: 0.9;">
+                        Hemos evolucionado. De expertos en humedad a pioneros en regeneración de materiales.
+                        Ahora, combinamos nuestra química verde con una <strong>IA de Diagnóstico</strong> para darte la
+                        solución exacta.
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                        <button onclick="showPage('asesor')" class="cta-button"
+                            style="background: linear-gradient(45deg, #2563eb, #4f46e5); box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);">
+                            <i class="fa-solid fa-robot"></i> Diagnosticar mi Problema (IA)
+                        </button>
+                        <button onclick="showPage('productos')" class="cta-button"
+                            style="background: rgba(255,255,255,0.5); color: #333; border: 1px solid #fff;">
+                            Ver Catálogo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= -->
+        <!-- ====== ASESOR IA ====== -->
+        <!-- ======================= -->
+        <section id="page-asesor" class="page-content hidden animate-in">
+            <div class="hero" style="height: auto; min-height: 100vh; padding: 8rem 5% 3rem; align-items: flex-start;">
+                <div class="glass-panel" style="width: 100%; max-width: 900px; margin: 0 auto; padding: 2rem;">
+
+                    <!-- Header del Asesor -->
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h2><i class="fa-solid fa-brain" style="color: var(--primary-color);"></i> Asesor Técnico IA
+                        </h2>
+                        <p>Diagnóstico preciso y solución garantizada en 3 pasos.</p>
+                    </div>
+
+                    <!-- STEP 1: PROBLEMA -->
+                    <div id="asesor-step-1" class="asesor-step">
+                        <h3 style="text-align: center; margin-bottom: 1.5rem;">Paso 1: Describe tu problema de humedad
+                        </h3>
+                        <div class="features"
+                            style="padding: 0; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+
+                            <button onclick="asesor.nextStep('humedad')" class="feature-card glass-panel"
+                                style="cursor: pointer; text-align: left; padding: 1.5rem; border: 1px solid transparent; transition: all 0.3s;">
+                                <i class="fa-solid fa-droplet feature-icon" style="font-size: 2rem;"></i>
+                                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Humedad / Moho</h4>
+                                <p style="font-size: 0.9rem;">Manchas negras, olor a humedad, pintura que se "suda".</p>
+                            </button>
+
+                            <button onclick="asesor.nextStep('salitre')" class="feature-card glass-panel"
+                                style="cursor: pointer; text-align: left; padding: 1.5rem; border: 1px solid transparent; transition: all 0.3s;">
+                                <i class="fa-solid fa-bacterium feature-icon" style="font-size: 2rem;"></i>
+                                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Salitre (Polvo Blanco)</h4>
+                                <p style="font-size: 0.9rem;">Paredes que se descascaran y sueltan polvo blanco.</p>
+                            </button>
+
+                            <button onclick="asesor.nextStep('grietas')" class="feature-card glass-panel"
+                                style="cursor: pointer; text-align: left; padding: 1.5rem; border: 1px solid transparent; transition: all 0.3s;">
+                                <i class="fa-solid fa-house-crack feature-icon" style="font-size: 2rem;"></i>
+                                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Grietas / Filtraciones</h4>
+                                <p style="font-size: 0.9rem;">Goteras en techos o grietas visibles en muros.</p>
+                            </button>
+
+                            <button onclick="asesor.nextStep('pisos')" class="feature-card glass-panel"
+                                style="cursor: pointer; text-align: left; padding: 1.5rem; border: 1px solid transparent; transition: all 0.3s;">
+                                <i class="fa-solid fa-wand-magic-sparkles feature-icon" style="font-size: 2rem;"></i>
+                                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Protección de Pisos</h4>
+                                <p style="font-size: 0.9rem;">Brillo y protección antimanchas para pisos.</p>
+                            </button>
+
+                            <!-- ======================= -->
+                            <!-- ====== PRODUCTOS ====== -->
+                            <!-- ======================= -->
+                            <section id="page-productos" class="page-content hidden animate-in">
+                                <div class="hero" style="height: auto; padding: 8rem 5% 3rem;">
+                                    <div class="hero-content glass-panel">
+                                        <h2>Nuestras Divisiones</h2>
+                                        <p>Soluciones nanotecnológicas para cada industria</p>
+
+                                        <!-- Division Navigation -->
+                                        <div
+                                            style="display: flex; gap: 1rem; justify-content: center; margin: 2rem 0; flex-wrap: wrap;">
+                                            <button class="division-nav-button active" data-division="construccion"
+                                                style="padding: 0.75rem 1.5rem; border-radius: 25px; cursor: pointer; transition: all 0.3s;">
+                                                <i class="fa-solid fa-building"></i> Construcción
+                                            </button>
+                                            <button class="division-nav-button" data-division="industria"
+                                                style="padding: 0.75rem 1.5rem; border-radius: 25px; cursor: pointer; transition: all 0.3s;">
+                                                <i class="fa-solid fa-industry"></i> Industria
+                                            </button>
+                                            <button class="division-nav-button" data-division="vehicular"
+                                                style="padding: 0.75rem 1.5rem; border-radius: 25px; cursor: pointer; transition: all 0.3s;">
+                                                <i class="fa-solid fa-car"></i> Vehicular
+                                            </button>
+                                            <button class="division-nav-button" data-division="hogar"
+                                                style="padding: 0.75rem 1.5rem; border-radius: 25px; cursor: pointer; transition: all 0.3s;">
+                                                <i class="fa-solid fa-house"></i> Hogar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- División Construcción -->
+                                <div id="division-construccion" class="division-content features">
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/estuco.jpg" alt="Estuco"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Estuco Bloqueador</h3>
+                                        <p>Bloquea la humedad ascendente y protege tus paredes.</p>
+                                        <a href="estuco.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/fortificador.jpg" alt="Fortificador"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Fortificador</h3>
+                                        <p>Consolida superficies arenosas y polvorientas.</p>
+                                        <a href="fortificador.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/exteriores.jpg" alt="Exteriores"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Solución Exteriores</h3>
+                                        <p>Protección invisible para fachadas y pisos externos.</p>
+                                        <a href="exteriores.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/interiores.jpg" alt="Interiores"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Solución Interiores</h3>
+                                        <p>Impermeabilizante para baños, cocinas y zonas internas.</p>
+                                        <a href="interiores.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/pintura.jpg" alt="Pintura"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Pintura Super Hidrofóbica</h3>
+                                        <p>Pintura que repele el agua y la suciedad.</p>
+                                        <a href="pintura.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/aditivo.png" alt="Nano Aditivo"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Nano Aditivo</h3>
+                                        <p>Aditivo para concreto de alto rendimiento.</p>
+                                        <a href="aditivo.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                </div>
+
+                                <!-- División Industria -->
+                                <div id="division-industria" class="division-content features hidden">
+                                    <div class="feature-card glass-panel" style="border-color: #fbbf24;">
+                                        <i class="fa-solid fa-gem feature-icon" style="color: #fbbf24;"></i>
+                                        <h3 style="color: #d97706;">Eco Capturador</h3>
+                                        <p>Minería Verde: Captura oro fino sin mercurio ni cianuro.</p>
+                                        <a href="eco.html" class="cta-button"
+                                            style="background: linear-gradient(45deg, #fbbf24, #d97706); margin-top: 1rem;">Ver
+                                            Producto</a>
+                                    </div>
+                                    <div class="feature-card glass-panel" style="border-color: #dc2626;">
+                                        <i class="fa-solid fa-fire-extinguisher feature-icon"
+                                            style="color: #dc2626;"></i>
+                                        <h3 style="color: #991b1b;">Ultra F3</h3>
+                                        <p>Espuma extintora con nanopartículas que sofocan el fuego.</p>
+                                        <a href="f3.html" class="cta-button"
+                                            style="background: linear-gradient(45deg, #dc2626, #991b1b); margin-top: 1rem;">Ver
+                                            Producto</a>
+                                    </div>
+                                </div>
+
+                                <!-- División Vehicular -->
+                                <div id="division-vehicular" class="division-content features hidden">
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/champu.png" alt="Champú"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Champú Nano-Concentrado</h3>
+                                        <p>Encapsula la suciedad para un lavado rápido y seguro.</p>
+                                        <a href="champu.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                </div>
+
+                                <!-- División Hogar -->
+                                <div id="division-hogar" class="division-content features hidden">
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/cera.jpg" alt="Cera"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Cera Nano Protectora</h3>
+                                        <p>Brillo y protección duradera para superficies del hogar.</p>
+                                        <a href="cera.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/suavizante.png" alt="Suavizante"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Suavizante Secado Flash</h3>
+                                        <p>Acelera el secado y suaviza las telas.</p>
+                                        <a href="suavizante.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                    <div class="feature-card glass-panel">
+                                        <img src="images/escudo.jpg" alt="Escudo"
+                                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                                        <h3>Escudo Cerámico</h3>
+                                        <p>Protección extrema contra manchas y rayones.</p>
+                                        <a href="escudo.html" class="cta-button"
+                                            style="margin-top: 1rem; font-size: 0.9rem;">Ver
+                                            Detalle</a>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ======================= -->
+                            <!-- ====== PILARES ======== -->
+                            <!-- ======================= -->
+                            <section id="page-pilares" class="page-content hidden animate-in">
+                                <div class="hero" style="height: auto; padding: 8rem 5% 3rem;">
+                                    <div class="hero-content glass-panel">
+                                        <h2>Nuestros Pilares de Valor</h2>
+                                        <p>La base de nuestra evolución tecnológica.</p>
+                                    </div>
+                                </div>
+                                <div class="features"
+                                    style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+
+                                    <div class="feature-card glass-panel">
+                                        <i class="fa-solid fa-brain feature-icon"></i>
+                                        <h3>Asesoría IA</h3>
+                                        <p>Tecnología que diagnostica problemas y prescribe soluciones precisas.</p>
+                                    </div>
+
+                                    <div class="feature-card glass-panel">
+                                        <i class="fa-solid fa-leaf feature-icon"></i>
+                                        <h3>Huella Positiva</h3>
+                                        <p>Productos biodegradables y procesos que recuperan materiales.</p>
+                                    </div>
+
+                                    <div class="feature-card glass-panel">
+                                        <i class="fa-solid fa-flask feature-icon"></i>
+                                        <h3>Eficiencia Molecular</h3>
+                                        <p>Concentrados potentes que hacen más con menos dosis.</p>
+                                    </div>
+
+                                    <div class="feature-card glass-panel">
+                                        <i class="fa-solid fa-shield-halved feature-icon"></i>
+                                        <h3>Protección Pasiva</h3>
+                                        <p>Recubrimientos que extienden la vida útil de infraestructuras.</p>
+                                    </div>
+
+                                </div>
+                            </section>
+
+                            <!-- ======================= -->
+                            <!-- ====== CONTACTO ======= -->
+                            <!-- ======================= -->
+                            <section id="page-contacto" class="page-content hidden animate-in">
+                                <div class="hero" style="height: auto; padding: 8rem 5% 3rem;">
+                                    <div class="hero-content glass-panel">
+                                        <h2>Contacto y Ubicación</h2>
+                                        <div style="margin: 2rem 0; text-align: left;">
+                                            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Dirección:
+                                            </h4>
+                                            <p>C.C. Doral Center, Nivel PB, Local PB-24.<br>Maracaibo, Estado Zulia.</p>
+
+                                            <h4
+                                                style="color: var(--primary-color); margin-bottom: 0.5rem; margin-top: 1.5rem;">
+                                                Atención
+                                                Directa:</h4>
+                                            <p><i class="fa-solid fa-envelope"></i> ultraseco.vzla@gmail.com</p>
+                                            <p><i class="fa-brands fa-whatsapp"></i> +58 414-6023797</p>
+                                            <p><i class="fa-brands fa-instagram"></i> <a
+                                                    href="https://instagram.com/ultraseco" target="_blank"
+                                                    style="color: inherit; text-decoration: none;">@ultraseco</a></p>
+                                        </div>
+                                        <a href="https://wa.me/584146023797" target="_blank" class="cta-button">
+                                            <i class="fa-brands fa-whatsapp"></i> Enviar Mensaje
+                                        </a>
+                                    </div>
+                                </div>
+                            </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ultra Seco. Todos los derechos reservados.</p>
+        <p>Maracaibo, Venezuela</p>
+        <div style="margin-top: 1rem; font-size: 0.8rem;">
+            <a href="internal/login.html" style="color: rgba(255,255,255,0.5); text-decoration: none;">Acceso
+                Interno</a>
+        </div>
+    </footer>
+
+    <script src="script.js?v=3"></script>
+</body>
+
+</html>

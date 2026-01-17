@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Capturador | Ultra Seco</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+        }
+
+        .gold-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 bg-white relative">
+
+    <!-- NAVBAR -->
+    <nav class="bg-slate-900 text-white sticky top-0 z-40 shadow-lg border-b border-yellow-600/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-4">
+                    <!-- Ultra Seco Logo (Parent) -->
+                    <a href="index.html"
+                        class="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity border-r border-slate-700 pr-4">
+                        <img src="images/logo-white.png" alt="Ultra Seco" class="h-8">
+                    </a>
+                    <!-- Eco Capturador Logo (Product) -->
+                    <a href="eco.html" class="flex items-center gap-2">
+                        <span class="text-xl font-bold tracking-wider text-yellow-400">ECO CAPTURADOR</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-400 hover:text-white text-sm">Volver a Ultra Seco</a>
+                    <a href="#que-es" class="hover:text-yellow-400 transition-colors">Qué es</a>
+                    <a href="#como-funciona" class="hover:text-yellow-400 transition-colors">Uso</a>
+                    <a href="#roi" class="hover:text-yellow-400 transition-colors">Calculadora</a>
+                    <a href="#contacto"
+                        class="bg-yellow-600 hover:bg-yellow-700 text-slate-900 px-5 py-2 rounded-full font-bold transition-colors">
+                        Solicitar Demo
+                    </a>
+                </div>
+
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-gray-300 hover:text-white">
+                        <i data-lucide="menu" size="28"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 px-4 pt-2 pb-6 space-y-2">
+            <a href="index.html"
+                class="block px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md">Volver a Ultra
+                Seco</a>
+            <a href="#que-es" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-slate-700 rounded-md">Qué
+                es</a>
+            <a href="#como-funciona"
+                class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-slate-700 rounded-md">Uso</a>
+            <a href="#roi"
+                class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-slate-700 rounded-md">Calculadora</a>
+            <a href="#contacto"
+                class="block px-3 py-2 bg-yellow-600 text-slate-900 font-bold rounded-md text-center mt-4">Contactar</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative bg-slate-900 overflow-hidden">
+        <div class="absolute inset-0 opacity-60">
+            <div class="w-full h-full bg-cover bg-center"
+                style="background-image: url('images/hero-eco.jpg'); filter: sepia(100%) hue-rotate(10deg) saturate(300%) contrast(120%);">
+            </div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+            <div class="md:w-2/3">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 text-sm font-bold mb-6">
+                    <i data-lucide="award" size="16"></i> INNOVACIÓN PARA MINERÍA VENEZOLANA
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Convierte tu alfombra en un <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">Imán
+                        Inteligente</span> para el Oro.
+                </h1>
+                <p class="text-xl text-slate-300 mb-8 max-w-2xl">
+                    La primera tecnología de funcionalización de superficies que captura oro fino y ultrafino (<0.01mm)
+                        sin usar ni una gota de mercurio. </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="#contacto"
+                                class="inline-flex justify-center items-center px-8 py-4 border border-transparent text-lg font-bold rounded-lg text-slate-900 bg-yellow-500 hover:bg-yellow-400 transition-all shadow-lg hover:shadow-yellow-500/30">
+                                Quiero una Prueba de Campo
+                                <i data-lucide="arrow-right" class="ml-2" size="20"></i>
+                            </a>
+                            <a href="#que-es"
+                                class="inline-flex justify-center items-center px-8 py-4 border border-slate-600 text-lg font-medium rounded-lg text-white hover:bg-slate-800 transition-all">
+                                Ver detalles
+                            </a>
+                        </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- KPI BANNER -->
+    <div class="bg-yellow-600 py-8 border-t border-yellow-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-slate-900 divide-y md:divide-y-0 md:divide-x divide-yellow-700/30">
+                <div class="p-4">
+                    <div class="text-5xl font-bold mb-2">+40%</div>
+                    <div class="text-yellow-900 font-bold">Eficiencia de Recuperación</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-5xl font-bold mb-2">0%</div>
+                    <div class="text-yellow-900 font-bold">Uso de Mercurio</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-5xl font-bold mb-2">8x</div>
+                    <div class="text-yellow-900 font-bold">Ciclos de Reúso</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUE ES -->
+    <section id="que-es" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-yellow-600 font-bold tracking-wider uppercase text-sm mb-2 block">Definición del
+                Producto</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-8">¿Qué es Eco Capturador?</h2>
+            <p class="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+                Es un <strong class="text-slate-900">recubrimiento líquido nanotecnológico</strong> diseñado para
+                ser
+                rociado sobre cualquier alfombra minera tradicional (vinilo, musgo, nomad).
+                <br><br>
+                Al secarse, transforma la superficie plástica inerte en una trampa activa que utiliza
+                <strong class="text-yellow-600"> atracción química</strong> para "agarrar" las partículas de oro que
+                la
+                gravedad por sí sola no puede retener,
+                mientras repele activamente el lodo y la arcilla.
+            </p>
+        </div>
+    </section>
+
+    <!-- TECNOLOGIA -->
+    <section id="tecnologia" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">La Ciencia de la Captura</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Las alfombras tradicionales pierden hasta el 50% del oro fino. Nosotros cambiamos las reglas a
+                    nivel
+                    molecular.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div
+                        class="flex gap-4 items-start p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-yellow-200 transition-colors">
+                        <div class="bg-yellow-100 p-3 rounded-lg shrink-0">
+                            <i data-lucide="anchor" class="text-yellow-600" size="28"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Ganchos Moleculares</h3>
+                            <p class="text-gray-600">
+                                Nuestra fórmula crea enlaces covalentes selectivos con el oro. Imagina millones de
+                                manos
+                                microscópicas en tu alfombra que solo agarran oro y dejan pasar la arena.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex gap-4 items-start p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-colors">
+                        <div class="bg-blue-100 p-3 rounded-lg shrink-0">
+                            <i data-lucide="droplets" class="text-blue-600" size="28"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Efecto Loto (Autolimpieza)</h3>
+                            <p class="text-gray-600">
+                                La superficie se vuelve superhidrofóbica. Repele activamente lodos, arcillas y
+                                sedimentos que normalmente saturan la alfombra, manteniéndola activa por más tiempo.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex gap-4 items-start p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-yellow-200 transition-colors">
+                        <div class="bg-yellow-100 p-3 rounded-lg shrink-0">
+                            <i data-lucide="shield" class="text-yellow-600" size="28"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Blindaje contra Abrasión</h3>
+                            <p class="text-gray-600">
+                                Las nanopartículas crean una capa protectora que extiende la vida útil de tus
+                                alfombras
+                                hasta 8 veces más que una alfombra sin tratar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div
+                        class="aspect-square bg-slate-900 rounded-2xl p-8 relative overflow-hidden shadow-2xl border border-yellow-500/30">
+                        <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-black opacity-50"></div>
+                        <div class="relative z-10 h-full flex flex-col justify-center items-center text-center">
+                            <i data-lucide="zap" class="text-yellow-400 w-24 h-24 mb-6 animate-pulse"></i>
+                            <h4 class="text-2xl font-bold text-white mb-2">Captura Activa</h4>
+                            <p class="text-slate-300">
+                                Mientras otros esperan que el oro caiga,<br>nosotros lo atrapamos.
+                            </p>
+
+                            <div
+                                class="mt-8 w-full bg-slate-800/50 rounded-lg p-4 backdrop-blur-sm border border-slate-700">
+                                <div class="flex justify-between text-xs text-slate-400 uppercase tracking-widest mb-2">
+                                    <span>Alfombra Común</span>
+                                    <span>Eco Capturador</span>
+                                </div>
+                                <div class="h-2 bg-slate-700 rounded-full overflow-hidden flex">
+                                    <div class="w-1/2 bg-gray-500"></div>
+                                    <div class="w-1/2 bg-yellow-500 relative">
+                                        <div class="absolute inset-0 bg-yellow-400 opacity-20 animate-pulse"></div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm font-bold text-white mt-1">
+                                    <span>50% Pérdida</span>
+                                    <span class="text-yellow-400">90%+ Captura</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section id="como-funciona" class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Implementación
+                    Inmediata</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Tan fácil como regar el jardín</h2>
+                <p class="text-lg text-gray-500 mt-4">No necesitas equipos costosos ni cambiar tu infraestructura
+                    actual.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Steps -->
+                <div class="text-center group">
+                    <div
+                        class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-100 transition-colors border-2 border-slate-100 group-hover:border-yellow-200">
+                        <i data-lucide="droplets" class="text-slate-400 group-hover:text-yellow-600 transition-colors"
+                            size="32"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">1. Limpiar</h3>
+                    <p class="text-gray-500 text-sm">Lava y seca bien tus alfombras actuales para eliminar residuos.
+                    </p>
+                </div>
+                <div class="text-center group">
+                    <div
+                        class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-100 transition-colors border-2 border-slate-100 group-hover:border-yellow-200">
+                        <i data-lucide="award" class="text-slate-400 group-hover:text-yellow-600 transition-colors"
+                            size="32"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">2. Aplicar</h3>
+                    <p class="text-gray-500 text-sm">Rocía Eco Capturador con una asperjadora común en capas finas.
+                    </p>
+                </div>
+                <div class="text-center group">
+                    <div
+                        class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-100 transition-colors border-2 border-slate-100 group-hover:border-yellow-200">
+                        <i data-lucide="sun" class="text-slate-400 group-hover:text-yellow-600 transition-colors"
+                            size="32"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">3. Curar</h3>
+                    <p class="text-gray-500 text-sm">Deja secar al sol o sombra (2-4 horas) hasta que se fije el
+                        recubrimiento.</p>
+                </div>
+                <div class="text-center group">
+                    <div
+                        class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-yellow-100 transition-colors border-2 border-slate-100 group-hover:border-yellow-200">
+                        <i data-lucide="pickaxe" class="text-slate-400 group-hover:text-yellow-600 transition-colors"
+                            size="32"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">4. Producir</h3>
+                    <p class="text-gray-500 text-sm">Instala las alfombras en tu canal y comienza a procesar
+                        material.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI CALCULATOR -->
+    <section id="roi" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                        Calcula tu <span class="text-yellow-400">Ganancia Oculta</span>
+                    </h2>
+                    <p class="text-lg text-slate-300 mb-8">
+                        No nos creas a nosotros, créele a los números. Ingresa los datos de tu operación actual y mira
+                        cuánto oro estás dejando ir en los relaves.
+                    </p>
+
+                    <div class="space-y-6 bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-2">Toneladas procesadas por
+                                día</label>
+                            <input type="number" id="roi-toneladas" value="10"
+                                class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-400 mb-2">Ley Promedio
+                                    (g/ton)</label>
+                                <input type="number" id="roi-ley" value="1.5"
+                                    class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white focus:border-yellow-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-400 mb-2">Precio Oro (USD/g)</label>
+                                <input type="number" id="roi-precio" value="60"
+                                    class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white focus:border-yellow-500 outline-none">
+                            </div>
+                        </div>
+                        <button id="btn-calculate"
+                            class="w-full mt-4 bg-yellow-600 hover:bg-yellow-700 text-slate-900 py-3 px-4 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-yellow-900/50 shadow-lg border border-yellow-500/50">
+                            <i data-lucide="sparkles" class="text-white" size="20"></i>
+                            Calcular Oportunidad
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center gap-6">
+                    <div
+                        class="bg-gradient-to-br from-yellow-600 to-yellow-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl">
+                        </div>
+                        <h3 class="text-xl font-bold text-yellow-100 mb-8 flex items-center gap-2">
+                            <i data-lucide="trending-up"></i>
+                            PROYECCIÓN DIARIA
+                        </h3>
+                        <div class="space-y-8">
+                            <div>
+                                <p class="text-sm text-yellow-200 mb-1">Recuperación Actual (Est. 50%)</p>
+                                <div id="res-current" class="text-3xl font-bold opacity-60">0.00 gr</div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-4 top-0 bottom-0 w-1 bg-white rounded-full"></div>
+                                <p class="text-sm text-white font-bold mb-1">Con Eco Capturador (+40%)</p>
+                                <div id="res-eco" class="text-5xl font-bold text-white">0.00 gr</div>
+                            </div>
+                            <div class="pt-6 border-t border-yellow-500/50">
+                                <p class="text-sm text-yellow-200 mb-2">Ingreso Adicional Diario Estimado</p>
+                                <div id="res-extra" class="text-4xl font-bold text-white flex items-center gap-2">
+                                    +$0 USD
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-slate-900">¿Listo para recuperar lo que es tuyo?</h2>
+            <p class="text-xl text-gray-500 mb-10">
+                Deja de tirar oro al río. Contáctanos para coordinar una demostración en tu mina y ver la "Prueba de
+                la Plata" en vivo.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-6 mb-12">
+                <div class="flex items-center justify-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                    <i data-lucide="phone" class="text-yellow-600"></i>
+                    <span class="text-lg font-medium text-slate-700">+58 414-6023797</span>
+                </div>
+                <div class="flex items-center justify-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                    <i data-lucide="mail" class="text-yellow-600"></i>
+                    <span class="text-lg font-medium text-slate-700">ventas@ecocapturador.ve</span>
+                </div>
+            </div>
+            <a href="https://wa.me/584146023797"
+                class="bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-bold py-4 px-10 rounded-full shadow-xl transform hover:scale-105 transition-all text-lg flex items-center gap-2 mx-auto justify-center w-fit">
+                Agendar Asesoría Técnica
+                <i data-lucide="arrow-right" size="20"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 py-8 text-center text-gray-500 text-sm">
+        <div class="flex justify-center items-center gap-2 mb-4 text-gray-400">
+            <i data-lucide="map-pin" size="16"></i>
+            <span>Maracaibo, Zulia - Operaciones en todo el Arco Minero</span>
+        </div>
+        <p>© 2024 Eco Capturador. Tecnología Patentada. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="eco-script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

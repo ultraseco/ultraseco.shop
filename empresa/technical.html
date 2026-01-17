@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Técnica | Ultra Seco</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--accent-color);
+        }
+
+        .faq-answer {
+            margin-top: 0.5rem;
+            color: #555;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+        /* Safe Guard for Scroll */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        /* Override global hero overflow */
+        .hero {
+            overflow: visible !important;
+        }
+
+        /* Fix Header Z-Index */
+        header {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="glass-panel" style="border-radius: 0 0 16px 16px; margin: 0 2%; top: 10px; width: 96%;">
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="images/logo-blue.png" alt="Ultra Seco Logo" style="height: 40px;">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="products.html">Productos</a></li>
+                <li><a href="eco.html">Minería (Eco)</a></li>
+                <li><a href="f3.html">Fuego (F3)</a></li>
+                <li><a href="technical.html">Ficha Técnica</a></li>
+                <li><a href="https://wa.me/584146023797" target="_blank">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" style="height: 50vh;">
+        <div class="hero-content glass-panel">
+            <h1>Información Técnica</h1>
+            <p>Detalles científicos, modo de aplicación y preguntas frecuentes.</p>
+        </div>
+    </section>
+
+    <div style="padding: 0 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+
+        <!-- Specs -->
+        <div class="glass-panel" style="padding: 2rem;">
+            <h2><i class="fa-solid fa-flask"></i> Propiedades</h2>
+            <ul style="list-style: none; margin-top: 1rem;">
+                <!-- Application -->
+                <div class="glass-panel" style="padding: 2rem;">
+                    <h2><i class="fa-solid fa-paint-roller"></i> Aplicación</h2>
+                    <ol style="margin-left: 1.5rem; margin-top: 1rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Limpieza:</strong> La superficie debe estar limpia,
+                            seca y
+                            libre de grasa.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Porosidad:</strong> Si la superficie es muy lisa (ej.
+                            vidrio), se recomienda lijar suavemente para abrir poros.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Aplicación:</strong> Aplicar con brocha, rodillo o
+                            spray.
+                        </li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Secado:</strong> Tiempo de curado total para máxima
+                            adherencia: 24 horas.</li>
+                    </ol>
+                </div>
+
+        </div>
+
+        <section style="padding: 0 10% 5rem;">
+            <div class="glass-panel" style="padding: 2rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Preguntas Frecuentes</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Se puede aplicar sobre grietas? <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">Sí, sella grietas de hasta 2mm de ancho. Para grietas mayores se recomienda
+                        reparar primero.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Se aplica antes o después de pintar? <i
+                            class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">Se aplica <strong>después</strong> de pintar, una vez la pintura esté seca.
+                        Convierte la superficie en autolimpiante.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Cuánto dura el efecto? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Con una aplicación adecuada, la vida útil es de más de 4 años.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Cambia el color de la superficie? <i
+                            class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">El producto es blanco translúcido. Correctamente aplicado es imperceptible.
+                        Si
+                        se aplica en exceso puede notarse blanquecino (se limpia con alcohol/thinner).</div>
+                </div>
+
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Ultra Seco. Todos los derechos reservados.</p>
+        </footer>
+
+        <script>
+            // FAQ Toggle Logic
+            document.querySelectorAll('.faq-question').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.parentElement.classList.toggle('active');
+                });
+            });
+        </script>
+        <script src="script.js"></script>
+</body>
+
+</html>

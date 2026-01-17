@@ -1,0 +1,588 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Cera Protectora | Ultra Seco</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --deep-azure: #020617;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --gloss-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-azure);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Fondo de Lujo Animado (Dark Theme Base) */
+        .luxury-bg {
+            background: radial-gradient(circle at 50% 10%, #1e293b 0%, #020617 100%);
+            position: relative;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            background: linear-gradient(90deg, #0ea5e9 0%, #00f3ff 100%);
+            color: #020617;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+        }
+
+        .shine-text {
+            background: linear-gradient(to right, #ffffff 20%, #00f3ff 50%, #ffffff 80%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Estilos del Chatbot Integrado */
+        .chat-container {
+            height: 350px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 1rem;
+            border-radius: 14px;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .chat-user {
+            background: #0ea5e9;
+            color: #fff;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-bot {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+            border-bottom-left-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="luxury-bg">
+
+    <header class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300" id="main-header">
+        <nav class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="index.html"
+                class="opacity-100 hover:opacity-100 transition bg-slate-900/80 px-4 py-2 rounded-full backdrop-blur-md shadow-lg border border-white/10 hover:border-cyan-400/50 hover:bg-slate-900 flex items-center gap-2">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+            </a>
+
+            <!-- Menu Desktop -->
+            <ul
+                class="hidden md:flex gap-1 bg-slate-900/60 backdrop-blur-md px-2 py-1.5 rounded-full border border-white/10 shadow-lg">
+                <li><a href="index.html#page-inicio"
+                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Inicio</a>
+                </li>
+                <li><a href="index.html#page-asesor"
+                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">🧠
+                        Asesor IA</a></li>
+                <li><a href="index.html#page-productos"
+                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Productos</a>
+                </li>
+                <li><a href="index.html#page-pilares"
+                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Pilares</a>
+                </li>
+                <li><a href="index.html#page-contacto"
+                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Contacto</a>
+                </li>
+            </ul>
+
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/584146023797" target="_blank"
+                    class="hidden md:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full font-bold shadow-lg shadow-green-500/20 hover:scale-105 transition text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> <span>Asesor</span>
+                </a>
+
+                <button onclick="toggleCart()"
+                    class="relative w-10 h-10 flex items-center justify-center bg-slate-800 text-white rounded-full hover:bg-cyan-500 hover:text-white transition shadow-lg border border-white/10">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden border border-slate-900">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section
+            class="h-[650px] flex items-center relative overflow-hidden pt-20 bg-[url('images/shining-surface.png')] bg-cover bg-center">
+            <!-- Portada General Sin Filtros -->
+
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+
+                <div
+                    class="glass-panel p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-white/40 shadow-xl lg:col-span-1">
+                    <div
+                        class="inline-flex items-center gap-2 mb-6 border border-cyan-600/30 px-4 py-1 rounded-full bg-cyan-100/50 backdrop-blur-sm">
+                        <i class="fa-solid fa-house-chimney text-cyan-700"></i>
+                        <span class="text-cyan-800 font-bold text-xs tracking-widest uppercase">PISOS Y COCINAS</span>
+                    </div>
+
+                    <h1 class="font-['Montserrat'] text-5xl lg:text-7xl font-black leading-tight mb-6 text-slate-900">
+                        NANO CERA<br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600">PROTECTORA</span>
+                    </h1>
+
+                    <p class="text-xl text-slate-700 mb-8 font-medium">
+                        Crea una <strong>barrera invisible</strong> en tus pisos, topes y cocina. Repele vino, café y
+                        suciedad con tecnología hidrofóbica avanzada.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                        <a href="#comprar"
+                            class="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-full font-bold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 transition flex items-center gap-2">
+                            Adquirir Protección <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 rounded-full border border-cyan-600/20 flex items-center justify-center bg-white/50 backdrop-blur-md text-cyan-700">
+                                <i class="fa-solid fa-droplet-slash"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-slate-800">Cero<br>Manchas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Spacer so BG is visible) -->
+                <div class="hidden lg:block h-full"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN TECNOLOGÍA (TEMA CLARO/CERÁMICO) -->
+        <section
+            class="py-16 bg-[url('images/piso_granito_cera.jpg')] bg-cover bg-center bg-fixed relative overflow-hidden">
+            <!-- Overlay removed as per user request -->
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-2">LIMPIEZA <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600">INTELIGENTE</span>
+                    </h2>
+                    <p class="text-slate-500 font-medium">Nanotecnología aplicada para un hogar impecable.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+
+                    <!-- Left Column -->
+                    <div class="space-y-6">
+                        <div
+                            class="text-center lg:text-right group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            <i class="fa-solid fa-wine-glass-empty text-3xl text-cyan-500 mb-3 block"></i>
+                            <h3 class="text-lg font-bold text-slate-800 mb-1">Anti-Manchas</h3>
+                            <p class="text-slate-500 text-sm">Vino, café y salsas se limpian con una pasada. Nada
+                                penetra el poro.</p>
+                        </div>
+                        <div
+                            class="text-center lg:text-right group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            <i class="fa-solid fa-water text-3xl text-cyan-500 mb-3 block"></i>
+                            <h3 class="text-lg font-bold text-slate-800 mb-1">Hidrofóbico</h3>
+                            <p class="text-slate-500 text-sm">El agua se agrupa en perlas y resbala, manteniendo tus
+                                pisos secos y seguros.</p>
+                        </div>
+                    </div>
+
+                    <!-- Center: Product Image -->
+                    <div class="relative h-[300px] flex items-center justify-center">
+                        <div
+                            class="w-64 h-80 bg-white rounded-[2.5rem] shadow-2xl shadow-cyan-500/30 z-10 relative overflow-hidden group flex items-center justify-center p-4">
+                            <!-- Using object-fit: contain to ensure bottle is fully visible -->
+                            <img src="images/cera.jpg" alt="Nano Cera Protectora"
+                                class="w-full h-full object-contain transition duration-700 group-hover:scale-110">
+
+                            <!-- Gloss Overlay -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none">
+                            </div>
+
+                            <div
+                                class="absolute inset-0 border-[6px] border-white/50 rounded-[2.5rem] pointer-events-none">
+                            </div>
+                        </div>
+
+                        <!-- Decorative Glow Behind -->
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 bg-cyan-400/20 rounded-[3rem] blur-2xl -z-0">
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <div
+                            class="text-center lg:text-left group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            <i class="fa-solid fa-sparkles text-3xl text-purple-500 mb-3 block"></i>
+                            <h3 class="text-lg font-bold text-slate-800 mb-1">Brillo Espejo</h3>
+                            <p class="text-slate-500 text-sm">Realza la belleza natural del granito, mármol y
+                                porcelanato.</p>
+                        </div>
+                        <div
+                            class="text-center lg:text-left group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            <i class="fa-solid fa-bacteria text-3xl text-emerald-500 mb-3 block"></i>
+                            <h3 class="text-lg font-bold text-slate-800 mb-1">Higiene Total</h3>
+                            <p class="text-slate-500 text-sm">Evita la proliferación de bacterias en topes de cocina y
+                                áreas de comida.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN PROTOCOLO -->
+        <section class="py-12 bg-[url('images/piso_granito_cera.jpg')] bg-cover bg-center bg-fixed relative">
+            <!-- Overlay removed as per user request -->
+            <div class="max-w-6xl mx-auto px-6 relative z-10">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="h-px bg-slate-200 flex-1"></span>
+                    <h3 class="text-slate-400 font-bold uppercase tracking-widest text-xs">Protocolo de Aplicación</h3>
+                    <span class="h-px bg-slate-200 flex-1"></span>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div
+                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-3xl font-black text-cyan-600 mb-2">01</span>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Limpiar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1">Superficie seca y libre de grasa</p>
+                    </div>
+                    <div
+                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-3xl font-black text-cyan-600 mb-2">02</span>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Aplicar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1">Spray uniforme o Mopa</p>
+                    </div>
+                    <div
+                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-3xl font-black text-cyan-600 mb-2">03</span>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Extender</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1">Paño de microfibra limpio</p>
+                    </div>
+                    <div
+                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-3xl font-black text-cyan-600 mb-2">04</span>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Secar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1">Dejar actuar 30 mins</p>
+                    </div>
+                    <div
+                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-3xl font-black text-cyan-600 mb-2">05</span>
+                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Activar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1">Frotar con paño o pulidora</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comprar" class="py-8 px-6 relative bg-[url('images/piso_granito_2_cera.jpg')] bg-cover bg-center">
+            <!-- Background changed: removed bg-fixed to reduce zoom effect and better show the image details/shine -->
+
+            <div
+                class="glass-panel max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 overflow-hidden relative z-10 shadow-2xl shadow-cyan-900/50 backdrop-blur-md bg-slate-900/60">
+
+                <div class="p-6 lg:p-10 border-b lg:border-b-0 lg:border-r border-white/10">
+                    <h2 class="text-3xl font-black text-white mb-8">Configuración <span
+                            class="text-cyan-400">Hogar</span></h2>
+
+                    <div class="mb-8">
+                        <label
+                            class="block text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Presentación</label>
+                        <div class="relative">
+                            <select id="opt-cera" onchange="updatePrice('cera')"
+                                class="w-full p-4 bg-slate-900/50 border border-white/20 rounded-xl text-white font-bold appearance-none cursor-pointer focus:outline-none focus:border-cyan-400 transition">
+                                <option value="0" data-price="13.99">1 Litro (Recarga)</option>
+                                <option value="1" data-price="14.99">1 Litro (Atomizador)</option>
+                                <option value="2" data-price="38.00">Galón (3.78 L)</option>
+                                <option value="3" data-price="170.00">Cuñete (18 L)</option>
+                            </select>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-cyan-400">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-end justify-between mb-10">
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Cantidad</label>
+                            <div class="flex items-center gap-4">
+                                <button
+                                    class="w-10 h-10 rounded-lg bg-slate-800 text-white hover:bg-cyan-500 transition"
+                                    onclick="updateQty(-1)">-</button>
+                                <input type="number" id="qty-cera" value="1" min="1" readonly
+                                    class="w-12 bg-transparent text-center text-white font-bold text-xl">
+                                <button
+                                    class="w-10 h-10 rounded-lg bg-slate-800 text-white hover:bg-cyan-500 transition"
+                                    onclick="updateQty(1)">+</button>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs text-slate-500 font-bold uppercase mb-1">Inversión Total</span>
+                            <span id="price-cera"
+                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">$13.99</span>
+                        </div>
+                    </div>
+
+                    <button onclick="addToCartStatic('cera')"
+                        class="w-full py-4 bg-white text-slate-900 font-black rounded-xl hover:bg-cyan-400 transition-all flex items-center justify-center gap-2">
+                        AÑADIR AL COMPRA <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+                </div>
+
+                <div class="p-10 lg:p-16 bg-slate-900/30 flex flex-col justify-between">
+
+                    <div class="mb-10">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Cobertura Estimada
+                        </h4>
+                        <div class="flex items-center gap-4 bg-slate-800/50 p-4 rounded-xl border border-white/5">
+                            <input type="number" id="calc-area" value="50" oninput="runCoverageCalculator()"
+                                class="w-16 bg-transparent border-b border-white/20 text-center text-white font-bold focus:outline-none">
+                            <span class="text-slate-400 text-sm">m² de piso =</span>
+                            <span id="calc-result" class="text-cyan-400 font-bold ml-auto">1.2 Litros</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">*Rendimiento aprox. 40m² por litro en superficies lisas.
+                        </p>
+                    </div>
+
+                    <a href="docs/cera-ficha-tecnica.html" target="_blank"
+                        class="flex items-center justify-center gap-3 p-4 border border-white/10 rounded-xl text-slate-300 hover:text-white hover:border-cyan-400/50 hover:bg-cyan-400/50 transition mb-4 group">
+                        <i
+                            class="fa-solid fa-file-invoice text-2xl text-cyan-500 group-hover:scale-110 transition-transform"></i>
+                        <div class="text-left">
+                            <span class="block text-xs font-bold uppercase">Documentación</span>
+                            <span class="text-sm">Ver Ficha Técnica (HTML)</span>
+                        </div>
+                    </a>
+
+                    <a href="https://wa.me/584146023797" target="_blank"
+                        class="flex items-center justify-center gap-3 p-4 border border-white/10 rounded-xl text-slate-300 hover:text-white hover:border-cyan-400/50 hover:bg-cyan-400/50 transition">
+                        <i class="fa-brands fa-whatsapp text-2xl text-green-500"></i>
+                        <div class="text-left">
+                            <span class="block text-xs font-bold uppercase">Soporte Técnico</span>
+                            <span class="text-sm">Consultar Aplicación</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEO & AI (PISOS Y COCINAS) -->
+        <section class="py-20 px-6 relative bg-[url('images/hospital-bg.png')] bg-cover bg-center bg-fixed">
+            <!-- Using hospital-bg or similar specifically for clean, sterile look -->
+
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+                <!-- VIDEO SECTION -->
+                <div
+                    class="glass-panel p-2 flex flex-col items-center justify-center overflow-hidden shadow-2xl shadow-cyan-500/20 backdrop-blur-md bg-slate-900/60">
+                    <div class="w-full relative pt-[56.25%] bg-black rounded-xl overflow-hidden group">
+                        <!-- Placeholder video until specific footer video is ready, or reuse promo -->
+                        <video src="videos/escudo-promo.mp4" controls
+                            class="absolute inset-0 w-full h-full object-cover"></video>
+                    </div>
+                    <div class="p-4 w-full flex justify-between items-center">
+                        <div>
+                            <span class="text-cyan-400 text-xs font-bold uppercase tracking-widest">Demostración</span>
+                            <h3 class="text-white font-bold text-lg">Efecto Hidrofóbico en Pisos</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="glass-panel p-8 relative overflow-hidden shadow-2xl shadow-cyan-500/20 backdrop-blur-md bg-slate-900/60">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-600"></div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-white font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-robot text-cyan-400"></i> Experto en Pisos IA
+                        </h3>
+                        <span
+                            class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded border border-green-500/30">ONLINE</span>
+                    </div>
+
+                    <div id="chat-box" class="chat-container mb-4">
+                        <div class="chat-bubble chat-bot">
+                            Hola. Soy experto en el cuidado de pisos y cocinas. ¿Tienes manchas de grasa, vino o
+                            problemas de brillo?
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="user-input" placeholder="Pregunta sobre cuidado de pisos..."
+                            class="flex-1 bg-slate-900/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition"
+                            onkeypress="handleKeyPress(event)">
+                        <button onclick="sendMessage()"
+                            class="bg-cyan-500 text-black px-4 rounded-lg hover:bg-cyan-400 transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
+
+    <script>
+        // --- PROMPT ESPECÍFICO PARA NANO CERA ---
+        const systemContextChat = `Eres el Especialista en Pisos y Cocinas de Ultra Seco.
+        TUS REGLAS:
+        1. Vendes "Nano Cera Protectora".
+        2. Enfócate en: Protección contra manchas de comida (vino, café, aceite), brillo fácil, y repelencia de suciedad.
+        3. Ideal para: Pisos de porcelanato, mármol, granito, y topes de cocina.
+        4. Si preguntan precio: Refiere al panel de configuración "Hogar" arriba ($13.99/Litro).
+        5. Tono: Servicial, práctico y enfocado en la limpieza del hogar.`;
+
+        // --- LÓGICA DE PRECIOS Y CARRITO ---
+        function updateQty(change) {
+            const input = document.getElementById('qty-cera');
+            let val = parseInt(input.value) + change;
+            if (val < 1) val = 1;
+            input.value = val;
+            updatePrice('cera');
+        }
+
+        // --- CALCULADORA DE COBERTURA ---
+        function runCoverageCalculator() {
+            const area = document.getElementById('calc-area').value;
+            const result = document.getElementById('calc-result');
+            // Rendimiento estimado: 40 m2 por litro (Nano Cera rinde mucho)
+            const liters = (area / 40).toFixed(1);
+            result.textContent = `${liters} Litros`;
+        }
+
+        // --- CHATBOT & AUDIO (Reutilizando lógica base) ---
+        const apiKey = "AIzaSyC5X0qazPsUbwqo0jfDDSMhV7V-Y9ZIICo"; // Reusing key from other files
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
+
+            // Renderizado simple de Markdown (Negritas)
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            div.innerHTML = formattedText;
+
+            chatBox.appendChild(div);
+            // Auto-scroll
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            appendMessage(text, 'user');
+            userInput.value = '';
+
+            // Loading state visual
+            const loadingDiv = document.createElement('div');
+            loadingDiv.classList.add('chat-bubble', 'chat-bot');
+            loadingDiv.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-cyan-400"></i> Consultando...';
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const payload = {
+                contents: [{ parts: [{ text: systemContextChat + "\n\nCliente: " + text }] }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                chatBox.removeChild(loadingDiv); // Remove loading
+
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Disculpa, no entendí bien. ¿Puedes repetir?";
+                appendMessage(reply, 'bot');
+            } catch (error) {
+                if (loadingDiv.parentNode) chatBox.removeChild(loadingDiv);
+                console.error("Gemini Error:", error);
+                appendMessage(`⚠️ Error: ${error.message || "Conexión fallida"}`, 'bot');
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        // Sticky Header Effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-slate-900/90', 'backdrop-blur-xl', 'shadow-2xl', 'py-2');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.remove('bg-slate-900/90', 'backdrop-blur-xl', 'shadow-2xl', 'py-2');
+                header.classList.add('py-4');
+            }
+        });
+    </script>
+</body>
+
+</html>

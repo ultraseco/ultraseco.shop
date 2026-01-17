@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos | Ultra Seco</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional Catalog Styles */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 168, 232, 0.15);
+        }
+
+        .product-image-container {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 1rem;
+        }
+
+        .product-category-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--primary-color);
+        }
+
+        .product-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 1.25rem;
+            flex: 1;
+        }
+
+        .product-options {
+            margin-bottom: 1.25rem;
+        }
+
+        .options-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .options-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .option-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 168, 232, 0.05);
+        }
+
+        .option-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product-price {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .product-price-wholesale {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .product-action-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .retail-btn {
+            background: linear-gradient(135deg, var(--primary-color), #0284c7);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 168, 232, 0.3);
+        }
+
+        .retail-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 168, 232, 0.4);
+        }
+
+        .wholesale-btn {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
+        }
+
+        .wholesale-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(30, 41, 59, 0.4);
+        }
+
+        /* Cart & Quote Styles */
+        .cart-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .cart-items {
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-dark);
+        }
+
+        .cart-item-option {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-item-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .cart-item-quantity {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .cart-remove-btn {
+            padding: 0.5rem;
+            border: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cart-remove-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-top: 2px solid rgba(0, 168, 232, 0.2);
+        }
+
+        .cart-total-label {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .cart-total-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        /* Quote Form */
+        .quote-form {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .quote-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-input,
+        .quote-textarea {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        .quote-input:focus,
+        .quote-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .quote-textarea {
+            grid-column: 1 / -1;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .quote-quantity-badge {
+            background: rgba(100, 116, 139, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        /* Notification */
+        #notification-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .notification {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Cart/Quote Badges */
+        .nav-icon-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .nav-icon-container:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 10px;
+            min-width: 18px;
+            height: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quote-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .cart-item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .cart-item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Safe Guard for Scroll */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        /* Fix Header Z-Index */
+        header {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="glass-panel" style="border-radius: 0 0 16px 16px; margin: 0 2%; top: 10px; width: 96%;">
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="images/logo-blue.png" alt="Ultra Seco Logo" style="height: 40px;">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="javascript:void(0)" onclick="switchView('retail')">Catálogo Detal</a></li>
+                <li><a href="javascript:void(0)" onclick="switchView('wholesale')">Mayorista</a></li>
+                <li><a href="eco.html">Minería (Eco)</a></li>
+                <li><a href="f3.html">Fuego (F3)</a></li>
+                <li><a href="technical.html">Ficha Técnica</a></li>
+                <li><a href="https://wa.me/584146023797" target="_blank">Contacto</a></li>
+            </ul>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="nav-icon-container" onclick="switchView('cart')">
+                    <i class="fa-solid fa-shopping-cart" style="font-size: 1.25rem; color: var(--primary-color);"></i>
+                    <span class="nav-badge" id="cart-badge">0</span>
+                </div>
+                <div class="nav-icon-container" onclick="switchView('quote')">
+                    <i class="fa-solid fa-file-text" style="font-size: 1.25rem; color: var(--primary-color);"></i>
+                    <span class="nav-badge" id="quote-badge" style="background: #f59e0b;">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Dynamic Content Container -->
+    <div id="app-container"></div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <footer>
+        <p>&copy; 2024 Ultra Seco. Todos los derechos reservados.</p>
+        <div style="margin-top: 0.5rem; font-size: 0.8rem;">
+            <a href="portal.html" style="color: rgba(0,0,0,0.4); text-decoration: none;"> <i
+                    class="fa-solid fa-lock"></i> Portal Interno</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="shopping.js"></script>
+    <script src="catalog.js"></script>
+</body>
+
+</html>

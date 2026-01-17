@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suavizante Flash | Ultra Seco</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Safe Guard for Scroll */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        /* Override global hero overflow */
+        .hero {
+            overflow: visible !important;
+        }
+
+        /* Fix Header Z-Index */
+        header {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-droplet"></i>
+                Ultra Seco
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-button">Volver al Inicio</a></li>
+                <li>
+                    <button onclick="toggleCart()" class="nav-button"
+                        style="position: relative; background: none; border: none; cursor: pointer; color: inherit;">
+                        <i class="fa-solid fa-shopping-cart"></i>
+                        <span id="cart-badge"
+                            style="position: absolute; top: -5px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; display: none;">0</span>
+                    </button>
+                </li>
+                <li><a href="index.html#contacto" class="nav-button">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero"
+            style="background-image: url('images/suavizante.png'); background-size: cover; background-position: center;">
+            <div class="hero-content glass-panel">
+                <h1>Suavizante Secado Flash</h1>
+                <p>Suavidad increíble y tiempos de secado reducidos para tu ropa.</p>
+                <a href="#detalles" class="cta-button">Ver Detalles</a>
+            </div>
+        </section>
+
+        <!-- Detalles Section -->
+        <section id="detalles" class="page-content" style="padding: 5rem 10%;">
+            <div class="glass-panel" style="padding: 3rem;">
+                <h2>Descripción del Producto</h2>
+                <p style="margin-bottom: 2rem;">Nuestro Suavizante Secado Flash utiliza tecnología avanzada para
+                    acondicionar las fibras de los tejidos, permitiendo que el agua se evapore más rápidamente. Esto no
+                    solo deja tu ropa suave y con un aroma fresco, sino que ahorra energía y tiempo en el proceso de
+                    secado.</p>
+
+                <h3>Beneficios Clave</h3>
+                <ul style="list-style: none; margin-bottom: 2rem;">
+                    <li><i class="fa-solid fa-check" style="color: var(--primary-color); margin-right: 10px;"></i>
+                        Reduce el tiempo de secado hasta un 30%.</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--primary-color); margin-right: 10px;"></i>
+                        Facilita el planchado.</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--primary-color); margin-right: 10px;"></i> Aroma
+                        de larga duración.</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--primary-color); margin-right: 10px;"></i>
+                        Protege los colores y tejidos.</li>
+                </ul>
+
+                <div class="product-controls" style="margin-top: 2rem; max-width: 400px;">
+                    <label for="opt-suavizante" style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
+                    <select id="opt-suavizante" onchange="updatePrice('suavizante')"
+                        style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
+                        <option value="0" data-price="10.00">1 Litro - $10.00</option>
+                        <option value="1" data-price="28.00">Galón - $28.00</option>
+                    </select>
+
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
+                        <label for="qty-suavizante">Cantidad:</label>
+                        <input type="number" id="qty-suavizante" value="1" min="1"
+                            style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <span id="price-suavizante" style="font-weight: bold; font-size: 1.2rem;">$10.00</span>
+                    </div>
+
+                    <button onclick="addToCartStatic('suavizante')" class="cta-button"
+                        style="width: 100%; margin-bottom: 1rem;">
+                        <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+
+                <a href="https://wa.me/584146023797?text=Hola,%20estoy%20interesado%20en%20Suavizante" target="_blank"
+                    class="cta-button">
+                    <i class="fa-brands fa-whatsapp"></i> Solicitar Cotización
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ultra Seco. Todos los derechos reservados.</p>
+    </footer>
+    <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
+</body>
+
+</html>

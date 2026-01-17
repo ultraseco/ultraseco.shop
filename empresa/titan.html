@@ -1,0 +1,1335 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Academy | Ultra Seco Training Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            /* Azul Royal */
+            --primary-light: #eff6ff;
+            /* Azul muy suave */
+            --secondary: #475569;
+            /* Gris Slate */
+            --bg-main: #f8fafc;
+            /* Fondo General */
+            --bg-card: #ffffff;
+            /* Fondo Tarjetas */
+            --border: #e2e8f0;
+            /* Bordes */
+            --text-main: #0f172a;
+            /* Texto Principal */
+            --text-muted: #64748b;
+            /* Texto Secundario */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            /* App Layout */
+        }
+
+        .font-display {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Glassmorphism Sutil para Light Mode */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Navegación Lateral */
+        .nav-item {
+            transition: all 0.2s ease;
+            border-right: 3px solid transparent;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-right-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Cards y Efectos */
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #bfdbfe;
+        }
+
+        /* Animaciones */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.4s ease-out forwards;
+        }
+
+        /* Chat Styles Modernos */
+        .chat-container {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 1rem;
+            border-radius: 1rem;
+            position: relative;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-user {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 2px;
+            margin-left: auto;
+        }
+
+        .chat-ai {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Loading Scan Clean */
+        .loading-line {
+            height: 3px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite linear;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: -100% 0;
+            }
+        }
+
+        /* Feedback Card Styles */
+        .feedback-card {
+            border-left: 4px solid;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .score-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: 3px solid currentColor;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col text-sm md:text-base bg-slate-50">
+
+    <!-- TOP NAV (Barra Superior) -->
+    <nav
+        class="bg-white border-b border-slate-200 h-16 flex-shrink-0 z-40 flex items-center justify-between px-6 shadow-sm">
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center group-hover:bg-blue-700 transition">
+                    <i class="fas fa-layer-group text-sm"></i>
+                </div>
+                <span class="font-display font-bold text-slate-900 group-hover:text-blue-600 transition">Ultra
+                    Seco</span>
+            </a>
+            <div class="h-6 w-px bg-slate-200 mx-2 hidden md:block"></div>
+            <h1 class="font-display font-bold text-slate-600 text-lg hidden md:block">Titan <span
+                    class="text-blue-600">Academy</span></h1>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-500">
+                <a href="index.html" class="hover:text-blue-600 transition">Catálogo</a>
+                <a href="portal.html" class="hover:text-blue-600 transition">Portal</a>
+                <a href="index.html#contacto" class="hover:text-blue-600 transition">Soporte</a>
+            </div>
+
+            <div class="flex items-center gap-3 pl-6 border-l border-slate-200">
+                <div class="text-right hidden md:block">
+                    <div class="text-sm font-bold text-slate-800">Juan Pérez</div>
+                    <div class="text-xs text-slate-500">Agente Nvl. 4</div>
+                </div>
+                <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 border-2 border-white shadow-sm flex items-center justify-center text-blue-600 font-bold">
+                    JP
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex-1 flex overflow-hidden">
+        <!-- SIDEBAR (Navegación Principal) -->
+        <aside
+            class="w-72 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-30 hidden md:flex shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+            <!-- Logo Header -->
+            <div class="h-20 flex items-center px-6 border-b border-slate-100">
+                <div
+                    class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/20 mr-3">
+                    <i class="fas fa-layer-group text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-slate-900 text-lg leading-tight">TITAN <span
+                            class="text-blue-600">ACADEMY</span></h1>
+                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Centro de Excelencia
+                    </p>
+                </div>
+            </div>
+
+            <!-- User Profile Mini -->
+            <div class="px-6 py-6">
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 border border-white shadow-sm flex items-center justify-center text-blue-600 font-bold">
+                        JP
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-slate-800 truncate">Juan Pérez</p>
+                        <p class="text-xs text-slate-500 truncate">Agente Senior • Nvl. 4</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-xs text-slate-300"></i>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 overflow-y-auto px-4 space-y-1 pb-4">
+                <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-2">Plataforma</p>
+                <a href="#" onclick="showView('dashboard')" id="nav-dashboard"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg active">
+                    <i class="fas fa-chart-pie w-5"></i> Dashboard
+                </a>
+
+                <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6">Facultades</p>
+                <a href="#" onclick="showView('faculty-construction')" id="nav-construction"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-city w-5 text-blue-500"></i> Construcción
+                </a>
+                <a href="#" onclick="showView('faculty-industry')" id="nav-industry"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-industry w-5 text-amber-500"></i> Industria
+                </a>
+                <a href="#" onclick="showView('faculty-home')" id="nav-home"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-home w-5 text-green-500"></i> Hogar
+                </a>
+                <a href="#" onclick="showView('faculty-vehicular')" id="nav-vehicular"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-car w-5 text-red-500"></i> Vehicular
+                </a>
+
+                <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6">Utilidades</p>
+                <a href="#" onclick="showView('tools')" id="nav-tools"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-calculator w-5 text-purple-500"></i> Calculadoras
+                </a>
+                <a href="#" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg opacity-50 cursor-not-allowed">
+                    <i class="fas fa-file-contract w-5"></i> Documentación <span
+                        class="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded ml-auto">Pronto</span>
+                </a>
+                <a href="#" onclick="showView('certification')" id="nav-certification"
+                    class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-certificate w-5 text-amber-500"></i> Certificación
+                </a>
+            </nav>
+
+            <!-- Footer Sidebar -->
+            <div class="p-4 border-t border-slate-100">
+                <button
+                    class="w-full py-2 px-4 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-50/50">
+            <!-- Mobile Header -->
+            <header
+                class="md:hidden h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 z-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center">
+                        <i class="fas fa-layer-group text-sm"></i>
+                    </div>
+                    <span class="font-display font-bold text-slate-800">TITAN</span>
+                </div>
+                <button class="text-slate-500 p-2"><i class="fas fa-bars"></i></button>
+            </header>
+
+            <!-- Dynamic Content -->
+            <div id="content-scroll-area" class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 scroll-smooth">
+
+                <!-- VISTA: DASHBOARD -->
+                <div id="view-dashboard" class="view-section animate-slide-in max-w-7xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-8">
+                        <div>
+                            <h2 class="text-3xl font-display font-bold text-slate-900">Panel de Control</h2>
+                            <p class="text-slate-500 mt-1">Resumen de tu progreso en el ecosistema Ultra Seco.</p>
+                        </div>
+                        <div class="mt-4 md:mt-0">
+                            <span
+                                class="text-xs font-semibold text-slate-400 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                                <i class="fas fa-sync-alt mr-1"></i> Actualizado: Hoy 09:41 AM
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div
+                            class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition">
+                                <i class="fas fa-trophy text-8xl text-blue-600 transform rotate-12 translate-x-4"></i>
+                            </div>
+                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Progreso General
+                            </p>
+                            <div class="flex items-end gap-2">
+                                <h3 class="text-4xl font-display font-bold text-slate-800">24%</h3>
+                                <span class="text-sm text-green-500 font-semibold mb-1.5"><i
+                                        class="fas fa-arrow-up"></i>
+                                    +4%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full mt-4 overflow-hidden">
+                                <div class="bg-blue-600 h-full rounded-full" style="width: 24%"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm group">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">
+                                        Simulaciones
+                                        IA</p>
+                                    <h3 class="text-4xl font-display font-bold text-slate-800">12</h3>
+                                </div>
+                                <div
+                                    class="w-10 h-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-500 mt-4">Promedio de Aprobación: <span
+                                    class="text-slate-800 font-bold">88/100</span></p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-2xl shadow-lg text-white cursor-pointer hover:shadow-xl transition relative overflow-hidden"
+                            onclick="showView('faculty-industry')">
+                            <div
+                                class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500 rounded-full blur-3xl opacity-20">
+                            </div>
+                            <p class="text-blue-200 text-xs font-bold uppercase tracking-wider mb-2">Continuar
+                                Aprendiendo
+                            </p>
+                            <h3 class="text-xl font-bold mb-1">Eco Magnetron</h3>
+                            <p class="text-sm text-slate-400 mb-4">Módulo: Minería sin contaminantes</p>
+                            <div
+                                class="inline-flex items-center gap-2 text-sm font-semibold bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition">
+                                <span>Reanudar</span> <i class="fas fa-play text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Faculty Grid -->
+                    <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">Facultades de
+                        Especialización</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Construction -->
+                        <div onclick="showView('faculty-construction')"
+                            class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md transition cursor-pointer group">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                                <i class="fas fa-city text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Construcción</h4>
+                            <p class="text-sm text-slate-500 mt-2 mb-4 line-clamp-2">Soluciones para infraestructura,
+                                impermeabilización y acabados.</p>
+                            <div class="flex items-center justify-between text-xs font-medium text-slate-400">
+                                <span>6 Módulos</span>
+                                <i
+                                    class="fas fa-arrow-right text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                        </div>
+
+                        <!-- Industry -->
+                        <div onclick="showView('faculty-industry')"
+                            class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-300 hover:shadow-md transition cursor-pointer group">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                                <i class="fas fa-industry text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Industria</h4>
+                            <p class="text-sm text-slate-500 mt-2 mb-4 line-clamp-2">Minería ecológica, vialidad y
+                                seguridad
+                                industrial.</p>
+                            <div class="flex items-center justify-between text-xs font-medium text-slate-400">
+                                <span>4 Módulos</span>
+                                <i
+                                    class="fas fa-arrow-right text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                        </div>
+
+                        <!-- Home -->
+                        <div onclick="showView('faculty-home')"
+                            class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-green-300 hover:shadow-md transition cursor-pointer group">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                                <i class="fas fa-home text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Hogar</h4>
+                            <p class="text-sm text-slate-500 mt-2 mb-4 line-clamp-2">Protección y mantenimiento para
+                                residencias.</p>
+                            <div class="flex items-center justify-between text-xs font-medium text-slate-400">
+                                <span>2 Módulos</span>
+                                <i
+                                    class="fas fa-arrow-right text-green-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                        </div>
+
+                        <!-- Vehicular -->
+                        <div onclick="showView('faculty-vehicular')"
+                            class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-red-300 hover:shadow-md transition cursor-pointer group">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                                <i class="fas fa-car text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Vehicular</h4>
+                            <p class="text-sm text-slate-500 mt-2 mb-4 line-clamp-2">Detailing profesional y cuidado
+                                automotriz.</p>
+                            <div class="flex items-center justify-between text-xs font-medium text-slate-400">
+                                <span>1 Módulo</span>
+                                <i
+                                    class="fas fa-arrow-right text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA: CONTENIDO FACULTAD (Detalle) -->
+                <div id="faculty-content-container" class="hidden animate-slide-in max-w-7xl mx-auto">
+                    <button onclick="showView('dashboard')"
+                        class="mb-6 flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-600 transition">
+                        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                    </button>
+
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 mb-8">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span id="faculty-badge"
+                                    class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 inline-block">Facultad</span>
+                                <h2 id="faculty-title" class="text-3xl font-display font-bold text-slate-900">Nombre
+                                    Facultad</h2>
+                            </div>
+                            <div class="hidden md:block text-right">
+                                <div class="text-sm font-bold text-slate-400 uppercase tracking-wide">Certificación
+                                </div>
+                                <div class="w-32 h-2 bg-slate-100 rounded-full mt-2 overflow-hidden">
+                                    <div class="bg-slate-300 h-full w-0"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Lista de Lecciones (Sidebar interna) -->
+                        <div class="lg:col-span-4 space-y-4" id="lesson-list">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+
+                        <!-- Reproductor / Contenido Principal -->
+                        <div class="lg:col-span-8">
+                            <!-- Placeholder -->
+                            <div id="lesson-player-placeholder"
+                                class="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
+                                <div
+                                    class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6 text-slate-300">
+                                    <i class="fas fa-book-open text-4xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">Selecciona un Módulo</h3>
+                                <p class="text-slate-500 max-w-sm">Explora el temario a la izquierda y selecciona una
+                                    lección para comenzar tu entrenamiento técnico.</p>
+                            </div>
+
+                            <!-- Player Activo -->
+                            <div id="lesson-player" class="hidden space-y-6">
+                                <!-- Cabecera Producto -->
+                                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                                    <div class="p-8 relative">
+                                        <div class="absolute top-0 right-0 p-6 opacity-5">
+                                            <i id="player-icon" class="fas fa-cube text-9xl text-slate-900"></i>
+                                        </div>
+                                        <div class="relative z-10">
+                                            <h2 id="player-title" class="text-3xl font-bold text-slate-900 mb-2">Titulo
+                                                Producto</h2>
+                                            <p id="player-desc" class="text-slate-600 text-lg leading-relaxed">
+                                                Descripción
+                                                corta del producto.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tabs Navegación -->
+                                    <div class="flex border-t border-slate-100 bg-slate-50/50">
+                                        <button onclick="switchTab('sales')" id="tab-sales"
+                                            class="flex-1 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600 bg-white transition">
+                                            <i class="fas fa-bullseye mr-2"></i> Puntos de Venta
+                                        </button>
+                                        <button onclick="switchTab('specs')" id="tab-specs"
+                                            class="flex-1 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition">
+                                            <i class="fas fa-clipboard-list mr-2"></i> Ficha Técnica
+                                        </button>
+                                        <button onclick="switchTab('roleplay')" id="tab-roleplay"
+                                            class="flex-1 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition">
+                                            <i class="fas fa-robot mr-2"></i> Roleplay IA
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Contenido de Tabs -->
+                                <div class="min-h-[400px]">
+                                    <!-- Tab: Sales Points -->
+                                    <div id="content-sales" class="animate-slide-in">
+                                        <div id="sales-points-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <!-- Dinámico -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Tab: Specs -->
+                                    <div id="content-specs" class="hidden animate-slide-in">
+                                        <div
+                                            class="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+                                            <i class="fas fa-file-pdf text-4xl text-red-500 mb-4 block mx-auto"></i>
+                                            <h4 class="text-slate-800 font-bold text-lg">Documentación Técnica</h4>
+                                            <p class="text-slate-500 mb-6">Accede a la hoja técnica completa para ver
+                                                rendimientos, composición y normas.</p>
+                                            <a id="player-link" href="#" target="_blank"
+                                                class="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition font-medium">
+                                                <span>Abrir PDF / Web</span> <i
+                                                    class="fas fa-external-link-alt text-xs"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tab: Roleplay -->
+                                    <div id="content-roleplay"
+                                        class="hidden animate-slide-in h-[500px] flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                                        <!-- Header Chat -->
+                                        <div
+                                            class="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center border border-white shadow-sm">
+                                                    <i class="fas fa-robot"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-bold text-slate-800">Simulador de Cliente</p>
+                                                    <p class="text-xs text-slate-500">Evaluación en Tiempo Real</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full">Sistema
+                                                Activo</span>
+                                        </div>
+
+                                        <!-- Chat Area -->
+                                        <div id="chat-history"
+                                            class="flex-1 overflow-y-auto p-6 space-y-6 chat-container bg-slate-50/50">
+                                            <!-- Mensajes dinámicos -->
+                                        </div>
+
+                                        <!-- Input Area -->
+                                        <div class="p-4 bg-white border-t border-slate-100 relative">
+                                            <div id="ai-typing"
+                                                class="hidden absolute -top-8 left-6 text-xs text-slate-400 font-medium">
+                                                <i class="fas fa-circle-notch fa-spin mr-1"></i> Analizando respuesta...
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <input type="text" id="chat-input"
+                                                    placeholder="Escribe tu argumento de venta aquí..."
+                                                    class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+                                                <button onclick="handleUserResponse()"
+                                                    class="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition shadow-md shadow-blue-200">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA: HERRAMIENTAS (Calculadoras) -->
+                <div id="view-tools" class="hidden animate-slide-in max-w-7xl mx-auto">
+                    <div class="mb-8 border-b border-slate-200 pb-6">
+                        <h2 class="text-3xl font-display font-bold text-slate-900">Herramientas de Campo</h2>
+                        <p class="text-slate-500 mt-1">Calculadoras de rendimiento y utilidades para cerrar ventas en el
+                            sitio.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="tools-container">
+                        <!-- Calculadora Materiales -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+                                    <i class="fas fa-ruler"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-800">Calculadora de Materiales</h3>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Área
+                                        (m²)</label>
+                                    <input type="number" id="calc-mat-area"
+                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:ring-2 focus:ring-blue-100 outline-none"
+                                        placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Rendimiento
+                                        (m²/gal)</label>
+                                    <input type="number" id="calc-mat-yield" value="15"
+                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:ring-2 focus:ring-blue-100 outline-none">
+                                </div>
+                                <button onclick="calcMaterials()"
+                                    class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition">Calcular</button>
+                                <div id="res-mat"
+                                    class="hidden p-3 bg-blue-50 border border-blue-100 rounded-lg text-center">
+                                    <span class="block text-2xl font-bold text-blue-700" id="res-mat-val">0</span>
+                                    <span class="text-xs text-blue-500 uppercase">Galones Necesarios</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculadora ROI -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-800">Retorno de Inversión</h3>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Inversión Total
+                                        ($)</label>
+                                    <input type="number" id="calc-roi-inv"
+                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Ahorro Mensual
+                                        ($)</label>
+                                    <input type="number" id="calc-roi-save"
+                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 outline-none">
+                                </div>
+                                <button onclick="calcROI()"
+                                    class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition">Calcular
+                                    ROI</button>
+                                <div id="res-roi"
+                                    class="hidden p-3 bg-amber-50 border border-amber-100 rounded-lg text-center">
+                                    <span class="block text-2xl font-bold text-amber-700" id="res-roi-val">0</span>
+                                    <span class="text-xs text-amber-600 uppercase">Meses para Recuperar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculadora Comisiones -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-800">Mi Comisión</h3>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Monto Venta
+                                        ($)</label>
+                                    <input type="number" id="calc-com-sale"
+                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">%
+                                        Comisión</label>
+                                    <input type="number" id="calc-com-perc" value="15"
+                                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 outline-none">
+                                </div>
+                                <button onclick="calcCommission()"
+                                    class="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition">Calcular</button>
+                                <div id="res-com"
+                                    class="hidden p-3 bg-green-50 border border-green-100 rounded-lg text-center">
+                                    <span class="block text-2xl font-bold text-green-700" id="res-com-val">$0</span>
+                                    <span class="text-xs text-green-600 uppercase">Ganancia Estimada</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA: CERTIFICACIÓN -->
+                <div id="view-certification" class="hidden animate-slide-in max-w-4xl mx-auto">
+                    <div class="mb-8 border-b border-slate-200 pb-6 text-center">
+                        <div
+                            class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h2 class="text-3xl font-display font-bold text-slate-900">Certificación Oficial Ultra Seco</h2>
+                        <p class="text-slate-500 mt-2 max-w-lg mx-auto">Pon a prueba tus conocimientos técnicos y de
+                            ventas. Obtén tu insignia de "Especialista Certificado" al aprobar con más del 80%.</p>
+                    </div>
+
+                    <!-- Intro Screen -->
+                    <div id="cert-intro"
+                        class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 md:p-12 text-center">
+                        <h3 class="text-xl font-bold text-slate-800 mb-6">¿Estás listo para el desafío?</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left max-w-2xl mx-auto">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                                <i class="fas fa-clock text-blue-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">10 Minutos</h4>
+                                    <p class="text-xs text-slate-500">Tiempo estimado</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                                <i class="fas fa-list-ol text-blue-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">10 Preguntas</h4>
+                                    <p class="text-xs text-slate-500">Selección múltiple</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Aprobación 80%</h4>
+                                    <p class="text-xs text-slate-500">Para certificar</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="startExam()"
+                            class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition transform hover:-translate-y-1">
+                            COMENZAR EXAMEN
+                        </button>
+                    </div>
+
+                    <!-- Quiz Interface -->
+                    <div id="cert-quiz"
+                        class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-100 px-8 py-4 flex justify-between items-center">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pregunta <span
+                                    id="quiz-progress">1/10</span></span>
+                            <div class="w-32 h-2 bg-slate-200 rounded-full">
+                                <div id="quiz-bar" class="h-full bg-blue-600 rounded-full transition-all duration-500"
+                                    style="width: 10%"></div>
+                            </div>
+                        </div>
+                        <div class="p-8 md:p-12">
+                            <h3 id="quiz-question"
+                                class="text-xl md:text-2xl font-bold text-slate-800 mb-8 leading-relaxed">
+                                Pregunta...
+                            </h3>
+                            <div id="quiz-options" class="space-y-4">
+                                <!-- Options injected here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Screen -->
+                    <div id="cert-result"
+                        class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm p-12 text-center">
+                        <div id="result-icon"
+                            class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl">
+                            <!-- Icon -->
+                        </div>
+                        <h2 id="result-title" class="text-3xl font-display font-bold text-slate-900 mb-2">Resultado</h2>
+                        <p id="result-message" class="text-slate-500 mb-8">Mensaje...</p>
+
+                        <div class="text-6xl font-bold text-slate-800 mb-2" id="result-score">0%</div>
+                        <p class="text-sm text-slate-400 uppercase tracking-widest mb-10">Puntaje Final</p>
+
+                        <div class="flex justify-center gap-4">
+                            <button onclick="startExam()"
+                                class="px-6 py-3 border border-slate-300 text-slate-600 font-bold rounded-lg hover:bg-slate-50 transition">
+                                Intentar de Nuevo
+                            </button>
+                            <button id="btn-print-cert"
+                                class="hidden px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-lg shadow-amber-200 transition">
+                                <i class="fas fa-print mr-2"></i> Imprimir Certificado
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <script>
+            // CONFIGURACIÓN (Llenar con tus datos reales)
+            const GEMINI_API_KEY = ""; // <--- PEGA TU API KEY AQUÍ
+            const APPS_SCRIPT_URL = ""; // <--- PEGA TU URL DE APPS SCRIPT AQUÍ
+
+            // --- BASE DE DATOS DEL CURRÍCULO ---
+            const curriculum = {
+                construction: {
+                    title: 'Facultad de Construcción',
+                    color: 'blue',
+                    icon: 'fa-hard-hat',
+                    modules: [
+                        { id: 'solucion-interior', title: 'Solución Interior', desc: 'Impermeabilización invisible para espacios habitables.', icon: 'fa-home' },
+                        { id: 'exteriores', title: 'Solución Exterior', desc: 'Protección UV y climas extremos para fachadas.', icon: 'fa-sun' },
+                        { id: 'fortificador', title: 'Fortificador', desc: 'Consolidación estructural y barrera de agua.', icon: 'fa-shield-alt' },
+                        { id: 'estuco', title: 'Estuco Hidrofóbico', desc: 'Acabados perfectos resistentes a la humedad.', icon: 'fa-layer-group' },
+                        { id: 'nano-aditivo', title: 'Nano Aditivo', desc: 'Tecnología molecular para concreto armado.', icon: 'fa-vial' },
+                        { id: 'pintura-hidrofobica', title: 'Pintura Hidrofóbica', desc: 'Recubrimiento autolimpiante efecto loto.', icon: 'fa-paint-roller' },
+                    ]
+                },
+                industry: {
+                    title: 'Facultad Industrial',
+                    color: 'amber',
+                    icon: 'fa-industry',
+                    modules: [
+                        { id: 'eco-capturador', title: 'Eco Capturador', desc: 'Recuperación de oro sin mercurio.', icon: 'fa-leaf' },
+                        { id: 'magnetron', title: 'Eco Magnetron', desc: 'Tecnología iónica para minería avanzada.', icon: 'fa-atom' },
+                        { id: 'ultra-f3', title: 'Ultra F3', desc: 'Supresión de incendios biodegradable.', icon: 'fa-fire-extinguisher' },
+                        { id: 'aditivo-asfaltico', title: 'Aditivo Asfáltico', desc: 'Blindaje molecular para vialidad.', icon: 'fa-road' },
+                    ]
+                },
+                home: {
+                    title: 'Facultad del Hogar',
+                    color: 'green',
+                    icon: 'fa-home',
+                    modules: [
+                        { id: 'escudo-ceramico', title: 'Escudo Cerámico', desc: 'Protección 9H para superficies de lujo.', icon: 'fa-gem' },
+                        { id: 'cera-protectora', title: 'Cera Nano', desc: 'Mantenimiento y brillo diario.', icon: 'fa-magic' },
+                    ]
+                },
+                vehicular: {
+                    title: 'Facultad Vehicular',
+                    color: 'red',
+                    icon: 'fa-car',
+                    modules: [
+                        { id: 'champu', title: 'Champú Nano', desc: 'Lavado inteligente que encapsula suciedad.', icon: 'fa-car-wash' },
+                    ]
+                }
+            };
+
+            // --- CONTENIDO DETALLADO DE PRODUCTOS ---
+            const productContent = {
+                'eco-capturador': {
+                    points: [
+                        { title: 'Sin Mercurio', desc: 'Tecnología 100% ecológica, cumple normativas ambientales estrictas.' },
+                        { title: '+40% Recuperación', desc: 'Atrapa oro fino (<0.01mm) que las alfombras tradicionales pierden.' },
+                        { title: 'Alta Rentabilidad', desc: 'Reutilizable hasta 8 ciclos de lavado sin perder eficiencia.' },
+                        { title: 'Efecto Loto', desc: 'Superficie hidrofóbica que repele arcillas y lodos, manteniendo los "trincheras" limpias.' }
+                    ],
+                    roleplay_prompt: "Soy minero artesanal. Toda la vida he usado mercurio y me funciona. ¿Por qué voy a cambiar a tu alfombra si es más cara y no sé usarla?",
+                    ai_persona: "Minero Escéptico"
+                },
+                'ultra-f3': {
+                    points: [
+                        { title: '100% Biodegradable', desc: 'Libre de flúor y PFOS/PFOA. No contamina suelos ni mantos acuíferos.' },
+                        { title: 'Enfriamiento Rápido', desc: 'Reduce la temperatura del combustible de 800°C a 40°C en segundos.' },
+                        { title: 'Sella Vapores', desc: 'Crea una capa polimérica que evita la reignición de vapores inflamables.' },
+                        { title: 'Ahorro de Agua', desc: 'Su alta expansión permite apagar incendios usando 60% menos agua.' }
+                    ],
+                    roleplay_prompt: "Ya tenemos un sistema de espuma AFFF instalado en la planta. Cambiar todo el concentrado es una logística enorme y costosa. ¿Vale la pena?",
+                    ai_persona: "Jefe de Seguridad Industrial"
+                },
+                'fortificador': {
+                    points: [
+                        { title: 'Consolidación', desc: 'Penetra hasta 5mm en el sustrato, endureciendo superficies arenosas.' },
+                        { title: 'Barrera Total', desc: 'Cristaliza dentro del poro bloqueando el paso de agua al 100%.' },
+                        { title: 'Puente de Adherencia', desc: 'Mejora la tracción para pinturas o cerámicas posteriores.' },
+                        { title: 'Resistencia Química', desc: 'Soporta ataques de ácidos leves y sales marinas.' }
+                    ],
+                    roleplay_prompt: "Tengo un piso de concreto en el almacén que suelta mucho polvo, pero no quiero pintarlo porque las pinturas se levantan. ¿Esto sirve?",
+                    ai_persona: "Gerente de Mantenimiento"
+                },
+                'solucion-interior': {
+                    points: [
+                        { title: 'Acabado Invisible', desc: 'No altera el color ni brillo de piedras naturales o concreto.' },
+                        { title: 'Salud', desc: 'Elimina el hábitat de moho y hongos causantes de alergias.' },
+                        { title: 'Fácil Aplicación', desc: 'Monocomponente listo para usar, sin mezclas complicadas.' },
+                        { title: 'Secado Rápido', desc: 'Transitable en 2 horas, curado total en 24h.' }
+                    ],
+                    roleplay_prompt: "Mi pared tiene humedad que viene del vecino. Ya la he raspado y pintado mil veces. ¿Por qué tu líquido mágico funcionaría?",
+                    ai_persona: "Dueño de Casa Frustrado"
+                },
+                'default': {
+                    points: [
+                        { title: 'Tecnología Nano', desc: 'Partículas 1000 veces más pequeñas que logran penetración profunda.' },
+                        { title: 'Garantía Ultra Seco', desc: 'Respaldo de marca líder con soporte técnico en campo.' },
+                        { title: 'Rendimiento Superior', desc: 'Formulaciones concentradas que cubren más m² por litro.' },
+                        { title: 'Certificación ISO', desc: 'Procesos de fabricación bajo estándares internacionales de calidad.' }
+                    ],
+                    roleplay_prompt: "El producto se ve bien, pero el precio es un 20% más alto que la competencia. Necesito una buena razón para justificar el gasto.",
+                    ai_persona: "Comprador Corporativo"
+                }
+            };
+
+            // --- ESTADO & LÓGICA ---
+            let activeModule = null;
+            let activeProductData = null;
+
+            function showView(viewName) {
+                document.querySelectorAll('.view-section, #faculty-content-container').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+                if (viewName === 'dashboard') {
+                    document.getElementById('view-dashboard').classList.remove('hidden');
+                    document.getElementById('nav-dashboard').classList.add('active');
+                } else if (viewName === 'tools') {
+                    document.getElementById('view-tools').classList.remove('hidden');
+                    document.getElementById('nav-tools').classList.add('active');
+                } else if (viewName === 'certification') {
+                    document.getElementById('view-certification').classList.remove('hidden');
+                    document.getElementById('nav-certification').classList.add('active');
+                } else if (viewName.startsWith('faculty-')) {
+                    const facultyId = viewName.replace('faculty-', '');
+                    renderFaculty(facultyId);
+                    document.getElementById('nav-' + facultyId).classList.add('active');
+                }
+            }
+
+            function renderFaculty(facultyId) {
+                const data = curriculum[facultyId];
+                const container = document.getElementById('faculty-content-container');
+                const list = document.getElementById('lesson-list');
+
+                document.getElementById('faculty-title').innerText = data.title;
+                const badge = document.getElementById('faculty-badge');
+                badge.className = `px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 inline-block bg-${data.color}-100 text-${data.color}-700`;
+
+                list.innerHTML = data.modules.map(mod => `
+                <div onclick="openLesson('${mod.id}', '${facultyId}', '${mod.title}', '${mod.desc}', '${mod.icon}')" 
+                     class="card-hover bg-white p-4 rounded-xl border cursor-pointer flex items-center gap-4 ${activeModule === mod.id ? 'border-blue-500 ring-1 ring-blue-500 bg-blue-50/50' : 'border-slate-200 hover:border-blue-300'}">
+                    <div class="w-12 h-12 rounded-lg bg-${data.color}-50 text-${data.color}-600 flex items-center justify-center flex-shrink-0 text-xl">
+                        <i class="fas ${mod.icon}"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-slate-800 text-sm truncate">${mod.title}</h4>
+                        <p class="text-xs text-slate-500 truncate">${mod.desc}</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+            `).join('');
+
+                container.classList.remove('hidden');
+                document.getElementById('lesson-player').classList.add('hidden');
+                document.getElementById('lesson-player-placeholder').classList.remove('hidden');
+            }
+
+            function openLesson(id, faculty, title, desc, icon) {
+                activeModule = id;
+                renderFaculty(faculty);
+
+                document.getElementById('lesson-player-placeholder').classList.add('hidden');
+                document.getElementById('lesson-player').classList.remove('hidden');
+
+                document.getElementById('player-title').innerText = title;
+                document.getElementById('player-desc').innerText = desc;
+                document.getElementById('player-icon').className = `fas ${icon} text-9xl text-slate-900`;
+
+                const link = id.includes('.html') ? id : (id + '.html');
+                document.getElementById('player-link').href = link;
+
+                loadSalesContent(id, title);
+                switchTab('sales');
+            }
+
+            function loadSalesContent(id, title) {
+                const content = productContent[id] || productContent['default'];
+                activeProductData = { id: id, title: title, ...content };
+
+                const grid = document.getElementById('sales-points-grid');
+                grid.innerHTML = content.points.map(p => `
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-300 transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <h5 class="font-bold text-slate-800 text-sm group-hover:text-blue-700 transition">${p.title}</h5>
+                    </div>
+                    <p class="text-slate-600 text-xs leading-relaxed pl-9">${p.desc}</p>
+                </div>
+            `).join('');
+
+                // Setup Chat Inicial
+                document.getElementById('chat-history').innerHTML = `
+                 <div class="chat-bubble chat-ai">
+                    <p class="text-sm"><strong>${content.ai_persona}:</strong> ${content.roleplay_prompt}</p>
+                 </div>
+            `;
+            }
+
+            function switchTab(tabName) {
+                ['sales', 'specs', 'roleplay'].forEach(t => {
+                    document.getElementById('content-' + t).classList.add('hidden');
+                    const btn = document.getElementById('tab-' + t);
+                    btn.className = "flex-1 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition border-b-2 border-transparent";
+                });
+                document.getElementById('content-' + tabName).classList.remove('hidden');
+                const activeBtn = document.getElementById('tab-' + tabName);
+                activeBtn.className = "flex-1 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600 bg-white transition";
+            }
+
+            // --- LÓGICA DE IA (Evaluación Realista) ---
+            async function handleUserResponse() {
+                const input = document.getElementById('chat-input');
+                const msg = input.value.trim();
+                if (!msg) return;
+
+                const history = document.getElementById('chat-history');
+
+                // 1. Mostrar mensaje del usuario
+                history.innerHTML += `
+                <div class="chat-bubble chat-user animate-slide-in">
+                    <p class="text-sm">${msg}</p>
+                </div>
+            `;
+                input.value = '';
+                history.scrollTop = history.scrollHeight;
+
+                // 2. Mostrar indicador de "Escribiendo..."
+                const typingIndicator = document.getElementById('ai-typing');
+                typingIndicator.classList.remove('hidden');
+
+                try {
+                    // 3. Llamar a Gemini (o Mockup si no hay key)
+                    const evaluation = await callGeminiAPI(msg);
+
+                    // 4. Renderizar Tarjeta de Feedback
+                    renderFeedbackCard(evaluation, history);
+
+                    // 5. Registrar en Google Sheets
+                    if (APPS_SCRIPT_URL) {
+                        logToSheets(evaluation);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    history.innerHTML += `<div class="chat-bubble chat-ai text-red-500">Error de conexión.</div>`;
+                } finally {
+                    typingIndicator.classList.add('hidden');
+                    history.scrollTop = history.scrollHeight;
+                }
+            }
+
+            async function callGeminiAPI(userResponse) {
+                if (!GEMINI_API_KEY) {
+                    // MOCKUP ROBUSTO: Simula la evaluación estructural si no hay API Key
+                    await new Promise(r => setTimeout(r, 2000));
+
+                    // Generar puntaje pseudo-aleatorio basado en longitud (solo para demo)
+                    const score = Math.min(100, Math.max(40, userResponse.length > 50 ? 85 : 50));
+
+                    return {
+                        score: score,
+                        pros: "Has abordado la objeción principal con confianza. El tono es adecuado.",
+                        cons: userResponse.length < 50 ? "La respuesta fue muy breve. Faltó profundizar en los beneficios técnicos." : "Podrías haber sido más específico con los datos numéricos de rendimiento.",
+                        ideal: "Entiendo su punto. Sin embargo, aunque la inversión inicial es mayor, el retorno de inversión se logra en solo 6 meses gracias a la durabilidad extendida del producto y el ahorro en mantenimiento correctivo."
+                    };
+                }
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_API_KEY}`;
+
+                const systemPrompt = `
+                Actúa como un Entrenador de Ventas experto en productos industriales "Ultra Seco".
+                Producto: ${activeProductData.title}.
+                Datos Técnicos Válidos: ${JSON.stringify(activeProductData.points)}.
+                Escenario Actual: "${activeProductData.roleplay_prompt}".
+                Respuesta del Vendedor: "${userResponse}".
+
+                Instrucciones:
+                1. Evalúa la respuesta del vendedor.
+                2. Si inventa datos técnicos que no están en la lista provista, penaliza fuertemente el puntaje.
+                3. El tono debe ser profesional, persuasivo y orientado a soluciones.
+                4. Devuelve SOLO un JSON con este formato exacto:
+                {
+                    "score": number (0-100),
+                    "pros": "string (Puntos fuertes)",
+                    "cons": "string (Errores técnicos o de tono)",
+                    "ideal": "string (Ejemplo de mejor respuesta)"
+                }
+            `;
+
+                const payload = {
+                    contents: [{ parts: [{ text: systemPrompt }] }],
+                    generationConfig: { responseMimeType: "application/json" }
+                };
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                return JSON.parse(data.candidates[0].content.parts[0].text);
+            }
+
+            function renderFeedbackCard(eval, container) {
+                const scoreColor = eval.score >= 80 ? 'text-green-600 border-green-600 bg-green-50' : (eval.score >= 60 ? 'text-amber-600 border-amber-600 bg-amber-50' : 'text-red-600 border-red-600 bg-red-50');
+                const borderColor = eval.score >= 80 ? 'border-l-green-500' : (eval.score >= 60 ? 'border-l-amber-500' : 'border-l-red-500');
+
+                const html = `
+                <div class="feedback-card ${borderColor} animate-slide-in">
+                    <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                        <h4 class="font-bold text-slate-800">Evaluación de Desempeño</h4>
+                        <div class="score-circle ${scoreColor}">
+                            ${eval.score}
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-green-600 uppercase mb-1"><i class="fas fa-check-circle mr-1"></i> Aciertos</p>
+                            <p class="text-sm text-slate-600">${eval.pros}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-red-500 uppercase mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> A Mejorar</p>
+                            <p class="text-sm text-slate-600">${eval.cons}</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                            <p class="text-xs font-bold text-blue-600 uppercase mb-1"><i class="fas fa-star mr-1"></i> Respuesta Ideal</p>
+                            <p class="text-sm text-slate-700 italic">"${eval.ideal}"</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+                container.innerHTML += html;
+            }
+
+            async function logToSheets(evaluation) {
+                if (!APPS_SCRIPT_URL) return;
+
+                const payload = {
+                    vendedor: "Juan Pérez", // Simulado
+                    producto: activeProductData.title,
+                    escenario: activeProductData.roleplay_prompt,
+                    puntaje: evaluation.score,
+                    feedback: evaluation.cons,
+                    fecha: new Date().toISOString()
+                };
+
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(console.error);
+            }
+
+            document.getElementById('chat-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleUserResponse();
+            });
+
+            // --- LÓGICA DE CALCULADORAS ---
+            function calcMaterials() {
+                const area = parseFloat(document.getElementById('calc-mat-area').value) || 0;
+                const yieldVal = parseFloat(document.getElementById('calc-mat-yield').value) || 15;
+                const result = Math.ceil(area / yieldVal);
+                const resContainer = document.getElementById('res-mat');
+                resContainer.classList.remove('hidden');
+                document.getElementById('res-mat-val').innerText = result;
+            }
+            function calcROI() {
+                const inv = parseFloat(document.getElementById('calc-roi-inv').value) || 0;
+                const save = parseFloat(document.getElementById('calc-roi-save').value) || 0;
+                if (save === 0) return;
+                const months = (inv / save).toFixed(1);
+                const resContainer = document.getElementById('res-roi');
+                resContainer.classList.remove('hidden');
+                document.getElementById('res-roi-val').innerText = months + " Meses";
+            }
+            function calcCommission() {
+                const sale = parseFloat(document.getElementById('calc-com-sale').value) || 0;
+                const perc = parseFloat(document.getElementById('calc-com-perc').value) || 0;
+                const comm = (sale * perc) / 100;
+                const resContainer = document.getElementById('res-com');
+                resContainer.classList.remove('hidden');
+                document.getElementById('res-com-val').innerText = "$" + comm.toLocaleString();
+            }
+
+            // --- CERTIFICACIÓN ---
+            const quizData = [
+                { q: "¿Cuál es la ventaja clave del Eco Capturador frente a las alfombras tradicionales?", options: ["Es más barato", "Recupera oro fino sin mercurio", "No usa agua", "Es desechable"], correct: 1 },
+                { q: "¿En qué consiste la tecnología de Magnetron?", options: ["Separación por gravedad", "Flotación química", "Nanotecnología magnética y encapsulamiento", "Lixiviación con cianuro"], correct: 2 },
+                { q: "¿Cuál es la función del Fortificador de Superficies?", options: ["Pintar de color", "Consolidar el sustrato y crear barrera hidrofóbica", "Dar brillo", "Limpiar manchas"], correct: 1 },
+                { q: "¿El 'Efecto Loto' en la Pintura Hidrofóbica se refiere a?", options: ["Olor a flores", "Autolimpieza y repelencia al agua", "Color rosado", "Textura rugosa"], correct: 1 },
+                { q: "¿Qué producto se recomienda para proteger mármol y granito en el hogar?", options: ["Aditivo Asfáltico", "Escudo Cerámico / Cera Nano", "Champú Nano", "Estuco"], correct: 1 },
+                { q: "¿Ultra F3 es biodegradable?", options: ["No, es tóxico", "Sí, 100% biodegradable y libre de flúor", "Solo al 50%", "Daña la capa de ozono"], correct: 1 },
+                { q: "¿El Nano Aditivo para concreto aumenta la resistencia a la compresión?", options: ["No hace nada", "Sí, y reduce la permeabilidad", "La disminuye", "Solo cambia el color"], correct: 1 },
+                { q: "¿El Aditivo Asfáltico ayuda a prevenir?", options: ["Baches y fisuras por agua", "El tráfico", "La lluvia ácida solamente", "El calor extremo solamente"], correct: 0 },
+                { q: "¿Cuál es el tiempo de secado al tacto de la Solución Interior?", options: ["24 horas", "1 hora aprox.", "1 semana", "Inmediato"], correct: 1 },
+                { q: "¿Qué hace el Champú Nano diferente a uno normal?", options: ["Hace más espuma", "Encapsula la suciedad para evitar rayas", "Es más barato", "Huele mejor"], correct: 1 }
+            ];
+
+            let currentQuiz = {
+                questions: [],
+                index: 0,
+                score: 0
+            };
+
+            function startExam() {
+                // Shuffle questions
+                currentQuiz.questions = [...quizData].sort(() => 0.5 - Math.random());
+                currentQuiz.index = 0;
+                currentQuiz.score = 0;
+
+                document.getElementById('cert-intro').classList.add('hidden');
+                document.getElementById('cert-result').classList.add('hidden');
+                document.getElementById('cert-quiz').classList.remove('hidden');
+                renderQuestion();
+            }
+
+            function renderQuestion() {
+                const q = currentQuiz.questions[currentQuiz.index];
+                document.getElementById('quiz-question').innerText = q.q;
+                document.getElementById('quiz-progress').innerText = `${currentQuiz.index + 1}/${currentQuiz.questions.length}`;
+                document.getElementById('quiz-bar').style.width = `${((currentQuiz.index + 1) / currentQuiz.questions.length) * 100}%`;
+
+                const optsContainer = document.getElementById('quiz-options');
+                optsContainer.innerHTML = '';
+
+                q.options.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50 transition font-medium text-slate-700 group flex items-center gap-3";
+                    btn.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-slate-300 group-hover:border-blue-500 flex items-center justify-center"><div class="w-2.5 h-2.5 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100"></div></div> ${opt}`;
+                    btn.onclick = () => handleAnswer(i);
+                    optsContainer.appendChild(btn);
+                });
+            }
+
+            function handleAnswer(selectedIndex) {
+                const q = currentQuiz.questions[currentQuiz.index];
+                const btns = document.getElementById('quiz-options').children;
+
+                // Disable all
+                for (let btn of btns) btn.disabled = true;
+
+                if (selectedIndex === q.correct) {
+                    currentQuiz.score++;
+                    btns[selectedIndex].classList.add('bg-green-100', 'border-green-500');
+                    btns[selectedIndex].querySelector('.w-6').classList.add('border-green-500');
+                    btns[selectedIndex].querySelector('.w-2.5').classList.add('bg-green-500', 'opacity-100');
+                } else {
+                    btns[selectedIndex].classList.add('bg-red-100', 'border-red-500');
+                    btns[q.correct].classList.add('bg-green-100', 'border-green-500'); // Show correct
+                }
+
+                setTimeout(() => {
+                    currentQuiz.index++;
+                    if (currentQuiz.index < currentQuiz.questions.length) {
+                        renderQuestion();
+                    } else {
+                        showResult();
+                    }
+                }, 1500);
+            }
+
+            function showResult() {
+                document.getElementById('cert-quiz').classList.add('hidden');
+                document.getElementById('cert-result').classList.remove('hidden');
+
+                const percentage = Math.round((currentQuiz.score / currentQuiz.questions.length) * 100);
+                document.getElementById('result-score').innerText = `${percentage}%`;
+
+                const passed = percentage >= 80;
+                const icon = document.getElementById('result-icon');
+                const title = document.getElementById('result-title');
+                const msg = document.getElementById('result-message');
+                const btnPrint = document.getElementById('btn-print-cert');
+
+                if (passed) {
+                    icon.innerHTML = '<i class="fas fa-medal text-amber-500"></i>';
+                    icon.className = "w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl animate-bounce";
+                    title.innerText = "¡Felicidades! Certificado Aprobado";
+                    msg.innerText = "Has demostrado un dominio excelente de los productos Ultra Seco. Ya puedes descargar tu insignia.";
+                    btnPrint.classList.remove('hidden');
+                } else {
+                    icon.innerHTML = '<i class="fas fa-book-reader text-blue-500"></i>';
+                    icon.className = "w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl";
+                    title.innerText = "Sigue Preparándote";
+                    msg.innerText = "No alcanzaste el puntaje mínimo del 80%. Repasa los módulos de las facultades e inténtalo nuevamente.";
+                    btnPrint.classList.add('hidden');
+                }
+            }
+
+            // --- INICIALIZACIÓN ---
+            document.addEventListener('DOMContentLoaded', () => {
+                showView('dashboard');
+            });
+
+        </script>
+    </div>
+</body>
+
+</html>

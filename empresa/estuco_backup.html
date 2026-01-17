@@ -1,0 +1,1037 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solución Interiores | Ultra Seco</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            font-size: 18px;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            max-height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .bg-ultra-blue {
+            background-color: #0056b3;
+        }
+
+        .text-ultra-blue {
+            color: #0056b3;
+        }
+
+        .border-ultra-blue {
+            border-color: #0056b3;
+        }
+
+        .bg-ultra-cyan {
+            background-color: #00a8e8;
+        }
+
+        .text-ultra-cyan {
+            color: #00a8e8;
+        }
+
+        .bg-ultra-green {
+            background-color: #00c853;
+        }
+
+        .text-ultra-green {
+            color: #00c853;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .cta-button {
+            background: #0056b3;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #004494;
+        }
+
+        .chat-container {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8fafc;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .chat-user {
+            background-color: #0056b3;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .chat-bot {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-button">Volver al Inicio</a></li>
+                <li>
+                    <button onclick="toggleCart()" class="nav-button"
+                        style="position: relative; background: none; border: none; cursor: pointer; color: inherit;">
+                        <i class="fa-solid fa-shopping-cart"></i>
+                        <span id="cart-badge"
+                            style="position: absolute; top: -5px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; display: none;">0</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero"
+            style="position: relative; height: 600px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <div style="position: absolute; inset: 0; z-index: 0;">
+                <img src="images/interiores-bg.jpg" alt="Background"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div
+                    style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.75), rgba(0,0,0,0.4));">
+                </div>
+            </div>
+
+            <div class="hero-content"
+                style="position: relative; z-index: 10; max-width: 1200px; width: 100%; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                <div class="text-white">
+                    <h1
+                        style="font-family: 'Montserrat', sans-serif; font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; text-shadow: 0 4px 8px rgba(0,0,0,0.6);">
+                        Solución para<br><span class="text-ultra-cyan">Interiores</span>
+                    </h1>
+                    <p
+                        style="font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 300; text-shadow: 0 2px 4px rgba(0,0,0,0.6);">
+                        Tecnología de nano-blindaje que detiene la humedad desde adentro.
+                    </p>
+                    <p
+                        style="font-size: 1.3rem; margin-bottom: 2.5rem; color: #e2e8f0; text-shadow: 0 2px 4px rgba(0,0,0,0.6);">
+                        Protege la salud de tu familia eliminando el moho y el salitre para siempre.
+                    </p>
+                    <button onclick="document.getElementById('detalles').scrollIntoView({behavior: 'smooth'})"
+                        class="bg-ultra-cyan text-white px-8 py-4 rounded-lg font-bold hover:bg-cyan-600 transition-colors shadow-lg"
+                        style="font-size: 1.2rem;">
+                        Ver Detalles
+                    </button>
+                </div>
+
+                <div style="display: flex; justify-content: center;">
+                    <img src="images/interiores.jpg" alt="Solución Interiores"
+                        style="max-width: 100%; height: auto; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(1.05);">
+                </div>
+            </div>
+        </section>
+
+        <!-- ENEMY SECTION -->
+        <section class="max-w-7xl mx-auto px-4 -mt-10 relative z-10 mb-20">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                <div class="bg-gray-900 p-8 text-white border-b-4 border-red-500">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div>
+                            <h2 class="text-3xl font-black text-white uppercase tracking-tight flex items-center">
+                                <span class="text-red-500 mr-3 text-4xl">⚠️</span> El Enemigo Invisible
+                            </h2>
+                            <p class="text-gray-400 mt-2 max-w-2xl">
+                                La humedad no duerme. Actúa silenciosamente dentro de tus muros, creando una reacción en
+                                cadena que destruye tu patrimonio desde adentro hacia afuera.
+                            </p>
+                        </div>
+                        <div class="mt-4 md:mt-0 text-right">
+                            <div class="text-4xl font-black text-red-500">95%</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-widest">Del Daño Estructural</div>
+                            <div class="text-sm font-bold text-white">Es causado por Agua + Sol</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div class="lg:col-span-1 space-y-6">
+                        <h3 class="font-bold text-gray-800 border-l-4 border-ultra-blue pl-3 text-lg">Modus Operandi
+                        </h3>
+
+                        <div class="flex">
+                            <div class="flex-shrink-0 mr-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-ultra-blue font-bold">
+                                    1</div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-700">Infiltración Silenciosa</h4>
+                                <p class="text-sm text-gray-500">El agua penetra poros microscópicos. No se ve, pero se
+                                    acumula.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="flex-shrink-0 mr-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
+                                    2</div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-700">Reacción Química</h4>
+                                <p class="text-sm text-gray-500">Se activa el salitre y el moho. El acero interno
+                                    comienza a oxidarse y expandirse.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="flex-shrink-0 mr-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold">
+                                    3</div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-700">Ruptura Total</h4>
+                                <p class="text-sm text-gray-500">La presión interna revienta el concreto. La pintura se
+                                    cae. El daño ya es visible y costoso.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-gray-800">Cronología del Desastre (5 Años)</h3>
+                            <span
+                                class="text-xs bg-white px-2 py-1 rounded border border-gray-300 text-gray-500">Integridad
+                                Estructural %</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="enemyChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-gray-400 mt-4 italic">
+                            *Sin protección, una fachada pierde el 60% de su valor estético y funcional en 5 años.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAREDES CON MOHO -->
+        <section class="mt-20 max-w-7xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800">¿Paredes con Moho?</h2>
+                <p class="text-gray-600 mt-2">El problema no es solo estético, afecta la salud de tu familia y la
+                    integridad de tu hogar.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div
+                    class="glass-panel overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img src="images/pared-moho-1.jpg" alt="Pared con moho 1"
+                        class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div
+                    class="glass-panel overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img src="images/pared-moho-2.jpg" alt="Pared con moho 2"
+                        class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div
+                    class="glass-panel overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img src="images/pared-moho-3.jpg" alt="Pared con moho 3"
+                        class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+                <div
+                    class="glass-panel overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img src="images/pared-moho-4.jpg" alt="Pared con moho 4"
+                        class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPARACIÓN INTERIOR VS EXTERIOR -->
+        <section class="max-w-7xl mx-auto px-4 pb-20 mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Elige tu Escudo</h2>
+                <p class="text-gray-600 mt-2">Nuestra ingeniería adapta la fórmula al entorno para neutralizar al
+                    enemigo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- INTERIOR COLUMN -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col h-full">
+                    <div class="bg-gray-100 p-6 border-b border-gray-200">
+                        <h3 class="text-2xl font-black text-gray-800 flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-gray-500 mr-3"></span>
+                            FÓRMULA INTERIOR
+                        </h3>
+                        <p class="text-sm text-gray-500 font-bold uppercase tracking-wide">Fórmula Original • Todo Uso
+                        </p>
+                    </div>
+                    <div class="p-8 flex-grow">
+                        <p class="text-gray-600 mb-6">
+                            Diseñada para la habitabilidad. Un recubrimiento invisible que protege la salud de tu
+                            familia evitando la formación de moho y bacterias en espacios cerrados, además de proteger
+                            tus bienes más delicados.
+                        </p>
+
+                        <h4 class="font-bold text-ultra-blue mb-4 border-b border-gray-200 pb-2">Aplicaciones Clave:
+                        </h4>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <span class="text-ultra-blue mr-2 text-xl">🏠</span>
+                                <div>
+                                    <span class="font-bold text-gray-700">Paredes y Techos</span>
+                                    <p class="text-sm text-gray-500">Previene filtraciones internas y manchas de
+                                        humedad.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-ultra-blue mr-2 text-xl">🛋️</span>
+                                <div>
+                                    <span class="font-bold text-gray-700">Textiles y Tapicería</span>
+                                    <p class="text-sm text-gray-500">Repele líquidos (vino, café) y evita manchas sin
+                                        cambiar la textura.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-ultra-blue mr-2 text-xl">🪑</span>
+                                <div>
+                                    <span class="font-bold text-gray-700">Madera y Muebles</span>
+                                    <p class="text-sm text-gray-500">Evita hinchazón por absorción de agua.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- EXTERIOR COLUMN -->
+                <div
+                    class="bg-white rounded-2xl shadow-lg overflow-hidden border-t-4 border-ultra-cyan flex flex-col h-full transform lg:-translate-y-4 lg:shadow-2xl z-10">
+                    <div class="bg-blue-50 p-6 border-b border-blue-100">
+                        <h3 class="text-2xl font-black text-ultra-blue flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-ultra-cyan mr-3 shadow-[0_0_10px_#00a8e8]"></span>
+                            FÓRMULA EXTERIOR
+                        </h3>
+                        <p class="text-sm text-ultra-cyan font-bold uppercase tracking-wide">Reforzada • Intemperie</p>
+                    </div>
+                    <div class="p-8 flex-grow">
+                        <p class="text-gray-600 mb-6">
+                            Ingeniería robusta. Posee las mismas propiedades hidrofóbicas pero con un paquete de
+                            aditivos de <strong>Protección UV Superior</strong>. Resiste el sol abrasador y la lluvia
+                            ácida.
+                        </p>
+
+                        <h4 class="font-bold text-ultra-cyan mb-4 border-b border-gray-200 pb-2">Aplicaciones Clave:
+                        </h4>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <span class="text-ultra-cyan mr-2 text-xl">🏢</span>
+                                <div>
+                                    <span class="font-bold text-gray-700">Fachadas y Muros</span>
+                                    <p class="text-sm text-gray-500">Evita descascaramiento y mantiene el color por
+                                        años.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-ultra-cyan mr-2 text-xl">☀️</span>
+                                <div>
+                                    <span class="font-bold text-gray-700">Techos y Terrazas</span>
+                                    <p class="text-sm text-gray-500">Protección extrema contra el sol directo y
+                                        empozamientos.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-ultra-cyan mr-2 text-xl">🧱</span>
+                                <div>
+                                    <span class="font-bold text-gray-700">Cimientos y Estructuras</span>
+                                    <p class="text-sm text-gray-500">Evita la degradación del concreto por ciclos de
+                                        humedad.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DETALLES DEL PRODUCTO -->
+        <section id="detalles" class="page-content max-w-7xl mx-auto px-4" style="padding: 5rem 10%;">
+            <div class="glass-panel" style="padding: 3rem;">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="flex-1">
+                        <h2>Descripción del Producto</h2>
+                        <p style="margin-bottom: 2rem; font-size: 1.1rem;">Nuestra Solución Interiores está formulada
+                            específicamente para proteger las paredes de tu hogar contra la humedad ambiental,
+                            condensación y salpicaduras. Ideal para baños, cocinas y habitaciones.</p>
+
+                        <h3>Beneficios Clave</h3>
+                        <ul style="list-style: none; margin-bottom: 2rem;">
+                            <li><i class="fa-solid fa-check"
+                                    style="color: var(--primary-color); margin-right: 10px;"></i>
+                                Previene la formación de moho y hongos</li>
+                            <li><i class="fa-solid fa-check"
+                                    style="color: var(--primary-color); margin-right: 10px;"></i>
+                                Repele el agua y la suciedad</li>
+                            <li><i class="fa-solid fa-check"
+                                    style="color: var(--primary-color); margin-right: 10px;"></i>
+                                Facilita la limpieza</li>
+                            <li><i class="fa-solid fa-check"
+                                    style="color: var(--primary-color); margin-right: 10px;"></i>
+                                Acabado invisible y transpirable</li>
+                            <li><i class="fa-solid fa-check"
+                                    style="color: var(--primary-color); margin-right: 10px;"></i>
+                                Seguro para uso en interiores</li>
+                        </ul>
+
+                        <h3 style="margin-top: 2.5rem;">Presentaciones Disponibles</h3>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; margin-bottom: 2rem;">
+                            <div class="glass-panel"
+                                style="padding: 1.5rem; text-align: center; background: rgba(0, 168, 232, 0.05); border: 2px solid rgba(0, 168, 232, 0.2);">
+                                <i class="fa-solid fa-bottle-water"
+                                    style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.75rem; display: block;"></i>
+                                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--primary-color);">
+                                    1 Litro
+                                </h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">1 L</p>
+                            </div>
+
+                            <div class="glass-panel"
+                                style="padding: 1.5rem; text-align: center; background: rgba(0, 168, 232, 0.05); border: 2px solid rgba(0, 168, 232, 0.2);">
+                                <i class="fa-solid fa-spray-can"
+                                    style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.75rem; display: block;"></i>
+                                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--primary-color);">
+                                    Atomizador
+                                </h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">1 L</p>
+                            </div>
+
+                            <div class="glass-panel"
+                                style="padding: 1.5rem; text-align: center; background: rgba(0, 168, 232, 0.05); border: 2px solid rgba(0, 168, 232, 0.2);">
+                                <i class="fa-solid fa-flask"
+                                    style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.75rem; display: block;"></i>
+                                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--primary-color);">
+                                    Galón</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">3.78 L</p>
+                            </div>
+
+                            <div class="glass-panel"
+                                style="padding: 1.5rem; text-align: center; background: rgba(0, 168, 232, 0.05); border: 2px solid rgba(0, 168, 232, 0.2);">
+                                <i class="fa-solid fa-box"
+                                    style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.75rem; display: block;"></i>
+                                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--primary-color);">
+                                    Cuñete</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">18 L</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Controls -->
+                <div class="product-controls" style="margin-top: 2rem; max-width: 400px;">
+                    <label for="opt-solucion-interior"
+                        style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
+                    <select id="opt-solucion-interior" onchange="updatePrice('solucion-interior')"
+                        style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
+                        <option value="0" data-price="13.99">1 Litro - $13.99</option>
+                        <option value="1" data-price="14.99">1 Litro (Atomizador) - $14.99</option>
+                        <option value="2" data-price="38.00">Galón (3.785L) - $38.00</option>
+                        <option value="3" data-price="170.00">Cuñete (18L) - $170.00</option>
+                    </select>
+
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
+                        <label for="qty-solucion-interior">Cantidad:</label>
+                        <input type="number" id="qty-solucion-interior" value="1" min="1"
+                            style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <span id="price-solucion-interior" style="font-weight: bold; font-size: 1.2rem;">$13.99</span>
+                    </div>
+
+                    <button onclick="addToCartStatic('solucion-interior')" class="cta-button"
+                        style="width: 100%; margin-bottom: 1rem;">
+                        <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- EFECTO HIDROFÓBICO -->
+        <section class="mt-20 max-w-7xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800">Efecto Hidrofóbico en Acción</h2>
+                <p class="text-gray-600 mt-2">Mira cómo el agua es repelida instantáneamente</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel overflow-hidden rounded-xl shadow-md">
+                    <img src="images/productos/hydrophobic-effect-1.jpg" alt="Efecto hidrofóbico 1"
+                        class="w-full h-64 object-cover">
+                    <div class="p-4 text-center font-bold text-gray-700">Gotas de agua repelidas</div>
+                </div>
+                <div class="glass-panel overflow-hidden rounded-xl shadow-md">
+                    <img src="images/productos/hydrophobic-effect-2.jpg" alt="Efecto hidrofóbico 2"
+                        class="w-full h-64 object-cover">
+                    <div class="p-4 text-center font-bold text-gray-700">Superficie protegida</div>
+                </div>
+                <div class="glass-panel overflow-hidden rounded-xl shadow-md">
+                    <img src="images/productos/hydrophobic-effect-3.jpg" alt="Efecto hidrofóbico 3"
+                        class="w-full h-64 object-cover">
+                    <div class="p-4 text-center font-bold text-gray-700">Protección duradera</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAINT PERFORMANCE BOOSTER -->
+        <div
+            class="mt-20 max-w-7xl mx-auto px-4 bg-gradient-to-r from-gray-900 to-blue-900 rounded-2xl shadow-2xl p-8 md:p-12 text-white relative overflow-hidden">
+            <div
+                class="absolute right-0 top-0 w-64 h-64 bg-ultra-cyan opacity-10 rounded-full filter blur-3xl transform translate-x-1/2 -translate-y-1/2">
+            </div>
+            <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-yellow-400 font-bold tracking-wider text-sm uppercase mb-2 block">Tip de
+                        Experto</span>
+                    <h3 class="text-3xl font-black mb-6">El Secreto del Pintor: <br>Potenciador de Acabados
+                    </h3>
+                    <p class="text-blue-100 mb-6 text-lg">Aplicar Ultra Seco <strong>antes de
+                            pintar</strong> no es un gasto, es una inversión inteligente. Al saturar los poros del
+                        concreto virgen, transformas la superficie en un lienzo perfecto.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-ultra-green flex items-center justify-center mr-4 font-bold text-white text-xs">
+                                $$$</div>
+                            <span><strong>Ahorro de Pintura:</strong> El muro ya no "bebe" la pintura. Rinde hasta un
+                                30% más.</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-ultra-cyan flex items-center justify-center mr-4 font-bold text-white text-xs">
+                                🛡️</div>
+                            <span><strong>Adherencia Total:</strong> Evita que la pintura se descascare por humedad
+                                interna.</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-ultra-blue flex items-center justify-center mr-4 font-bold text-white text-xs">
+                                ✨</div>
+                            <span><strong>Acabado Premium:</strong> La pintura corre más suave y queda más
+                                uniforme.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20">
+                    <h4 class="text-center font-bold mb-6">Rendimiento de Pintura (m²/galón)</h4>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between text-sm mb-2 text-gray-300">
+                            <span>Sin Preparación (Muro Poroso)</span>
+                            <span>~25 m²</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
+                            <div class="bg-gray-400 h-4 rounded-full" style="width: 50%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1 italic">La pared absorbe parte de la pintura,
+                            desperdiciándola.</p>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2 text-white font-bold">
+                            <span>Con Base Ultra Seco</span>
+                            <span class="text-ultra-cyan">~35 m² (+40%)</span>
+                        </div>
+                        <div
+                            class="w-full bg-gray-700 rounded-full h-4 overflow-hidden shadow-[0_0_15px_rgba(0,168,232,0.5)]">
+                            <div class="bg-gradient-to-r from-ultra-blue to-ultra-cyan h-4 rounded-full"
+                                style="width: 85%"></div>
+                        </div>
+                        <p class="text-xs text-blue-200 mt-1 italic">Superficie sellada. La pintura rinde al máximo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TECHNICAL COMPARISON -->
+        <section class="mt-20 max-w-7xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800">Comparativa Técnica</h2>
+                <p class="text-gray-600 mt-2">Diferencias clave entre nuestras fórmulas</p>
+            </div>
+            <div class="glass-panel p-6 rounded-xl shadow-lg bg-white/50">
+                <div class="chart-container">
+                    <canvas id="comparisonRadar"></canvas>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500">
+                    * Datos basados en pruebas de laboratorio estándar ASTM.
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCUMENTATION -->
+        <section class="mt-20 max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Documentación Técnica</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="docs/ficha_tecnica_interiores.pdf" target="_blank"
+                    class="glass-panel p-6 rounded-xl flex items-center hover:bg-blue-50 transition-colors group">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-red-100 text-red-500 flex items-center justify-center text-2xl mr-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Ficha Técnica (TDS)</h4>
+                        <p class="text-sm text-gray-500">Especificaciones y modo de uso</p>
+                    </div>
+                    <i class="fa-solid fa-download ml-auto text-gray-400 group-hover:text-ultra-blue"></i>
+                </a>
+                <a href="#"
+                    class="glass-panel p-6 rounded-xl flex items-center hover:bg-blue-50 transition-colors group">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center text-2xl mr-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Hoja de Seguridad (MSDS)</h4>
+                        <p class="text-sm text-gray-500">Manipulación y primeros auxilios</p>
+                    </div>
+                    <i class="fa-solid fa-download ml-auto text-gray-400 group-hover:text-ultra-blue"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mt-20 mb-12 max-w-7xl mx-auto px-4">
+            <div class="bg-ultra-blue rounded-2xl p-12 text-center text-white shadow-xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('images/pattern.png')] opacity-10 bg-repeat mix-blend-overlay">
+                </div>
+                <h2 class="text-3xl font-bold mb-6 relative z-10">¿Listo para proteger tu hogar?</h2>
+                <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto relative z-10">No dejes que la humedad avance.
+                    Actúa hoy con la mejor tecnología del mercado.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                    <button onclick="addToCartStatic('solucion-interior')"
+                        class="bg-white text-ultra-blue font-bold py-4 px-8 rounded-lg hover:bg-gray-100 transition-colors shadow-lg">
+                        <i class="fa-solid fa-cart-plus mr-2"></i> Comprar Ahora
+                    </button>
+                    <a href="https://wa.me/1234567890" target="_blank"
+                        class="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-lg hover:bg-white/10 transition-colors">
+                        <i class="fa-brands fa-whatsapp mr-2"></i> Consultar con Experto
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PODCAST -->
+        <section class="mt-20 mb-12 max-w-7xl mx-auto px-4">
+            <div class="glass-panel p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-ultra-blue opacity-5 rounded-full blur-3xl">
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="relative w-48 h-48">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-tr from-ultra-blue to-ultra-cyan rounded-full animate-pulse opacity-20">
+                            </div>
+                            <img src="images/interiores.jpg" alt="Podcast Cover"
+                                class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10">
+                            <div
+                                class="absolute bottom-2 right-2 bg-white text-ultra-blue w-10 h-10 rounded-full flex items-center justify-center shadow-md z-20">
+                                <i class="fa-solid fa-microphone"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 text-center md:text-left">
+                        <span class="text-ultra-cyan font-bold tracking-wider text-sm uppercase mb-2 block">Ultra Seco
+                            Podcast</span>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Episodio: "Nanotecnología: El Escudo
+                            Invisible"
+                        </h3>
+                        <p class="text-gray-600 mb-6">Descubre cómo nuestra tecnología crea una barrera invisible
+                            antimanchas y contra el moho, protegiendo tus espacios interiores de forma duradera.</p>
+
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div class="flex items-center gap-4 mb-3">
+                                <button onclick="togglePodcast()"
+                                    class="w-12 h-12 bg-ultra-blue text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md">
+                                    <i id="podcast-icon" class="fa-solid fa-play"></i>
+                                </button>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-200 rounded-full cursor-pointer overflow-hidden"
+                                        onclick="seekPodcast(event)">
+                                        <div id="podcast-progress"
+                                            class="h-full bg-ultra-cyan w-0 transition-all duration-100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-gray-500">15:30</span>
+                            </div>
+                            <audio id="podcast-audio" src="audio/podcast-interiores.mp3"
+                                ontimeupdate="updateProgress()"></audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI CHAT -->
+        <section class="mt-20 mb-20 max-w-7xl mx-auto px-4">
+            <div class="glass-panel rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                <div
+                    class="bg-gradient-to-r from-ultra-blue to-ultra-cyan p-4 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                            <i class="fa-solid fa-robot text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Asistente Técnico IA</h3>
+                            <p class="text-xs text-blue-100">Experto en impermeabilización</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        <span class="text-xs text-blue-100">En línea</span>
+                    </div>
+                </div>
+
+                <div id="chat-box" class="chat-container">
+                    <div class="chat-bubble chat-bot">
+                        Hola, soy el asistente virtual de Ultra Seco. ¿Tienes problemas de humedad en interiores?
+                        Pregúntame cómo solucionarlo.
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white border-t border-gray-100">
+                    <div class="flex gap-2">
+                        <input type="text" id="user-input"
+                            class="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-ultra-cyan focus:ring-1 focus:ring-ultra-cyan transition-all"
+                            placeholder="Escribe tu pregunta aquí..." onkeypress="handleKeyPress(event)">
+                        <button onclick="sendMessage()"
+                            class="bg-ultra-blue text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-md">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 text-center">
+                        IA entrenada con documentación técnica de Ultra Seco.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- CART LOGIC ---
+        function toggleCart() {
+            console.log("Toggle cart clicked");
+            const event = new CustomEvent('toggle-cart');
+            document.dispatchEvent(event);
+        }
+
+        function addToCartStatic(productId) {
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(qtyInput.value);
+            const select = document.getElementById(`opt-${productId}`);
+            const option = select.options[select.selectedIndex];
+            const price = parseFloat(option.dataset.price);
+            const variant = option.text.split(' - ')[0];
+
+            const item = {
+                id: productId,
+                name: 'Solución Interiores',
+                variant: variant,
+                price: price,
+                quantity: quantity,
+                image: 'images/interiores.jpg'
+            };
+
+            const event = new CustomEvent('add-to-cart', {
+                detail: item
+            });
+            document.dispatchEvent(event);
+
+            const btn = document.querySelector(`button[onclick="addToCartStatic('${productId}')"]`);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Agregado';
+            btn.classList.add('bg-green-600');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-green-600');
+            }, 2000);
+        }
+
+        function updatePrice(productId) {
+            const select = document.getElementById(`opt-${productId}`);
+            const priceDisplay = document.getElementById(`price-${productId}`);
+            const price = select.options[select.selectedIndex].dataset.price;
+            priceDisplay.textContent = `$${price}`;
+        }
+
+        // --- HELPER FUNCTIONS ---
+        function wrapLabel(label, maxLength = 15) {
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxLength) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    const label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        // --- CHART 1: ENEMY CHART ---
+        const ctxEnemy = document.getElementById('enemyChart').getContext('2d');
+        new Chart(ctxEnemy, {
+            type: 'line',
+            data: {
+                labels: ['Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+                datasets: [{
+                    label: 'Sin Protección',
+                    data: [95, 80, 60, 45, 30],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#ef4444'
+                },
+                {
+                    label: 'Con Ultra Seco',
+                    data: [100, 99, 98, 98, 97],
+                    borderColor: '#00c853',
+                    backgroundColor: 'rgba(0, 200, 83, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.1,
+                    fill: false,
+                    pointBackgroundColor: '#00c853'
+                }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: tooltipConfig,
+                    title: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Integridad Estructural (%)' }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 2: TECHNICAL RADAR ---
+        const ctxRadar = document.getElementById('comparisonRadar').getContext('2d');
+        const radarLabels = [
+            'Hidrofobicidad (Repelencia Agua)',
+            'Protección Rayos UV',
+            'Oleofobicidad (Repelencia Aceite)',
+            'Resistencia Abrasión',
+            'Anti-Hongos/Salud',
+            'Flexibilidad'
+        ].map(l => wrapLabel(l));
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: radarLabels,
+                datasets: [{
+                    label: 'Fórmula Exterior',
+                    data: [100, 100, 90, 95, 85, 90],
+                    borderColor: '#00a8e8',
+                    backgroundColor: 'rgba(0, 168, 232, 0.2)',
+                    pointBackgroundColor: '#00a8e8',
+                    pointBorderColor: '#fff',
+                    borderWidth: 2
+                },
+                {
+                    label: 'Fórmula Interior',
+                    data: [95, 50, 90, 70, 100, 80],
+                    borderColor: '#94a3b8',
+                    backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                    pointBackgroundColor: '#94a3b8',
+                    pointBorderColor: '#fff',
+                    borderWidth: 2
+                }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true } },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#f1f5f9' },
+                        pointLabels: {
+                            font: { size: 11, family: "'Roboto', sans-serif" },
+                            color: '#475569'
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+        // --- PODCAST LOGIC ---
+        function togglePodcast() {
+            const audio = document.getElementById('podcast-audio');
+            const icon = document.getElementById('podcast-icon');
+            if (audio.paused) {
+                audio.play();
+                icon.classList.remove('fa-play');
+                icon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play');
+            }
+        }
+
+        function updateProgress() {
+            const audio = document.getElementById('podcast-audio');
+            const progress = document.getElementById('podcast-progress');
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = percent + '%';
+            }
+        }
+
+        function seekPodcast(event) {
+            const audio = document.getElementById('podcast-audio');
+            const progressBar = event.currentTarget;
+            const clickPosition = event.offsetX;
+            const width = progressBar.clientWidth;
+            const percent = clickPosition / width;
+            audio.currentTime = percent * audio.duration;
+        }
+
+        // --- AI CHAT LOGIC ---
+        const apiKey = "AIzaSyC68iaBfODX0Cd30clwoFx51ZSeG9VHZv0";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const systemContextChat = "Eres un Ingeniero Técnico Senior de Ultra Seco. Tu especialidad son las soluciones de impermeabilización para Interiores (Fortificador) y Exteriores (Escudo Cerámico). Responde preguntas técnicas sobre: humedad, moho, salitre, preparación de superficies y diferencias entre las fórmulas. Recomienda 'Solución Interiores' para baños, cocinas y muros internos, y 'Solución Exteriores' para fachadas, techos y muros expuestos al sol. Sé profesional, directo y útil.";
+
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
+            div.innerHTML = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            appendMessage(text, 'user');
+            userInput.value = '';
+
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: systemContextChat + "\n\nPregunta: " + text
+                    }]
+                }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const reply = result.candidates?.[0]?.content?.parts?.[0]?.text || "Lo siento, no pude procesar tu pregunta.";
+                appendMessage(reply, 'bot');
+            } catch (error) {
+                appendMessage("Error de conexión con el servidor de IA.", 'bot');
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+    </script>
+    <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
+</body>
+
+</html>quedo perfecta
