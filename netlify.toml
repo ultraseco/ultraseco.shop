@@ -1,0 +1,55 @@
+# Ultra Seco - Configuración Netlify
+# www.ultraseco.shop
+
+[build]
+  publish = "."
+  command = "echo 'No build required - static site'"
+
+[[redirects]]
+  from = "/"
+  to = "/empresa/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/index.html"
+  to = "/empresa/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/empresa/index.html"
+  status = 404
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/empresa/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/empresa/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
