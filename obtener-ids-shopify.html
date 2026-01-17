@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify - Obtener IDs de Productos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .info {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #2563eb;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        button {
+            background: linear-gradient(45deg, #2563eb, #4f46e5);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .product-id {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .product-id-value {
+            font-family: 'Courier New', monospace;
+            color: #2563eb;
+            background: #eff6ff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .copy-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+            width: auto;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        .error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .code-output {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .copy-all-btn {
+            background: #8b5cf6;
+            margin-top: 1rem;
+        }
+
+        .copy-all-btn:hover {
+            background: #7c3aed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔑 Obtener IDs de Productos de Shopify</h1>
+
+        <div class="info">
+            <strong>📝 Instrucciones:</strong>
+            <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Ingresa el dominio de tu tienda (ej: ultraseco.myshopify.com)</li>
+                <li>Ingresa tu Storefront Access Token</li>
+                <li>Click en "Obtener IDs de Productos"</li>
+                <li>Copia los IDs y envíamelos</li>
+            </ol>
+        </div>
+
+        <form id="fetchForm">
+            <div class="form-group">
+                <label for="shopDomain">Dominio de Shopify:</label>
+                <input type="text" id="shopDomain" placeholder="ultraseco.myshopify.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="accessToken">Storefront Access Token:</label>
+                <input type="password" id="accessToken" placeholder="Pega tu token aquí" required>
+                <small style="color: #64748b; display: block; margin-top: 0.5rem;">
+                    ℹ️ Este token se obtiene desde Settings → Apps → Desarrollar aplicaciones
+                </small>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                🚀 Obtener IDs de Productos
+            </button>
+        </form>
+
+        <div class="results" id="results">
+            <h3 style="margin-bottom: 1rem;">✅ Productos Encontrados:</h3>
+            <div id="productList"></div>
+
+            <div id="codeOutput"></div>
+        </div>
+
+        <div id="errorBox"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('fetchForm');
+        const resultsDiv = document.getElementById('results');
+        const productListDiv = document.getElementById('productList');
+        const errorBox = document.getElementById('errorBox');
+        const submitBtn = document.getElementById('submitBtn');
+        const codeOutputDiv = document.getElementById('codeOutput');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const shopDomain = document.getElementById('shopDomain').value.trim();
+            const accessToken = document.getElementById('accessToken').value.trim();
+
+            // Clear previous results
+            resultsDiv.classList.remove('show');
+            productListDiv.innerHTML = '';
+            errorBox.innerHTML = '';
+            codeOutputDiv.innerHTML = '';
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="spinner"></div> Conectando con Shopify...';
+
+            try {
+                const products = await fetchProducts(shopDomain, accessToken);
+                displayResults(products, shopDomain, accessToken);
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '🚀 Obtener IDs de Productos';
+            }
+        });
+
+        async function fetchProducts(shopDomain, accessToken) {
+            const url = `https://${shopDomain}/api/2024-01/graphql.json`;
+
+            const query = `
+                {
+                    products(first: 50) {
+                        edges {
+                            node {
+                                id
+                                title
+                                handle
+                                variants(first: 10) {
+                                    edges {
+                                        node {
+                                            id
+                                            title
+                                            price
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            `;
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Shopify-Storefront-Access-Token': accessToken
+                },
+                body: JSON.stringify({ query })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error de Shopify: ${response.status} - Verifica tu token y dominio`);
+            }
+
+            const data = await response.json();
+
+            if (data.errors) {
+                throw new Error(`Error GraphQL: ${data.errors[0].message}`);
+            }
+
+            return data.data.products.edges;
+        }
+
+        function displayResults(products, shopDomain, accessToken) {
+            if (products.length === 0) {
+                showError('No se encontraron productos. Asegúrate de haber creado productos en tu tienda.');
+                return;
+            }
+
+            // Display individual products
+            products.forEach(({ node: product }) => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product-id';
+
+                // Extract numeric ID from GraphQL ID (gid://shopify/Product/1234567890)
+                const numericId = product.id.split('/').pop();
+
+                productDiv.innerHTML = `
+                    <div>
+                        <div class="product-name">${product.title}</div>
+                        <div class="product-id-value">${numericId}</div>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('${numericId}', this)">
+                        📋 Copiar
+                    </button>
+                `;
+
+                productListDiv.appendChild(productDiv);
+            });
+
+            // Generate code output
+            generateCodeOutput(products, shopDomain, accessToken);
+
+            resultsDiv.classList.add('show');
+        }
+
+        function generateCodeOutput(products, shopDomain, accessToken) {
+            const config = {
+                shopDomain: shopDomain,
+                accessToken: accessToken,
+                products: {}
+            };
+
+            products.forEach(({ node: product }) => {
+                const numericId = product.id.split('/').pop();
+                const handle = product.handle;
+
+                config.products[handle] = {
+                    id: numericId,
+                    title: product.title,
+                    variants: product.variants.edges.map(({ node: variant }) => ({
+                        id: variant.id.split('/').pop(),
+                        title: variant.title,
+                        price: variant.price
+                    }))
+                };
+            });
+
+            const codeText = `
+// =====================================
+// CONFIGURACIÓN SHOPIFY - ULTRA SECO
+// =====================================
+
+const SHOPIFY_CONFIG = {
+    domain: '${config.shopDomain}',
+    storefrontAccessToken: '${config.accessToken}'
+};
+
+const PRODUCT_IDS = ${JSON.stringify(config.products, null, 4)};
+
+// =====================================
+// COPIA TODO ESTE CÓDIGO Y ENVÍAMELO
+// =====================================
+`;
+
+            codeOutputDiv.innerHTML = `
+                <div class="code-output">${codeText}</div>
+                <button class="copy-all-btn copy-btn" onclick="copyCodeOutput()">
+                    📋 Copiar Todo el Código
+                </button>
+            `;
+        }
+
+        function copyCodeOutput() {
+            const codeText = document.querySelector('.code-output').textContent;
+            copyToClipboard(codeText);
+            alert('✅ Código copiado! Pégamelo para continuar con la integración.');
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (button) {
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '✅ Copiado';
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                    }, 2000);
+                }
+            });
+        }
+
+        function showError(message) {
+            errorBox.innerHTML = `
+                <div class="error">
+                    <strong>❌ Error:</strong><br>
+                    ${message}
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>
