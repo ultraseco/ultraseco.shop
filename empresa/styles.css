@@ -201,6 +201,31 @@ nav {
     transform: translateY(-10px);
 }
 
+/* Shopify Buy Button Containers */
+.feature-card [id^="shopify-"] {
+    margin-top: 1rem;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Force Shopify iframes to have proper height */
+.feature-card [id^="shopify-"] iframe {
+    min-height: 250px !important;
+    height: 250px !important;
+    width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure Shopify buttons are visible */
+.shopify-buy__btn {
+    margin: 0.5rem 0 !important;
+    width: 100% !important;
+}
+
 .feature-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
@@ -398,10 +423,23 @@ footer {
 }
 
 @keyframes scan {
-    0% { top: 0%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
 }
 
 @keyframes fadeInZoom {
@@ -409,6 +447,7 @@ footer {
         opacity: 0;
         transform: scale(0.95);
     }
+
     100% {
         opacity: 1;
         transform: scale(1);
@@ -416,9 +455,12 @@ footer {
 }
 
 @keyframes ping {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.5;
     }
@@ -450,6 +492,7 @@ footer {
 
 /* Mobile Devices */
 @media (max-width: 768px) {
+
     /* Typography adjustments */
     h1 {
         font-size: 2rem !important;
@@ -530,7 +573,7 @@ footer {
     }
 
     /* Hero grid - single column on mobile */
-    .hero > div[style*="grid-template-columns"] {
+    .hero>div[style*="grid-template-columns"] {
         grid-template-columns: 1fr !important;
         gap: 2rem !important;
     }
@@ -612,7 +655,7 @@ footer {
         padding: 3rem 1rem !important;
     }
 
-    #page-pilares > div {
+    #page-pilares>div {
         margin-bottom: 3rem !important;
     }
 
@@ -625,7 +668,7 @@ footer {
     }
 
     /* Pilares cards grid */
-    #page-pilares > div[style*="grid-template-columns"] {
+    #page-pilares>div[style*="grid-template-columns"] {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
         padding-bottom: 3rem !important;
@@ -641,7 +684,7 @@ footer {
     }
 
     /* Asesor grid adjustments */
-    #result-content > div[style*="grid-template-columns"] {
+    #result-content>div[style*="grid-template-columns"] {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
     }
