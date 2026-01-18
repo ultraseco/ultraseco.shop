@@ -213,6 +213,23 @@ function createShopifyBuyButton(productKey, containerId, ui) {
                         // Marcar cuando el usuario hace clic en "Finalizar Compra"
                         console.log('🛒 Usuario inició checkout');
                         localStorage.setItem('shopify_checkout_started', Date.now().toString());
+
+                        // NUEVO: Cerrar y limpiar el carrito inmediatamente
+                        console.log('🧹 Cerrando carrito y programando limpieza...');
+
+                        // Cerrar el carrito visualmente de inmediato
+                        setTimeout(function () {
+                            const cartToggle = document.querySelector('[data-element="toggle"]');
+                            if (cartToggle) {
+                                cartToggle.click(); // Cierra el carrito
+                                console.log('✅ Carrito cerrado');
+                            }
+
+                            // Limpiar después de 3 segundos (cuando ya está en Shopify)
+                            setTimeout(function () {
+                                clearShopifyCart(ui);
+                            }, 3000);
+                        }, 500);
                     }
                 }
             },
@@ -419,10 +436,16 @@ function clearCartManually() {
     let clearedKeys = 0;
 
     localStorageKeys.forEach(function (key) {
-        if (key.startsWith('shopify-buy-ui') ||
-            key.includes('Shopify') ||
-            key === 'shopify_checkout_started' ||
-            key === 'ultraSecoCart') {
+        // Buscar cualquier clave que contenga:
+        // - 'shopify' (case insensitive)
+        // - El dominio de Shopify (cx0msw-x8.myshopify.com)
+        // - 'checkout'
+        // - 'cart'
+        const lowerKey = key.toLowerCase();
+        if (lowerKey.includes('shopify') ||
+            key.includes('cx0msw-x8.myshopify.com') ||
+            lowerKey.includes('checkout') ||
+            (lowerKey.includes('cart') && !key.includes('ultraSecoCart'))) {
             localStorage.removeItem(key);
             clearedKeys++;
             console.log('🗑️ Eliminado:', key);
