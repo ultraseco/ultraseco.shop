@@ -219,9 +219,8 @@ function createShopifyBuyButton(productKey, containerId, ui) {
 
                         // Cerrar el carrito visualmente de inmediato
                         setTimeout(function () {
-                            const cartToggle = document.querySelector('[data-element="toggle"]');
-                            if (cartToggle) {
-                                cartToggle.click(); // Cierra el carrito
+                            if (typeof window.toggleCart === 'function') {
+                                window.toggleCart(); // Cierra el carrito
                                 console.log('✅ Carrito cerrado');
                             }
 
@@ -342,9 +341,10 @@ function createShopifyCart(ui) {
 
     // Monitorear cambios en el carrito y actualizar el badge del header
     setTimeout(function () {
-        // Observar cambios en el toggle de Shopify
-        const shopifyToggle = document.querySelector('[data-element="toggle"]');
-        if (shopifyToggle) {
+        // Observar cambios en el toggle de Shopify usando un iframe
+        const toggleFrame = document.querySelector('iframe[name="frame-toggle"]');
+        if (toggleFrame) {
+            const shopifyToggle = toggleFrame.querySelector ? toggleFrame : null;
             // Observer para detectar cambios en el contador
             const observer = new MutationObserver(function () {
                 updateHeaderCartBadge(ui);

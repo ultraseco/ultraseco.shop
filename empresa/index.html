@@ -60,7 +60,7 @@
                 <li><button class="nav-button" data-page="contacto">Contacto</button></li>
                 <li>
                     <button
-                        onclick="window.ShopifyUltraSeco && window.ShopifyUltraSeco.openCart ? window.ShopifyUltraSeco.openCart() : switchView('cart')"
+                        onclick="document.querySelector('[data-element=\'toggle\']') && document.querySelector('[data-element=\'toggle\']').click()"
                         class="nav-button" style="position: relative;">
                         <i class="fa-solid fa-shopping-cart"></i>
                         <span id="cart-badge"
