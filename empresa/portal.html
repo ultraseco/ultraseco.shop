@@ -447,12 +447,15 @@
             renderTable();
             document.getElementById('print-date').textContent = new Date().toLocaleDateString();
 
-            // Obtener tasa del euro automáticamente al cargar
-            // Se intenta actualizar desde la API del BCV
+            // Auto-actualización de tasa del euro deshabilitada por defecto
+            // Causa errores de CORS cuando se abre desde file://
+            // El usuario puede hacer clic en el botón de sincronización para actualizar
+            /*
             fetchEuroRate().catch(err => {
                 console.log('No se pudo actualizar automáticamente la tasa del euro:', err);
                 // Si falla, se usa el valor guardado o el valor por defecto
             });
+            */
         }
 
         function initDefaults(product) {
@@ -489,8 +492,8 @@
             statusSpan.className = 'text-[9px] text-blue-600 font-bold animate-pulse';
 
             try {
-                // Intentar API de DolarVZLA (Monitor BCV)
-                const response = await fetch('https://api.dolarvzla.com/v2/exchange');
+                // API de DolarVZLA - Monitor BCV (Endpoint correcto)
+                const response = await fetch('https://api.dolarvzla.com/public/exchange-rate');
 
                 if (!response.ok) {
                     throw new Error('Error en la respuesta de la API');
@@ -498,15 +501,17 @@
 
                 const data = await response.json();
 
-                // Buscar la tasa del EUR BCV
+                // Estructura de la respuesta:
+                // { "current": { "usd": 344.50, "eur": 400.49, "date": "2026-01-20" }, ... }
                 let eurRate = null;
+                let bcvDate = '';
 
-                // DolarVZLA devuelve un objeto con diferentes tasas
-                // Buscar EUR en la respuesta
-                if (data && data.bcv && data.bcv.eur) {
-                    eurRate = data.bcv.eur;
-                } else if (data && data.EUR) {
-                    eurRate = data.EUR;
+                if (data && data.current && data.current.eur) {
+                    eurRate = data.current.eur;
+                    bcvDate = data.current.date || '';
+                } else if (data && data.eur) {
+                    // Fallback por si cambian la estructura
+                    eurRate = data.eur;
                 }
 
                 if (eurRate && eurRate > 0) {
@@ -524,27 +529,40 @@
                     // Mostrar última actualización
                     const now = new Date();
                     const timeStr = now.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' });
-                    lastUpdateDiv.textContent = `Actualizado: ${timeStr}`;
+                    lastUpdateDiv.textContent = `Actualizado: ${timeStr}${bcvDate ? ` (BCV: ${bcvDate})` : ''}`;
                     lastUpdateDiv.classList.remove('hidden');
 
                     // Re-renderizar tabla con nuevos precios en Bs
                     renderTable();
 
-                    console.log('✅ Tasa del euro actualizada desde BCV:', eurRate);
+                    console.log('✅ Tasa del euro actualizada desde BCV:', eurRate, 'Fecha:', bcvDate);
                 } else {
                     throw new Error('No se encontró la tasa del EUR en la respuesta');
                 }
 
             } catch (error) {
                 console.error('❌ Error al obtener tasa del euro:', error);
+                console.log('💡 Tipo de error:', error.name, '-', error.message);
 
-                statusSpan.textContent = 'Error';
-                statusSpan.className = 'text-[9px] text-red-600 font-bold';
+                statusSpan.textContent = 'Manual';
+                statusSpan.className = 'text-[9px] text-orange-600 font-bold';
 
-                lastUpdateDiv.textContent = 'No se pudo conectar con el BCV';
+                // Diagnóstico del tipo de error
+                let errorMsg = 'Usar valor manual';
+                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                    errorMsg = 'CORS bloqueado (usa servidor HTTP)';
+                    console.warn('⚠️ Error de CORS. Para resolver:');
+                    console.log('   1. Abre el archivo desde un servidor HTTP');
+                    console.log('   2. O ingresa el valor manualmente');
+                } else if (error.message.includes('404')) {
+                    errorMsg = 'API no disponible';
+                }
+
+                lastUpdateDiv.textContent = errorMsg;
                 lastUpdateDiv.classList.remove('hidden');
 
-                alert('No se pudo obtener la tasa del BCV. Puedes ingresar el valor manualmente.');
+                // NO mostrar alert - solo log en consola para no molestar al usuario
+                console.log('ℹ️ La tasa se puede ingresar manualmente en el campo.');
             } finally {
                 // Restaurar botón
                 btn.innerHTML = '<i class="fa-solid fa-sync text-xs"></i>';
