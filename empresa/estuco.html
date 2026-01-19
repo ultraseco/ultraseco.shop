@@ -12,6 +12,9 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+    <!-- Shopify Buy Button SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
+
     <style>
         :root {
             --primary-vivid: #00a8e8;
@@ -532,42 +535,25 @@
                 style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 0; overflow: hidden; border-radius: 40px; border: 1px solid #f1f5f9; background: white;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
 
-                    <!-- Configurator Left -->
+                    <!-- Shopify Buy Button Container -->
                     <div style="padding: 3.5rem; border-right: 1px solid #f1f5f9;">
                         <h2 style="font-size: 2rem; margin-bottom: 2rem;">Configura tu Selección</h2>
 
-                        <div style="margin-bottom: 1.5rem;">
-                            <label
-                                style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Presentación:</label>
-                            <select id="opt-estuco-bloqueador" onchange="updatePrice('estuco-bloqueador')"
-                                style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1rem; font-weight: 600; background: #fff;">
-                                <option value="0" data-price="6.40">1/4 Galón (0.95 L)</option>
-                                <option value="1" data-price="19.00" selected>Galón (3.78 L)</option>
-                                <option value="2" data-price="85.00">Cuñete (18 L)</option>
-                            </select>
-                        </div>
-
-                        <div
-                            style="margin-bottom: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: flex-end;">
-                            <div>
-                                <label
-                                    style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Cantidad:</label>
-                                <input type="number" id="qty-estuco-bloqueador" value="1" min="1"
-                                    oninput="updatePrice('estuco-bloqueador')"
-                                    style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1.2rem; font-weight: 800; text-align: center;">
-                            </div>
-                            <div style="text-align: right;">
-                                <span
-                                    style="font-size: 0.8rem; color: #64748b; font-weight: bold; text-transform: uppercase; display: block;">Total
-                                    Ref.</span>
-                                <span id="price-estuco-bloqueador"
-                                    style="font-size: 2.2rem; font-weight: 900; color: var(--dark-navy);">$19.00</span>
+                        <div id="shopify-estuco" style="min-height: 300px;">
+                            <!-- Shopify Buy Button se insertará aquí automáticamente -->
+                            <div style="text-align: center; padding: 3rem; color: #64748b;">
+                                <i class="fa-solid fa-spinner fa-spin"
+                                    style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                                <p>Cargando opciones de compra...</p>
                             </div>
                         </div>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 1.5rem; text-align: center;">
+                            <i class="fa-solid fa-lock"></i> Pago seguro procesado por Shopify
+                        </p>
 
                         <!-- Recommended Upsell -->
                         <div
-                            style="margin-bottom: 2.5rem; padding: 1.2rem; background: #f0f9ff; border: 1.5px dashed #00a8e8; border-radius: 20px; position: relative;">
+                            style="margin-top: 2.5rem; padding: 1.2rem; background: #f0f9ff; border: 1.5px dashed #00a8e8; border-radius: 20px; position: relative;">
                             <span
                                 style="position: absolute; top: -10px; left: 15px; background: var(--primary-vivid); color: white; font-size: 0.6rem; font-weight: 900; padding: 3px 10px; border-radius: 50px; letter-spacing: 1px;">RECOMENDACIÓN
                                 MAESTRA</span>
@@ -588,11 +574,6 @@
                                 </a>
                             </div>
                         </div>
-
-                        <button onclick="addToCartStatic('estuco-bloqueador')" class="cta-button"
-                            style="width: 100%; padding: 1.2rem; justify-content: center; font-size: 1.1rem;">
-                            <i class="fa-solid fa-cart-shopping"></i> AÑADIR AL CARRITO
-                        </button>
                     </div>
 
                     <!-- Technical Middle -->
@@ -697,6 +678,7 @@
         </footer>
     </main>
 
+    <script src="shopify-integration.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
     <script>
