@@ -71,10 +71,19 @@ const PRODUCT_IDS = {
     }
 };
 
+// Flag para evitar doble inicialización
+let shopifyInitialized = false;
+
 /**
  * Inicializa Shopify Buy Button SDK
  */
 function initShopifyBuyButton() {
+    // Prevenir doble inicialización
+    if (shopifyInitialized) {
+        console.log('⚠️ Shopify ya ha sido inicializado, evitando duplicado');
+        return;
+    }
+
     if (typeof ShopifyBuy === 'undefined') {
         console.warn('Shopify Buy Button SDK aún no está cargado. Reintentando...');
         setTimeout(initShopifyBuyButton, 500);
@@ -89,6 +98,7 @@ function initShopifyBuyButton() {
     });
 
     ShopifyBuy.UI.onReady(client).then(function (ui) {
+        shopifyInitialized = true; // Marcar como inicializado
         console.log('✅ Shopify Buy Button UI inicializado');
 
         // Crear Buy Buttons para cada producto
@@ -119,6 +129,12 @@ function createShopifyBuyButton(productKey, containerId, ui) {
     if (!productConfig) {
         console.error(`Producto ${productKey} no encontrado en configuración`);
         return;
+    }
+
+    // Limpiar el contenedor antes de renderizar
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = ''; // Eliminar el mensaje de "Cargando..."
     }
 
     ui.createComponent('product', {
@@ -842,3 +858,14 @@ window.ShopifyUltraSeco = {
 };
 
 console.log('📦 Shopify Integration Script Loaded');
+
+// =====================================
+// AUTO-INICIALIZACIÓN
+// =====================================
+// Inicializar automáticamente cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShopifyBuyButton);
+} else {
+    // DOM ya está listo, inicializar inmediatamente
+    initShopifyBuyButton();
+}
