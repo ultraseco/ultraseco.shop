@@ -3,22 +3,31 @@
 
 [build]
   publish = "."
-  command = "echo 'No build required - static site'"
+  command = "echo 'No build required'"
 
+# 1. Redirecciones
+
+# Redirigir de la raíz a la carpeta empresa (con force para saltar el index.html de la raíz)
 [[redirects]]
   from = "/"
   to = "/empresa/index.html"
   status = 200
+  force = true
 
+# Redirigir index.html de la raíz a la carpeta empresa
 [[redirects]]
   from = "/index.html"
   to = "/empresa/index.html"
   status = 200
+  force = true
 
+# Manejo de 404 (opcional, redirige rutas no encontradas a la home)
 [[redirects]]
   from = "/*"
   to = "/empresa/index.html"
   status = 404
+
+# 2. Cabeceras (Headers)
 
 [[headers]]
   for = "/*"
@@ -29,6 +38,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
+# Cache para imágenes y assets
 [[headers]]
   for = "/empresa/images/*"
   [headers.values]
@@ -38,18 +48,3 @@
   for = "/empresa/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Cache-Control = "public, max-age=2592000"
-
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Cache-Control = "public, max-age=2592000"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
