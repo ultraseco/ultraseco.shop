@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tabla para Google Sheets - Ultra Seco</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            font-family: 'Inter', Arial, sans-serif;
+            width: 100%;
+            border: 1px solid #cbd5e1;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            font-size: 13px;
+            color: #1e293b;
+        }
+
+        .product-name {
+            font-weight: bold;
+        }
+
+        .presentation {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .bg-blue {
+            background-color: #eff6ff !important;
+            font-weight: bold;
+        }
+
+        .bg-green {
+            background-color: #f0fdf4 !important;
+        }
+
+        .bg-purple {
+            background-color: #faf5ff !important;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .header-blue {
+            background-color: #dbeafe !important;
+        }
+
+        .header-green {
+            background-color: #dcfce7 !important;
+        }
+
+        .header-purple {
+            background-color: #f3e8ff !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="margin-bottom: 20px; text-align: center;">
+        <h2 style="color: #0f172a; margin: 0;">Ultra Seco</h2>
+        <p style="color: #64748b; font-size: 14px; margin: 5px 0;">Lista de Precios Oficial - Portal de Gestión</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Presentación</th>
+                <th class="text-right">Costo API ($)</th>
+                <th class="text-right header-blue">Precio Detal ($)</th>
+                <th class="text-right header-green">Precio Mayor ($)</th>
+                <th class="text-right header-purple">Distribuidor ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="product-name">Ultra Seco Solución Interior</td>
+                <td class="presentation">1 Litro</td>
+                <td class="text-right">8.00</td>
+                <td class="text-right bg-blue">13.99</td>
+                <td class="text-right bg-green">11.89</td>
+                <td class="text-right bg-purple">9.79</td>
+            </tr>
+            <tr>
+                <td class="product-name">Ultra Seco Solución Exterior</td>
+                <td class="presentation">1 Litro</td>
+                <td class="text-right">10.00</td>
+                <td class="text-right bg-blue">16.99</td>
+                <td class="text-right bg-green">14.44</td>
+                <td class="text-right bg-purple">11.89</td>
+            </tr>
+            <tr>
+                <td class="product-name">Pintura Súper Hidrofóbica</td>
+                <td class="presentation">Galón</td>
+                <td class="text-right">22.00</td>
+                <td class="text-right bg-blue">34.00</td>
+                <td class="text-right bg-green">28.90</td>
+                <td class="text-right bg-purple">23.80</td>
+            </tr>
+            <tr>
+                <td class="product-name">Estuco Súper Hidrofóbico</td>
+                <td class="presentation">Galón</td>
+                <td class="text-right">12.00</td>
+                <td class="text-right bg-blue">19.00</td>
+                <td class="text-right bg-green">16.15</td>
+                <td class="text-right bg-purple">13.30</td>
+            </tr>
+            <tr>
+                <td class="product-name">Aditivo Asfáltico</td>
+                <td class="presentation">Tambor (200L)</td>
+                <td class="text-right">2,800.00</td>
+                <td class="text-right bg-blue">3,500.00</td>
+                <td class="text-right bg-green">2,975.00</td>
+                <td class="text-right bg-purple">2,450.00</td>
+            </tr>
+            <tr>
+                <td class="product-name">Magnetron Eco Capturador</td>
+                <td class="presentation">Galón</td>
+                <td class="text-right">210.00</td>
+                <td class="text-right bg-blue">345.00</td>
+                <td class="text-right bg-green">293.25</td>
+                <td class="text-right bg-purple">241.50</td>
+            </tr>
+            <tr>
+                <td class="product-name">Eco Capturador (Minería)</td>
+                <td class="presentation">1 Litro</td>
+                <td class="text-right">50.00</td>
+                <td class="text-right bg-blue">85.00</td>
+                <td class="text-right bg-green">72.25</td>
+                <td class="text-right bg-purple">59.50</td>
+            </tr>
+            <tr>
+                <td class="product-name">Escudo Cerámico</td>
+                <td class="presentation">1 Litro</td>
+                <td class="text-right">25.00</td>
+                <td class="text-right bg-blue">45.00</td>
+                <td class="text-right bg-green">38.25</td>
+                <td class="text-right bg-purple">31.50</td>
+            </tr>
+            <tr>
+                <td class="product-name">Champú Nano-Concentrado</td>
+                <td class="presentation">1 Litro</td>
+                <td class="text-right">7.00</td>
+                <td class="text-right bg-blue">12.00</td>
+                <td class="text-right bg-green">10.20</td>
+                <td class="text-right bg-purple">8.40</td>
+            </tr>
+            <tr>
+                <td class="product-name">Cera Nano Protectora</td>
+                <td class="presentation">500ml</td>
+                <td class="text-right">8.50</td>
+                <td class="text-right bg-blue">15.00</td>
+                <td class="text-right bg-green">12.75</td>
+                <td class="text-right bg-purple">10.50</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; font-size: 10px; color: #94a3b8; text-align: center;">
+        Instrucciones: Abre este archivo en tu navegador, selecciona la tabla completa (Ctrl+A), cópiala (Ctrl+C) y
+        pégala (Ctrl+V) en una hoja de Google Sheets para mantener los colores y estilos.
+    </div>
+</body>
+
+</html>

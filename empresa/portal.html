@@ -177,16 +177,31 @@
                     </div>
 
                     <!-- Acciones -->
-                    <div class="flex gap-2">
-                        <button onclick="saveToStorage()"
-                            class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-green-500/30 transition flex items-center transform hover:scale-105">
-                            <i class="fa-solid fa-save mr-2"></i> Guardar Todo
-                        </button>
-                        <button onclick="window.print()" class="bg-slate-700 text-white px-6 py-2 rounded-lg font-bold">
-                            <i class="fa-solid fa-print mr-2"></i> Imprimir PDF
-                        </button>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-2">
+                            <button onclick="saveToStorage()"
+                                class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg shadow-lg hover:shadow-green-500/30 transition flex items-center transform hover:scale-105 text-sm">
+                                <i class="fa-solid fa-save mr-2"></i> Guardar
+                            </button>
+                            <button onclick="window.print()"
+                                class="bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm">
+                                <i class="fa-solid fa-print mr-2"></i> PDF
+                            </button>
+                        </div>
+                        <!-- Google Sheets Sync (Nuevo) -->
+                        <div class="flex gap-2">
+                            <input type="text" id="sheet-url" placeholder="URL CSV Google Sheets"
+                                value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSeXNSKBis9vOIL_POvseYb0pPtyfRlvQT5X764jon7Yi4UKQ0iiA-1PbTPW6abYZkq8NeRYDt84Bo-/pub?output=csv"
+                                class="text-[10px] p-2 border rounded w-48 outline-none focus:ring-1 focus:ring-blue-400">
+                            <button onclick="syncWithGoogleSheets()"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded text-[10px] transition flex items-center gap-1">
+                                <i class="fa-solid fa-sync"></i> Sincronizar
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <p class="text-[9px] text-slate-400 mt-2">Para sincronizar: Archivo > Compartir > Publicar en la Web >
+                    CSV > Copiar URL y pegar arriba.</p>
             </div>
 
             <div class="print-header">
@@ -533,10 +548,128 @@
                 document.getElementById('current-date').textContent = new Date().toLocaleDateString();
 
                 loadPersistentData(); // Cargar lo guardado anteriormente
-                recalcAll();
+
+                // Si hay una URL de Google Sheets guardada, sincronizar automáticamente
+                const savedUrl = localStorage.getItem('google_sheet_url');
+                if (savedUrl) {
+                    document.getElementById('sheet-url').value = savedUrl;
+                    syncWithGoogleSheets();
+                } else {
+                    recalcAll();
+                }
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
+        }
+
+        async function syncWithGoogleSheets() {
+            const url = document.getElementById('sheet-url').value.trim();
+            if (!url) {
+                alert("Por favor, ingresa la URL del CSV de Google Sheets.");
+                return;
+            }
+
+            // Validar que sea un enlace de Google Sheets CSV
+            if (!url.includes('docs.google.com/spreadsheets') || !url.includes('output=csv')) {
+                alert("La URL no parece ser de un CSV publicado de Google Sheets. Verifica las instrucciones abajo.");
+                return;
+            }
+
+            try {
+                // Notificar inicio de carga
+                const syncBtn = document.querySelector('button[onclick="syncWithGoogleSheets()"]');
+                const originalText = syncBtn.innerHTML;
+                syncBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
+                syncBtn.disabled = true;
+
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("No se pudo obtener el archivo de Google Sheets.");
+
+                const csvText = await response.text();
+                parseAndPopulateTable(csvText);
+
+                // Guardar la URL para futuras cargas
+                localStorage.setItem('google_sheet_url', url);
+
+                syncBtn.innerHTML = originalText;
+                syncBtn.disabled = false;
+
+                alert("✅ Tabla sincronizada con éxito desde Google Sheets.");
+                recalcAll();
+                saveToStorage();
+            } catch (error) {
+                console.error("Error al sincronizar:", error);
+                alert("❌ Error al conectar con Google Sheets: " + error.message);
+
+                const syncBtn = document.querySelector('button[onclick="syncWithGoogleSheets()"]');
+                syncBtn.innerHTML = '<i class="fa-solid fa-sync"></i> Sincronizar';
+                syncBtn.disabled = false;
+            }
+        }
+
+        function parseAndPopulateTable(csvText) {
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+            const rows = document.querySelectorAll('.product-row');
+
+            // Función para parsear una línea de CSV respetando comillas
+            function parseCSVLine(text) {
+                const result = [];
+                let cur = '';
+                let inQuote = false;
+                for (let i = 0; i < text.length; i++) {
+                    let char = text[i];
+                    if (char === '"') {
+                        inQuote = !inQuote;
+                    } else if (char === ',' && !inQuote) {
+                        result.push(cur.trim());
+                        cur = '';
+                    } else {
+                        cur += char;
+                    }
+                }
+                result.push(cur.trim());
+                return result;
+            }
+
+            // Encontrar el índice de la cabecera real (donde empieza "Producto")
+            let headerIndex = -1;
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].toLowerCase().includes("producto")) {
+                    headerIndex = i;
+                    break;
+                }
+            }
+
+            if (headerIndex === -1) {
+                console.warn("No se encontró la fila de cabecera 'Producto' en el CSV.");
+                return;
+            }
+
+            const dataRows = lines.slice(headerIndex + 1);
+
+            dataRows.forEach((csvLine) => {
+                const values = parseCSVLine(csvLine);
+                if (values.length < 6) return;
+
+                // Estructura: Producto, Presentación, Costo, Detal, Mayor, Dist
+                const productName = values[0];
+
+                rows.forEach(row => {
+                    const rowProductName = row.querySelector('.font-bold').textContent.trim();
+                    if (rowProductName === productName) {
+                        // Limpiar formato numérico (quitar comas de miles)
+                        const cleanNum = (str) => {
+                            if (!str) return "0";
+                            return str.replace(/,/g, '').replace(/[^\d.]/g, '');
+                        };
+
+                        if (values[2]) row.querySelector('.cost').value = cleanNum(values[2]);
+                        if (values[3]) row.querySelector('.price-detal').value = cleanNum(values[3]);
+                        if (values[4]) row.querySelector('.price-mayor').value = cleanNum(values[4]);
+                        if (values[5]) row.querySelector('.price-dist').value = cleanNum(values[5]);
+                    }
+                });
+            });
         }
 
         // Función para guardar TODO el estado de la tabla automáticamente
