@@ -523,6 +523,24 @@ function createCartDrawer() {
 }
 
 function toggleCart() {
+    // Check if Shopify cart is available
+    const toggleFrame = document.querySelector('iframe[name="frame-toggle"]');
+    if (toggleFrame) {
+        // Shopify cart is available - use it
+        try {
+            const innerDoc = toggleFrame.contentDocument || toggleFrame.contentWindow.document;
+            const innerButton = innerDoc.querySelector('.shopify-buy__cart-toggle') || innerDoc.querySelector('button');
+            if (innerButton) {
+                innerButton.click();
+                console.log('✅ Abrió carrito de Shopify');
+                return;
+            }
+        } catch (e) {
+            console.warn('⚠️ No se pudo acceder al iframe de Shopify:', e.message);
+        }
+    }
+
+    // Fallback to local cart drawer
     createCartDrawer(); // Ensure it exists
     const overlay = document.querySelector('.cart-overlay');
     const drawer = document.querySelector('.cart-drawer');

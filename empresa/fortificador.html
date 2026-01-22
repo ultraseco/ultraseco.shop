@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Shopify Buy Button SDK -->
+    <script async src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -474,10 +478,9 @@
                             style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                         <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">$18.50</span>
                     </div>
-                    <button onclick="addToCartStatic('fortificador')" class="cta-button"
-                        style="width: 100%; margin-bottom: 1rem;">
-                        <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
-                    </button>
+
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-fortificador" style="margin-top: 1rem;"></div>
                 </div>
 
                 <!-- Podcast -->
@@ -685,6 +688,9 @@
     </script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
+
+    <!-- Shopify Integration -->
+    <script src="shopify-integration.js"></script>
 </body>
 
 </html>

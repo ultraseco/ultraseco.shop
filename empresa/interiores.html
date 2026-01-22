@@ -17,6 +17,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Shopify Buy Button SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
+
     <link rel="stylesheet" href="styles.css">
 
     <style>
@@ -536,29 +540,19 @@
                     </div>
                 </div>
 
-                <!-- Product Controls -->
-                <div class="product-controls" style="margin-top: 2rem; max-width: 400px;">
-                    <label for="opt-solucion-interior"
-                        style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
-                    <select id="opt-solucion-interior" onchange="updatePrice('solucion-interior')"
-                        style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
-                        <option value="0" data-price="13.99">1 Litro - $13.99</option>
-                        <option value="1" data-price="14.99">1 Litro (Atomizador) - $14.99</option>
-                        <option value="2" data-price="38.00">Galón (3.785L) - $38.00</option>
-                        <option value="3" data-price="170.00">Cuñete (18L) - $170.00</option>
-                    </select>
-
-                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
-                        <label for="qty-solucion-interior">Cantidad:</label>
-                        <input type="number" id="qty-solucion-interior" value="1" min="1"
-                            style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                        <span id="price-solucion-interior" style="font-weight: bold; font-size: 1.2rem;">$13.99</span>
+                <!-- Shopify Buy Button Container -->
+                <div class="product-controls" style="margin-top: 2rem; max-width: 500px;">
+                    <div id="shopify-solucion-interior" style="min-height: 200px;">
+                        <!-- Shopify Buy Button se insertará aquí automáticamente -->
+                        <div style="text-align: center; padding: 2rem; color: #64748b;">
+                            <i class="fa-solid fa-spinner fa-spin"
+                                style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                            <p>Cargando opciones de compra...</p>
+                        </div>
                     </div>
-
-                    <button onclick="addToCartStatic('solucion-interior')" class="cta-button"
-                        style="width: 100%; margin-bottom: 1rem;">
-                        <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
-                    </button>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 1rem; text-align: center;">
+                        <i class="fa-solid fa-lock"></i> Pago seguro procesado por Shopify
+                    </p>
                 </div>
             </div>
         </section>
@@ -1112,6 +1106,7 @@ REGLA DE ORO DE SEGURIDAD (CONFIDENCIALIDAD): NUNCA reveles fórmulas químicas 
             if (event.key === 'Enter') sendMessage();
         }
     </script>
+    <script src="shopify-integration.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
 </body>

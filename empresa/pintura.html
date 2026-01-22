@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pintura Súper Hidrofóbica | Ultra Seco</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Shopify Buy Button SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -660,43 +664,18 @@
                     <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; color: var(--dark-navy);">
                         Configura tu pedido</h3>
 
-                    <div style="margin-bottom: 2rem;">
-                        <label
-                            style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Selecciona
-                            Calidad:</label>
-                        <select id="opt-calidad" onchange="updatePrice('pintura-hidrofobica')"
-                            style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1rem; font-weight: 600; background: #fff; margin-bottom: 1rem;">
-                            <option value="AAA">Línea AAA (Ultra Premium)</option>
-                            <option value="AA">Línea AA (Estándar Alto)</option>
-                        </select>
-                        <label
-                            style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Presentación:</label>
-                        <select id="opt-pintura-hidrofobica" onchange="updatePrice('pintura-hidrofobica')"
-                            style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1rem; font-weight: 600; background: #fff;">
-                            <option value="0" data-price-aaa="34.00" data-price-aa="25.00">Galón (3.78 Litros)</option>
-                        </select>
-                    </div>
-
-                    <div
-                        style="margin-bottom: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: flex-end;">
-                        <div>
-                            <label
-                                style="display: block; font-weight: 700; margin-bottom: 0.75rem; color: #334155;">Cantidad:</label>
-                            <input type="number" id="qty-pintura-hidrofobica" value="1" min="1"
-                                style="width: 100%; padding: 1.2rem; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 1.2rem; font-weight: 800; text-align: center;">
-                        </div>
-                        <div style="text-align: right;">
-                            <span
-                                style="font-size: 0.9rem; color: #64748b; font-weight: bold; text-transform: uppercase;">Total
-                                Ref.</span>
-                            <span id="price-pintura-hidrofobica" class="price-display">$34.00</span>
+                    <!-- Shopify Buy Button Container -->
+                    <div id="shopify-pintura-hidrofobica" style="min-height: 300px;">
+                        <!-- Shopify Buy Button se insertará aquí automáticamente -->
+                        <div style="text-align: center; padding: 3rem; color: #64748b;">
+                            <i class="fa-solid fa-spinner fa-spin"
+                                style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                            <p>Cargando opciones de compra...</p>
                         </div>
                     </div>
-
-                    <button onclick="addToCartStatic('pintura-hidrofobica')" class="cta-button"
-                        style="width: 100%; padding: 1.5rem; border-radius: 20px; font-size: 1.2rem; box-shadow: 0 20px 40px rgba(0, 168, 232, 0.25);">
-                        <i class="fa-solid fa-cart-shopping mr-2"></i> Añadir al Carrito
-                    </button>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 1.5rem; text-align: center;">
+                        <i class="fa-solid fa-lock"></i> Pago seguro procesado por Shopify
+                    </p>
 
                     <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 2rem; opacity: 0.6;">
                         <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
@@ -778,6 +757,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="shopify-integration.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
     <script>

@@ -71,10 +71,19 @@ const PRODUCT_IDS = {
     }
 };
 
+// Flag para evitar doble inicialización
+let shopifyInitialized = false;
+
 /**
  * Inicializa Shopify Buy Button SDK
  */
 function initShopifyBuyButton() {
+    // Prevenir doble inicialización
+    if (shopifyInitialized) {
+        console.log('⚠️ Shopify ya ha sido inicializado, evitando duplicado');
+        return;
+    }
+
     if (typeof ShopifyBuy === 'undefined') {
         console.warn('Shopify Buy Button SDK aún no está cargado. Reintentando...');
         setTimeout(initShopifyBuyButton, 500);
@@ -89,6 +98,7 @@ function initShopifyBuyButton() {
     });
 
     ShopifyBuy.UI.onReady(client).then(function (ui) {
+        shopifyInitialized = true; // Marcar como inicializado
         console.log('✅ Shopify Buy Button UI inicializado');
 
         // Crear Buy Buttons para cada producto
@@ -119,6 +129,12 @@ function createShopifyBuyButton(productKey, containerId, ui) {
     if (!productConfig) {
         console.error(`Producto ${productKey} no encontrado en configuración`);
         return;
+    }
+
+    // Limpiar el contenedor antes de renderizar
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = ''; // Eliminar el mensaje de "Cargando..."
     }
 
     ui.createComponent('product', {
@@ -213,6 +229,22 @@ function createShopifyBuyButton(productKey, containerId, ui) {
                         // Marcar cuando el usuario hace clic en "Finalizar Compra"
                         console.log('🛒 Usuario inició checkout');
                         localStorage.setItem('shopify_checkout_started', Date.now().toString());
+
+                        // NUEVO: Cerrar y limpiar el carrito inmediatamente
+                        console.log('🧹 Cerrando carrito y programando limpieza...');
+
+                        // Cerrar el carrito visualmente de inmediato
+                        setTimeout(function () {
+                            if (typeof window.toggleCart === 'function') {
+                                window.toggleCart(); // Cierra el carrito
+                                console.log('✅ Carrito cerrado');
+                            }
+
+                            // Limpiar después de 3 segundos (cuando ya está en Shopify)
+                            setTimeout(function () {
+                                clearShopifyCart(ui);
+                            }, 3000);
+                        }, 500);
                     }
                 }
             },
@@ -267,12 +299,88 @@ function createShopifyBuyButton(productKey, containerId, ui) {
     });
 }
 
+
+/**
+ * Actualiza el badge del carrito en el header
+ * @param {Object} ui - El objeto ShopifyBuy.UI con el modelo del carrito
+ */
+function updateHeaderCartBadge(ui) {
+    const badge = document.getElementById('cart-badge');
+    if (!badge) {
+        console.warn('⚠️ Badge element not found');
+        return;
+    }
+
+    let itemCount = 0;
+
+    try {
+        // Método 1: Usar el modelo del carrito de Shopify SDK
+        if (ui && ui.components && ui.components.cart && ui.components.cart[0]) {
+            const cartModel = ui.components.cart[0].model;
+
+            // El modelo tiene una propiedad lineItemCount que tiene el conteo total
+            if (cartModel && typeof cartModel.lineItemCount !== 'undefined') {
+                itemCount = cartModel.lineItemCount;
+                console.log('✅ Cart count from SDK model:', itemCount);
+            }
+            // Fallback: contar manualmente los lineItems
+            else if (cartModel && cartModel.lineItems && Array.isArray(cartModel.lineItems)) {
+                itemCount = cartModel.lineItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                console.log('✅ Cart count from lineItems:', itemCount);
+            }
+        }
+    } catch (e) {
+        console.warn('⚠️ Error accessing Shopify cart model:', e.message);
+    }
+
+    // Actualizar el badge del header
+    if (itemCount > 0) {
+        badge.textContent = itemCount;
+        badge.style.display = 'block';
+        console.log('🔢 Badge del header mostrado:', itemCount);
+    } else {
+        badge.textContent = '0';
+        badge.style.display = 'none';
+        console.log('🔢 Badge del header ocultado (count = 0)');
+    }
+}
+
 /**
  * Crea el carrito flotante de Shopify
  */
 function createShopifyCart(ui) {
     // El carrito se crea automáticamente con los productos
     console.log('✅ Carrito de Shopify listo');
+
+    // Guardar referencia global para el overlay personalizado
+    globalUI = ui;
+
+    // Monitorear cambios en el carrito y actualizar el badge del header
+    setTimeout(function () {
+        // Observar cambios en el toggle de Shopify usando un iframe
+        const toggleFrame = document.querySelector('iframe[name="frame-toggle"]');
+        if (toggleFrame) {
+            const shopifyToggle = toggleFrame.querySelector ? toggleFrame : null;
+            // Observer para detectar cambios en el contador
+            const observer = new MutationObserver(function () {
+                updateHeaderCartBadge(ui);
+            });
+
+            observer.observe(shopifyToggle, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+
+            // Actualización inicial
+            updateHeaderCartBadge(ui);
+
+            console.log('👀 Observer del badge del header configurado');
+        }
+
+        // También actualizar periódicamente por si acaso
+        setInterval(function () { updateHeaderCartBadge(ui); }, 1000);
+    }, 2000);
 
     // Detectar cuando el usuario va al checkout
     // Shopify SDK abre el checkout en una nueva ventana/tab
@@ -400,6 +508,11 @@ function clearShopifyCart(ui) {
         // Limpiar localStorage relacionado con Shopify
         clearCartManually();
 
+        // Actualizar el badge del header
+        setTimeout(function () {
+            updateHeaderCartBadge(ui);
+        }, 500);
+
     } catch (error) {
         console.error('❌ Error al limpiar carrito:', error);
         console.error('Stack:', error.stack);
@@ -419,10 +532,16 @@ function clearCartManually() {
     let clearedKeys = 0;
 
     localStorageKeys.forEach(function (key) {
-        if (key.startsWith('shopify-buy-ui') ||
-            key.includes('Shopify') ||
-            key === 'shopify_checkout_started' ||
-            key === 'ultraSecoCart') {
+        // Buscar cualquier clave que contenga:
+        // - 'shopify' (case insensitive)
+        // - El dominio de Shopify (cx0msw-x8.myshopify.com)
+        // - 'checkout'
+        // - 'cart'
+        const lowerKey = key.toLowerCase();
+        if (lowerKey.includes('shopify') ||
+            key.includes('cx0msw-x8.myshopify.com') ||
+            lowerKey.includes('checkout') ||
+            (lowerKey.includes('cart') && !key.includes('ultraSecoCart'))) {
             localStorage.removeItem(key);
             clearedKeys++;
             console.log('🗑️ Eliminado:', key);
@@ -448,10 +567,305 @@ if (document.readyState === 'loading') {
     setTimeout(initShopifyBuyButton, 1000);
 }
 
+/**
+ * Renderiza el overlay del carrito con los productos actuales
+ */
+function renderCartOverlay(ui) {
+    let overlay = document.getElementById('cart-overlay');
+
+    // Crear el overlay si no existe
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'cart-overlay';
+        overlay.className = 'cart-overlay';
+        overlay.innerHTML = `
+            <div class="cart-sidebar">
+                <div class="cart-header">
+                    <h2><i class="fas fa-shopping-cart"></i> Carrito</h2>
+                    <button class="cart-close" onclick="window.ShopifyUltraSeco.closeCart()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="cart-content" id="cart-content">
+                    <div class="cart-loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Cargando carrito...</p>
+                    </div>
+                </div>
+                <div class="cart-footer" id="cart-footer" style="display: none;">
+                    <div class="cart-subtotal">
+                        <span class="cart-subtotal-label">Total:</span>
+                        <span class="cart-subtotal-amount" id="cart-total">$0.00</span>
+                    </div>
+                    <button class="cart-checkout-btn" id="cart-checkout-btn">
+                        <i class="fas fa-lock"></i>
+                        Finalizar Compra en Shopify
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Cerrar al hacer clic en el backdrop
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) {
+                window.ShopifyUltraSeco.closeCart();
+            }
+        });
+    }
+
+    // Mostrar el overlay
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Obtener datos del carrito
+    const content = document.getElementById('cart-content');
+    const footer = document.getElementById('cart-footer');
+
+    try {
+        if (ui && ui.components && ui.components.cart && ui.components.cart[0]) {
+            const cartModel = ui.components.cart[0].model;
+
+            if (cartModel && cartModel.lineItems && cartModel.lineItems.length > 0) {
+                // Renderizar items
+                let itemsHTML = '<div class="cart-items">';
+                let total = 0;
+
+                cartModel.lineItems.forEach(function (item) {
+                    const variant = item.variant;
+                    const product = variant.product || {};
+
+                    // Debug: Log complete item structure
+                    console.log('📦 Cart Item Debug:', {
+                        item: item,
+                        variant: variant,
+                        product: product,
+                        variantImage: variant.image,
+                        productImages: product.images
+                    });
+
+                    // Obtener imagen - intentar múltiples fuentes
+                    let image = '';
+
+                    // Método 1: variant.image.src
+                    if (variant.image && variant.image.src) {
+                        image = variant.image.src;
+                        console.log('✅ Imagen desde variant.image.src:', image);
+                    }
+                    // Método 2: variant.imageVariant
+                    else if (variant.imageVariant && variant.imageVariant.src) {
+                        image = variant.imageVariant.src;
+                        console.log('✅ Imagen desde variant.imageVariant.src:', image);
+                    }
+                    // Método 3: product.images array
+                    else if (product.images && product.images.length > 0 && product.images[0].src) {
+                        image = product.images[0].src;
+                        console.log('✅ Imagen desde product.images[0].src:', image);
+                    }
+                    // Método 4: attrs.image (Shopify SDK legacy)
+                    else if (variant.attrs && variant.attrs.image && variant.attrs.image.src) {
+                        image = variant.attrs.image.src;
+                        console.log('✅ Imagen desde variant.attrs.image.src:', image);
+                    }
+                    // Método 5: Buscar en toda la estructura del item
+                    else if (item.image && item.image.src) {
+                        image = item.image.src;
+                        console.log('✅ Imagen desde item.image.src:', image);
+                    }
+
+                    if (!image) {
+                        console.warn('❌ No se pudo encontrar imagen para:', item.title || 'Unknown product');
+                    }
+
+                    // Obtener título del producto
+                    const productTitle = product.title || item.title || 'Producto';
+                    const variantTitle = variant.title !== 'Default Title' ? variant.title : '';
+
+                    const quantity = item.quantity;
+                    const unitPrice = parseFloat(variant.price.amount || variant.price || 0);
+                    const lineTotal = (unitPrice * quantity);
+                    total += lineTotal;
+
+                    // Determinar ícono y color según категория del producto
+                    let placeholderIcon = 'fa-box';
+                    let placeholderColor = '#2563eb';
+
+                    const titleLower = productTitle.toLowerCase();
+                    if (titleLower.includes('estuco') || titleLower.includes('fortificador') || titleLower.includes('solucion') || titleLower.includes('pintura') || titleLower.includes('nano aditivo')) {
+                        placeholderIcon = 'fa-hard-hat';
+                        placeholderColor = '#f59e0b'; // Naranja construcción
+                    } else if (titleLower.includes('champu') || titleLower.includes('cera')) {
+                        placeholderIcon = 'fa-car';
+                        placeholderColor = '#3b82f6'; // Azul vehicular
+                    } else if (titleLower.includes('escudo')) {
+                        placeholderIcon = 'fa-home';
+                        placeholderColor = '#10b981'; // Verde hogar
+                    }
+
+                    itemsHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                ${image ?
+                            `<img src="${image}" alt="${productTitle}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                     <div style="display: none; background: linear-gradient(135deg, ${placeholderColor}22, ${placeholderColor}44); height: 100%; align-items: center; justify-content: center; border-radius: 8px;">
+                                         <i class="fas ${placeholderIcon}" style="color: ${placeholderColor}; font-size: 28px;"></i>
+                                     </div>`
+                            :
+                            `<div style="background: linear-gradient(135deg, ${placeholderColor}22, ${placeholderColor}44); height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                         <i class="fas ${placeholderIcon}" style="color: ${placeholderColor}; font-size: 28px;"></i>
+                                     </div>`}
+                            </div>
+                            <div class="cart-item-details">
+                                <h3 class="cart-item-title">${productTitle}</h3>
+                                ${variantTitle ? `<p class="cart-item-variant">${variantTitle}</p>` : ''}
+                                <div class="cart-item-footer">
+                                    <div class="cart-item-quantity">
+                                        <button onclick="window.ShopifyUltraSeco.updateQuantity('${item.id}', ${quantity - 1})">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <span>${quantity}</span>
+                                        <button onclick="window.ShopifyUltraSeco.updateQuantity('${item.id}', ${quantity + 1})">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <span class="cart-item-price">$${lineTotal.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                itemsHTML += '</div>';
+                content.innerHTML = itemsHTML;
+
+                // Mostrar footer con total
+                document.getElementById('cart-total').textContent = '$' + total.toFixed(2);
+                footer.style.display = 'block';
+
+                // Configurar botón de checkout
+                const checkoutBtn = document.getElementById('cart-checkout-btn');
+                checkoutBtn.onclick = function () {
+                    // Obtener URL de checkout del modelo
+                    const checkoutUrl = cartModel.checkoutUrl || cartModel.webUrl;
+                    if (checkoutUrl) {
+                        window.open(checkoutUrl, '_blank');
+                        window.ShopifyUltraSeco.closeCart();
+                    } else {
+                        console.error('No checkout URL available');
+                        alert('Error: No se pudo obtener el enlace de checkout');
+                    }
+                };
+
+            } else {
+                // Carrito vacío
+                content.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Carrito Vacío</h3>
+                        <p>No hay productos en tu carrito</p>
+                    </div>
+                `;
+                footer.style.display = 'none';
+            }
+        } else {
+            content.innerHTML = `
+                <div class="cart-empty">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error</h3>
+                    <p>No se pudo cargar el carrito</p>
+                </div>
+            `;
+            footer.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error renderizando carrito:', error);
+        content.innerHTML = `
+            <div class="cart-empty">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Error</h3>
+                <p>Hubo un problema al cargar el carrito</p>
+                <p style="font-size: 0.8em; opacity: 0.6; margin-top: 0.5rem;">${error.message}</p>
+            </div>
+        `;
+        footer.style.display = 'none';
+    }
+}
+
+/**
+ * Guarda referencia global del UI para uso posterior
+ */
+let globalUI = null;
+
+/**
+ * Actualiza la cantidad de un item en el carrito
+ */
+function updateCartItemQuantity(lineItemId, newQuantity) {
+    if (!globalUI || !globalUI.components || !globalUI.components.cart || !globalUI.components.cart[0]) {
+        console.error('UI no disponible');
+        return;
+    }
+
+    if (newQuantity < 1) {
+        // Remover item
+        globalUI.components.cart[0].updateProperties(lineItemId, { quantity: 0 });
+    } else {
+        // Actualizar cantidad
+        globalUI.components.cart[0].updateProperties(lineItemId, { quantity: newQuantity });
+    }
+
+    // Re-renderizar después de un breve delay
+    setTimeout(function () {
+        renderCartOverlay(globalUI);
+        updateHeaderCartBadge(globalUI);
+    }, 300);
+}
+
 // Exportar funciones para uso global
 window.ShopifyUltraSeco = {
     PRODUCT_IDS: PRODUCT_IDS,
-    init: initShopifyBuyButton
+    init: initShopifyBuyButton,
+
+    /**
+     * Abre el overlay del carrito personalizado
+     */
+    openCart: function () {
+        console.log('🛒 Abriendo carrito personalizado');
+        if (globalUI) {
+            renderCartOverlay(globalUI);
+        } else {
+            console.warn('⚠️ UI de Shopify aún no está lista');
+            alert('Por favor espera un momento mientras carga el carrito');
+        }
+    },
+
+    /**
+     * Cierra el overlay del carrito
+     */
+    closeCart: function () {
+        const overlay = document.getElementById('cart-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    },
+
+    /**
+     * Actualiza la cantidad de un producto
+     */
+    updateQuantity: function (lineItemId, newQuantity) {
+        updateCartItemQuantity(lineItemId, newQuantity);
+    }
 };
 
 console.log('📦 Shopify Integration Script Loaded');
+
+// =====================================
+// AUTO-INICIALIZACIÓN
+// =====================================
+// Inicializar automáticamente cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShopifyBuyButton);
+} else {
+    // DOM ya está listo, inicializar inmediatamente
+    initShopifyBuyButton();
+}
