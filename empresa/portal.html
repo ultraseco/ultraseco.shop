@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Precios | Ultra Seco</title>
-    <!-- Tailwind and FontAwesome -->
+    <title>Portal Estático 2 | Ultra Seco</title>
+    <!-- CSS and Tools -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -15,61 +15,41 @@
             background-color: #f1f5f9;
         }
 
-        /* Print Styles for PDF Generation */
-        @media print {
-            body {
-                background: white;
-            }
+        .price-text {
+            display: none;
+        }
 
-            #login-screen,
-            #dashboard-header,
-            #controls-section,
+        @media print {
             .no-print {
                 display: none !important;
             }
 
-            #dashboard,
-            #main-content {
+            .price-text {
                 display: block !important;
+            }
+
+            input,
+            select,
+            button {
+                display: none !important;
             }
 
             table {
                 width: 100%;
                 border-collapse: collapse;
+                font-size: 10pt;
             }
 
             th,
             td {
                 border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-
-            thead {
-                background-color: #f8f9fa !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            input {
-                border: none;
-                background: transparent;
-                width: auto;
-                text-align: right;
+                padding: 5px;
             }
 
             .print-header {
                 display: block !important;
-                margin-bottom: 20px;
                 text-align: center;
-            }
-
-            .print-only {
-                display: table-cell !important;
-            }
-
-            .screen-only {
-                display: none !important;
+                margin-bottom: 20px;
             }
         }
 
@@ -77,433 +57,664 @@
             display: none;
         }
 
-        /* --- PRINT PRIVACY & LAYOUT --- */
-        @media print {
-
-            /* General Hiding */
-            body {
-                background: white;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            #login-screen,
-            #dashboard-header,
-            #controls-section,
-            .no-print,
-            .col-cost,
-            .margin-indicator,
-            .input-control {
-                display: none !important;
-            }
-
-            #dashboard,
-            #main-content {
-                display: block !important;
-            }
-
-            /* Table Styling */
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 11pt;
-            }
-
-            th,
-            td {
-                border: 1px solid #ddd;
-                padding: 6px 10px;
-                text-align: left;
-            }
-
-            thead {
-                background-color: #f8f9fa !important;
-                color: black;
-            }
-
-            /* Clean Price Display */
-            input {
-                display: none !important;
-            }
-
-            /* Hide all inputs */
-            .price-text {
-                display: block !important;
-                font-weight: bold;
-            }
-
-            /* Show text-only prices */
-
-            /* Hide unused columns dynamically */
-            .print-detal .col-mayor,
-            .print-detal .col-distribuidor,
-            .print-detal .col-cost {
-                display: none !important;
-            }
-
-            .print-mayor .col-detal,
-            .print-mayor .col-distribuidor,
-            .print-mayor .col-cost {
-                display: none !important;
-            }
-
-            .print-distribuidor .col-detal,
-            .print-distribuidor .col-mayor,
-            .print-distribuidor .col-cost {
-                display: none !important;
-            }
+        .bs-text {
+            color: #2563eb;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 10px;
         }
-
-        .price-text {
-            display: none;
-        }
-
-        /* Hidden on screen, visible on print */
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
 
-    <!-- LOGIN SCREEN -->
+    <!-- PANTALLA DE ACCESO -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900">
         <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center">
-            <div class="mb-6">
-                <img src="images/logo.png" alt="Ultra Seco" class="h-16 mx-auto mb-4">
-                <h2 class="text-2xl font-bold text-slate-800">Acceso Administrativo</h2>
-                <p class="text-slate-500 text-sm">Portal de Gestión de Precios</p>
-            </div>
-            <input type="password" id="password-input" placeholder="Clave de acceso"
-                class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 outline-none transition">
+            <img src="images/logo.png" alt="Ultra Seco" class="h-16 mx-auto mb-4">
+            <h2 class="text-2xl font-bold mb-2">Portal Estático</h2>
+            <p class="text-slate-500 mb-6 text-sm">Control Editable Manual</p>
+            <input type="password" id="password-input" placeholder="Introducir clave de acceso"
+                class="w-full p-3 border rounded-lg mb-4 outline-none focus:ring-2 focus:ring-blue-500">
             <button onclick="checkLogin()"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
-                Entrar
-            </button>
+                class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Entrar</button>
             <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Clave incorrecta</p>
         </div>
     </div>
 
-    <!-- DASHBOARD -->
+    <!-- PANEL PRINCIPAL -->
     <div id="dashboard" class="hidden flex-1 flex flex-col">
-
-        <!-- Header -->
-        <header id="dashboard-header" class="bg-blue-900 text-white shadow-lg sticky top-0 z-40">
-            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-4">
+        <header class="bg-slate-800 text-white shadow-lg p-4 sticky top-0 z-40">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
                     <img src="images/logo.png" alt="Logo" class="h-8 bg-white rounded p-1">
-                    <div>
-                        <h1 class="font-bold text-lg leading-tight">Portal Interno</h1>
-                        <p class="text-xs text-blue-200">Gestión de Precios y Documentación</p>
-                    </div>
+                    <span class="font-bold text-lg">Portal 2.0 (HTML Editable)</span>
                 </div>
-                <div class="flex gap-6 items-center">
-                    <a href="index.html" class="text-sm hover:text-blue-200 flex items-center"><i
-                            class="fa-solid fa-home mr-2"></i> Inicio</a>
-                    <button onclick="logout()"
-                        class="text-sm bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded transition">
-                        <i class="fa-solid fa-right-from-bracket mr-2"></i> Salir
-                    </button>
+                <div class="flex gap-4">
+                    <a href="index.html" class="hover:text-blue-300 text-sm"><i class="fa fa-home"></i> Volver</a>
+                    <button onclick="location.reload()" class="text-sm bg-slate-700 px-3 py-1 rounded">Salir</button>
                 </div>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main id="main-content" class="container mx-auto px-6 py-8 flex-1">
-
-            <!-- Print Header (Visible only in Print/PDF) -->
-            <div class="print-header text-center mb-8 border-b pb-4">
-                <img src="images/logo.png" alt="Ultra Seco" style="height: 60px; margin: 0 auto;">
-                <h1 class="text-2xl font-bold mt-2">Lista de Precios Oficial</h1>
-                <p id="print-subtitle" class="text-gray-500">Actualizado: <span id="print-date"></span></p>
-            </div>
-
-            <!-- Extended Controls Section -->
-            <div id="controls-section"
-                class="flex flex-wrap justify-between items-end mb-6 gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                <div class="w-full xl:w-auto">
-                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-sliders"></i> Panel de Control
-                    </h2>
-                    <div class="flex gap-4 mt-4 flex-wrap">
-                        <!-- Euro Rate -->
-                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                            <label class="block text-xs font-bold text-blue-700 mb-1">Tasa Euro BCV (Bs.)</label>
-                            <input type="number" id="euro-rate" value="55.00" step="0.01" onchange="updateRate()"
-                                class="w-24 p-1 text-right font-mono font-bold border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+        <main class="container mx-auto p-6">
+            <!-- PANEL DE CONTROL -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border mb-8 no-print">
+                <div class="flex flex-wrap gap-6 items-end">
+                    <!-- Tasa Euro -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Tasa Euro BCV (Bs.)</label>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="euro-rate" value="400.49" step="0.01" oninput="recalcAll()"
+                                class="w-32 p-2 border rounded font-bold text-blue-700 text-lg outline-none focus:ring-2 focus:ring-blue-400">
                         </div>
+                    </div>
 
-                        <!-- Bulk Update -->
-                        <div class="bg-orange-50 p-3 rounded-lg border border-orange-100 flex items-end gap-2">
-                            <div>
-                                <label class="block text-xs font-bold text-orange-700 mb-1">Aumento Masivo %</label>
-                                <input type="number" id="bulk-pct" placeholder="5"
-                                    class="w-16 p-1 text-right font-mono border rounded focus:ring-2 focus:ring-orange-400 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-orange-700 mb-1">Redondeo</label>
-                                <select id="rounding-rule" class="p-1 text-xs border rounded bg-white">
-                                    <option value="none">Exacto</option>
-                                    <option value="99">.99</option>
-                                    <option value="50">.50</option>
-                                </select>
-                            </div>
-                            <button onclick="applyBulkUpdate()"
-                                class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-3 py-1 rounded text-sm transition">
-                                Aplicar
-                            </button>
+                    <!-- Aumento Masivo (Nuevo) -->
+                    <div class="bg-orange-50 p-3 rounded-lg border border-orange-100 flex items-end gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-orange-700 mb-1 uppercase">Aumento Masivo
+                                %</label>
+                            <input type="number" id="bulk-pct" placeholder="5"
+                                class="w-20 p-2 text-right font-bold border rounded focus:ring-2 focus:ring-orange-400 outline-none">
                         </div>
-
-                        <!-- Undo -->
-                        <button onclick="undo()" id="undo-btn" disabled
-                            class="bg-gray-200 text-gray-400 font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 hover:text-gray-700">
-                            <i class="fa-solid fa-rotate-left"></i> Deshacer
+                        <div>
+                            <label class="block text-[10px] font-bold text-orange-700 mb-1 uppercase">Redondeo</label>
+                            <select id="rounding-rule" class="p-2 text-xs border rounded bg-white outline-none">
+                                <option value="none">Exacto</option>
+                                <option value="99">.99</option>
+                                <option value="50">.50</option>
+                            </select>
+                        </div>
+                        <button onclick="applyBulkUpdate()"
+                            class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded text-sm transition shadow-sm">
+                            Aplicar
                         </button>
                     </div>
-                </div>
 
-                <div class="flex flex-wrap gap-3 items-center ml-auto">
-                    <!-- Category Multi-Select -->
+                    <!-- Deshacer -->
+                    <button onclick="undo()" id="undo-btn" disabled
+                        class="bg-gray-200 text-gray-400 font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 hover:text-gray-700">
+                        <i class="fa-solid fa-rotate-left"></i> Deshacer
+                    </button>
+
+                    <!-- Filtrar por Categoría (Nuevo) -->
                     <div class="flex flex-col gap-2 p-3 bg-slate-50 border rounded-lg">
                         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Filtrar por
                             Categoría</span>
                         <div class="flex flex-wrap gap-2" id="category-checks">
                             <label
                                 class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
-                                <input type="checkbox" value="Construcción" checked onchange="filterTable()"
+                                <input type="checkbox" value="Construcción" checked onchange="applyFilter()"
                                     class="cat-check"> Construcción
                             </label>
                             <label
                                 class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
-                                <input type="checkbox" value="Industria" checked onchange="filterTable()"
+                                <input type="checkbox" value="Industria" checked onchange="applyFilter()"
                                     class="cat-check"> Industria
                             </label>
                             <label
                                 class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
-                                <input type="checkbox" value="Vehicular" checked onchange="filterTable()"
+                                <input type="checkbox" value="Vehicular" checked onchange="applyFilter()"
                                     class="cat-check"> Vehicular
                             </label>
                             <label
                                 class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
-                                <input type="checkbox" value="Hogar" checked onchange="filterTable()" class="cat-check">
+                                <input type="checkbox" value="Hogar" checked onchange="applyFilter()" class="cat-check">
                                 Hogar
                             </label>
                         </div>
                     </div>
 
-                    <!-- Search Bar -->
-                    <div class="relative">
-                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-product" placeholder="Buscar producto..." oninput="filterTable()"
-                            class="pl-10 pr-4 py-2 border rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-400 outline-none w-48 xl:w-64">
-                    </div>
-
-                    <div class="w-px h-8 bg-gray-300 mx-2"></div>
-
-                    <button onclick="saveChanges()"
-                        class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-green-500/30 transition flex items-center transform hover:scale-105">
-                        <i class="fa-solid fa-save mr-2"></i> Guardar Todo
-                    </button>
-
-                    <div class="relative">
-                        <button onclick="toggleDropdown()"
-                            class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-lg shadow transition flex items-center text-sm">
-                            <i class="fa-solid fa-file-pdf mr-2"></i> Imprimir / PDF
-                        </button>
-                        <!-- Dropdown -->
-                        <div id="print-dropdown"
-                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 hidden z-50">
-                            <a href="javascript:void(0)" onclick="printList('detal')"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lista al Detal</a>
-                            <a href="javascript:void(0)" onclick="printList('mayor')"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lista al Mayor</a>
-                            <a href="javascript:void(0)" onclick="printList('distribuidor')"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lista Distribuidor</a>
+                    <!-- Buscador -->
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Buscar Producto</label>
+                        <div class="relative">
+                            <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="filter" oninput="applyFilter()" placeholder="Nombre del producto..."
+                                class="w-full pl-10 p-2 border rounded outline-none focus:ring-2 focus:ring-blue-400">
                         </div>
                     </div>
+
+                    <!-- Acciones -->
+                    <div class="flex gap-2">
+                        <button onclick="window.print()" class="bg-slate-700 text-white px-6 py-2 rounded-lg font-bold">
+                            <i class="fa fa-print"></i> Imprimir PDF
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <script>
-                function toggleDropdown() {
-                    const dd = document.getElementById('print-dropdown');
-                    dd.classList.toggle('hidden');
-                }
-
-                // Close dropdown when clicking outside
-                window.onclick = function (event) {
-                    if (!event.target.matches('.fa-file-pdf') && !event.target.closest('button[onclick="toggleDropdown()"]')) {
-                        const dd = document.getElementById('print-dropdown');
-                        if (dd && !dd.classList.contains('hidden')) {
-                            dd.classList.add('hidden');
-                        }
-                    }
-                }
-            </script>
-
-            <!-- Product Table -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
-                                <th class="p-3 border-b text-center no-print" style="width: 40px;">
-                                    <input type="checkbox" id="select-all-products" checked
-                                        onchange="toggleAllProducts(this)" title="Incluir todos">
-                                </th>
-                                <th class="p-3 border-b text-left">Producto</th>
-                                <th class="p-3 border-b text-left">Presentación</th>
-                                <th class="p-3 border-b text-right bg-gray-50 text-gray-800 col-cost"
-                                    style="width: 120px;">Costo API</th>
-                                <th class="p-3 border-b text-right bg-blue-50 text-blue-800 col-detal">Precio Detal</th>
-                                <th class="p-3 border-b text-right bg-green-50 text-green-800 col-mayor">Precio Mayor
-                                </th>
-                                <th class="p-3 border-b text-right bg-purple-50 text-purple-800 col-distribuidor">P.
-                                    Distribuidor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="price-table-body" class="text-slate-700 text-sm divide-y divide-gray-100">
-                            <!-- Rows injected by JS -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="print-header">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 50px; margin: 0 auto;">
+                <h1 style="font-size: 20px; font-weight: bold;">Lista de Precios Oficial</h1>
+                <p>Generado: <span id="current-date"></span></p>
             </div>
 
+            <!-- TABLA EDITABLE -->
+            <div class="bg-white rounded-xl shadow-lg border overflow-hidden">
+                <table class="w-full text-left" id="main-table">
+                    <thead class="bg-slate-100 text-[10px] font-bold text-slate-600 uppercase">
+                        <tr>
+                            <th class="p-4">Producto</th>
+                            <th class="p-4">Presentación</th>
+                            <th class="p-4 text-right">Costo API</th>
+                            <th class="p-4 text-right bg-blue-50">Precio Detal ($)</th>
+                            <th class="p-4 text-right bg-green-50">Precio Mayor ($)</th>
+                            <th class="p-4 text-right bg-purple-50">Distribuidor ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y text-sm">
+
+                        <!-- FILA PRODUCTO: SOLUCION INTERIOR -->
+                        <tr class="product-row" data-search="solucion interior construccion"
+                            data-category="Construcción">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Ultra Seco Solución Interior</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">1 Litro</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="8.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="13.99" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                                <div class="price-text font-bold">13.99 $</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="11.89" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                                <div class="price-text font-bold">11.89 $</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="9.79"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                                <div class="price-text font-bold">9.79 $</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: SOLUCION EXTERIOR -->
+                        <tr class="product-row" data-search="solucion exterior construccion"
+                            data-category="Construcción">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Ultra Seco Solución Exterior</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">1 Litro</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="10.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="16.99" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="14.44" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="11.89"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: PINTURA HIDROFOBICA -->
+                        <tr class="product-row" data-search="pintura hidrofobica construccion"
+                            data-category="Construcción">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Pintura Súper Hidrofóbica</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">Galón</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="22.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="34.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="28.90" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="23.80"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: ESTUCO -->
+                        <tr class="product-row" data-search="estuco super hidrofobico construccion"
+                            data-category="Construcción">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Estuco Súper Hidrofóbico</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">Galón</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="12.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="19.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="16.15" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="13.30"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: ADITIVO ASFATICO -->
+                        <tr class="product-row" data-search="aditivo asfaltico industria" data-category="Industria">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Aditivo Asfáltico</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">Tambor (200L)</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="2800.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="3500.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="2975.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded"
+                                    value="2450.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: MAGNETRON -->
+                        <tr class="product-row" data-search="magnetron eco capturador industria"
+                            data-category="Industria">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Magnetron Eco Capturador</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">Galón</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="210.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="345.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="293.25" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded"
+                                    value="241.50" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: ECO CAPTURADOR -->
+                        <tr class="product-row" data-search="eco capturador mineria industria"
+                            data-category="Industria">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Eco Capturador (Minería)</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">1 Litro</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="50.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="85.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="72.25" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="59.50"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: ESCUDO CERAMICO -->
+                        <tr class="product-row" data-search="escudo ceramico hogar" data-category="Hogar">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Escudo Cerámico</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">1 Litro</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="25.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="45.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="38.25" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="31.50"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: CHAMPU NANO (VEHICULAR) -->
+                        <tr class="product-row" data-search="champu nano concentrado vehicular"
+                            data-category="Vehicular">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Champú Nano-Concentrado</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">1 Litro</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="7.00" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="12.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="10.20" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="8.40"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                        <!-- FILA PRODUCTO: CERA NANO (VEHICULAR) -->
+                        <tr class="product-row" data-search="cera nano protectora vehicular" data-category="Vehicular">
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">Cera Nano Protectora</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">500ml</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="8.50" oninput="recalcAll()">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="15.00" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="12.75" oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" value="10.50"
+                                    oninput="recalcAll()">
+                                <div class="bs-text">Bs --</div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 text-center text-slate-400 text-xs py-10">
+                &copy; 2026 Ultra Seco - Portal de Gestión v2.0 HTML Editable
+            </div>
         </main>
     </div>
 
-    <!-- Need catalog.js for base data -->
-    <script src="catalog.js"></script>
-
+    <!-- CÓDIGO DE LOGICA -->
     <script>
-        const CORRECT_PASS = "admin123";
+        // Clave para guardar los datos
+        const STORAGE_KEY = 'portal2_data';
 
-        // Global State
-        let localProducts = [];
-        let historyStack = [];
-        let euroRate = 55.00;
-        let excludedIds = new Set(); // Products manually hidden
-
-        // --- INITIALIZATION ---
         function checkLogin() {
             const pass = document.getElementById('password-input').value;
-            if (pass === CORRECT_PASS) {
+            if (pass === "admin123") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                initDashboard();
+                document.getElementById('current-date').textContent = new Date().toLocaleDateString();
+
+                loadPersistentData(); // Cargar lo guardado anteriormente
+                recalcAll();
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
         }
 
-        function logout() { location.reload(); }
+        // Función para guardar TODO el estado de la tabla automáticamente
+        function saveToStorage() {
+            const data = {
+                euro: document.getElementById('euro-rate').value,
+                products: []
+            };
 
-        function initDashboard() {
-            // Clone products to local state
-            localProducts = JSON.parse(JSON.stringify(window.products));
-
-            // Load Global Settings (Euro Rate)
-            const savedRate = localStorage.getItem('ultraSecoEuroRate');
-            if (savedRate) {
-                euroRate = parseFloat(savedRate);
-                document.getElementById('euro-rate').value = euroRate.toFixed(2);
-            }
-
-            // Load existing overrides from localStorage
-            const savedPrices = JSON.parse(localStorage.getItem('ultraSecoPrices'));
-
-            if (savedPrices) {
-                localProducts.forEach(p => {
-                    const savedOpts = savedPrices[p.id];
-                    if (savedOpts && Array.isArray(savedOpts)) {
-                        p.options.forEach((opt, idx) => {
-                            if (savedOpts[idx]) {
-                                // Merge saved prices into current session options
-                                opt.price = savedOpts[idx].price || opt.price;
-                                opt.priceMayor = savedOpts[idx].priceMayor || (opt.price * 0.85);
-                                opt.priceDist = savedOpts[idx].priceDist || (opt.price * 0.70);
-                                opt.cost = savedOpts[idx].cost || 0; // Load Cost
-                            }
-                        });
-                    } else {
-                        initDefaults(p);
-                    }
+            const rows = document.querySelectorAll('.product-row');
+            rows.forEach((row, index) => {
+                data.products.push({
+                    cost: row.querySelector('.cost').value,
+                    detal: row.querySelector('.price-detal').value,
+                    mayor: row.querySelector('.price-mayor').value,
+                    dist: row.querySelector('.price-dist').value
                 });
-            } else {
-                localProducts.forEach(p => initDefaults(p));
-            }
+            });
 
-            renderTable();
-            document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+            // Mostrar un pequeño indicador de "Guardado"
+            showSaveStatus();
         }
 
-        function initDefaults(product) {
-            product.options.forEach(opt => {
-                if (!opt.priceMayor) opt.priceMayor = Math.round(opt.price * 0.85 * 100) / 100;
-                if (!opt.priceDist) opt.priceDist = Math.round(opt.price * 0.70 * 100) / 100;
-                if (!opt.cost) opt.cost = 0;
+        // Función para cargar los datos al entrar
+        function loadPersistentData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (!saved) return;
+
+            const data = JSON.parse(saved);
+
+            // Restaurar Euro
+            if (data.euro) document.getElementById('euro-rate').value = data.euro;
+
+            // Restaurar Filas
+            const rows = document.querySelectorAll('.product-row');
+            data.products.forEach((prod, index) => {
+                if (rows[index]) {
+                    rows[index].querySelector('.cost').value = prod.cost;
+                    rows[index].querySelector('.price-detal').value = prod.detal;
+                    rows[index].querySelector('.price-mayor').value = prod.mayor;
+                    rows[index].querySelector('.price-dist').value = prod.dist;
+                }
             });
         }
 
-        // --- GLOBAL ACTIONS ---
-        function updateRate() {
-            const val = parseFloat(document.getElementById('euro-rate').value);
-            if (!isNaN(val) && val > 0) {
-                euroRate = val;
-                localStorage.setItem('ultraSecoEuroRate', euroRate);
-                renderTable(); // Re-render to update Bs prices
-            }
+        function recalcAll() {
+            const euro = parseFloat(document.getElementById('euro-rate').value) || 0;
+            const rows = document.querySelectorAll('.product-row');
+
+            rows.forEach(row => {
+                const inputs = {
+                    detal: row.querySelector('.price-detal'),
+                    mayor: row.querySelector('.price-mayor'),
+                    dist: row.querySelector('.price-dist')
+                };
+
+                const bsTexts = row.querySelectorAll('.bs-text');
+                const priceTexts = row.querySelectorAll('.price-text');
+
+                const pDetal = parseFloat(inputs.detal.value) || 0;
+                bsTexts[0].textContent = "Bs " + (pDetal * euro).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+                if (priceTexts[0]) priceTexts[0].textContent = pDetal.toFixed(2) + " $";
+
+                const pMayor = parseFloat(inputs.mayor.value) || 0;
+                if (bsTexts[1]) bsTexts[1].textContent = "Bs " + (pMayor * euro).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+                if (priceTexts[1]) priceTexts[1].textContent = pMayor.toFixed(2) + " $";
+
+                const pDist = parseFloat(inputs.dist.value) || 0;
+                if (bsTexts[2]) bsTexts[2].textContent = "Bs " + (pDist * euro).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+                if (priceTexts[2]) priceTexts[2].textContent = pDist.toFixed(2) + " $";
+            });
+
+            saveToStorage(); // Guardar cada vez que algo cambie
         }
 
-        // --- HISTORY / UNDO ---
+        function showSaveStatus() {
+            let status = document.getElementById('save-status');
+            if (!status) {
+                status = document.createElement('div');
+                status.id = 'save-status';
+                status.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 transition-opacity duration-500';
+                status.innerHTML = '<i class="fa fa-check"></i> Cambios Sincronizados';
+                document.body.appendChild(status);
+            }
+            status.style.opacity = '1';
+            setTimeout(() => { status.style.opacity = '0'; }, 2000);
+        }
+
+        // --- HISTORIAL / UNDO ---
+        let historyStack = [];
+
         function pushHistory() {
-            if (historyStack.length >= 10) historyStack.shift(); // Max 10 steps
-            historyStack.push(JSON.parse(JSON.stringify(localProducts)));
-            document.getElementById('undo-btn').disabled = false;
+            const currentData = [];
+            const rows = document.querySelectorAll('.product-row');
+            rows.forEach(row => {
+                currentData.push({
+                    cost: row.querySelector('.cost').value,
+                    detal: row.querySelector('.price-detal').value,
+                    mayor: row.querySelector('.price-mayor').value,
+                    dist: row.querySelector('.price-dist').value
+                });
+            });
+
+            if (historyStack.length >= 10) historyStack.shift(); // Max 10 pasos
+            historyStack.push(JSON.parse(JSON.stringify(currentData)));
+
+            const undoBtn = document.getElementById('undo-btn');
+            if (undoBtn) {
+                undoBtn.disabled = false;
+                undoBtn.classList.remove('bg-gray-200', 'text-gray-400');
+                undoBtn.classList.add('bg-white', 'text-slate-700', 'border');
+            }
         }
 
         function undo() {
             if (historyStack.length === 0) return;
-            localProducts = historyStack.pop();
-            if (historyStack.length === 0) document.getElementById('undo-btn').disabled = true;
-            renderTable();
-            alert('Cambios deshechos.');
+
+            const lastState = historyStack.pop();
+            const rows = document.querySelectorAll('.product-row');
+
+            lastState.forEach((prod, index) => {
+                if (rows[index]) {
+                    rows[index].querySelector('.cost').value = prod.cost;
+                    rows[index].querySelector('.price-detal').value = prod.detal;
+                    rows[index].querySelector('.price-mayor').value = prod.mayor;
+                    rows[index].querySelector('.price-dist').value = prod.dist;
+                }
+            });
+
+            if (historyStack.length === 0) {
+                const undoBtn = document.getElementById('undo-btn');
+                if (undoBtn) {
+                    undoBtn.disabled = true;
+                    undoBtn.classList.add('bg-gray-200', 'text-gray-400');
+                    undoBtn.classList.remove('bg-white', 'text-slate-700', 'border');
+                }
+            }
+
+            recalcAll(); // Actualizar Bs y guardar en Storage
+            alert('⏪ Cambios revertidos.');
         }
 
-        // --- BULK UPDATE ---
+        // --- AUMENTO MASIVO ---
         function applyBulkUpdate() {
             const pctInput = document.getElementById('bulk-pct').value;
             const rounding = document.getElementById('rounding-rule').value;
 
-            if (!pctInput) return alert('Ingrese un porcentaje');
+            if (!pctInput) return alert('Por favor, ingrese un porcentaje de aumento.');
 
             const pct = parseFloat(pctInput) / 100;
 
-            if (confirm(`¿Seguro que desea aplicar un cambio del ${pctInput}% a TODOS los productos VISIBLES en la tabla?`)) {
-                pushHistory(); // Save state
+            if (confirm(`¿Seguro que desea aplicar un aumento del ${pctInput}% a TODOS los productos VISIBLES en la tabla?`)) {
+                pushHistory(); // <--- GUARDAR HISTORIAL ANTES DE CAMBIAR
 
-                // Get current active categories and search
-                const activeCats = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value);
-                const query = document.getElementById('search-product').value.toLowerCase();
+                const rows = document.querySelectorAll('.product-row');
+                let count = 0;
 
-                localProducts.forEach(product => {
-                    // Inclusion logic check (same as renderTable)
-                    if (activeCats.length > 0 && !activeCats.includes(product.category)) return;
-                    if (query && !product.name.toLowerCase().includes(query)) return;
-                    if (excludedIds.has(product.id)) return;
+                rows.forEach(row => {
+                    // Solo aplicar si la fila es visible (pasa los filtros actuales)
+                    if (row.style.display !== "none") {
+                        const inputs = {
+                            detal: row.querySelector('.price-detal'),
+                            mayor: row.querySelector('.price-mayor'),
+                            dist: row.querySelector('.price-dist')
+                        };
 
-                    product.options.forEach(opt => {
-                        // Apply to all tiers
-                        opt.price = calculateNewPrice(opt.price, pct, rounding);
-                        opt.priceMayor = calculateNewPrice(opt.priceMayor, pct, rounding);
-                        opt.priceDist = calculateNewPrice(opt.priceDist, pct, rounding);
-                    });
+                        inputs.detal.value = calculateNewBulkPrice(parseFloat(inputs.detal.value) || 0, pct, rounding);
+                        inputs.mayor.value = calculateNewBulkPrice(parseFloat(inputs.mayor.value) || 0, pct, rounding);
+                        inputs.dist.value = calculateNewBulkPrice(parseFloat(inputs.dist.value) || 0, pct, rounding);
+                        count++;
+                    }
                 });
 
-                renderTable();
-                alert('Aumento masivo aplicado a la selección actual.');
+                recalcAll(); // Actualizar bolívares y guardar en Storage
+                alert(`✅ Aumento masivo aplicado a ${count} productos.`);
             }
         }
 
-        function calculateNewPrice(oldPrice, pct, rounding) {
+        function calculateNewBulkPrice(oldPrice, pct, rounding) {
+            if (oldPrice <= 0) return 0;
             let newPrice = oldPrice * (1 + pct);
 
             if (rounding === '99') {
@@ -511,207 +722,39 @@
             } else if (rounding === '50') {
                 newPrice = Math.floor(newPrice) + 0.50;
             } else {
-                newPrice = Math.round(newPrice * 100) / 100; // Exact update
+                newPrice = Math.round(newPrice * 100) / 100; // Exacto
             }
-            return newPrice;
+            return newPrice.toFixed(2);
         }
 
+        function applyFilter() {
+            const query = document.getElementById('filter').value.toLowerCase();
+            const activeCats = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value.toLowerCase());
+            const rows = document.querySelectorAll('.product-row');
 
-        // --- RENDERING ---
-        function renderTable() {
-            const tbody = document.getElementById('price-table-body');
-            const activeCats = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value);
-            const query = document.getElementById('search-product').value.toLowerCase();
+            rows.forEach(row => {
+                const searchStr = row.getAttribute('data-search').toLowerCase();
+                const category = row.dataset.category ? row.dataset.category.toLowerCase() : "";
 
-            tbody.innerHTML = '';
+                // Si la fila no tiene data-category, intentamos extraerla del data-search
+                let rowCat = category;
+                if (!rowCat) {
+                    if (searchStr.includes('construccion')) rowCat = 'construcción';
+                    else if (searchStr.includes('industria')) rowCat = 'industria';
+                    else if (searchStr.includes('vehicular')) rowCat = 'vehicular';
+                    else if (searchStr.includes('hogar')) rowCat = 'hogar';
+                }
 
-            localProducts.forEach(product => {
-                // Filter Logic: Category
-                if (activeCats.length > 0 && !activeCats.includes(product.category)) return;
+                const matchesQuery = searchStr.includes(query);
+                const matchesCat = activeCats.length === 0 || activeCats.includes(rowCat);
 
-                // Filter Logic: Search
-                if (query && !product.name.toLowerCase().includes(query)) return;
-
-                product.options.forEach((option, oIndex) => {
-                    const tr = document.createElement('tr');
-                    tr.dataset.category = product.category;
-                    tr.dataset.id = product.id;
-
-                    if (excludedIds.has(product.id)) {
-                        tr.classList.add('opacity-40', 'bg-slate-100');
-                    }
-
-                    const nameCell = oIndex === 0
-                        ? `<div class="font-bold text-slate-800">${product.name}</div>
-                           <div class="text-xs text-slate-400 capitalize">${product.category.toLowerCase()}</div>`
-                        : '';
-
-                    // Calculations
-                    const cost = option.cost || 0;
-                    const price = option.price || 0;
-
-                    // Real Margin: (Price - Cost) / Price
-                    const realMargin = price > 0 ? ((price - cost) / price * 100) : 0;
-                    const marginColor = realMargin >= 30 ? 'text-green-600' : (realMargin < 15 ? 'text-red-600' : 'text-orange-500');
-
-                    // Commercial Discounts (vs Detal)
-                    const mayorDisc = price > 0 ? ((price - option.priceMayor) / price * 100) : 0;
-                    const distDisc = price > 0 ? ((price - option.priceDist) / price * 100) : 0;
-
-                    // Bs Conversions
-                    const bsPrice = (price * euroRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    const bsMayor = (option.priceMayor * euroRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    const bsDist = (option.priceDist * euroRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-
-                    tr.innerHTML = `
-                        <td class="p-3 text-center no-print">
-                            <input type="checkbox" ${excludedIds.has(product.id) ? '' : 'checked'} 
-                                onchange="toggleProductInclusion('${product.id}', this)"
-                                class="product-inclusion-check">
-                        </td>
-                        <td class="p-3 align-top border-r border-slate-100">${nameCell}</td>
-                        <td class="p-3 align-middle font-medium text-slate-600">${option.label}</td>
-                        
-                        <!-- COST (Hidden on Print) -->
-                        <td class="p-3 align-middle text-right bg-gray-50/50 border-r border-dash col-cost">
-                            <div class="flex items-center justify-end input-control">
-                                <span class="text-gray-400 mr-1 text-xs sm-currency">Ref.</span>
-                                <input type="number" step="0.01" value="${cost.toFixed(2)}"
-                                    onchange="updatePrice('${product.id}', ${oIndex}, 'cost', this.value)"
-                                    class="w-16 text-right p-1 text-xs border rounded bg-white focus:ring-2 focus:ring-gray-300 outline-none">
-                            </div>
-                            <div class="text-[10px] font-bold ${marginColor} mt-1 text-right margin-indicator" title="Margen Real">
-                                ${realMargin.toFixed(1)}% Ganancia
-                            </div>
-                        </td>
-
-                        <!-- DETAL -->
-                        <td class="p-3 align-middle text-right bg-blue-50/30 col-detal">
-                            <div class="flex items-center justify-end input-control">
-                                <span class="text-gray-400 mr-1 font-bold">Ref.</span>
-                                <input type="number" step="0.01" value="${price.toFixed(2)}"
-                                    onchange="updatePrice('${product.id}', ${oIndex}, 'price', this.value)"
-                                    class="w-20 text-right p-1 border rounded bg-white font-bold text-slate-700 focus:ring-2 focus:ring-blue-200 outline-none font-mono">
-                            </div>
-                            <!-- Print Only Text -->
-                            <div class="price-text text-right text-lg">Ref. ${price.toFixed(2)}</div>
-                            <div class="text-[10px] text-blue-600 mt-1 font-mono text-right font-bold">Bs ${bsPrice}</div>
-                        </td>
-
-                        <!-- MAYOR -->
-                        <td class="p-3 align-middle text-right bg-green-50/30 col-mayor">
-                            <div class="flex items-center justify-end input-control">
-                                <span class="text-gray-400 mr-1 font-bold">Ref.</span>
-                                <input type="number" step="0.01" value="${(option.priceMayor || 0).toFixed(2)}"
-                                    onchange="updatePrice('${product.id}', ${oIndex}, 'priceMayor', this.value)"
-                                    class="w-20 text-right p-1 border rounded bg-white focus:ring-2 focus:ring-green-200 outline-none font-mono">
-                            </div>
-                             <!-- Print Only Text -->
-                            <div class="price-text text-right text-lg">Ref. ${(option.priceMayor || 0).toFixed(2)}</div>
-                            <div class="flex justify-between items-center mt-1">
-                                <span class="text-[10px] bg-green-100 text-green-700 px-1 rounded margin-indicator">-${mayorDisc.toFixed(0)}%</span>
-                                <span class="text-[10px] text-green-700 font-mono font-bold">Bs ${bsMayor}</span>
-                            </div>
-                        </td>
-
-                        <!-- DISTRIBUIDOR -->
-                        <td class="p-3 align-middle text-right bg-purple-50/30 col-distribuidor">
-                            <div class="flex items-center justify-end input-control">
-                                <span class="text-gray-400 mr-1 font-bold">Ref.</span>
-                                <input type="number" step="0.01" value="${(option.priceDist || 0).toFixed(2)}"
-                                    onchange="updatePrice('${product.id}', ${oIndex}, 'priceDist', this.value)"
-                                    class="w-20 text-right p-1 border rounded bg-white focus:ring-2 focus:ring-purple-200 outline-none font-mono">
-                            </div>
-                             <!-- Print Only Text -->
-                            <div class="price-text text-right text-lg">Ref. ${(option.priceDist || 0).toFixed(2)}</div>
-                             <div class="flex justify-between items-center mt-1">
-                                <span class="text-[10px] bg-purple-100 text-purple-700 px-1 rounded margin-indicator">-${distDisc.toFixed(0)}%</span>
-                                <span class="text-[10px] text-purple-700 font-mono font-bold">Bs ${bsDist}</span>
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+                if (matchesQuery && matchesCat) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
             });
         }
-
-        function updatePrice(prodId, optIndex, field, value) {
-            pushHistory(); // Auto-save state on manual edit
-            const product = localProducts.find(p => p.id === prodId);
-            if (product && product.options[optIndex]) {
-                product.options[optIndex][field] = parseFloat(value);
-                renderTable(); // Re-render to update margins/conversions
-            }
-        }
-
-        function filterTable() {
-            renderTable();
-        }
-
-        function toggleProductInclusion(id, cb) {
-            if (cb.checked) {
-                excludedIds.delete(id);
-            } else {
-                excludedIds.add(id);
-            }
-            renderTable();
-        }
-
-        function toggleAllProducts(cb) {
-            localProducts.forEach(p => {
-                if (cb.checked) excludedIds.delete(p.id);
-                else excludedIds.add(p.id);
-            });
-            renderTable();
-        }
-
-        // --- ACTIONS ---
-        function saveChanges() {
-            // Save structure: { 'prodId': [ {price: 10, cost: 5, ...}, ... ] }
-            const priceMap = {};
-            localProducts.forEach(p => {
-                priceMap[p.id] = p.options;
-            });
-
-            localStorage.setItem('ultraSecoPrices', JSON.stringify(priceMap));
-            localStorage.setItem('ultraSecoEuroRate', euroRate); // ALSO SAVE RATE
-            alert('Precios, costos y tasas actualizados en todo el ecosistema.');
-        }
-
-        function printList(type) {
-            document.body.classList.remove('print-detal', 'print-mayor', 'print-distribuidor');
-            document.body.classList.add(`print-${type}`);
-
-            const titles = {
-                'detal': 'Lista de Precios al Detal',
-                'mayor': 'Lista de Precios al Mayor',
-                'distribuidor': 'Lista de Precios para Distribuidores'
-            };
-            document.querySelector('#print-subtitle').innerHTML = `<strong>${titles[type]}</strong> - Tasa: Bs. ${euroRate.toFixed(2)} - v${new Date().getFullYear()}.1`;
-
-            const style = document.createElement('style');
-            style.id = 'print-style-temp';
-
-            if (type === 'detal') {
-                style.innerHTML = `@media print { .col-mayor, .col-distribuidor, .col-cost { display: none !important; } }`;
-            } else if (type === 'mayor') {
-                style.innerHTML = `@media print { .col-detal, .col-distribuidor, .col-cost { display: none !important; } }`;
-            } else {
-                style.innerHTML = `@media print { .col-detal, .col-mayor, .col-cost { display: none !important; } }`;
-            }
-            document.head.appendChild(style);
-
-            const dd = document.getElementById('print-dropdown');
-            if (dd) dd.classList.add('hidden');
-
-            window.print();
-
-            setTimeout(() => {
-                if (document.getElementById('print-style-temp')) document.getElementById('print-style-temp').remove();
-            }, 1000);
-        }
-
     </script>
 </body>
 
