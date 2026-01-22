@@ -1,25 +1,30 @@
-# Ultra Seco - Configuración Netlify
-# www.ultraseco.shop
+# Ultra Seco - Configuración Principal Netlify
+# Dominio: www.ultraseco.shop
 
 [build]
   publish = "."
-  command = "echo 'No build required - static site'"
+  command = "echo 'Static site - No build step'"
 
+# 1. REDIRECCIONES (Redirects)
+
+# Redirigir de Apex (sin www) a WWW con HTTPS forzado
+[[redirects]]
+  from = "https://ultraseco.shop/*"
+  to = "https://www.ultraseco.shop/:splat"
+  status = 301
+  force = true
+
+# Enviar la raíz "/" a la carpeta de la empresa de forma transparente (Rewrite 200)
+# Usamos force = true para que ignore el index.html que está en la raíz
 [[redirects]]
   from = "/"
   to = "/empresa/index.html"
   status = 200
+  force = true
 
-[[redirects]]
-  from = "/index.html"
-  to = "/empresa/index.html"
-  status = 200
+# 2. CABECERAS (Headers)
 
-[[redirects]]
-  from = "/*"
-  to = "/empresa/index.html"
-  status = 404
-
+# Reglas globales de seguridad
 [[headers]]
   for = "/*"
   [headers.values]
@@ -29,27 +34,19 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
+# Cache optimizado para imágenes
 [[headers]]
   for = "/empresa/images/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Cache optimizado para archivos CSS y JS
 [[headers]]
-  for = "/empresa/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.css"
+  for = "/empresa/*.css"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
 
 [[headers]]
-  for = "/*.js"
+  for = "/empresa/*.js"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
