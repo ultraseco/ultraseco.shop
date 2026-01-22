@@ -800,8 +800,90 @@
 
             localStorage.setItem('ultraSecoPrices', JSON.stringify(priceMap));
             localStorage.setItem('ultraSecoEuroRate', euroRate); // ALSO SAVE RATE
-            alert('Precios, costos y tasas actualizados en todo el ecosistema.');
+
+            // Preguntar si quiere exportar a catalog.js
+            if (confirm('✅ Precios guardados en localStorage.\n\n¿Quieres descargar el nuevo catalog.js para hacer los cambios permanentes?\n\n(Deberás reemplazar el archivo actual con el descargado)')) {
+                exportToCatalogJS();
+            } else {
+                alert('Precios guardados temporalmente. Los cambios se perderán si borras el caché del navegador.');
+            }
         }
+
+        /**
+         * Exporta los cambios actuales a un archivo catalog.js descargable
+         */
+        function exportToCatalogJS() {
+            // Generar contenido del nuevo catalog.js
+            const catalogContent = generateCatalogJS();
+
+            // Crear blob y descargar
+            const blob = new Blob([catalogContent], { type: 'text/javascript;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'catalog.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('📥 Archivo catalog.js descargado.\n\n⚠️ IMPORTANTE:\n1. Ve a la carpeta "empresa"\n2. Reemplaza el archivo "catalog.js" actual\n3. Los cambios serán permanentes');
+        }
+
+        /**
+         * Genera el contenido del archivo catalog.js con los precios actualizados
+         */
+        function generateCatalogJS() {
+            const timestamp = new Date().toLocaleString('es-VE');
+
+            let content = `/**\n * Ultra Seco - Catálogo de Productos\n * Actualizado: ${timestamp}\n * Generado automáticamente desde portal.html\n */\n\n`;
+
+            content += `const products = [\n`;
+
+            localProducts.forEach((product, index) => {
+                const isLast = index === localProducts.length - 1;
+
+                content += `    {\n`;
+                content += `        id: "${product.id}",\n`;
+                content += `        name: "${product.name}",\n`;
+                content += `        category: "${product.category}",\n`;
+                content += `        description: "${product.description || ''}",\n`;
+                content += `        image: "${product.image || ''}",\n`;
+                if (product.link) {
+                    content += `        link: "${product.link}",\n`;
+                }
+                content += `        options: [\n`;
+
+                product.options.forEach((opt, optIndex) => {
+                    const isLastOpt = optIndex === product.options.length - 1;
+                    content += `            {\n`;
+                    content += `                label: "${opt.label}",\n`;
+                    content += `                price: ${opt.price.toFixed(2)},\n`;
+                    if (opt.priceMayor) {
+                        content += `                priceMayor: ${opt.priceMayor.toFixed(2)},\n`;
+                    }
+                    if (opt.priceDist) {
+                        content += `                priceDist: ${opt.priceDist.toFixed(2)},\n`;
+                    }
+                    if (opt.cost) {
+                        content += `                cost: ${opt.cost.toFixed(2)},\n`;
+                    }
+                    content += `            }${isLastOpt ? '' : ','}\n`;
+                });
+
+                content += `        ]\n`;
+                content += `    }${isLast ? '' : ','}\n`;
+            });
+
+            content += `];\n\n`;
+            content += `// Exportar para uso en otras páginas\n`;
+            content += `if (typeof window !== 'undefined') {\n`;
+            content += `    window.products = products;\n`;
+            content += `}\n`;
+
+            return content;
+        }
+
 
         function printList(type) {
             document.body.classList.remove('print-detal', 'print-mayor', 'print-distribuidor');
