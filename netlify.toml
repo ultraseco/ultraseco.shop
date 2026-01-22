@@ -7,18 +7,18 @@
 
 # 1. Redirecciones
 
-# Redirigir de la raíz a la carpeta empresa (con force para saltar el index.html de la raíz)
+# Redirigir de la raíz a la carpeta empresa (con redirección 301 para que las rutas relativas funcionen)
 [[redirects]]
   from = "/"
-  to = "/empresa/index.html"
-  status = 200
+  to = "/empresa/"
+  status = 301
   force = true
 
 # Redirigir index.html de la raíz a la carpeta empresa
 [[redirects]]
   from = "/index.html"
-  to = "/empresa/index.html"
-  status = 200
+  to = "/empresa/"
+  status = 301
   force = true
 
 # Manejo de 404 (opcional, redirige rutas no encontradas a la home)
