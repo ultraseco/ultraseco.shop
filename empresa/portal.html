@@ -615,27 +615,36 @@
             let configText = document.getElementById('firebase-config-input').value.trim();
 
             try {
-                // Inteligencia para limpiar el pegado accidental de código JS
-                // 1. Intentar extraer solo lo que está entre llaves { }
+                // Verificar si Firebase SDK está cargado
+                if (typeof firebase === 'undefined') {
+                    throw new Error("El SDK de Firebase no se cargó correctamente. Verifica tu conexión a internet o si un bloqueador de anuncios está impidiendo la carga de los scripts de Google.");
+                }
+
+                // Limpiar el pegado: buscar el contenido entre las llaves { }
                 const match = configText.match(/\{[\s\S]*\}/);
-                if (match) configText = match[0];
+                if (!match) throw new Error("No se encontró el objeto de configuración (las llaves { }). Asegúrate de copiar todo el bloque.");
 
-                // 2. Convertir "Lazy JSON" (sin comillas en llaves) a JSON estricto
-                // Esto permite pegar directamente el objeto de la consola de Firebase
-                const jsonLike = configText
-                    .replace(/(\w+):/g, '"$1":') // Llaves sin comillas
-                    .replace(/'/g, '"')          // Comillas simples a dobles
-                    .replace(/,\s*}/g, '}')      // Quitar comas sobrantes al final
-                    .replace(/,\s*\]/g, ']');    // Quitar comas sobrantes en arrays
+                const objectLiteral = match[0];
 
-                const config = JSON.parse(jsonLike);
+                // Procesar el literal de objeto JS
+                let config;
+                try {
+                    config = new Function('return ' + objectLiteral)();
+                } catch (evalError) {
+                    throw new Error("Error de sintaxis en el código pegado. Asegúrate de que no falten comas o comillas.");
+                }
+
+                if (!config || !config.apiKey) {
+                    throw new Error("El objeto no parece ser una configuración válida de Firebase (falta apiKey).");
+                }
+
                 localStorage.setItem('firebase_config', JSON.stringify(config));
                 initFirebase(config);
                 toggleFirebaseConfig();
                 alert("✅ Configuración de Firebase guardada y conectada.");
             } catch (e) {
-                console.error("Error de parseo:", e);
-                alert("❌ Error: El formato pegado no es correcto.\n\nIntenta copiar solo desde la llave { hasta la llave } inclusive.");
+                console.error("Error detallado:", e);
+                alert("❌ Error: " + e.message);
             }
         }
 
