@@ -1,0 +1,88 @@
+{
+  "productos": {
+    "solucion-interior": {
+      "nombre": "Ultra Seco Solución Interior",
+      "presentacion": "1 Litro",
+      "costo": 8.00,
+      "precio_detal": 13.99,
+      "precio_mayor": 11.89,
+      "distribuidor": 9.79
+    },
+    "solucion-exterior": {
+      "nombre": "Ultra Seco Solución Exterior",
+      "presentacion": "1 Litro",
+      "costo": 10.00,
+      "precio_detal": 16.99,
+      "precio_mayor": 14.44,
+      "distribuidor": 11.89
+    },
+    "pintura-hidrofobica": {
+      "nombre": "Pintura Súper Hidrofóbica",
+      "presentacion": "Galón",
+      "costo": 22.00,
+      "precio_detal": 34.00,
+      "precio_mayor": 28.90,
+      "distribuidor": 23.80
+    },
+    "estuco-hidrofobico": {
+      "nombre": "Estuco Súper Hidrofóbico",
+      "presentacion": "Galón",
+      "costo": 12.00,
+      "precio_detal": 19.00,
+      "precio_mayor": 16.15,
+      "distribuidor": 13.30
+    },
+    "aditivo-asfaltico": {
+      "nombre": "Aditivo Asfáltico",
+      "presentacion": "Tambor (200L)",
+      "costo": 2800.00,
+      "precio_detal": 3500.00,
+      "precio_mayor": 2975.00,
+      "distribuidor": 2450.00
+    },
+    "magnetron": {
+      "nombre": "Magnetron Eco Capturador",
+      "presentacion": "Galón",
+      "costo": 210.00,
+      "precio_detal": 345.00,
+      "precio_mayor": 293.25,
+      "distribuidor": 241.50
+    },
+    "eco-capturador": {
+      "nombre": "Eco Capturador (Minería)",
+      "presentacion": "1 Litro",
+      "costo": 50.00,
+      "precio_detal": 85.00,
+      "precio_mayor": 72.25,
+      "distribuidor": 59.50
+    },
+    "escudo-ceramico": {
+      "nombre": "Escudo Cerámico",
+      "presentacion": "1 Litro",
+      "costo": 25.00,
+      "precio_detal": 45.00,
+      "precio_mayor": 38.25,
+      "distribuidor": 31.50
+    },
+    "champu-nano": {
+      "nombre": "Champú Nano-Concentrado",
+      "presentacion": "1 Litro",
+      "costo": 7.00,
+      "precio_detal": 12.00,
+      "precio_mayor": 10.20,
+      "distribuidor": 8.40
+    },
+    "cera-nano": {
+      "nombre": "Cera Nano Protectora",
+      "presentacion": "500ml",
+      "costo": 8.50,
+      "precio_detal": 15.00,
+      "precio_mayor": 12.75,
+      "distribuidor": 10.50
+    }
+  },
+  "configuracion": {
+    "tasa_euro_bcv": 40.49,
+    "ultima_actualizacion": "2026-01-24T13:05:00"
+  }
+}

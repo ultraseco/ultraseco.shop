@@ -1,0 +1,924 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Precios | Ultra Seco</title>
+    <!-- Tailwind and FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        /* Print Styles for PDF Generation */
+        @media print {
+            body {
+                background: white;
+            }
+
+            #login-screen,
+            #dashboard-header,
+            #controls-section,
+            .no-print {
+                display: none !important;
+            }
+
+            #dashboard,
+            #main-content {
+                display: block !important;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            thead {
+                background-color: #f8f9fa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            input {
+                border: none;
+                background: transparent;
+                width: auto;
+                text-align: right;
+            }
+
+            .print-header {
+                display: block !important;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .print-only {
+                display: table-cell !important;
+            }
+
+            .screen-only {
+                display: none !important;
+            }
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* --- PRINT PRIVACY & LAYOUT --- */
+        @media print {
+
+            /* General Hiding */
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #login-screen,
+            #dashboard-header,
+            #controls-section,
+            .no-print,
+            .col-cost,
+            .margin-indicator,
+            .input-control {
+                display: none !important;
+            }
+
+            #dashboard,
+            #main-content {
+                display: block !important;
+            }
+
+            /* Table Styling */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 11pt;
+            }
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 6px 10px;
+                text-align: left;
+            }
+
+            thead {
+                background-color: #f8f9fa !important;
+                color: black;
+            }
+
+            /* Clean Price Display */
+            input {
+                display: none !important;
+            }
+
+            /* Hide all inputs */
+            .price-text {
+                display: block !important;
+                font-weight: bold;
+            }
+
+            /* Show text-only prices */
+
+            /* Hide unused columns dynamically */
+            .print-detal .col-mayor,
+            .print-detal .col-distribuidor,
+            .print-detal .col-cost {
+                display: none !important;
+            }
+
+            .print-mayor .col-detal,
+            .print-mayor .col-distribuidor,
+            .print-mayor .col-cost {
+                display: none !important;
+            }
+
+            .print-distribuidor .col-detal,
+            .print-distribuidor .col-mayor,
+            .print-distribuidor .col-cost {
+                display: none !important;
+            }
+        }
+
+        .price-text {
+            display: none;
+        }
+
+        /* Hidden on screen, visible on print */
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center">
+            <div class="mb-6">
+                <img src="images/logo.png" alt="Ultra Seco" class="h-16 mx-auto mb-4">
+                <h2 class="text-2xl font-bold text-slate-800">Acceso Administrativo</h2>
+                <p class="text-slate-500 text-sm">Portal de Gestión de Precios</p>
+            </div>
+            <input type="password" id="password-input" placeholder="Clave de acceso"
+                class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 outline-none transition">
+            <button onclick="checkLogin()"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
+                Entrar
+            </button>
+            <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Clave incorrecta</p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden flex-1 flex flex-col">
+
+        <!-- Header -->
+        <header id="dashboard-header" class="bg-blue-900 text-white shadow-lg sticky top-0 z-40">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <img src="images/logo.png" alt="Logo" class="h-8 bg-white rounded p-1">
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">Portal Interno</h1>
+                        <p class="text-xs text-blue-200">Gestión de Precios y Documentación</p>
+                    </div>
+                </div>
+                <div class="flex gap-6 items-center">
+                    <a href="index.html" class="text-sm hover:text-blue-200 flex items-center"><i
+                            class="fa-solid fa-home mr-2"></i> Inicio</a>
+                    <button onclick="logout()"
+                        class="text-sm bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded transition">
+                        <i class="fa-solid fa-right-from-bracket mr-2"></i> Salir
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main-content" class="container mx-auto px-6 py-8 flex-1">
+
+            <!-- Print Header (Visible only in Print/PDF) -->
+            <div class="print-header text-center mb-8 border-b pb-4">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 60px; margin: 0 auto;">
+                <h1 class="text-2xl font-bold mt-2">Lista de Precios Oficial</h1>
+                <p id="print-subtitle" class="text-gray-500">Actualizado: <span id="print-date"></span></p>
+            </div>
+
+            <!-- Extended Controls Section -->
+            <div id="controls-section"
+                class="flex flex-wrap justify-between items-end mb-6 gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <div class="w-full xl:w-auto">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> Panel de Control
+                    </h2>
+                    <div class="flex gap-4 mt-4 flex-wrap">
+                        <!-- Euro Rate with Auto-Update -->
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 relative">
+                            <label class="block text-xs font-bold text-blue-700 mb-1 flex items-center justify-between">
+                                <span>Tasa Euro BCV (Bs.)</span>
+                                <button onclick="fetchEuroRate()" id="refresh-euro-btn"
+                                    class="ml-2 text-blue-600 hover:text-blue-800 transition"
+                                    title="Actualizar desde BCV">
+                                    <i class="fa-solid fa-sync text-xs"></i>
+                                </button>
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="euro-rate" value="55.00" step="0.01" onchange="updateRate()"
+                                    class="w-24 p-1 text-right font-mono font-bold border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                                <span id="euro-status" class="text-[9px] text-gray-400">Manual</span>
+                            </div>
+                            <div id="euro-last-update" class="text-[9px] text-gray-500 mt-1 hidden">
+                                <!-- Última actualización se mostrará aquí -->
+                            </div>
+                        </div>
+
+                        <!-- Bulk Update -->
+                        <div class="bg-orange-50 p-3 rounded-lg border border-orange-100 flex items-end gap-2">
+                            <div>
+                                <label class="block text-xs font-bold text-orange-700 mb-1">Aumento Masivo %</label>
+                                <input type="number" id="bulk-pct" placeholder="5"
+                                    class="w-16 p-1 text-right font-mono border rounded focus:ring-2 focus:ring-orange-400 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-orange-700 mb-1">Redondeo</label>
+                                <select id="rounding-rule" class="p-1 text-xs border rounded bg-white">
+                                    <option value="none">Exacto</option>
+                                    <option value="99">.99</option>
+                                    <option value="50">.50</option>
+                                </select>
+                            </div>
+                            <button onclick="applyBulkUpdate()"
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-3 py-1 rounded text-sm transition">
+                                Aplicar
+                            </button>
+                        </div>
+
+                        <!-- Undo -->
+                        <button onclick="undo()" id="undo-btn" disabled
+                            class="bg-gray-200 text-gray-400 font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 hover:text-gray-700">
+                            <i class="fa-solid fa-rotate-left"></i> Deshacer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 items-center ml-auto">
+                    <!-- Category Multi-Select -->
+                    <div class="flex flex-col gap-2 p-3 bg-slate-50 border rounded-lg">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Filtrar por
+                            Categoría</span>
+                        <div class="flex flex-wrap gap-2" id="category-checks">
+                            <label
+                                class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
+                                <input type="checkbox" value="Construcción" checked onchange="filterTable()"
+                                    class="cat-check"> Construcción
+                            </label>
+                            <label
+                                class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
+                                <input type="checkbox" value="Industria" checked onchange="filterTable()"
+                                    class="cat-check"> Industria
+                            </label>
+                            <label
+                                class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
+                                <input type="checkbox" value="Vehicular" checked onchange="filterTable()"
+                                    class="cat-check"> Vehicular
+                            </label>
+                            <label
+                                class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
+                                <input type="checkbox" value="Hogar" checked onchange="filterTable()" class="cat-check">
+                                Hogar
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-product" placeholder="Buscar producto..." oninput="filterTable()"
+                            class="pl-10 pr-4 py-2 border rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-400 outline-none w-48 xl:w-64">
+                    </div>
+
+                    <div class="w-px h-8 bg-gray-300 mx-2"></div>
+
+                    <button onclick="saveChanges()"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-green-500/30 transition flex items-center transform hover:scale-105">
+                        <i class="fa-solid fa-save mr-2"></i> Guardar Todo
+                    </button>
+
+                    <div class="relative">
+                        <button onclick="toggleDropdown()"
+                            class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-lg shadow transition flex items-center text-sm">
+                            <i class="fa-solid fa-file-pdf mr-2"></i> Imprimir / PDF
+                        </button>
+                        <!-- Dropdown -->
+                        <div id="print-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 hidden z-50">
+                            <a href="javascript:void(0)" onclick="printList('detal')"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lista al Detal</a>
+                            <a href="javascript:void(0)" onclick="printList('mayor')"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lista al Mayor</a>
+                            <a href="javascript:void(0)" onclick="printList('distribuidor')"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lista Distribuidor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function toggleDropdown() {
+                    const dd = document.getElementById('print-dropdown');
+                    dd.classList.toggle('hidden');
+                }
+
+                // Close dropdown when clicking outside
+                window.onclick = function (event) {
+                    if (!event.target.matches('.fa-file-pdf') && !event.target.closest('button[onclick="toggleDropdown()"]')) {
+                        const dd = document.getElementById('print-dropdown');
+                        if (dd && !dd.classList.contains('hidden')) {
+                            dd.classList.add('hidden');
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Product Table -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
+                                <th class="p-3 border-b text-center no-print" style="width: 40px;">
+                                    <input type="checkbox" id="select-all-products" checked
+                                        onchange="toggleAllProducts(this)" title="Incluir todos">
+                                </th>
+                                <th class="p-3 border-b text-left">Producto</th>
+                                <th class="p-3 border-b text-left">Presentación</th>
+                                <th class="p-3 border-b text-right bg-gray-50 text-gray-800 col-cost"
+                                    style="width: 120px;">Costo API</th>
+                                <th class="p-3 border-b text-right bg-blue-50 text-blue-800 col-detal">Precio Detal</th>
+                                <th class="p-3 border-b text-right bg-green-50 text-green-800 col-mayor">Precio Mayor
+                                </th>
+                                <th class="p-3 border-b text-right bg-purple-50 text-purple-800 col-distribuidor">P.
+                                    Distribuidor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="price-table-body" class="text-slate-700 text-sm divide-y divide-gray-100">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Need catalog.js for base data -->
+    <script src="catalog.js"></script>
+
+    <script>
+        const CORRECT_PASS = "admin123";
+
+        // Global State
+        let localProducts = [];
+        let historyStack = [];
+        let euroRate = 55.00;
+        let excludedIds = new Set(); // Products manually hidden
+
+        // --- INITIALIZATION ---
+        function checkLogin() {
+            const pass = document.getElementById('password-input').value;
+            if (pass === CORRECT_PASS) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                initDashboard();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logout() { location.reload(); }
+
+        function initDashboard() {
+            // Clone products to local state
+            localProducts = JSON.parse(JSON.stringify(window.products));
+
+            // Load Global Settings (Euro Rate)
+            const savedRate = localStorage.getItem('ultraSecoEuroRate');
+            if (savedRate) {
+                euroRate = parseFloat(savedRate);
+                document.getElementById('euro-rate').value = euroRate.toFixed(2);
+            }
+
+            // Load existing overrides from localStorage
+            const savedPrices = JSON.parse(localStorage.getItem('ultraSecoPrices'));
+
+            if (savedPrices) {
+                localProducts.forEach(p => {
+                    const savedOpts = savedPrices[p.id];
+                    if (savedOpts && Array.isArray(savedOpts)) {
+                        p.options.forEach((opt, idx) => {
+                            if (savedOpts[idx]) {
+                                // Merge saved prices into current session options
+                                opt.price = savedOpts[idx].price || opt.price;
+                                opt.priceMayor = savedOpts[idx].priceMayor || (opt.price * 0.85);
+                                opt.priceDist = savedOpts[idx].priceDist || (opt.price * 0.70);
+                                opt.cost = savedOpts[idx].cost || 0; // Load Cost
+                            }
+                        });
+                    } else {
+                        initDefaults(p);
+                    }
+                });
+            } else {
+                localProducts.forEach(p => initDefaults(p));
+            }
+
+            renderTable();
+            document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+
+            // Auto-actualización de tasa del euro deshabilitada por defecto
+            // Causa errores de CORS cuando se abre desde file://
+            // El usuario puede hacer clic en el botón de sincronización para actualizar
+            /*
+            fetchEuroRate().catch(err => {
+                console.log('No se pudo actualizar automáticamente la tasa del euro:', err);
+                // Si falla, se usa el valor guardado o el valor por defecto
+            });
+            */
+        }
+
+        function initDefaults(product) {
+            product.options.forEach(opt => {
+                if (!opt.priceMayor) opt.priceMayor = Math.round(opt.price * 0.85 * 100) / 100;
+                if (!opt.priceDist) opt.priceDist = Math.round(opt.price * 0.70 * 100) / 100;
+                if (!opt.cost) opt.cost = 0;
+            });
+        }
+
+        // --- GLOBAL ACTIONS ---
+        function updateRate() {
+            const val = parseFloat(document.getElementById('euro-rate').value);
+            if (!isNaN(val) && val > 0) {
+                euroRate = val;
+                localStorage.setItem('ultraSecoEuroRate', euroRate);
+                renderTable(); // Re-render to update Bs prices
+            }
+        }
+
+        /**
+         * Obtiene la tasa del euro automáticamente desde la API del BCV
+         */
+        async function fetchEuroRate() {
+            const btn = document.getElementById('refresh-euro-btn');
+            const statusSpan = document.getElementById('euro-status');
+            const lastUpdateDiv = document.getElementById('euro-last-update');
+            const input = document.getElementById('euro-rate');
+
+            // Indicador de carga
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+            btn.disabled = true;
+            statusSpan.textContent = 'Consultando...';
+            statusSpan.className = 'text-[9px] text-blue-600 font-bold animate-pulse';
+
+            try {
+                // API de DolarVZLA - Monitor BCV (Endpoint correcto)
+                const response = await fetch('https://api.dolarvzla.com/public/exchange-rate');
+
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta de la API');
+                }
+
+                const data = await response.json();
+
+                // Estructura de la respuesta:
+                // { "current": { "usd": 344.50, "eur": 400.49, "date": "2026-01-20" }, ... }
+                let eurRate = null;
+                let bcvDate = '';
+
+                if (data && data.current && data.current.eur) {
+                    eurRate = data.current.eur;
+                    bcvDate = data.current.date || '';
+                } else if (data && data.eur) {
+                    // Fallback por si cambian la estructura
+                    eurRate = data.eur;
+                }
+
+                if (eurRate && eurRate > 0) {
+                    // Actualizar el input
+                    input.value = eurRate.toFixed(2);
+                    euroRate = eurRate;
+
+                    // Guardar en localStorage
+                    localStorage.setItem('ultraSecoEuroRate', euroRate);
+
+                    // Actualizar UI
+                    statusSpan.textContent = 'BCV ✓';
+                    statusSpan.className = 'text-[9px] text-green-600 font-bold';
+
+                    // Mostrar última actualización
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' });
+                    lastUpdateDiv.textContent = `Actualizado: ${timeStr}${bcvDate ? ` (BCV: ${bcvDate})` : ''}`;
+                    lastUpdateDiv.classList.remove('hidden');
+
+                    // Re-renderizar tabla con nuevos precios en Bs
+                    renderTable();
+
+                    console.log('✅ Tasa del euro actualizada desde BCV:', eurRate, 'Fecha:', bcvDate);
+                } else {
+                    throw new Error('No se encontró la tasa del EUR en la respuesta');
+                }
+
+            } catch (error) {
+                console.error('❌ Error al obtener tasa del euro:', error);
+                console.log('💡 Tipo de error:', error.name, '-', error.message);
+
+                statusSpan.textContent = 'Manual';
+                statusSpan.className = 'text-[9px] text-orange-600 font-bold';
+
+                // Diagnóstico del tipo de error
+                let errorMsg = 'Usar valor manual';
+                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                    errorMsg = 'CORS bloqueado (usa servidor HTTP)';
+                    console.warn('⚠️ Error de CORS. Para resolver:');
+                    console.log('   1. Abre el archivo desde un servidor HTTP');
+                    console.log('   2. O ingresa el valor manualmente');
+                } else if (error.message.includes('404')) {
+                    errorMsg = 'API no disponible';
+                }
+
+                lastUpdateDiv.textContent = errorMsg;
+                lastUpdateDiv.classList.remove('hidden');
+
+                // NO mostrar alert - solo log en consola para no molestar al usuario
+                console.log('ℹ️ La tasa se puede ingresar manualmente en el campo.');
+            } finally {
+                // Restaurar botón
+                btn.innerHTML = '<i class="fa-solid fa-sync text-xs"></i>';
+                btn.disabled = false;
+            }
+        }
+
+
+        // --- HISTORY / UNDO ---
+        function pushHistory() {
+            if (historyStack.length >= 10) historyStack.shift(); // Max 10 steps
+            historyStack.push(JSON.parse(JSON.stringify(localProducts)));
+            document.getElementById('undo-btn').disabled = false;
+        }
+
+        function undo() {
+            if (historyStack.length === 0) return;
+            localProducts = historyStack.pop();
+            if (historyStack.length === 0) document.getElementById('undo-btn').disabled = true;
+            renderTable();
+            alert('Cambios deshechos.');
+        }
+
+        // --- BULK UPDATE ---
+        function applyBulkUpdate() {
+            const pctInput = document.getElementById('bulk-pct').value;
+            const rounding = document.getElementById('rounding-rule').value;
+
+            if (!pctInput) return alert('Ingrese un porcentaje');
+
+            const pct = parseFloat(pctInput) / 100;
+
+            if (confirm(`¿Seguro que desea aplicar un cambio del ${pctInput}% a TODOS los productos VISIBLES en la tabla?`)) {
+                pushHistory(); // Save state
+
+                // Get current active categories and search
+                const activeCats = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value);
+                const query = document.getElementById('search-product').value.toLowerCase();
+
+                localProducts.forEach(product => {
+                    // Inclusion logic check (same as renderTable)
+                    if (activeCats.length > 0 && !activeCats.includes(product.category)) return;
+                    if (query && !product.name.toLowerCase().includes(query)) return;
+                    if (excludedIds.has(product.id)) return;
+
+                    product.options.forEach(opt => {
+                        // Apply to all tiers
+                        opt.price = calculateNewPrice(opt.price, pct, rounding);
+                        opt.priceMayor = calculateNewPrice(opt.priceMayor, pct, rounding);
+                        opt.priceDist = calculateNewPrice(opt.priceDist, pct, rounding);
+                    });
+                });
+
+                renderTable();
+                alert('Aumento masivo aplicado a la selección actual.');
+            }
+        }
+
+        function calculateNewPrice(oldPrice, pct, rounding) {
+            let newPrice = oldPrice * (1 + pct);
+
+            if (rounding === '99') {
+                newPrice = Math.floor(newPrice) + 0.99;
+            } else if (rounding === '50') {
+                newPrice = Math.floor(newPrice) + 0.50;
+            } else {
+                newPrice = Math.round(newPrice * 100) / 100; // Exact update
+            }
+            return newPrice;
+        }
+
+
+        // --- RENDERING ---
+        function renderTable() {
+            const tbody = document.getElementById('price-table-body');
+            const activeCats = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value);
+            const query = document.getElementById('search-product').value.toLowerCase();
+
+            tbody.innerHTML = '';
+
+            localProducts.forEach(product => {
+                // Filter Logic: Category
+                if (activeCats.length > 0 && !activeCats.includes(product.category)) return;
+
+                // Filter Logic: Search
+                if (query && !product.name.toLowerCase().includes(query)) return;
+
+                product.options.forEach((option, oIndex) => {
+                    const tr = document.createElement('tr');
+                    tr.dataset.category = product.category;
+                    tr.dataset.id = product.id;
+
+                    if (excludedIds.has(product.id)) {
+                        tr.classList.add('opacity-40', 'bg-slate-100');
+                    }
+
+                    const nameCell = oIndex === 0
+                        ? `<div class="font-bold text-slate-800">${product.name}</div>
+                           <div class="text-xs text-slate-400 capitalize">${product.category.toLowerCase()}</div>`
+                        : '';
+
+                    // Calculations
+                    const cost = option.cost || 0;
+                    const price = option.price || 0;
+
+                    // Real Margin: (Price - Cost) / Price
+                    const realMargin = price > 0 ? ((price - cost) / price * 100) : 0;
+                    const marginColor = realMargin >= 30 ? 'text-green-600' : (realMargin < 15 ? 'text-red-600' : 'text-orange-500');
+
+                    // Commercial Discounts (vs Detal)
+                    const mayorDisc = price > 0 ? ((price - option.priceMayor) / price * 100) : 0;
+                    const distDisc = price > 0 ? ((price - option.priceDist) / price * 100) : 0;
+
+                    // Bs Conversions
+                    const bsPrice = (price * euroRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const bsMayor = (option.priceMayor * euroRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const bsDist = (option.priceDist * euroRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+                    tr.innerHTML = `
+                        <td class="p-3 text-center no-print">
+                            <input type="checkbox" ${excludedIds.has(product.id) ? '' : 'checked'} 
+                                onchange="toggleProductInclusion('${product.id}', this)"
+                                class="product-inclusion-check">
+                        </td>
+                        <td class="p-3 align-top border-r border-slate-100">${nameCell}</td>
+                        <td class="p-3 align-middle font-medium text-slate-600">${option.label}</td>
+                        
+                        <!-- COST (Hidden on Print) -->
+                        <td class="p-3 align-middle text-right bg-gray-50/50 border-r border-dash col-cost">
+                            <div class="flex items-center justify-end input-control">
+                                <span class="text-gray-400 mr-1 text-xs sm-currency">Ref.</span>
+                                <input type="number" step="0.01" value="${cost.toFixed(2)}"
+                                    onchange="updatePrice('${product.id}', ${oIndex}, 'cost', this.value)"
+                                    class="w-16 text-right p-1 text-xs border rounded bg-white focus:ring-2 focus:ring-gray-300 outline-none">
+                            </div>
+                            <div class="text-[10px] font-bold ${marginColor} mt-1 text-right margin-indicator" title="Margen Real">
+                                ${realMargin.toFixed(1)}% Ganancia
+                            </div>
+                        </td>
+
+                        <!-- DETAL -->
+                        <td class="p-3 align-middle text-right bg-blue-50/30 col-detal">
+                            <div class="flex items-center justify-end input-control">
+                                <span class="text-gray-400 mr-1 font-bold">Ref.</span>
+                                <input type="number" step="0.01" value="${price.toFixed(2)}"
+                                    onchange="updatePrice('${product.id}', ${oIndex}, 'price', this.value)"
+                                    class="w-20 text-right p-1 border rounded bg-white font-bold text-slate-700 focus:ring-2 focus:ring-blue-200 outline-none font-mono">
+                            </div>
+                            <!-- Print Only Text -->
+                            <div class="price-text text-right text-lg">Ref. ${price.toFixed(2)}</div>
+                            <div class="text-[10px] text-blue-600 mt-1 font-mono text-right font-bold">Bs ${bsPrice}</div>
+                        </td>
+
+                        <!-- MAYOR -->
+                        <td class="p-3 align-middle text-right bg-green-50/30 col-mayor">
+                            <div class="flex items-center justify-end input-control">
+                                <span class="text-gray-400 mr-1 font-bold">Ref.</span>
+                                <input type="number" step="0.01" value="${(option.priceMayor || 0).toFixed(2)}"
+                                    onchange="updatePrice('${product.id}', ${oIndex}, 'priceMayor', this.value)"
+                                    class="w-20 text-right p-1 border rounded bg-white focus:ring-2 focus:ring-green-200 outline-none font-mono">
+                            </div>
+                             <!-- Print Only Text -->
+                            <div class="price-text text-right text-lg">Ref. ${(option.priceMayor || 0).toFixed(2)}</div>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-[10px] bg-green-100 text-green-700 px-1 rounded margin-indicator">-${mayorDisc.toFixed(0)}%</span>
+                                <span class="text-[10px] text-green-700 font-mono font-bold">Bs ${bsMayor}</span>
+                            </div>
+                        </td>
+
+                        <!-- DISTRIBUIDOR -->
+                        <td class="p-3 align-middle text-right bg-purple-50/30 col-distribuidor">
+                            <div class="flex items-center justify-end input-control">
+                                <span class="text-gray-400 mr-1 font-bold">Ref.</span>
+                                <input type="number" step="0.01" value="${(option.priceDist || 0).toFixed(2)}"
+                                    onchange="updatePrice('${product.id}', ${oIndex}, 'priceDist', this.value)"
+                                    class="w-20 text-right p-1 border rounded bg-white focus:ring-2 focus:ring-purple-200 outline-none font-mono">
+                            </div>
+                             <!-- Print Only Text -->
+                            <div class="price-text text-right text-lg">Ref. ${(option.priceDist || 0).toFixed(2)}</div>
+                             <div class="flex justify-between items-center mt-1">
+                                <span class="text-[10px] bg-purple-100 text-purple-700 px-1 rounded margin-indicator">-${distDisc.toFixed(0)}%</span>
+                                <span class="text-[10px] text-purple-700 font-mono font-bold">Bs ${bsDist}</span>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function updatePrice(prodId, optIndex, field, value) {
+            pushHistory(); // Auto-save state on manual edit
+            const product = localProducts.find(p => p.id === prodId);
+            if (product && product.options[optIndex]) {
+                product.options[optIndex][field] = parseFloat(value);
+                renderTable(); // Re-render to update margins/conversions
+            }
+        }
+
+        function filterTable() {
+            renderTable();
+        }
+
+        function toggleProductInclusion(id, cb) {
+            if (cb.checked) {
+                excludedIds.delete(id);
+            } else {
+                excludedIds.add(id);
+            }
+            renderTable();
+        }
+
+        function toggleAllProducts(cb) {
+            localProducts.forEach(p => {
+                if (cb.checked) excludedIds.delete(p.id);
+                else excludedIds.add(p.id);
+            });
+            renderTable();
+        }
+
+        // --- ACTIONS ---
+        function saveChanges() {
+            // Asegurarse de capturar el valor actual del euroRate desde el input
+            const currentEuroRate = parseFloat(document.getElementById('euro-rate').value);
+            if (!isNaN(currentEuroRate) && currentEuroRate > 0) {
+                euroRate = currentEuroRate;
+            }
+
+            // Save structure: { 'prodId': [ {price: 10, cost: 5, ...}, ... ] }
+            const priceMap = {};
+            localProducts.forEach(p => {
+                priceMap[p.id] = p.options;
+            });
+
+            localStorage.setItem('ultraSecoPrices', JSON.stringify(priceMap));
+            localStorage.setItem('ultraSecoEuroRate', euroRate); // ALSO SAVE RATE
+
+            // Preguntar si quiere exportar a catalog.js
+            if (confirm('✅ Precios guardados en localStorage.\n\n¿Quieres descargar el nuevo catalog.js para hacer los cambios permanentes?\n\n(Deberás reemplazar el archivo actual con el descargado)')) {
+                exportToCatalogJS();
+            } else {
+                alert('Precios guardados temporalmente. Los cambios se perderán si borras el caché del navegador.');
+            }
+        }
+
+        /**
+         * Exporta los cambios actuales a un archivo catalog.js descargable
+         */
+        function exportToCatalogJS() {
+            // Generar contenido del nuevo catalog.js
+            const catalogContent = generateCatalogJS();
+
+            // Crear blob y descargar
+            const blob = new Blob([catalogContent], { type: 'text/javascript;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'catalog.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('📥 Archivo catalog.js descargado.\n\n⚠️ IMPORTANTE:\n1. Ve a la carpeta "empresa"\n2. Reemplaza el archivo "catalog.js" actual\n3. Los cambios serán permanentes');
+        }
+
+        /**
+         * Genera el contenido del archivo catalog.js con los precios actualizados
+         */
+        function generateCatalogJS() {
+            const timestamp = new Date().toLocaleString('es-VE');
+
+            let content = `/**\n * Ultra Seco - Catálogo de Productos\n * Actualizado: ${timestamp}\n * Generado automáticamente desde portal.html\n */\n\n`;
+
+            content += `const products = [\n`;
+
+            localProducts.forEach((product, index) => {
+                const isLast = index === localProducts.length - 1;
+
+                content += `    {\n`;
+                content += `        id: "${product.id}",\n`;
+                content += `        name: "${product.name}",\n`;
+                content += `        category: "${product.category}",\n`;
+                content += `        description: "${product.description || ''}",\n`;
+                content += `        image: "${product.image || ''}",\n`;
+                if (product.link) {
+                    content += `        link: "${product.link}",\n`;
+                }
+                content += `        options: [\n`;
+
+                product.options.forEach((opt, optIndex) => {
+                    const isLastOpt = optIndex === product.options.length - 1;
+                    content += `            {\n`;
+                    content += `                label: "${opt.label}",\n`;
+                    content += `                price: ${opt.price.toFixed(2)},\n`;
+                    if (opt.priceMayor) {
+                        content += `                priceMayor: ${opt.priceMayor.toFixed(2)},\n`;
+                    }
+                    if (opt.priceDist) {
+                        content += `                priceDist: ${opt.priceDist.toFixed(2)},\n`;
+                    }
+                    if (opt.cost) {
+                        content += `                cost: ${opt.cost.toFixed(2)},\n`;
+                    }
+                    content += `            }${isLastOpt ? '' : ','}\n`;
+                });
+
+                content += `        ]\n`;
+                content += `    }${isLast ? '' : ','}\n`;
+            });
+
+            content += `];\n\n`;
+            content += `// Exportar para uso en otras páginas\n`;
+            content += `if (typeof window !== 'undefined') {\n`;
+            content += `    window.products = products;\n`;
+            content += `}\n`;
+
+            return content;
+        }
+
+
+        function printList(type) {
+            document.body.classList.remove('print-detal', 'print-mayor', 'print-distribuidor');
+            document.body.classList.add(`print-${type}`);
+
+            const titles = {
+                'detal': 'Lista de Precios al Detal',
+                'mayor': 'Lista de Precios al Mayor',
+                'distribuidor': 'Lista de Precios para Distribuidores'
+            };
+            document.querySelector('#print-subtitle').innerHTML = `<strong>${titles[type]}</strong> - Tasa: Bs. ${euroRate.toFixed(2)} - v${new Date().getFullYear()}.1`;
+
+            const style = document.createElement('style');
+            style.id = 'print-style-temp';
+
+            if (type === 'detal') {
+                style.innerHTML = `@media print { .col-mayor, .col-distribuidor, .col-cost { display: none !important; } }`;
+            } else if (type === 'mayor') {
+                style.innerHTML = `@media print { .col-detal, .col-distribuidor, .col-cost { display: none !important; } }`;
+            } else {
+                style.innerHTML = `@media print { .col-detal, .col-mayor, .col-cost { display: none !important; } }`;
+            }
+            document.head.appendChild(style);
+
+            const dd = document.getElementById('print-dropdown');
+            if (dd) dd.classList.add('hidden');
+
+            window.print();
+
+            setTimeout(() => {
+                if (document.getElementById('print-style-temp')) document.getElementById('print-style-temp').remove();
+            }, 1000);
+        }
+
+    </script>
+</body>
+
+</html>

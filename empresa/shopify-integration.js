@@ -306,42 +306,30 @@ function createShopifyBuyButton(productKey, containerId, ui) {
  */
 function updateHeaderCartBadge(ui) {
     const badge = document.getElementById('cart-badge');
-    if (!badge) {
-        console.warn('⚠️ Badge element not found');
-        return;
-    }
+    if (!badge) return;
 
     let itemCount = 0;
 
     try {
-        // Método 1: Usar el modelo del carrito de Shopify SDK
         if (ui && ui.components && ui.components.cart && ui.components.cart[0]) {
             const cartModel = ui.components.cart[0].model;
-
-            // El modelo tiene una propiedad lineItemCount que tiene el conteo total
             if (cartModel && typeof cartModel.lineItemCount !== 'undefined') {
                 itemCount = cartModel.lineItemCount;
-                console.log('✅ Cart count from SDK model:', itemCount);
-            }
-            // Fallback: contar manualmente los lineItems
-            else if (cartModel && cartModel.lineItems && Array.isArray(cartModel.lineItems)) {
+            } else if (cartModel && cartModel.lineItems && Array.isArray(cartModel.lineItems)) {
                 itemCount = cartModel.lineItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
-                console.log('✅ Cart count from lineItems:', itemCount);
             }
         }
     } catch (e) {
-        console.warn('⚠️ Error accessing Shopify cart model:', e.message);
+        // Silencio en producción
     }
 
-    // Actualizar el badge del header
     if (itemCount > 0) {
-        badge.textContent = itemCount;
+        if (badge.textContent !== String(itemCount)) {
+            badge.textContent = itemCount;
+        }
         badge.style.display = 'block';
-        console.log('🔢 Badge del header mostrado:', itemCount);
     } else {
-        badge.textContent = '0';
         badge.style.display = 'none';
-        console.log('🔢 Badge del header ocultado (count = 0)');
     }
 }
 
@@ -374,12 +362,10 @@ function createShopifyCart(ui) {
 
             // Actualización inicial
             updateHeaderCartBadge(ui);
-
-            console.log('👀 Observer del badge del header configurado');
         }
 
-        // También actualizar periódicamente por si acaso
-        setInterval(function () { updateHeaderCartBadge(ui); }, 1000);
+        // También actualizar periódicamente con menos frecuencia (cada 5 segundos)
+        setInterval(function () { updateHeaderCartBadge(ui); }, 5000);
     }, 2000);
 
     // Detectar cuando el usuario va al checkout
