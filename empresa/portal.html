@@ -612,15 +612,30 @@
         }
 
         function saveFirebaseConfig() {
-            const configText = document.getElementById('firebase-config-input').value;
+            let configText = document.getElementById('firebase-config-input').value.trim();
+
             try {
-                const config = JSON.parse(configText);
-                localStorage.setItem('firebase_config', configText);
+                // Inteligencia para limpiar el pegado accidental de código JS
+                // 1. Intentar extraer solo lo que está entre llaves { }
+                const match = configText.match(/\{[\s\S]*\}/);
+                if (match) configText = match[0];
+
+                // 2. Convertir "Lazy JSON" (sin comillas en llaves) a JSON estricto
+                // Esto permite pegar directamente el objeto de la consola de Firebase
+                const jsonLike = configText
+                    .replace(/(\w+):/g, '"$1":') // Llaves sin comillas
+                    .replace(/'/g, '"')          // Comillas simples a dobles
+                    .replace(/,\s*}/g, '}')      // Quitar comas sobrantes al final
+                    .replace(/,\s*\]/g, ']');    // Quitar comas sobrantes en arrays
+
+                const config = JSON.parse(jsonLike);
+                localStorage.setItem('firebase_config', JSON.stringify(config));
                 initFirebase(config);
                 toggleFirebaseConfig();
                 alert("✅ Configuración de Firebase guardada y conectada.");
             } catch (e) {
-                alert("❌ Error: JSON inválido. Asegúrate de copiar el objeto de configuración correctamente.");
+                console.error("Error de parseo:", e);
+                alert("❌ Error: El formato pegado no es correcto.\n\nIntenta copiar solo desde la llave { hasta la llave } inclusive.");
             }
         }
 
