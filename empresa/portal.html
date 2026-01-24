@@ -577,6 +577,18 @@
         // Clave para guardar los datos
         const STORAGE_KEY = 'portal2_data';
 
+        // Configuración predeterminada de Firebase (ULTRA SECO OFICIAL)
+        const DEFAULT_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyC2BxNQ6ebBFyeOyyRSBiWrdewt2_5p5Ck",
+            authDomain: "precio-productos.firebaseapp.com",
+            databaseURL: "https://precio-productos-default-rtdb.firebaseio.com",
+            projectId: "precio-productos",
+            storageBucket: "precio-productos.firebasestorage.app",
+            messagingSenderId: "476385058049",
+            appId: "1:476385058049:web:c6ffa18107e2d599ff0f00",
+            measurementId: "G-HZVF6E2RYG"
+        };
+
         function checkLogin() {
             const pass = document.getElementById('password-input').value;
             if (pass === "admin123") {
@@ -656,7 +668,11 @@
                     initFirebase(JSON.parse(savedConfig));
                 } catch (e) {
                     console.error("Error cargando Firebase config guardado");
+                    initFirebase(DEFAULT_FIREBASE_CONFIG); // Fallback a default
                 }
+            } else {
+                // Si no hay nada guardado, usar la configuración predeterminada hardcoded
+                initFirebase(DEFAULT_FIREBASE_CONFIG);
             }
         }
 
