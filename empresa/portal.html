@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Estático 2 | Ultra Seco</title>
+    <title>Portal Shopify Sync | Ultra Seco</title>
     <!-- CSS and Tools -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,6 +13,9 @@
     <!-- Firebase SDK (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <!-- Shopify SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -92,9 +95,10 @@
             <div class="container mx-auto flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <img src="images/logo.png" alt="Logo" class="h-8 bg-white rounded p-1">
-                    <span class="font-bold text-lg">Portal 2.0 (HTML Editable)</span>
+                    <span class="font-bold text-lg">Portal 2.2 (Sincronizado con Shopify)</span>
                 </div>
-                <div class="flex gap-4">
+                <div class="flex gap-4 items-center">
+                    <div id="last-sync-time" class="text-[10px] text-slate-400 italic"></div>
                     <a href="index.html" class="hover:text-blue-300 text-sm"><i class="fa fa-home"></i> Volver</a>
                     <button onclick="location.reload()" class="text-sm bg-slate-700 px-3 py-1 rounded">Salir</button>
                 </div>
@@ -195,12 +199,9 @@
                         <!-- Sincronización Doble (NUEVO) -->
                         <div class="flex flex-col gap-2 p-2 bg-slate-50 border rounded-lg">
                             <div class="flex gap-2 items-center">
-                                <input type="text" id="sheet-url" placeholder="URL CSV Google Sheets"
-                                    value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSeXNSKBis9vOIL_POvseYb0pPtyfRlvQT5X764jon7Yi4UKQ0iiA-1PbTPW6abYZkq8NeRYDt84Bo-/pub?output=csv"
-                                    class="text-[10px] p-2 border rounded w-48 outline-none focus:ring-1 focus:ring-blue-400">
-                                <button onclick="syncWithGoogleSheets()"
-                                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded text-[10px] transition flex items-center gap-1">
-                                    <i class="fa-solid fa-sync"></i> Sheets
+                                <button onclick="syncWithShopify()" id="btn-sync-shopify"
+                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded text-xs transition flex items-center justify-center gap-2">
+                                    <i class="fa-brands fa-shopify"></i> Sincronizar Shopify
                                 </button>
                             </div>
                             <div class="flex gap-2 items-center border-t pt-2 border-slate-200">
@@ -264,7 +265,7 @@
 
                         <!-- FILA PRODUCTO: SOLUCION INTERIOR -->
                         <tr class="product-row" data-search="solucion interior construccion"
-                            data-category="Construcción">
+                            data-category="Construcción" data-shopify-handle="solucion-interiores">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Ultra Seco Solución Interior</span>
                             </td>
@@ -297,7 +298,7 @@
 
                         <!-- FILA PRODUCTO: SOLUCION EXTERIOR -->
                         <tr class="product-row" data-search="solucion exterior construccion"
-                            data-category="Construcción">
+                            data-category="Construcción" data-shopify-handle="solucion-exteriores">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Ultra Seco Solución Exterior</span>
                             </td>
@@ -327,7 +328,7 @@
 
                         <!-- FILA PRODUCTO: PINTURA HIDROFOBICA -->
                         <tr class="product-row" data-search="pintura hidrofobica construccion"
-                            data-category="Construcción">
+                            data-category="Construcción" data-shopify-handle="pintura-hidrofobica">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Pintura Súper Hidrofóbica</span>
                             </td>
@@ -357,7 +358,7 @@
 
                         <!-- FILA PRODUCTO: ESTUCO -->
                         <tr class="product-row" data-search="estuco super hidrofobico construccion"
-                            data-category="Construcción">
+                            data-category="Construcción" data-shopify-handle="estuco-bloqueador">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Estuco Súper Hidrofóbico</span>
                             </td>
@@ -386,7 +387,8 @@
                         </tr>
 
                         <!-- FILA PRODUCTO: ADITIVO ASFATICO -->
-                        <tr class="product-row" data-search="aditivo asfaltico industria" data-category="Industria">
+                        <tr class="product-row" data-search="aditivo asfaltico industria" data-category="Industria"
+                            data-shopify-handle="aditivo-asfaltico">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Aditivo Asfáltico</span>
                             </td>
@@ -416,7 +418,7 @@
 
                         <!-- FILA PRODUCTO: MAGNETRON -->
                         <tr class="product-row" data-search="magnetron eco capturador industria"
-                            data-category="Industria">
+                            data-category="Industria" data-shopify-handle="magnetron">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Magnetron Eco Capturador</span>
                             </td>
@@ -445,8 +447,8 @@
                         </tr>
 
                         <!-- FILA PRODUCTO: ECO CAPTURADOR -->
-                        <tr class="product-row" data-search="eco capturador mineria industria"
-                            data-category="Industria">
+                        <tr class="product-row" data-search="eco capturador mineria industria" data-category="Industria"
+                            data-shopify-handle="eco-capturador">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Eco Capturador (Minería)</span>
                             </td>
@@ -475,7 +477,8 @@
                         </tr>
 
                         <!-- FILA PRODUCTO: ESCUDO CERAMICO -->
-                        <tr class="product-row" data-search="escudo ceramico hogar" data-category="Hogar">
+                        <tr class="product-row" data-search="escudo ceramico hogar" data-category="Hogar"
+                            data-shopify-handle="escudo-ceramico">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Escudo Cerámico</span>
                             </td>
@@ -505,7 +508,7 @@
 
                         <!-- FILA PRODUCTO: CHAMPU NANO (VEHICULAR) -->
                         <tr class="product-row" data-search="champu nano concentrado vehicular"
-                            data-category="Vehicular">
+                            data-category="Vehicular" data-shopify-handle="champu-nano">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Champú Nano-Concentrado</span>
                             </td>
@@ -534,7 +537,8 @@
                         </tr>
 
                         <!-- FILA PRODUCTO: CERA NANO (VEHICULAR) -->
-                        <tr class="product-row" data-search="cera nano protectora vehicular" data-category="Vehicular">
+                        <tr class="product-row" data-search="cera nano protectora vehicular" data-category="Vehicular"
+                            data-shopify-handle="cera-nano">
                             <td class="p-4">
                                 <span class="font-bold text-slate-800">Cera Nano Protectora</span>
                             </td>
@@ -574,6 +578,174 @@
 
     <!-- CÓDIGO DE LOGICA -->
     <script>
+        // Configuración Shopify
+        const SHOPIFY_PORTAL_CONFIG = {
+            domain: 'cx0msw-x8.myshopify.com',
+            storefrontAccessToken: '773b77ea4ed296a33ce95c09413cc67e'
+        };
+
+        async function syncWithShopify() {
+            const syncBtn = document.getElementById('btn-sync-shopify');
+            const originalText = syncBtn.innerHTML;
+            syncBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando Catálogo Shopify...';
+            syncBtn.disabled = true;
+
+            try {
+                if (typeof ShopifyBuy === 'undefined') {
+                    throw new Error("El SDK de Shopify no se cargó. Verifica tu conexión.");
+                }
+
+                const client = ShopifyBuy.buildClient({
+                    domain: SHOPIFY_PORTAL_CONFIG.domain,
+                    storefrontAccessToken: SHOPIFY_PORTAL_CONFIG.storefrontAccessToken
+                });
+
+                // Obtener todos los productos de Shopify con sus variantes
+                const products = await client.product.fetchAll();
+                console.log("📦 Catálogo Completo Shopify:", products);
+
+                const tableBody = document.querySelector('#main-table tbody');
+
+                // Guardar productos manuales (Industria/Especiales) que no están en Shopify
+                const manualRows = Array.from(document.querySelectorAll('.product-row')).filter(row => !row.hasAttribute('data-shopify-handle'));
+                const manualData = manualRows.map(row => ({
+                    name: row.querySelector('.font-bold').textContent.trim(),
+                    presentation: row.cells[1].textContent.trim(),
+                    cost: row.querySelector('.cost').value,
+                    detal: row.querySelector('.price-detal').value,
+                    mayor: row.querySelector('.price-mayor').value,
+                    dist: row.querySelector('.price-dist').value,
+                    search: row.getAttribute('data-search'),
+                    category: row.getAttribute('data-category')
+                }));
+
+                // Limpiar tabla para reconstruir
+                tableBody.innerHTML = '';
+
+                let syncCount = 0;
+
+                // Generar filas para cada producto y variante de Shopify
+                products.forEach(product => {
+                    product.variants.forEach(variant => {
+                        const price = parseFloat(variant.price.amount || variant.price);
+                        const presentation = variant.title === 'Default Title' ? 'Estándar' : variant.title;
+                        const productName = product.title;
+
+                        // Determinar categoría por título o tags
+                        let category = 'Hogar';
+                        const titleLower = productName.toLowerCase();
+                        if (titleLower.includes('solucion') || titleLower.includes('pintura') || titleLower.includes('estuco') || titleLower.includes('fortificador') || titleLower.includes('nano aditivo')) {
+                            category = 'Construcción';
+                        } else if (titleLower.includes('champu') || titleLower.includes('cera') || titleLower.includes('limpiador')) {
+                            category = 'Vehicular';
+                        } else if (product.tags && product.tags.some(t => t.value.toLowerCase().includes('construcción'))) {
+                            category = 'Construcción';
+                        }
+
+                        const searchStr = `${productName} ${presentation} ${category}`.toLowerCase();
+
+                        // Calcular precios sugeridos (opcional, el usuario puede editarlos)
+                        const pMayor = (price * 0.85).toFixed(2); // -15%
+                        const pDist = (price * 0.70).toFixed(2);  // -30%
+
+                        const row = document.createElement('tr');
+                        row.className = 'product-row bg-indigo-50/10';
+                        row.setAttribute('data-search', searchStr);
+                        row.setAttribute('data-category', category);
+                        row.setAttribute('data-shopify-handle', product.handle);
+
+                        row.innerHTML = `
+                            <td class="p-4">
+                                <span class="font-bold text-slate-800">${productName}</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-xs text-slate-500">${presentation}</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                    value="0.00" oninput="recalcAll()" aria-label="Costo">
+                            </td>
+                            <td class="p-4 text-right bg-blue-50/20">
+                                <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                    value="${price.toFixed(2)}" oninput="recalcAll()" aria-label="Precio Detal">
+                                <div class="bs-text">Bs --</div>
+                                <div class="price-text font-bold hidden">0.00 $</div>
+                            </td>
+                            <td class="p-4 text-right bg-green-50/20">
+                                <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                    value="${pMayor}" oninput="recalcAll()" aria-label="Precio Mayor">
+                                <div class="bs-text">Bs --</div>
+                                <div class="price-text font-bold hidden">0.00 $</div>
+                            </td>
+                            <td class="p-4 text-right bg-purple-50/20">
+                                <input type="number" class="price-dist w-20 text-right p-1 border rounded" 
+                                    value="${pDist}" oninput="recalcAll()" aria-label="Precio Distribuidor">
+                                <div class="bs-text">Bs --</div>
+                                <div class="price-text font-bold hidden">0.00 $</div>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                        syncCount++;
+                    });
+                });
+
+                // Restaurar productos manuales que no están en Shopify (como Industria)
+                manualData.forEach(m => {
+                    const row = document.createElement('tr');
+                    row.className = 'product-row';
+                    row.setAttribute('data-search', m.search);
+                    row.setAttribute('data-category', m.category);
+                    row.innerHTML = `
+                        <td class="p-4">
+                            <span class="font-bold text-slate-800">${m.name}</span>
+                        </td>
+                        <td class="p-4">
+                            <span class="text-xs text-slate-500">${m.presentation}</span>
+                        </td>
+                        <td class="p-4 text-right">
+                            <input type="number" class="cost w-20 text-right p-1 border rounded bg-slate-50"
+                                value="${m.cost}" oninput="recalcAll()">
+                        </td>
+                        <td class="p-4 text-right bg-blue-50/20">
+                            <input type="number" class="price-detal w-20 text-right p-1 border rounded font-bold"
+                                value="${m.detal}" oninput="recalcAll()">
+                            <div class="bs-text">Bs --</div>
+                            <div class="price-text font-bold hidden">${m.detal} $</div>
+                        </td>
+                        <td class="p-4 text-right bg-green-50/20">
+                            <input type="number" class="price-mayor w-20 text-right p-1 border rounded"
+                                value="${m.mayor}" oninput="recalcAll()">
+                            <div class="bs-text">Bs --</div>
+                            <div class="price-text font-bold hidden">${m.mayor} $</div>
+                        </td>
+                        <td class="p-4 text-right bg-purple-50/20">
+                            <input type="number" class="price-dist w-20 text-right p-1 border rounded" 
+                                value="${m.dist}" oninput="recalcAll()">
+                            <div class="bs-text">Bs --</div>
+                            <div class="price-text font-bold hidden">${m.dist} $</div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                recalcAll();
+                saveToStorage();
+
+                // Actualizar timestamp
+                const now = new Date().toLocaleTimeString();
+                document.getElementById('last-sync-time').textContent = `Sincronizado: ${now}`;
+
+                alert(`🚀 Catálogo actualizado: Se han generado ${syncCount} variantes desde Shopify.`);
+
+            } catch (error) {
+                console.error("❌ Error Sincronización Shopify:", error);
+                alert("Error: " + error.message);
+            } finally {
+                syncBtn.innerHTML = originalText;
+                syncBtn.disabled = false;
+            }
+        }
+
         // Clave para guardar los datos
         const STORAGE_KEY = 'portal2_data';
 
