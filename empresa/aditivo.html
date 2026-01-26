@@ -88,30 +88,40 @@
 <body class="bg-gray-100 text-gray-800">
 
     <!-- Navigation / Header -->
-    <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <a href="index.html" class="flex items-center space-x-2 text-white no-underline">
-                    <div class="bg-white p-1 rounded">
-                        <img src="images/logo.png" alt="Ultra Seco" style="height: 35px;">
-                    </div>
-                    <!-- <span class="text-xl font-black tracking-wider">ULTRA SECO®</span> -->
-                </a>
-            </div>
-            <div class="flex flex-wrap space-x-4 md:space-x-6 text-xs md:text-sm font-medium text-white">
-                <a href="index.html" class="hover:text-yellow-400 transition">Inicio</a>
-                <a href="index.html#page-asesor" class="hover:text-yellow-400 transition">Asesor IA</a>
-                <a href="#problema" class="hover:text-yellow-400 transition">El Problema</a>
-                <a href="#solucion" class="hover:text-yellow-400 transition">La Solución</a>
-                <a href="#calculadora" class="hover:text-yellow-400 transition">Calculadora</a>
-                <a href="#impacto" class="hover:text-yellow-400 transition">ROI & Impacto</a>
-            </div>
-            <button onclick="scrollToContact()"
-                class="bg-yellow-500 text-blue-900 px-4 py-1 rounded font-bold text-sm hover:bg-yellow-400 transition">
-                Prueba Piloto
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
+            </a>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
             </button>
-        </div>
-    </nav>
+
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </li>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Hero Section -->
     <header class="relative bg-gray-900 text-white"
@@ -678,6 +688,7 @@
         }
 
     </script>
+    <script src="mobile-menu.js"></script>
 </body>
 
 </html>

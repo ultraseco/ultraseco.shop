@@ -126,18 +126,39 @@
 
 <body class="luxury-bg">
 
+    <!-- Navigation Bar -->
     <header
-        class="fixed top-0 left-0 w-full z-[9999] py-6 bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300">
-        <nav class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="index.html"
-                class="opacity-100 hover:opacity-100 transition bg-slate-900/80 px-6 py-3 rounded-full backdrop-blur-md shadow-lg border border-white/10 hover:border-cyan-400/50 hover:bg-slate-900">
-                <img src="images/logo.png" alt="Ultra Seco" style="height: 48px; filter: brightness(0) invert(1);">
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
             </a>
-            <button onclick="toggleCart()" class="text-white hover:text-cyan-400 transition relative">
-                <i class="fa-solid fa-cart-shopping text-xl"></i>
-                <span id="cart-badge"
-                    class="absolute -top-2 -right-3 bg-cyan-400 text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
             </button>
+
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </li>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
+                    </a>
+                </li>
+            </ul>
         </nav>
     </header>
 
@@ -701,6 +722,7 @@
             }
         }
     </script>
+    <script src="mobile-menu.js"></script>
 </body>
 
 </html>

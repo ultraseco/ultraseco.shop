@@ -278,38 +278,4 @@ Si la imagen NO es de una pared, techo o piso, responde: "⚠️ Error de Escane
     });
 });
 
-// Mobile Menu Toggle Function
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const icon = menuToggle.querySelector('i');
-    
-    navLinks.classList.toggle('active');
-    
-    // Change icon
-    if (navLinks.classList.contains('active')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-times');
-    } else {
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
-    }
-}
-
-// Close mobile menu when clicking on a nav item
-document.addEventListener('DOMContentLoaded', () => {
-    const navButtons = document.querySelectorAll('.nav-links button, .nav-links a');
-    navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Close mobile menu
-            const navLinks = document.querySelector('.nav-links');
-            const menuToggle = document.querySelector('.mobile-menu-toggle');
-            if (navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                const icon = menuToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-    });
-});
+// Mobile menu logic moved to mobile-menu.js

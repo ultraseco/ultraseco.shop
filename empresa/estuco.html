@@ -48,9 +48,12 @@
         header {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            z-index: 9999;
-            padding: 1.5rem 5%;
+            z-index: 10000;
+            background: #0f172a;
+            padding: 12px 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: var(--transition);
         }
 
@@ -58,34 +61,80 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
+            gap: 20px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 24px;
             list-style: none;
             align-items: center;
         }
 
-        .nav-button {
-            text-decoration: none;
+        .nav-links li a {
+            font-size: 14px;
+            font-weight: 600;
             color: white;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0.8rem 1.5rem;
-            border-radius: 12px;
-            transition: var(--transition);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.3s;
         }
 
-        .nav-button:hover {
-            background: var(--primary-vivid);
-            transform: translateY(-2px);
+        .nav-links li a:hover {
+            color: var(--primary-vivid);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        @media (max-width: 968px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: #0f172a;
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: 0.4s ease-in-out;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+                z-index: 10000;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .header-actions {
+                display: none;
+                /* Hide actions on mobile nav or handle differently */
+            }
+
+            /* Show actions inside mobile menu or simplified */
+            .nav-links.active+.header-actions {
+                /* Custom mobile logic if needed */
+            }
         }
 
         /* --- HERO SECTION --- */
@@ -282,6 +331,31 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .hero h1 {
+                text-align: center !important;
+            }
+
+            .hero-content {
+                text-align: center !important;
+            }
+
+            .floating-badge {
+                display: none !important;
+            }
+
+            .hero-image-container img {
+                transform: none !important;
+                max-width: 300px;
+            }
+        }
+
         .section-header {
             text-align: center;
             max-width: 800px;
@@ -303,60 +377,40 @@
 
 <body>
     <!-- Navigation Bar -->
-    <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 99999; background: #0f172a; padding: 16px 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: block !important; visibility: visible !important; opacity: 1 !important;"
-        id="main-header">
-        <div
-            style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
-            <!-- Logo -->
-            <a href="index.html"
-                style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); text-decoration: none; background: rgba(30,41,59,0.8);">
-                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
             </a>
 
-            <!-- Menu Items -->
-            <div
-                style="display: flex; gap: 4px; padding: 8px 12px; background: rgba(30,41,59,0.9); border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); overflow-x: auto; max-width: 600px;">
-                <a href="index.html#page-inicio"
-                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                    onmouseout="this.style.background='transparent'">Inicio</a>
-                <a href="index.html#page-asesor"
-                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                    onmouseout="this.style.background='transparent'">🧠 Asesor IA</a>
-                <a href="index.html#page-productos"
-                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                    onmouseout="this.style.background='transparent'">Productos</a>
-                <a href="index.html#page-pilares"
-                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                    onmouseout="this.style.background='transparent'">Pilares</a>
-                <a href="index.html#page-contacto"
-                    style="padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: white; text-decoration: none; white-space: nowrap; display: block; background: transparent; transition: background 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
-                    onmouseout="this.style.background='transparent'">Contacto</a>
-            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
-            <!-- Actions -->
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <button onclick="window.history.back()"
-                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(30,41,59,0.8); color: white; border-radius: 9999px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 14px; transition: background 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
-                    onmouseout="this.style.background='rgba(30,41,59,0.8)'">
-                    <i class="fa-solid fa-arrow-left" style="font-size: 14px;"></i> <span>Volver</span>
-                </button>
-                <a href="https://wa.me/584146023797" target="_blank"
-                    style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(to right, #10b981, #059669); color: white; border-radius: 9999px; font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 6px rgba(16,185,129,0.2);">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> <span>Asesor</span>
-                </a>
-                <button onclick="window.location.href='index.html#cart'"
-                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #1e293b; color: white; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </li>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Spacer to prevent content from going under fixed nav -->
     <div style="height: 80px;"></div>
@@ -681,20 +735,17 @@
     <script src="shopify-integration.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
+    <script src="mobile-menu.js"></script>
     <script>
         // Header Scroll
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.backdropFilter = 'blur(15px)';
-                header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
-                header.style.padding = '1rem 5%';
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
             } else {
-                header.style.background = 'transparent';
+                header.style.background = '#0f172a';
                 header.style.backdropFilter = 'none';
-                header.style.boxShadow = 'none';
-                header.style.padding = '1.5rem 5%';
             }
         });
 

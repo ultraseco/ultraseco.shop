@@ -79,76 +79,41 @@
 
 <body class="bg-slate-50 text-slate-900">
 
-    <!-- NAVBAR -->
-    <nav class="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700 transition-all duration-300"
-        id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition">
-                    <img src="logo/logo-white.png" alt="Ultra Seco" class="h-10">
-                    <div class="h-8 w-px bg-slate-700 mx-1"></div>
-                    <span class="text-2xl font-extrabold tracking-tighter text-white">ULTRA-<span
-                            class="text-blue-500">F3</span>™</span>
-                </a>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="index.html"
-                            class="text-white hover:text-blue-400 font-bold flex items-center gap-2 px-3 py-2 rounded-md text-sm transition transition-all hover:-translate-x-1">
-                            <i class="fas fa-arrow-left"></i> Volver
-                        </a>
-                        <a href="#performance"
-                            class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Rendimiento</a>
-                        <a href="#presentations"
-                            class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Presentaciones</a>
-                        <a href="#sales-arguments"
-                            class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Análisis
-                            IA</a>
-                        <a href="#savings"
-                            class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Calculadora
-                            ROI</a>
-                        <a href="#video-demo"
-                            class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Video</a>
-                        <a href="#ai-chat"
-                            class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Asistente
-                            Técnico</a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <a href="https://wa.me/584146023797" target="_blank"
-                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold transition shadow-lg shadow-red-500/30 animate-pulse flex items-center whitespace-nowrap">
-                        <i class="fab fa-whatsapp mr-2"></i> 24h
-                    </a>
-                    <!-- Mobile Menu Button -->
-                    <button onclick="toggleMobileMenu()"
-                        class="md:hidden text-white hover:text-blue-400 focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
+    <!-- Navigation Bar -->
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
+            </a>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
                     </button>
-                    <a href="#sales-arguments"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition shadow-lg shadow-blue-500/30 hidden sm:block">
-                        Solicitar Demo
+                </li>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
                     </a>
-                </div>
-            </div>
-            <!-- Mobile Menu Container -->
-            <div id="mobile-menu"
-                class="hidden md:hidden bg-slate-800 rounded-lg mt-2 p-4 space-y-2 border border-slate-700 shadow-xl">
-                <a href="#performance"
-                    class="block text-slate-300 hover:text-white py-2 px-3 rounded hover:bg-slate-700">Rendimiento</a>
-                <a href="#presentations"
-                    class="block text-slate-300 hover:text-white py-2 px-3 rounded hover:bg-slate-700">Presentaciones</a>
-                <a href="#sales-arguments"
-                    class="block text-slate-300 hover:text-white py-2 px-3 rounded hover:bg-slate-700">Análisis IA</a>
-                <a href="#savings"
-                    class="block text-slate-300 hover:text-white py-2 px-3 rounded hover:bg-slate-700">Calculadora
-                    ROI</a>
-                <a href="#video-demo"
-                    class="block text-slate-300 hover:text-white py-2 px-3 rounded hover:bg-slate-700">Video</a>
-                <a href="#ai-chat"
-                    class="block text-slate-300 hover:text-white py-2 px-3 rounded hover:bg-slate-700">Asistente
-                    Técnico</a>
-            </div>
-        </div>
-    </nav>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- HERO SECTION -->
     <header class="hero-bg pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden relative">
@@ -1416,16 +1381,6 @@ TONO: Urgente, profesional, técnico y tranquilizador.`;
 
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
-
-        // Mobile Menu Function
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-            } else {
-                menu.classList.add('hidden');
-            }
-        }
 
         // --- ENGINEERING CALCULATOR LOGIC ---
         let engineerMode = 'tank';

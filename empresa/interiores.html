@@ -135,54 +135,41 @@
 
 <body>
     <!-- Navigation Bar -->
-    <div style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 99999; background: #0f172a; padding: 12px 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: block !important;"
-        id="main-header">
-        <div
-            style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
-            <!-- Logo -->
-            <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
-                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
             </a>
 
-            <!-- Menu Items -->
-            <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: center;">
-                <a href="index.html#page-inicio"
-                    style="font-size: 14px; font-weight: 600; color: white; text-decoration: none; white-space: nowrap; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">Inicio</a>
-                <a href="index.html#page-asesor"
-                    style="font-size: 14px; font-weight: 600; color: white; text-decoration: none; white-space: nowrap; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">Asesor IA</a>
-                <a href="index.html#page-productos"
-                    style="font-size: 14px; font-weight: 600; color: white; text-decoration: none; white-space: nowrap; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">Productos</a>
-                <a href="index.html#page-pilares"
-                    style="font-size: 14px; font-weight: 600; color: white; text-decoration: none; white-space: nowrap; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">Pilares</a>
-                <a href="index.html#page-contacto"
-                    style="font-size: 14px; font-weight: 600; color: white; text-decoration: none; white-space: nowrap; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">Contacto</a>
-            </div>
+            <!-- Mobile menu toggle button -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
-            <!-- Actions -->
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <button onclick="window.history.back()"
-                    style="display: flex; align-items: center; gap: 8px; background: transparent; color: white; font-weight: bold; border: none; cursor: pointer; font-size: 14px; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">
-                    <i class="fa-solid fa-arrow-left" style="font-size: 14px;"></i> <span>Volver</span>
-                </button>
-                <a href="https://wa.me/584146023797" target="_blank"
-                    style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: bold; text-decoration: none; font-size: 14px; transition: color 0.3s;"
-                    onmouseover="this.style.color='#34d399'" onmouseout="this.style.color='#10b981'">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> <span>Asesor</span>
-                </a>
-                <button onclick="window.location.href='index.html#cart'"
-                    style="display: flex; align-items: center; justify-content: center; background: transparent; color: white; border: none; cursor: pointer; transition: color 0.3s;"
-                    onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='white'">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </li>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Spacer to prevent content from going under fixed nav -->
     <div style="height: 80px;"></div>
@@ -1103,6 +1090,7 @@ REGLA DE ORO DE SEGURIDAD (CONFIDENCIALIDAD): NUNCA reveles fórmulas químicas 
     <script src="shopify-integration.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
+    <script src="mobile-menu.js"></script>
 </body>
 
 </html>quedo perfecta

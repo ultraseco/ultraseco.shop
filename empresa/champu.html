@@ -96,28 +96,38 @@
 
 <body class="luxury-bg">
 
-    <header class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300" id="main-header">
-        <nav class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group">
-                <div class="bg-white/10 p-2 rounded-full border border-white/5 group-hover:bg-white/20 transition">
-                    <img src="images/logo.png" alt="Ultra Seco" style="height: 24px; filter: invert(1);">
-                </div>
-                <span class="font-bold text-white tracking-widest text-sm hidden sm:block">ULTRA SECO</span>
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
             </a>
 
-            <div class="flex items-center gap-4">
-                <a href="index.html"
-                    class="text-slate-400 hover:text-white transition text-sm font-bold uppercase tracking-widest hidden md:block">Inicio</a>
-                <a href="index.html#page-productos"
-                    class="text-slate-400 hover:text-white transition text-sm font-bold uppercase tracking-widest hidden md:block">Productos</a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
-                <button onclick="toggleCart()"
-                    class="relative w-10 h-10 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full hover:bg-blue-600 hover:text-white transition shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span id="cart-badge"
-                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
-                </button>
-            </div>
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </li>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
+                    </a>
+                </li>
+            </ul>
         </nav>
     </header>
 
@@ -537,6 +547,7 @@
             }
         });
     </script>
+    <script src="mobile-menu.js"></script>
 </body>
 
 </html>

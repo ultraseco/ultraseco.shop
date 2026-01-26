@@ -117,46 +117,38 @@
 
 <body class="luxury-bg">
 
-    <header class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300" id="main-header">
-        <nav class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="index.html"
-                class="opacity-100 hover:opacity-100 transition bg-slate-900/80 px-4 py-2 rounded-full backdrop-blur-md shadow-lg border border-white/10 hover:border-cyan-400/50 hover:bg-slate-900 flex items-center gap-2">
-                <img src="images/logo.png" alt="Ultra Seco" style="height: 32px; filter: brightness(0) invert(1);">
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
             </a>
 
-            <!-- Menu Desktop -->
-            <ul
-                class="hidden md:flex gap-1 bg-slate-900/60 backdrop-blur-md px-2 py-1.5 rounded-full border border-white/10 shadow-lg">
-                <li><a href="index.html#page-inicio"
-                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Inicio</a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="index.html#asesor" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 text-white hover:text-blue-400 font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
                 </li>
-                <li><a href="index.html#page-asesor"
-                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">🧠
-                        Asesor IA</a></li>
-                <li><a href="index.html#page-productos"
-                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Productos</a>
-                </li>
-                <li><a href="index.html#page-pilares"
-                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Pilares</a>
-                </li>
-                <li><a href="index.html#page-contacto"
-                        class="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition block">Contacto</a>
+                <li><a href="https://wa.me/584146023797" target="_blank"
+                        class="bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-green-500 transition"
+                        style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp"></i> Asesor
+                    </a>
                 </li>
             </ul>
-
-            <div class="flex items-center gap-4">
-                <a href="https://wa.me/584146023797" target="_blank"
-                    class="hidden md:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full font-bold shadow-lg shadow-green-500/20 hover:scale-105 transition text-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> <span>Asesor</span>
-                </a>
-
-                <button onclick="toggleCart()"
-                    class="relative w-10 h-10 flex items-center justify-center bg-slate-800 text-white rounded-full hover:bg-cyan-500 hover:text-white transition shadow-lg border border-white/10">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span id="cart-badge"
-                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden border border-slate-900">0</span>
-                </button>
-            </div>
         </nav>
     </header>
 
@@ -583,6 +575,7 @@
             }
         });
     </script>
+    <script src="mobile-menu.js"></script>
 </body>
 
 </html>
