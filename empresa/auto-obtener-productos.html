@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obteniendo Productos de Shopify...</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .results {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .success {
+            background: #d1fae5;
+            border: 1px solid #6ee7b7;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔄 Conectando con Shopify...</h1>
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Obteniendo productos de tu tienda...</p>
+        </div>
+        <div id="status"></div>
+        <div class="results" id="results"></div>
+    </div>
+
+    <script>
+        const SHOP_DOMAIN = 'cx0msw-x8.myshopify.com';
+        const ACCESS_TOKEN = '773b77ea4ed296a33ce95c09413cc67e';
+
+        async function fetchProducts() {
+            const url = `https://${SHOP_DOMAIN}/api/2024-01/graphql.json`;
+
+            const query = `
+                {
+                    products(first: 50) {
+                        edges {
+                            node {
+                                id
+                                title
+                                handle
+                                description
+                                variants(first: 20) {
+                                    edges {
+                                        node {
+                                            id
+                                            title
+                                            price
+                                            sku
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            `;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Shopify-Storefront-Access-Token': ACCESS_TOKEN
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.errors) {
+                    throw new Error(data.errors[0].message);
+                }
+
+                return data.data.products.edges;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        function generateConfig(products) {
+            const productMap = {};
+
+            products.forEach(({ node: product }) => {
+                const numericId = product.id.split('/').pop();
+                const handle = product.handle;
+
+                const variantsMap = {};
+                product.variants.edges.forEach(({ node: variant }, index) => {
+                    const variantId = variant.id.split('/').pop();
+                    const variantKey = variant.sku || `variant-${index}`;
+                    variantsMap[variantKey] = variantId;
+                });
+
+                productMap[handle] = {
+                    shopifyId: numericId,
+                    title: product.title,
+                    variants: variantsMap
+                };
+            });
+
+            return `// =====================================
+// CONFIGURACIÓN SHOPIFY - ULTRA SECO
+// =====================================
+
+const SHOPIFY_CONFIG = {
+    domain: '${SHOP_DOMAIN}',
+    storefrontAccessToken: '${ACCESS_TOKEN}'
+};
+
+const PRODUCT_IDS = ${JSON.stringify(productMap, null, 4)};
+
+// =====================================
+// Total de productos: ${products.length}
+// =====================================
+`;
+        }
+
+        async function init() {
+            const loadingDiv = document.getElementById('loading');
+            const statusDiv = document.getElementById('status');
+            const resultsDiv = document.getElementById('results');
+
+            try {
+                const products = await fetchProducts();
+
+                loadingDiv.style.display = 'none';
+
+                if (products.length === 0) {
+                    statusDiv.innerHTML = '<div class="error">⚠️ No se encontraron productos en tu tienda. Por favor, crea o importa productos primero.</div>';
+                    return;
+                }
+
+                const config = generateConfig(products);
+
+                statusDiv.innerHTML = `<div class="success">✅ Se encontraron ${products.length} productos correctamente!</div>`;
+                resultsDiv.textContent = config;
+                resultsDiv.classList.add('show');
+
+                // Auto scroll to results
+                resultsDiv.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                statusDiv.innerHTML = `<div class="error">❌ Error: ${error.message}<br><br>Verifica que:<br>1. El dominio sea correcto<br>2. El token tenga permisos<br>3. Tengas productos en tu tienda</div>`;
+            }
+        }
+
+        // Run on load
+        init();
+    </script>
+</body>
+
+</html>
