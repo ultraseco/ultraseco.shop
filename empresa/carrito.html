@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-63ZJG1KHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-63ZJG1KHZS');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Carrito | Ultra Seco</title>
+
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Montserrat:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --deep-space: #020617;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-vivid: #00a8e8;
+            --dark-navy: #003459;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Glass Panel Reusable */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Nav specific overrides */
+        .nav-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-button:hover,
+        .nav-button.active {
+            color: var(--primary-vivid);
+        }
+
+        /* Cart Table */
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cart-table th {
+            text-align: left;
+            padding: 1rem;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .cart-table td {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        /* Inputs & Buttons */
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #1e293b;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-vivid);
+            box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-vivid), #007ea7);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(0, 168, 224, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 168, 224, 0.4);
+        }
+
+        .btn-remove {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-remove:hover {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
+            </a>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="asesor.html" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#productos" class="text-white hover:text-blue-400 font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+
+
+                <li><a href="carrito.html"
+                        class="text-white hover:text-blue-400 font-semibold transition flex items-center gap-2"
+                        style="text-decoration: none; position: relative;">
+                        <i class="fa-solid fa-cart-shopping"></i> Carrito
+                        <span id="cart-badge"
+                            style="position: absolute; top: -8px; right: -12px; background: #ef4444; color: white; border-radius: 50%; height: 20px; min-width: 20px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; justify-content: center; display: none;">0</span>
+                    </a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="height: 80px;"></div>
+
+    <main class="py-12 px-4 sm:px-6 max-w-7xl mx-auto min-h-screen">
+
+        <div class="mb-8">
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight font-['Montserrat']">RESUMEN DE COMPRA</h1>
+            <p class="text-slate-500 mt-2">Valida tus productos y completa tu información para procesar el pedido.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- COUMNA IZQUIERDA: CARRITO -->
+            <div class="lg:col-span-2 space-y-6">
+
+                <div class="glass-panel p-6 overflow-x-auto">
+                    <div id="empty-cart-message" class="text-center py-12 hidden">
+                        <div
+                            class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+                            <i class="fa-solid fa-cart-shopping text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-700 mb-2">Tu carrito está vacío</h3>
+                        <p class="text-slate-500 mb-6">Explora nuestro ecosistema y descubre el poder del blindaje
+                            nanotecnológico.</p>
+                        <a href="index.html#productos"
+                            class="inline-flex items-center gap-2 bg-slate-800 text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-700 transition">
+                            <i class="fa-solid fa-arrow-left"></i> Volver a la Tienda
+                        </a>
+                    </div>
+
+                    <div id="cart-content">
+                        <table class="cart-table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th class="text-center">Cant.</th>
+                                    <th class="text-right">Precio</th>
+                                    <th class="text-right">Subtotal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items">
+                                <!-- Filas generadas por JS -->
+                            </tbody>
+                        </table>
+
+                        <div class="mt-6 flex justify-between items-center pt-6 border-t border-slate-200">
+                            <button onclick="vaciarCarrito()"
+                                class="text-slate-500 text-sm font-semibold hover:text-red-500 transition flex items-center gap-2">
+                                <i class="fa-solid fa-trash-can"></i> Vaciar Carrito
+                            </button>
+                            <div class="text-right">
+                                <p class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Total a Pagar
+                                </p>
+                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">$0.00</div>
+                                <div class="text-sm font-bold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full mt-2 border border-emerald-100"
+                                    id="cart-total-bs">
+                                    <i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span
+                                        class="text-xs font-normal opacity-75 ml-1">(Tasa BCV referencial)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO DE ENVÍO -->
+                <div class="glass-panel p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3">Información de Envío</h3>
+                    <ul class="list-disc ml-5 space-y-3 text-sm text-slate-600">
+                        <li><strong>MRW</strong> con cobro en destino</li>
+                        <li><strong>Zoom prepagado</strong> (tasa preferencial desde 3$ x kg)</li>
+                        <li><strong>Fletes Garrido</strong> empresa de transporte privada con salida los miércoles y viernes. Ofrece servicio puerta a puerta costos desde 6$ y un plazo de entrega de 48 a 72hrs hábiles dependiendo del destino. Esta empresa trabaja por rutas y se recomienda para pedidos de 1 galón en adelante para economizar costos de envío</li>
+                        <li><strong>Delivery</strong> en Maracaibo</li>
+                        <li><strong>Pickup</strong></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- COLUMNA DERECHA: FORMULARIO DE PAGO -->
+            <div class="lg:col-span-1">
+                <div class="glass-panel p-6 sticky top-[100px]">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3">Información de Pago
+                    </h3>
+
+                    <form id="payment-form" name="carrito-ultraseco" method="POST" data-netlify="true" enctype="multipart/form-data"
+                        onsubmit="procesarPedido(event)">
+
+                        <!-- Datos Personales -->
+                        <div class="space-y-4 mb-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Nombre
+                                    Completo</label>
+                                <input type="text" id="cliente-nombre" name="cliente_nombre" required
+                                    placeholder="Ej: Carlos Pérez" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Cédula o
+                                    RIF</label>
+                                <input type="text" id="cliente-id" name="cliente_id" required
+                                    placeholder="V-12345678 o J-12345678-9" class="form-input">
+                            </div>
+                        </div>
+
+                        <!-- Opciones de Pago -->
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Método de Pago</label>
+                            <select id="metodo-pago" name="metodo_pago" required class="form-input cursor-pointer"
+                                onchange="mostrarInstruccionesPago()">
+                                <option value="" disabled selected>Selecciona una opción...</option>
+                                <option value="pago_movil">📱 Pago Móvil (Bs.)</option>
+                                <option value="transferencia">🏦 Transferencia Bancaria (Bs.)</option>
+                                <option value="custodia">🏦 Cuenta Custodia ($)</option>
+                                <option value="paypal">💳 PayPal ($)</option>
+                                <option value="zelle">💵 Zelle ($)</option>
+                                <option value="efectivo">💵 Dólares Efectivo</option>
+                            </select>
+                        </div>
+
+                        <!-- Instrucciones Bancarias Dinámicas -->
+                        <div id="instrucciones-banco"
+                            class="hidden mb-6 p-4 rounded-xl bg-blue-50 border border-blue-100 text-sm text-slate-700">
+                            <!-- Inyectado por JS -->
+                        </div>
+
+                        <!-- Comprobantes -->
+                        <div class="space-y-4 mb-8">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Número de
+                                    Referencia</label>
+                                <input type="text" id="referencia-pago" name="referencia_pago" required
+                                    placeholder="Últimos 4 o 6 dígitos" class="form-input">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Capture /
+                                    Comprobante</label>
+                                <div class="relative">
+                                    <input type="file" id="comprobante" name="comprobante" accept="image/*" required
+                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        onchange="actualizarNombreArchivo(this)">
+                                    <div class="form-input flex items-center justify-between bg-white cursor-pointer"
+                                        id="comprobante-label">
+                                        <span class="text-slate-400">Subir imagen...</span>
+                                        <i class="fa-solid fa-cloud-arrow-up text-blue-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Campos ocultos para Netlify -->
+                        <input type="hidden" name="form-name" value="carrito-ultraseco" />
+                        <input type="hidden" id="hidden-resumen" name="resumen_pedido" value="">
+                        <input type="hidden" id="hidden-total-usd" name="total_usd" value="">
+                        <input type="hidden" id="hidden-total-bs" name="total_bs" value="">
+
+                        <button type="submit" class="cta-button" id="btn-submit">
+
+                            Confirmar y Enviar Pedido <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-center py-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+            <img src="images/logo.png" alt="Ultra Seco" class="h-8 mb-4 brightness-0 invert opacity-50">
+            <p class="text-slate-500 text-sm">&copy; 2025 Ultra Seco. Todos los derechos reservados. Maracaibo,
+                Venezuela.</p>
+        </div>
+    </footer>
+
+
+    <script src="script.js"></script>
+    <script src="mobile-menu.js"></script>
+
+    <script>
+        // Tasa BCV (Hardcoded como fallback si la API falla, idealmente conectarías al backend)
+        const TASA_BCV_MANUAL = 36.25;
+
+        let carritoData = [];
+        let totalUSD = 0;
+
+        function cargarCarrito() {
+            const guardado = localStorage.getItem('miCarritoUltraSeco');
+
+            if (guardado) {
+                try {
+                    carritoData = JSON.parse(guardado);
+                } catch (e) {
+                    console.error("Error leyendo carrito", e);
+                    carritoData = [];
+                }
+            } else {
+                carritoData = [];
+            }
+            renderizarTabla();
+        }
+
+        function renderizarTabla() {
+            const tbody = document.getElementById('cart-items');
+            const cartContent = document.getElementById('cart-content');
+            const emptyContent = document.getElementById('empty-cart-message');
+
+            tbody.innerHTML = '';
+            totalUSD = 0;
+
+            if (!carritoData || carritoData.length === 0) {
+                cartContent.classList.add('hidden');
+                emptyContent.classList.remove('hidden');
+
+                // Set total blocks to 0
+                document.getElementById('cart-total-usd').innerText = '$0.00';
+                document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV)</span>`;
+
+                // Deshabilitar formulario
+                document.getElementById('btn-submit').disabled = true;
+                document.getElementById('btn-submit').classList.add('opacity-50', 'cursor-not-allowed');
+                return;
+            }
+
+            cartContent.classList.remove('hidden');
+            emptyContent.classList.add('hidden');
+            document.getElementById('btn-submit').disabled = false;
+            document.getElementById('btn-submit').classList.remove('opacity-50', 'cursor-not-allowed');
+
+            const carritoFiltrado = [];
+
+            carritoData.forEach((item, index) => {
+                try {
+                    // Fallbacs robustos por si el localStorage tiene data corrupta o vieja (price vs precio)
+                    const nombreSafe = item.nombre || 'Producto Desconocido';
+                    let precioSafe = item.precio !== undefined ? item.precio : (item.price || 0);
+                    let cantidadSafe = item.cantidad !== undefined ? item.cantidad : 1;
+
+                    precioSafe = parseFloat(precioSafe);
+                    if (isNaN(precioSafe)) precioSafe = 0;
+
+                    cantidadSafe = parseInt(cantidadSafe);
+                    if (isNaN(cantidadSafe)) cantidadSafe = 1;
+
+                    const subtotal = precioSafe * cantidadSafe;
+                    totalUSD += subtotal;
+
+                    // Reconstruimos el item para guardarlo limpio
+                    carritoFiltrado.push({
+                        ...item,
+                        nombre: nombreSafe,
+                        precio: precioSafe,
+                        cantidad: cantidadSafe
+                    });
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="font-bold text-slate-800">${nombreSafe}</td>
+                        <td class="text-center">
+                            <div class="inline-flex items-center bg-slate-100 rounded-lg p-1">
+                                <span class="px-3 py-1 font-bold text-sm select-none">${cantidadSafe}</span>
+                            </div>
+                        </td>
+                        <td class="text-right text-slate-500 font-medium">$${precioSafe.toFixed(2)}</td>
+                        <td class="text-right text-slate-900 font-black">$${subtotal.toFixed(2)}</td>
+                        <td class="text-right">
+                            <button onclick="eliminarItem(${index})" class="btn-remove" title="Eliminar Producto">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                } catch (err) {
+                    console.error("Error renderizando fila de carrito (data corrupta):", err);
+                }
+            });
+
+            // Actualizar carritoData por si se limpiaron basuras
+            carritoData = carritoFiltrado;
+
+
+            // Actualizar Totales
+            document.getElementById('cart-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
+            const totalBs = totalUSD * TASA_BCV_MANUAL;
+            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV: ${TASA_BCV_MANUAL})</span>`;
+
+            // Refrescar el contador de la barra de navegación usando la funcion en script.js
+            if (typeof window.actualizarContadorCarrito === 'function') {
+                window.actualizarContadorCarrito();
+            }
+        }
+
+        function eliminarItem(index) {
+            carritoData.splice(index, 1);
+            localStorage.setItem('miCarritoUltraSeco', JSON.stringify(carritoData));
+            cargarCarrito();
+        }
+
+        function vaciarCarrito() {
+            if (confirm('¿Estás seguro de querer vaciar el carrito?')) {
+                localStorage.removeItem('miCarritoUltraSeco');
+                cargarCarrito();
+            }
+        }
+
+        // Lógica del Formulario e Instrucciones Bancarias
+        function mostrarInstruccionesPago() {
+            const metodo = document.getElementById('metodo-pago').value;
+            const container = document.getElementById('instrucciones-banco');
+
+            if (!metodo) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+
+            let html = '';
+            if (metodo === 'pago_movil') {
+                html = `
+                    <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-mobile-screen"></i> Datos para Pago Móvil</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>Banco:</strong> Bancamiga (0172)</li>
+                        <li><strong>Teléfono:</strong> 0414-6023797</li>
+                        <li><strong>RIF/CI:</strong> J-504413054</li>
+                        <li><strong>Titular:</strong> ULTRA SECO CA</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * TASA_BCV_MANUAL).toFixed(2)}</li>
+                    </ul>
+                `;
+            } else if (metodo === 'transferencia') {
+                html = `
+                    <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-building-columns"></i> Datos para Transferencia</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>Banco:</strong> Bancamiga</li>
+                        <li><strong>Cuenta:</strong> 0172-0401-72-4018567596</li>
+                        <li><strong>Titular:</strong> ULTRA SECO CA</li>
+                        <li><strong>RIF:</strong> J-504413054</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * TASA_BCV_MANUAL).toFixed(2)}</li>
+                    </ul>
+                `;
+            } else if (metodo === 'custodia') {
+                html = `
+                    <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-vault"></i> Cuenta Custodia Banesco ($)</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>Banco:</strong> Banesco</li>
+                        <li><strong>Titular:</strong> Pancho Wong</li>
+                        <li><strong>Cédula/RIF:</strong> 17.669.750</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: $${totalUSD.toFixed(2)}</li>
+                    </ul>
+                `;
+            } else if (metodo === 'paypal') {
+                html = `
+                    <p class="font-bold text-slate-900 mb-2"><i class="fa-brands fa-paypal"></i> Datos para PayPal</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>Correo:</strong> benhan37@hotmail.com</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: $${totalUSD.toFixed(2)}</li>
+                    </ul>
+                `;
+            } else if (metodo === 'zelle') {
+                html = `
+                    <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-dollar-sign"></i> Datos para Zelle</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>Zelle:</strong> 5072910322</li>
+                        <li><strong>Nombre:</strong> wing lap</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: $${totalUSD.toFixed(2)}</li>
+                    </ul>
+                `;
+            } else if (metodo === 'efectivo') {
+                html = `
+                    <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-money-bill-1-wave"></i> Dólares Efectivo</p>
+                    <p class="text-sm text-slate-600 mb-3 mt-1">Para pagos en efectivo deberás acercarte a nuestra tienda física o realizar delivery.</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Mínimo a Entregar: $${totalUSD.toFixed(2)}</li>
+                    </ul>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function actualizarNombreArchivo(input) {
+            const label = document.getElementById('comprobante-label');
+            const placeholder = label.querySelector('span');
+
+            if (input.files && input.files.length > 0) {
+                placeholder.textContent = input.files[0].name;
+                placeholder.classList.remove('text-slate-400');
+                placeholder.classList.add('text-slate-800', 'font-medium');
+            } else {
+                placeholder.textContent = 'Subir imagen...';
+                placeholder.classList.add('text-slate-400');
+                placeholder.classList.remove('text-slate-800', 'font-medium');
+            }
+        }
+
+        function procesarPedido(e) {
+            e.preventDefault();
+
+            if (!carritoData || carritoData.length === 0) {
+                alert("Tu carrito está vacío.");
+                return;
+            }
+
+            // 1. Preparar campos ocultos con la información del localStorage
+            const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} ($${item.precio})`).join(' | ');
+            document.getElementById('hidden-resumen').value = resumenText;
+            document.getElementById('hidden-total-usd').value = totalUSD.toFixed(2);
+            document.getElementById('hidden-total-bs').value = (totalUSD * TASA_BCV_MANUAL).toFixed(2);
+
+            // 2. Preparar el botón mostrando estado de carga
+            const btn = document.getElementById('btn-submit');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Procesando...';
+            btn.disabled = true;
+
+            // 3. Obtener el FormData del formulario listo para enviar a Netlify
+            const formObj = document.getElementById('payment-form');
+            const formData = new FormData(formObj);
+
+            // 4. Enviar mediante AJAX a Netlify Forms (Subida de archivos gestiona el boundary Multipart de manera nativa)
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("¡Gracias! Tu pedido ha sido procesado exitosamente. En breve verificaremos tu pago y nos comunicaremos.");
+                        localStorage.removeItem('miCarritoUltraSeco');
+                        window.location.href = 'index.html';
+                    } else {
+                        throw new Error("Respuesta de la red no fue OK");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al enviar el formulario a Netlify:", error);
+                    alert("Hubo un error al procesar tu pedido. Por favor intenta nuevamente.");
+                    btn.innerHTML = 'Confirmar y Enviar Pedido <i class="fa-solid fa-paper-plane"></i>';
+                    btn.disabled = false;
+                });
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', cargarCarrito);
+
+    </script>
+</body>
+
+</html>
