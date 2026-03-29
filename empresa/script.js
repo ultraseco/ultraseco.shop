@@ -199,10 +199,10 @@ window.agregarAlCarritoManual = function(botonHTML) {
     const nombreElem = contenedor.querySelector('.producto-nombre') || contenedor.querySelector('h2');
     const h1Elem = document.querySelector('h1');
     
-    // Preferir el <h1> de la página si el nombre encontrado es muy genérico ("Opciones de Compra")
-    let nombreBase = nombreElem ? nombreElem.innerText.trim() : (h1Elem ? h1Elem.innerText.replace(/\n/g, ' ').trim() : document.title);
+    // Preferir el <h1> de la página si el nombre encontrado es muy genérico
+    let nombreBase = nombreElem ? nombreElem.textContent.trim() : (h1Elem ? h1Elem.textContent.replace(/\n/g, ' ').trim() : document.title);
     if (nombreBase === 'Opciones de Compra' && h1Elem) {
-        nombreBase = h1Elem.innerText.replace(/\n/g, ' ').trim();
+        nombreBase = h1Elem.textContent.replace(/\n/g, ' ').trim();
     }
 
     const nombre = varianteSeleccionada ? `${nombreBase} - ${varianteSeleccionada}` : nombreBase;
@@ -210,7 +210,7 @@ window.agregarAlCarritoManual = function(botonHTML) {
     const precioElem = contenedor.querySelector('.producto-precio') || contenedor.querySelector('[id^="price"]');
     const cantidadElem = contenedor.querySelector('.producto-cantidad') || contenedor.querySelector('input[type="number"]');
 
-    const precioTexto = precioElem ? precioElem.innerText : '0';
+    const precioTexto = precioElem ? precioElem.textContent : '0';
     const cantidad = cantidadElem ? parseInt(cantidadElem.value) || 1 : 1;
     
     // Limpiar el texto del precio (quitar el "$" y cualquier espacio) y convertir a número
