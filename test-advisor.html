@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test AI Advisor</title>
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .result-box {
+            border: 2px solid #00a8e8;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test AI Advisor</h1>
+
+    <div id="asesor-step-1">
+        <h2>Selecciona un problema:</h2>
+        <button onclick="asesor.nextStep('humedad')">Humedad / Moho</button>
+        <button onclick="asesor.nextStep('fachadas')">Protección de Fachadas</button>
+    </div>
+
+    <div id="result-content" class="hidden">
+        <div class="result-box">
+            <h3>Diagnóstico: <span id="diagnosis-title"></span></h3>
+            <p id="diagnosis-desc"></p>
+        </div>
+
+        <div>
+            <h4>Protocolo:</h4>
+            <ol id="protocol-steps"></ol>
+        </div>
+
+        <div>
+            <h4>Productos:</h4>
+            <div id="recommended-products"></div>
+        </div>
+
+        <button onclick="asesor.reset()">Nuevo Diagnóstico</button>
+    </div>
+
+    <script>
+        window.asesor = {
+            currentProblem: null,
+
+            nextStep: function (problem) {
+                this.currentProblem = problem;
+                document.getElementById('asesor-step-1').classList.add('hidden');
+                document.getElementById('result-content').classList.remove('hidden');
+                this.showResult();
+            },
+
+            showResult: function () {
+                const protocol = this.getProtocolo(this.currentProblem);
+                document.getElementById('diagnosis-title').textContent = protocol.titulo;
+                document.getElementById('diagnosis-desc').textContent = protocol.descripcion;
+
+                const stepsList = document.getElementById('protocol-steps');
+                stepsList.innerHTML = '';
+                protocol.pasos.forEach(paso => {
+                    const li = document.createElement('li');
+                    li.textContent = paso;
+                    stepsList.appendChild(li);
+                });
+
+                const productsDiv = document.getElementById('recommended-products');
+                productsDiv.innerHTML = '';
+                protocol.productos.forEach(prod => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `<strong>${prod.nombre}</strong>: ${prod.desc}`;
+                    productsDiv.appendChild(div);
+                });
+            },
+
+            reset: function () {
+                document.getElementById('result-content').classList.add('hidden');
+                document.getElementById('asesor-step-1').classList.remove('hidden');
+            },
+
+            getProtocolo: function (problema) {
+                switch (problema) {
+                    case 'humedad':
+                        return {
+                            titulo: "Humedad Ambiental / Condensación",
+                            descripcion: "La IA ha detectado patrones de moho y humedad superficial.",
+                            pasos: [
+                                "Limpiar la superficie con agua y cloro (10%).",
+                                "Dejar secar completamente (24 horas).",
+                                "Aplicar Ultra Seco Solución (Interiores)."
+                            ],
+                            productos: [
+                                { nombre: "Ultra Seco Solución (Interiores)", desc: "Impermeabilizante invisible mate." }
+                            ]
+                        };
+                    case 'fachadas':
+                        return {
+                            titulo: "Protección de Fachadas",
+                            descripcion: "Muros exteriores expuestos a lluvia y sol.",
+                            pasos: [
+                                "Limpiar la superficie de polvo y grasa.",
+                                "Reparar grietas mayores a 1mm.",
+                                "Aplicar Ultra Seco Solución (Exteriores)."
+                            ],
+                            productos: [
+                                { nombre: "Ultra Seco Solución (Exteriores)", desc: "Hidrofugante de alto desempeño." }
+                            ]
+                        };
+                    default:
+                        return {
+                            titulo: "Consulta General",
+                            descripcion: "Por favor contacta a un ingeniero.",
+                            pasos: ["Contactar soporte técnico."],
+                            productos: []
+                        };
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>

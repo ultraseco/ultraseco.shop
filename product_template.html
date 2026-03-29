@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PRODUCT_NAME}} | Ultra Seco</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-droplet"></i>
+                Ultra Seco
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-button">Volver al Inicio</a></li>
+                <li><a href="#contacto" class="nav-button">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero"
+            style="background-image: url('{{HERO_IMAGE}}'); background-size: cover; background-position: center;">
+            <div class="hero-content glass-panel">
+                <h1>{{PRODUCT_NAME}}</h1>
+                <p>{{PRODUCT_DESCRIPTION}}</p>
+                <a href="#detalles" class="cta-button">Ver Detalles</a>
+            </div>
+        </section>
+
+        <!-- Detalles Section -->
+        <section id="detalles" class="page-content" style="padding: 5rem 10%;">
+            <div class="glass-panel" style="padding: 3rem;">
+                <h2>Descripción del Producto</h2>
+                <p style="margin-bottom: 2rem;">{{LONG_DESCRIPTION}}</p>
+
+                <h3>Beneficios Clave</h3>
+                <ul style="list-style: none; margin-bottom: 2rem;">
+                    {{BENEFITS_LIST}}
+                </ul>
+
+                <a href="https://wa.me/584146023797?text=Hola,%20estoy%20interesado%20en%20{{PRODUCT_NAME}}"
+                    target="_blank" class="cta-button">
+                    <i class="fa-brands fa-whatsapp"></i> Solicitar Cotización
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ultra Seco. Todos los derechos reservados.</p>
+    </footer>
+</body>
+
+</html>

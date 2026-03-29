@@ -1,0 +1,50 @@
+# Ultra Seco - Configuración Netlify
+# www.ultraseco.shop
+
+[build]
+  publish = "."
+  command = "echo 'No build required'"
+
+# 1. Redirecciones
+
+# Redirigir de la raíz a la carpeta empresa (con redirección 301 para que las rutas relativas funcionen)
+[[redirects]]
+  from = "/"
+  to = "/empresa/"
+  status = 301
+  force = true
+
+# Redirigir index.html de la raíz a la carpeta empresa
+[[redirects]]
+  from = "/index.html"
+  to = "/empresa/"
+  status = 301
+  force = true
+
+# Manejo de 404 (opcional, redirige rutas no encontradas a la home)
+[[redirects]]
+  from = "/*"
+  to = "/empresa/index.html"
+  status = 404
+
+# 2. Cabeceras (Headers)
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache para imágenes y assets
+[[headers]]
+  for = "/empresa/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/empresa/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
