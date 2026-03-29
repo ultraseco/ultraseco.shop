@@ -376,7 +376,7 @@
 
     <script>
         // Tasa BCV (Hardcoded como fallback si la API falla, idealmente conectarías al backend)
-        const TASA_BCV_MANUAL = 36.25;
+        const TASA_BCV_MANUAL = 471.700;
 
         let carritoData = [];
         let totalUSD = 0;
@@ -633,26 +633,49 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => {
-                    if (response.ok) {
-                        alert("¡Gracias! Tu pedido ha sido procesado exitosamente. En breve verificaremos tu pago y nos comunicaremos.");
-                        localStorage.removeItem('miCarritoUltraSeco');
-                        window.location.href = 'index.html';
-                    } else {
-                        throw new Error("Respuesta de la red no fue OK. Código: " + response.status);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error asíncrono en fetch (Netlify):", error);
-                    // Detectar si es probable un error de entorno local
-                    if (window.location.protocol === 'file:') {
-                        alert("🔴 MODO LOCAL DETECTADO: El formulario no se puede enviar porque estás abriendo el archivo localmente (file://). Netlify Forms requiere que la página esté subida a internet para poder procesar el pago.");
-                    } else {
-                        alert("Hubo un error al procesar tu pedido. Por favor intenta nuevamente.");
-                    }
-                    btn.innerHTML = 'Confirmar y Enviar Pedido <i class="fa-solid fa-paper-plane"></i>';
-                    btn.disabled = false;
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            alert("¡Gracias! Tu pedido ha sido procesado exitosamente. A continuación serás redirigido a conversar con un asesor en WhatsApp para confirmarlo.");
+                            localStorage.removeItem('miCarritoUltraSeco');
+                            
+                            // 1. Obtener los datos dinámicos solicitados
+                            const nombreCliente = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
+                            const numReferencia = document.getElementById('referencia-pago').value.trim() || 'N/A';
+                            const metodoSeleccionado = document.getElementById('metodo-pago').value;
+                            
+                            // 2. Construir el mensaje de WhatsApp a enviar
+                            let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de $${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Ya adjunté el comprobante en la web. ¿Me confirman la recepción?`;
+
+                            // Si pagan en efectivo de una vez adaptamos un poco el mensaje
+                            if (metodoSeleccionado === 'efectivo') {
+                                mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de $${totalUSD.toFixed(2)}. Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
+                            }
+
+                            // 3. Crear Enlace de Redirección codificado
+                            const wpUrl = `https://wa.me/584146279617?text=${encodeURIComponent(mensajeWp)}`;
+
+                            // 4. Feedback visual en el botón
+                            btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Redirigiendo a WhatsApp...';
+
+                            // 5. El temporizador de 2 segundos antes del salto
+                            setTimeout(() => {
+                                window.location.href = wpUrl;
+                            }, 2000);
+                        } else {
+                            throw new Error("Respuesta de la red no fue OK. Código: " + response.status);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error asíncrono en fetch (Netlify):", error);
+                        // Detectar si es probable un error de entorno local
+                        if (window.location.protocol === 'file:') {
+                            alert("🔴 MODO LOCAL DETECTADO: El formulario no se puede enviar porque estás abriendo el archivo localmente (file://). Netlify Forms requiere que la página esté subida a internet para poder procesar el pago.");
+                        } else {
+                            alert("Hubo un error al procesar tu pedido. Por favor intenta nuevamente.");
+                        }
+                        btn.innerHTML = 'Confirmar y Enviar Pedido <i class="fa-solid fa-paper-plane"></i>';
+                        btn.disabled = false;
+                    });
             } catch (error) {
                 console.error("Error síncrono al ejecutar fetch:", error);
                 if (window.location.protocol === 'file:') {
