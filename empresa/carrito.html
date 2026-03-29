@@ -316,7 +316,7 @@
                         </div>
 
                         <!-- Comprobantes -->
-                        <div class="space-y-4 mb-8">
+                        <div id="comprobantes-container" class="space-y-4 mb-8">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Número de
                                     Referencia</label>
@@ -501,13 +501,27 @@
         function mostrarInstruccionesPago() {
             const metodo = document.getElementById('metodo-pago').value;
             const container = document.getElementById('instrucciones-banco');
+            const comprobantesContainer = document.getElementById('comprobantes-container');
+            const refPago = document.getElementById('referencia-pago');
+            const comprobanteFile = document.getElementById('comprobante');
 
             if (!metodo) {
                 container.classList.add('hidden');
+                if (comprobantesContainer) comprobantesContainer.classList.remove('hidden');
                 return;
             }
 
             container.classList.remove('hidden');
+
+            if (metodo === 'efectivo') {
+                if (comprobantesContainer) comprobantesContainer.classList.add('hidden');
+                if (refPago) refPago.required = false;
+                if (comprobanteFile) comprobanteFile.required = false;
+            } else {
+                if (comprobantesContainer) comprobantesContainer.classList.remove('hidden');
+                if (refPago) refPago.required = true;
+                if (comprobanteFile) comprobanteFile.required = true;
+            }
 
             let html = '';
             if (metodo === 'pago_movil') {
