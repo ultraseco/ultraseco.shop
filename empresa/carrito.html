@@ -12,7 +12,7 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Tu Carrito | Ultra Seco</title>
 
     <!-- Core Styles -->
@@ -637,12 +637,12 @@
                         if (response.ok) {
                             alert("¡Gracias! Tu pedido ha sido procesado exitosamente. A continuación serás redirigido a conversar con un asesor en WhatsApp para confirmarlo.");
                             localStorage.removeItem('miCarritoUltraSeco');
-                            
+
                             // 1. Obtener los datos dinámicos solicitados
                             const nombreCliente = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
                             const numReferencia = document.getElementById('referencia-pago').value.trim() || 'N/A';
                             const metodoSeleccionado = document.getElementById('metodo-pago').value;
-                            
+
                             // 2. Construir el mensaje de WhatsApp a enviar
                             let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de $${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Ya adjunté el comprobante en la web. ¿Me confirman la recepción?`;
 

@@ -344,28 +344,4 @@
 .cart-content::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 198, 255, 0.5);
 }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .cart-sidebar {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .cart-item-image {
-        width: 60px;
-        height: 60px;
-    }
-
-    .cart-item-title {
-        font-size: 14px;
-    }
-
-    .cart-item-price {
-        font-size: 16px;
-    }
-
-    .cart-subtotal-amount {
-        font-size: 24px;
-    }
-}
+
