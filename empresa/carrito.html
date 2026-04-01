@@ -376,8 +376,50 @@
     <script src="mobile-menu.js"></script>
 
     <script>
-        // Tasa BCV (Hardcoded como fallback si la API falla, idealmente conectarías al backend)
-        const TASA_BCV_MANUAL = 471.700;
+        // Variable global para la tasa (valor por defecto por si falla la conexión)
+        let tasaBCV = 36.50; 
+        const TIEMPO_CACHE_BCV = 4 * 60 * 60 * 1000; // 4 horas
+
+        async function obtenerTasaOficial() {
+            const tasaGuardada = localStorage.getItem('tasaBCVCache');
+            const tiempoGuardado = localStorage.getItem('tasaBCVTimestamp');
+            const ahora = new Date().getTime();
+
+            // Si hay caché y tiene menos de 4 horas, usar caché
+            if (tasaGuardada && tiempoGuardado && (ahora - tiempoGuardado) < TIEMPO_CACHE_BCV) {
+                tasaBCV = parseFloat(tasaGuardada);
+                console.log("🌊 Ultra Seco - Tasa BCV (Desde Caché):", tasaBCV);
+                renderizarTabla();
+                mostrarInstruccionesPago();
+                return;
+            }
+
+            try {
+                // Consultamos una API espejo del BCV (más estable para scripts externos)
+                const response = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv');
+                const data = await response.json();
+                
+                // Extraemos el valor del dólar (limpiando comas por puntos para matemáticas)
+                const precioDolar = data.monitors.usd.price;
+                tasaBCV = parseFloat(precioDolar);
+                
+                // Guardamos la tasa en localStorage con una marca de tiempo
+                localStorage.setItem('tasaBCVCache', tasaBCV);
+                localStorage.setItem('tasaBCVTimestamp', ahora.toString());
+                
+                console.log("🌊 Ultra Seco - Tasa BCV Actualizada:", tasaBCV);
+                
+                // Disparar las funciones que actualizan los precios en pantalla
+                renderizarTabla();
+                mostrarInstruccionesPago();
+
+            } catch (error) {
+                console.error("Error al obtener tasa BCV, usando tasa por defecto o última guardada:", error);
+                if (tasaGuardada) tasaBCV = parseFloat(tasaGuardada);
+                renderizarTabla();
+                mostrarInstruccionesPago();
+            }
+        }
 
         let carritoData = [];
         let totalUSD = 0;
@@ -479,8 +521,8 @@
 
             // Actualizar Totales
             document.getElementById('cart-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
-            const totalBs = totalUSD * TASA_BCV_MANUAL;
-            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV: ${TASA_BCV_MANUAL})</span>`;
+            const totalBs = totalUSD * tasaBCV;
+            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV: ${tasaBCV.toFixed(2)})</span>`;
 
             // Refrescar el contador de la barra de navegación usando la funcion en script.js
             if (typeof window.actualizarContadorCarrito === 'function') {
@@ -536,7 +578,7 @@
                         <li><strong>Teléfono:</strong> 0414-6023797</li>
                         <li><strong>RIF/CI:</strong> J-504413054</li>
                         <li><strong>Titular:</strong> ULTRA SECO CA</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * TASA_BCV_MANUAL).toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * tasaBCV).toFixed(2)}</li>
                     </ul>
                 `;
             } else if (metodo === 'transferencia') {
@@ -547,7 +589,7 @@
                         <li><strong>Cuenta:</strong> 0172-0401-72-4018567596</li>
                         <li><strong>Titular:</strong> ULTRA SECO CA</li>
                         <li><strong>RIF:</strong> J-504413054</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * TASA_BCV_MANUAL).toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * tasaBCV).toFixed(2)}</li>
                     </ul>
                 `;
             } else if (metodo === 'custodia') {
@@ -617,7 +659,7 @@
             const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} ($${item.precio})`).join(' | ');
             document.getElementById('hidden-resumen').value = resumenText;
             document.getElementById('hidden-total-usd').value = totalUSD.toFixed(2);
-            document.getElementById('hidden-total-bs').value = (totalUSD * TASA_BCV_MANUAL).toFixed(2);
+            document.getElementById('hidden-total-bs').value = (totalUSD * tasaBCV).toFixed(2);
 
             // 2. Preparar el botón mostrando estado de carga
             const btn = document.getElementById('btn-submit');
@@ -690,7 +732,10 @@
         }
 
         // Init
-        document.addEventListener('DOMContentLoaded', cargarCarrito);
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarCarrito();
+            obtenerTasaOficial();
+        });
 
     </script>
 </body>
