@@ -47,10 +47,13 @@
         header {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            z-index: 9999;
-            padding: 1.5rem 5%;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10000;
+            background: #0f172a;
+            padding: 12px 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* --- PREMIUM HERO --- */
@@ -380,7 +383,7 @@
                     <i class="fa-solid fa-cart-shopping"></i> Carrito
                     <span id="cart-badge" style="position: absolute; top: -8px; right: -12px; background: #ef4444; color: white; border-radius: 50%; height: 20px; min-width: 20px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; justify-content: center; display: none;">0</span>
                 </a></li>
-</ul>
+            </ul>
         </nav>
     </header>
 
@@ -760,18 +763,7 @@
     
     <script src="catalog.js"></script>
     
-    <script>
-        // Header Scroll
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(15, 23, 42, 0.95)';
-                header.style.backdropFilter = 'blur(10px)';
-            } else {
-                header.style.background = '#0f172a';
-                header.style.backdropFilter = 'none';
-            }
-        });
+
 
         // Price Sync with Quality
         function updatePrice(id) {

@@ -80,10 +80,10 @@ header {
 }
 
 header.scrolled {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(15, 23, 42, 0.95);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 nav {
@@ -295,6 +295,15 @@ footer {
     box-shadow: 0 4px 15px rgba(0, 168, 232, 0.4);
 }
 
+header .nav-button {
+    color: #0284c7; /* Celeste oscuro */
+}
+
+header .nav-button:hover {
+    color: var(--primary-color);
+    background: rgba(0, 168, 232, 0.15);
+}
+
 /* Division Navigation (Sub-tabs) */
 .division-nav-button {
     background: rgba(255, 255, 255, 0.5);
@@ -471,5 +480,17 @@ footer {
     50% {
         opacity: 0.5;
     }
+}
+
+/* ==================================================== */
+/* REGLA DE CONTRASTE AUTOMATICO PARA HEADERS CLAROS  */
+/* ==================================================== */
+/* Protege los enlaces blancos (como "Carrito") cuando 
+   se usan cabeceras iluminadas como .glass-panel */
+header.glass-panel .nav-links a.text-white {
+    color: var(--accent-color) !important; /* Azul Marino Oscuro */
+}
+header.glass-panel .nav-links a.text-white:hover {
+    color: var(--primary-color) !important; /* Cian Activo */
 }
 
