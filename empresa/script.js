@@ -251,6 +251,9 @@ window.agregarAlCarritoManual = function(botonHTML) {
     actualizarContadorCarrito();
     
     console.log(`¡${cantidad}x ${nombre} agregado al carrito con éxito! JSON actual:`, carrito);
+    
+    // 6. Redirigir a carrito.html como solicitó el usuario
+    window.location.href = 'carrito.html';
 };
 
 window.actualizarContadorCarrito = function() {

@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // ULTRA SECO - DYNAMIC PRODUCT CATALOG & CART
 // ============================================
 
@@ -438,27 +438,33 @@ document.head.appendChild(styleSheet);
 // --- CART LOGIC ---
 
 function addToCart(product, option, quantity = 1) {
-    const existingItem = state.cart.find(item => item.sku === option.sku);
-    if (existingItem) {
-        existingItem.quantity += parseInt(quantity);
+    // Migración a miCarritoUltraSeco para integrar todo el ecosistema y remover Shopify
+    const idProducto = product.id + '-' + option.sku.toLowerCase();
+    const nombre = product.name + ' - ' + option.label;
+    const precio = typeof option.price === 'number' ? option.price : parseFloat(option.price) || 0;
+    
+    let carrito = [];
+    const carritoGuardado = localStorage.getItem('miCarritoUltraSeco');
+    if (carritoGuardado) {
+        try { carrito = JSON.parse(carritoGuardado); } catch(e){}
+    }
+    
+    const indice = carrito.findIndex(item => item.id === idProducto);
+    if (indice !== -1) {
+        carrito[indice].cantidad += parseInt(quantity);
     } else {
-        state.cart.push({
-            ...product,
-            selectedOption: option,
-            quantity: parseInt(quantity),
-            sku: option.sku
+        carrito.push({
+            id: idProducto,
+            nombre: nombre,
+            precio: precio,
+            cantidad: parseInt(quantity)
         });
     }
-    updateCartBadge();
-    localStorage.setItem('ultraSecoCart', JSON.stringify(state.cart));
-    showNotification(`"${product.name}" añadido al carrito`);
-
-    // Auto open cart for better UX
-    if (!state.isCartOpen) {
-        toggleCart();
-    } else {
-        renderCartDrawer(); // Refresh if already open
-    }
+    
+    localStorage.setItem('miCarritoUltraSeco', JSON.stringify(carrito));
+    
+    // Redirigir directamente al carrito como fue solicitado
+    window.location.href = 'carrito.html';
 }
 
 function updateQuantity(sku, change) {

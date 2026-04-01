@@ -247,66 +247,116 @@
 
             <!-- División Construcción -->
             <div id="division-construccion" class="division-content features">
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-estuco">
                     <img src="images/estuco.jpg" alt="Estuco"
                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3>Estuco Bloqueador</h3>
+                    <h3 class="producto-nombre">Estuco Bloqueador</h3>
                     <p>Bloquea la humedad ascendente y protege tus paredes.</p>
                     <a href="estuco.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
 
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='estuco.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$6.40">1/4 Galón - $6.40</option>
+                            <option data-price="$19.00">Galón - $19.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$6.40</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-fortificador">
                     <img src="images/fortificador.jpg" alt="Fortificador"
                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3>Fortificador</h3>
+                    <h3 class="producto-nombre">Fortificador</h3>
                     <p>Consolida superficies arenosas y polvorientas.</p>
                     <a href="fortificador.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='fortificador.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$19.00">1 Litro - $19.00</option>
+                            <option data-price="$52.00">Galón - $52.00</option>
+                            <option data-price="$254.50">Cuñete - $254.50</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$19.00</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-solucion-exteriores">
                     <img src="images/exteriores.jpg" alt="Exteriores"
                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3>Solución Exteriores</h3>
+                    <h3 class="producto-nombre">Solución Exteriores</h3>
                     <p>Protección invisible para fachadas y pisos externos.</p>
                     <a href="exteriores.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='exteriores.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$16.99">1 Litro - $16.99</option>
+                            <option data-price="$17.99">1 Litro (Atomizador) - $17.99</option>
+                            <option data-price="$48.00">Galón (3.785L) - $48.00</option>
+                            <option data-price="$217.50">Cuñete (18L) - $217.50</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$16.99</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-solucion-interiores">
                     <img src="images/interiores.jpg" alt="Interiores"
                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3>Solución Interiores</h3>
+                    <h3 class="producto-nombre">Solución Interiores</h3>
                     <p>Impermeabilizante para baños, cocinas y zonas internas.</p>
                     <a href="interiores.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='interiores.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$13.99">1 Litro - $13.99</option>
+                            <option data-price="$14.99">1 Litro (Atomizador) - $14.99</option>
+                            <option data-price="$38.00">Galón (3.785L) - $38.00</option>
+                            <option data-price="$170.00">Cuñete (18L) - $170.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$13.99</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-pintura">
                     <img src="images/pintura.jpg" alt="Pintura"
                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3>Pintura Súper Hidrofóbica</h3>
+                    <h3 class="producto-nombre">Pintura Súper Hidrofóbica</h3>
                     <p>Pintura que repele el agua y la suciedad.</p>
                     <a href="pintura.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='pintura.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$34.00">Galón - $34.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$34.00</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-nano-aditivo">
                     <img src="images/nano-aditivo.jpg" alt="Nano Aditivo"
                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    <h3>Nano Aditivo</h3>
+                    <h3 class="producto-nombre">Nano Aditivo</h3>
                     <p>Aditivo nanotecnológico para concreto y morteros de alto rendimiento.</p>
                     <a href="nano-aditivo.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='nano-aditivo.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$15.00">600gr - $15.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$15.00</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
             </div>
 
@@ -348,39 +398,61 @@
 
             <!-- División Vehicular -->
             <div id="division-vehicular" class="division-content features hidden">
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-champu">
                     <img src="images/champu/product.jpg" alt="Champú"
                         style="width: 100%; height: 200px; object-fit: contain; border-radius: 8px; margin-bottom: 1rem; background: rgba(0,0,0,0.2);">
-                    <h3>Champú Nano-Concentrado</h3>
+                    <h3 class="producto-nombre">Champú Nano-Concentrado</h3>
                     <p>Encapsula la suciedad para un lavado rápido y seguro.</p>
                     <a href="champu.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='champu.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$12.00">1 Litro - $12.00</option>
+                            <option data-price="$35.00">Galón - $35.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$12.00</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
             </div>
 
             <!-- División Hogar -->
             <div id="division-hogar" class="division-content features hidden">
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-cera">
                     <img src="images/cera.jpg" alt="Cera"
                         style="width: 100%; height: 200px; object-fit: contain; border-radius: 8px; margin-bottom: 1rem; background: rgba(255,255,255,0.05);">
-                    <h3>Cera Nano Protectora</h3>
+                    <h3 class="producto-nombre">Cera Nano Protectora</h3>
                     <p>Brillo y protección duradera para superficies del hogar.</p>
                     <a href="cera.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='cera.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$15.00">500ml - $15.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$15.00</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
-                <div class="feature-card glass-panel">
+                <div class="feature-card glass-panel producto-contenedor" id="prod-escudo">
                     <img src="images/escudo.jpg" alt="Escudo"
                         style="width: 100%; height: 200px; object-fit: contain; border-radius: 8px; margin-bottom: 1rem; background: rgba(255,255,255,0.05);">
-                    <h3>Escudo Cerámico</h3>
+                    <h3 class="producto-nombre">Escudo Cerámico</h3>
                     <p>Protección extrema contra manchas y rayones.</p>
                     <a href="escudo.html" class="cta-button" style="margin-top: 1rem; font-size: 0.9rem;">Ver
                         Detalle</a>
-                    <!-- Shopify Buy Button Container -->
-                    <button onclick="window.location.href='escudo.html'" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem; background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-hand-pointer"></i> Elegir Presentación</button>
+
+                    <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
+                        <select onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price="$45.00">1 Litro - $45.00</option>
+                        </select>
+                        <span class="producto-precio" style="display: none;">$45.00</span>
+                    </div>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
             </div>
         </section>
