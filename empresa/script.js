@@ -262,24 +262,64 @@ window.actualizarContadorCarrito = function() {
     
     if (carritoGuardado) {
         try {
-            const carrito = JSON.parse(carritoGuardado);
-            totalArticulos = carrito.reduce((total, producto) => total + producto.cantidad, 0);
+             const carrito = JSON.parse(carritoGuardado);
+             totalArticulos = carrito.reduce((total, producto) => total + producto.cantidad, 0);
         } catch (e) {
-            console.error("Error al sumar artículos", e);
+             console.error("Error al sumar artículos", e);
         }
     }
     
-    // El badge del carrito actual parece usar el id "cart-badge"
-    const contador = document.getElementById('cart-badge');
-    if (contador) {
+    // El badge del carrito actual en la barra de navegación superior
+    const contadores = document.querySelectorAll('#cart-badge');
+    contadores.forEach(contador => {
         contador.innerText = totalArticulos;
-        contador.style.display = totalArticulos > 0 ? 'inline-block' : 'none';
+        contador.style.display = totalArticulos > 0 ? 'flex' : 'none';
         
         // Agregar pequeña animación
         contador.style.transform = 'scale(1.2)';
         setTimeout(() => {
             contador.style.transform = 'scale(1)';
         }, 150);
+    });
+
+    // Lógica del carrito flotante que acompaña en toda la página
+    let floatingCart = document.getElementById('floating-cart-eco');
+    
+    if (totalArticulos > 0) {
+        if (!floatingCart) {
+            floatingCart = document.createElement('a');
+            floatingCart.id = 'floating-cart-eco';
+            floatingCart.href = 'carrito.html';
+            floatingCart.style.cssText = 'position: fixed; bottom: 30px; right: 30px; background: #00a8e8; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 10px 25px rgba(0, 168, 232, 0.4); z-index: 10000; transition: all 0.3s ease; text-decoration: none;';
+            floatingCart.innerHTML = `
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="floating-cart-count" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; height: 26px; min-width: 26px; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; justify-content: center; font-family: sans-serif; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">${totalArticulos}</span>
+            `;
+            
+            // Efecto Hover
+            floatingCart.onmouseover = function() { 
+                this.style.transform = 'scale(1.1) translateY(-5px)'; 
+                this.style.background = '#008bbf'; 
+            };
+            floatingCart.onmouseout = function() { 
+                this.style.transform = 'scale(1) translateY(0)'; 
+                this.style.background = '#00a8e8'; 
+            };
+            
+            document.body.appendChild(floatingCart);
+        } else {
+            document.getElementById('floating-cart-count').innerText = totalArticulos;
+            floatingCart.style.display = 'flex';
+        }
+        
+        // Evitar redundancia: no mostrar el carrito flotante si ya estamos en la página del carrito
+        if (window.location.pathname.includes('carrito.html') || window.location.href.includes('carrito.html')) {
+            floatingCart.style.display = 'none';
+        }
+    } else {
+        if (floatingCart) {
+            floatingCart.style.display = 'none';
+        }
     }
 };
 
