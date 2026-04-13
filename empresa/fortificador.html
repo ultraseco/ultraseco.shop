@@ -12,6 +12,8 @@
     </script>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     
     <title>Fortificador de Superficies | Ultra Seco</title>
     <link rel="stylesheet" href="styles.css">
@@ -141,46 +143,39 @@
 
     <main style="padding-top: 64px;">
         <!-- HERO SECTION -->
-        <section class="hero"
-            style="position: relative; height: 600px; display: flex; align-items: center; justify-content: center; z-index: 20;">
+        <section class="hero relative flex items-center justify-center min-h-[100vh] md:min-h-[600px] z-20 overflow-hidden py-10 md:py-0">
             <!-- Background with new hero image -->
-            <div style="position: absolute; inset: 0; z-index: 0;">
-                <img src="assets/hero-fortificador.jpg" alt="Background"
-                    style="width: 100%; height: 100%; object-fit: cover;">
-                <div
-                    style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.5));">
-                </div>
+            <div class="absolute inset-0 z-0">
+                <img src="assets/hero-fortificador.jpg" alt="Background" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-black/50"></div>
             </div>
 
-            <div class="hero-content"
-                style="position: relative; z-index: 10; max-width: 1200px; width: 100%; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+            <div class="hero-content relative z-10 w-full max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
                 <!-- Text Content -->
-                <div class="text-white">
-                    <h1
-                        style="font-family: 'Montserrat', sans-serif; font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff; text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.8);">
-                        <span
-                            style="color: #00d4ff; text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,212,255,0.5);">Fortificador</span><br>de
-                        Superficies
+                <div class="text-white flex flex-col items-center text-center md:items-start md:text-left pt-6 md:pt-0">
+                    <h1 class="font-black leading-[1.1] mb-6 drop-shadow-2xl text-[2.5rem] md:text-[4.5rem]"
+                        style="font-family: 'Montserrat', sans-serif; text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.8);">
+                        <span class="text-[#00d4ff]"
+                            style="text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,212,255,0.5);">Fortificador</span><br>de Superficies
                     </h1>
-                    <p
-                        style="font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 400; color: #ffffff; text-shadow: 0 3px 8px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);">
+                    <p class="text-[1.1rem] md:text-[1.6rem] mb-6 font-normal drop-shadow-lg text-justify md:text-left max-w-[90%]"
+                        style="text-shadow: 0 3px 8px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);">
                         Tecnología de cristalización molecular que sella y refuerza el concreto desde adentro.
                     </p>
-                    <p
-                        style="font-size: 1.3rem; margin-bottom: 2.5rem; color: #f0f9ff; text-shadow: 0 3px 8px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);">
+                    <p class="text-[1rem] md:text-[1.3rem] text-[#f0f9ff] mb-10 drop-shadow-md text-center md:text-left"
+                        style="text-shadow: 0 3px 8px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);">
                         Grado industrial. Garantía de 10 años. 0% absorción de agua.
                     </p>
                     <button onclick="document.getElementById('detalles').scrollIntoView({behavior: 'smooth'})"
-                        class="bg-ultra-cyan text-white px-8 py-4 rounded-lg font-bold hover:bg-cyan-600 transition-colors shadow-lg"
-                        style="font-size: 1.2rem;">
+                        class="bg-[#00a8e8] text-white px-8 py-4 rounded-lg font-bold hover:bg-cyan-600 transition-colors shadow-lg text-[1.2rem] w-full md:w-auto">
                         Ver Detalles
                     </button>
                 </div>
 
                 <!-- Product Image -->
-                <div style="display: flex; justify-content: center;">
+                <div class="flex justify-center mt-6 md:mt-0 pb-6 md:pb-0">
                     <img src="images/fortificador.jpg" alt="Fortificador de Superficies"
-                        style="max-width: 100%; height: auto; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(1.05);">
+                        class="max-w-[75%] md:max-w-full h-auto rounded-2xl shadow-2xl transform scale-100 md:scale-105">
                 </div>
             </div>
         </section>
@@ -415,42 +410,37 @@
         </section>
 
         <!-- Product Details -->
-        <section id="detalles" class="page-content" style="padding:5rem 10%;">
-            <div class="glass-panel" style="padding:3rem;">
-                <h2>Descripción del Producto</h2>
-                <p style="margin-bottom:2rem; font-size:1.1rem;">Fortificador de Superficies es una solución de alto
+        <section id="detalles" class="max-w-6xl mx-auto px-4 mt-20 mb-12">
+            <div class="glass-panel p-6 md:p-12 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-3xl font-bold mb-4">Descripción del Producto</h2>
+                <p style="margin-bottom:2rem; font-size:1.1rem;" class="text-justify">Fortificador de Superficies es una solución de alto
                     rendimiento que penetra y cristaliza la cal libre del concreto, creando una barrera estructural que
                     repele agua, sales y agentes biológicos. Ideal para estructuras que requieren durabilidad a largo
                     plazo.</p>
 
-                <h3>Beneficios Clave</h3>
-                <ul style="list-style:none; margin-bottom:2rem;">
-                    <li><i class="fa-solid fa-check" style="color: var(--primary-color); margin-right:10px;"></i>Grado
-                        Industrial Resistencia superior para estructuras críticas</li>
-                    <li><i class="fa-solid fa-check"
-                            style="color: var(--primary-color); margin-right:10px;"></i>Impermeabilización Bloquea
-                        100% la penetración de agua</li>
-                    <li><i class="fa-solid fa-check" style="color: var(--primary-color); margin-right:10px;"></i>10
-                        Años Garantía de protección total</li>
+                <h3 class="text-2xl font-bold mb-4">Beneficios Clave</h3>
+                <ul style="list-style:none; margin-bottom:2rem; padding:0;">
+                    <li class="mb-2"><i class="fa-solid fa-check" style="color: #0056b3; margin-right:10px;"></i><strong>Grado Industrial:</strong> Resistencia superior para estructuras críticas</li>
+                    <li class="mb-2"><i class="fa-solid fa-check" style="color: #0056b3; margin-right:10px;"></i><strong>Impermeabilización:</strong> Bloquea 100% la penetración de agua</li>
+                    <li class="mb-2"><i class="fa-solid fa-check" style="color: #0056b3; margin-right:10px;"></i><strong>10 Años:</strong> Garantía de protección total</li>
                 </ul>
 
-                <h3 style="margin-top:2.5rem;">Presentaciones Disponibles</h3>
-                <div
-                    style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:2rem; margin-bottom:3rem;">
-                    <div class="glass-panel" style="padding:2rem; text-align:center;">
+                <h3 class="text-2xl font-bold mt-8 mb-6">Presentaciones Disponibles</h3>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:2rem; margin-bottom:3rem;">
+                    <div class="glass-panel p-6 text-center rounded-xl shadow-md cursor-pointer hover:shadow-lg transition">
                         <i class="fa-solid fa-wine-bottle"
                             style="font-size:2.5rem; color: var(--primary-color); margin-bottom:0.75rem; display:block;"></i>
                         <h4 style="margin-bottom:0.5rem;">Litro</h4>
                         <p style="font-size:0.9rem; color:#666;">Para reparaciones puntuales</p>
                     </div>
-                    <div class="glass-panel" style="padding:2rem; text-align:center;">
+                    <div class="glass-panel p-6 text-center rounded-xl shadow-md cursor-pointer hover:shadow-lg transition">
                         <i class="fa-solid fa-flask"
                             style="font-size:2.5rem; color: var(--primary-color); margin-bottom:0.75rem; display:block;"></i>
                         <h4 style="margin-bottom:0.5rem;">Galón</h4>
                         <p style="font-size:0.9rem; color:#666;">Rendimiento: 30 m²*</p>
                         <p style="font-size:0.7rem; color:#999; margin-top:0.25rem;">*Depende del nivel de deterioro</p>
                     </div>
-                    <div class="glass-panel" style="padding:2rem; text-align:center;">
+                    <div class="glass-panel p-6 text-center rounded-xl shadow-md cursor-pointer hover:shadow-lg transition">
                         <i class="fa-solid fa-box"
                             style="font-size:2.5rem; color: var(--primary-color); margin-bottom:0.75rem; display:block;"></i>
                         <h4 style="margin-bottom:0.5rem;">Cuñete</h4>
@@ -480,42 +470,43 @@
 
                 <!-- Podcast -->
                 <div
-                    class="glass-panel p-6 rounded-xl shadow-md mt-8 flex items-center justify-between max-w-4xl mx-auto">
-                    <div>
+                    class="glass-panel p-6 rounded-xl shadow-md mt-8 flex flex-col md:flex-row items-center justify-between max-w-4xl mx-auto gap-4 md:gap-0 text-center md:text-left">
+                    <div class="w-full md:w-auto">
                         <h3 class="text-xl font-bold text-ultra-blue mb-2">🎙️ Podcast: Repara con Cohesión Molecular
                         </h3>
                         <p class="text-sm text-gray-600">Escucha cómo funciona la tecnología a nivel molecular.</p>
                     </div>
-                    <audio controls class="ml-4">
+                    <audio controls class="w-full md:w-auto max-w-full">
                         <source src="audio/repara-superficies.mp3" type="audio/mpeg">Tu navegador no soporta audio.
                     </audio>
                 </div>
 
                 <!-- Technical Documentation -->
-                <section class="bg-blue-50" style="padding:5rem 10%; margin-top: 3rem;">
-                    <div class="glass-panel" style="padding:3rem; text-align:center;">
-                        <h2>Documentación Técnica</h2>
-                        <p>Descarga la información técnica completa del producto.</p>
-                        <div style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;">
+                <section class="bg-blue-50 px-4 md:px-10 py-12 md:py-20 mt-12 rounded-xl">
+                    <div class="glass-panel p-6 md:p-12 text-center md:text-justify rounded-xl shadow-md">
+                        <h2 class="text-center font-bold text-2xl mb-4">Documentación Técnica</h2>
+                        <p class="mb-8 text-center md:text-justify text-gray-700">Descarga la información técnica completa del producto para conocer sus lineamientos de máxima eficiencia.</p>
+                        <div style="display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;">
                             <a href="docs/fortificador-ficha-tecnica.html" target="_blank"
-                                class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:scale-105 transition shadow-lg hover:shadow-blue-500/30">
+                                class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-full hover:scale-105 transition shadow-lg hover:shadow-blue-500/30 w-full md:w-auto">
                                 <i class="fa-solid fa-file-invoice"></i> Ver Ficha Técnica (HTML)
                             </a>
-                            <a href="docs/fortificador-hoja-seguridad.md" download class="cta-button"
-                                style="display:inline-flex; align-items:center; gap:0.5rem; background:linear-gradient(45deg, #059669, #047857); color:white; padding:0.75rem 1.5rem; border-radius:4px;"><i
-                                    class="fa-solid fa-shield-halved"></i> Hoja de Seguridad</a>
+                            <a href="docs/fortificador-hoja-seguridad.md" download
+                                class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-800 text-white font-bold py-3 px-6 rounded-full hover:scale-105 transition shadow-lg hover:shadow-emerald-500/30 w-full md:w-auto">
+                                <i class="fa-solid fa-shield-halved"></i> Hoja de Seguridad
+                            </a>
                         </div>
                     </div>
                 </section>
 
                 <!-- Contact CTA -->
-                <section style="padding:3rem 10%; background:rgba(255,255,255,0.05);">
-                    <div class="glass-panel" style="padding:3rem; text-align:center;">
-                        <h2>Listo para proteger tus superficies?</h2>
-                        <p style="margin:1.5rem 0;">Contáctanos para una cotización personalizada</p>
+                <section class="px-4 md:px-10 py-12 mt-8 rounded-xl" style="background:rgba(255,255,255,0.05);">
+                    <div class="glass-panel p-6 md:p-12 text-center rounded-xl shadow-lg border border-gray-200">
+                        <h2 class="font-bold text-2xl mb-4">¿Listo para proteger tus superficies?</h2>
+                        <p style="margin:1.5rem 0;" class="text-gray-700">Contáctanos para una cotización personalizada</p>
                         <a href="https://wa.me/584146023797?text=Hola,%20estoy%20interesado%20en%20Fortificador%20de%20Superficies"
-                            target="_blank" class="cta-button"
-                            style="font-size:1.1rem; display:inline-flex; align-items:center; gap:0.5rem; background:#0056b3; color:white; padding:0.75rem 1.5rem; border-radius:4px;"><i
+                            target="_blank" class="cta-button w-full md:w-auto"
+                            style="font-size:1.1rem; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; background:#0056b3; color:white; padding:0.75rem 1.5rem; border-radius:4px;"><i
                                 class="fa-brands fa-whatsapp"></i> Solicitar Cotización</a>
                     </div>
                 </section>

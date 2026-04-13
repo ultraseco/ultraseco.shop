@@ -493,4 +493,110 @@ header.glass-panel .nav-links a.text-white {
 header.glass-panel .nav-links a.text-white:hover {
     color: var(--primary-color) !important; /* Cian Activo */
 }
+
+/* ==================================================== */
+/* GLOBAL RESPONSIVE FIXES                              */
+/* ==================================================== */
+@media (max-width: 968px) {
+    /* Forzar grids divididos en 2 o más columnas inline a colapsar a 1 columna */
+    .hero-grid-2cols,
+    div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+
+    .collage-grid-4-items {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto !important;
+        height: auto !important;
+        min-height: auto !important;
+        gap: 1.5rem !important;
+    }
+
+    /* Salvaguarda de Altura para las tarjetas del collage interactivo (evita invisibilidad) */
+    .collage-grid-4-items > a {
+        min-height: 280px !important;
+    }
+
+    /* Reducir paddings enormes en las secciones Hero y liberar ataduras de alturas rígidas 100vh */
+    .hero {
+        padding: 7rem 5% 2rem !important;
+        height: auto !important;
+        min-height: auto !important;
+    }
+
+    .hero-content {
+        padding: 1.5rem !important;
+    }
+
+    /* Escalar tipografía masivamente para mantener legibilidad sin saltos excesivos */
+    h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    h2 {
+        font-size: 2rem !important; 
+    }
+
+    /* Ajustar tamaño del logo por falta de espacio superior */
+    .logo img {
+        height: 32px !important;
+    }
+
+    /* Forzar imágenes a no desbordar */
+    img {
+        max-width: 100% !important;
+    }
+    
+    /* Espaciado del contenedor Features */
+    .features {
+        padding: 2rem 5% !important;
+        gap: 1.5rem !important;
+    }
+    
+    .feature-card {
+        padding: 1.5rem !important;
+    }
+    
+    /* Pilares Premium en móviles: colapsables mas suaves */
+    section#page-pilares {
+        padding: 3rem 1rem !important;
+    }
+    
+    /* Sub-tabs más manejables al hacer touch */
+    .division-nav-button {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+        width: 100%; /* Expande botones de división para clics más fáciles */
+        margin-bottom: 0.2rem;
+    }
+    
+    /* En el hero de división (Inicio), el botón y CTA tienen wrapper div flex */
+    div[style*="display: flex; gap: 1.5rem;"] {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    /* CTAs al 100% de ancho */
+    .cta-button {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2.2rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .hero {
+        padding: 6rem 5% 1.5rem !important; 
+    }
+}
 
