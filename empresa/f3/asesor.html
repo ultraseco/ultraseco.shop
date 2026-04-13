@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-63ZJG1KHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-63ZJG1KHZS');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesor de Compras IA | Ultra Seco</title>
+    <meta name="description"
+        content="Asesor de compras inteligente de Ultra Seco. Encuentra el producto ideal para impermeabilización y protección.">
+
+    <!-- Scripts & Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="config.js"></script>
+    <style>
+        :root {
+            --chat-bg: rgba(255, 255, 255, 0.7);
+            --user-msg-bg: #2563eb;
+            --ai-msg-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 2rem auto;
+            width: 95%;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1.5rem;
+            height: calc(100vh - 200px);
+        }
+
+        @media (max-width: 850px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            background: var(--chat-bg);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem 1.5rem;
+            border-radius: 18px;
+            font-size: 1rem;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--user-msg-bg);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background: var(--ai-msg-bg);
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-input-area {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--user-msg-bg);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .send-btn {
+            background: var(--user-msg-bg);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .sidebar {
+            background: var(--chat-bg);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .featured-product {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .featured-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .featured-product img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-product h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .featured-product p {
+            margin: 0.25rem 0 0;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .typing {
+            font-style: italic;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700">
+        <nav class="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+            <a href="index.html" class="flex items-center gap-2">
+                <img src="images/logo.png" alt="Ultra Seco" class="h-10">
+            </a>
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="index.html" class="text-slate-300 hover:text-white transition-colors font-medium">Inicio</a>
+                <a href="products.html"
+                    class="text-slate-300 hover:text-white transition-colors font-medium">Productos</a>
+                <a href="technical.html" class="text-slate-300 hover:text-white transition-colors font-medium">Soporte
+                    Técnico</a>
+                <a href="index.html#contacto"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition-all shadow-lg shadow-blue-500/20">
+                    Contacto
+                </a>
+            </div>
+            <!-- Mobile Back Link -->
+            <a href="index.html" class="md:hidden text-white">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Volver
+            </a>
+        </nav>
+    </header>
+
+    <main style="padding-top: 100px; flex: 1; display: flex; flex-direction: column;">
+        <div style="text-align: center; margin-bottom: 1rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #1e293b;">Asesor de Compras 🧠</h1>
+            <p style="color: #64748b;">Resuelvo tus dudas y te ayudo a elegir el producto ideal.</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-main">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai">
+                        ¡Hola! Soy tu asistente de compras Ultra Seco. ¿En qué puedo ayudarte hoy? ¿Buscas algo para
+                        proteger tu hogar, industria o vehículo?
+                    </div>
+                </div>
+                <div id="typing" class="typing" style="padding: 0 1.5rem;">Asistente está escribiendo...</div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu duda aquí..."
+                        onkeypress="handleKeyPress(event)">
+                    <button class="send-btn" onclick="sendMessage()" title="Enviar mensaje">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h3 style="margin-top: 0; font-size: 1.2rem; color: #1e293b;">Productos Sugeridos</h3>
+                <div id="suggested-products" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Sugerencias dinámicas aquí -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="padding: 2rem; text-align: center; color: #64748b;">
+        <p>&copy; 2025 Ultra Seco. Tu aliado en impermeabilización.</p>
+    </footer>
+
+    <script src="catalog.js"></script>
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const typingIndicator = document.getElementById('typing');
+        const suggestedProductsContainer = document.getElementById('suggested-products');
+
+        // Initial suggestions
+        renderInitialSuggestions();
+
+        function renderInitialSuggestions() {
+            const bestSellers = window.products.slice(0, 3);
+            updateSuggestions(bestSellers);
+        }
+
+        function updateSuggestions(productList) {
+            suggestedProductsContainer.innerHTML = productList.map(p => `
+                <div class="featured-product" onclick="window.location.href='${p.link}'">
+                    <img src="${p.image}" alt="${p.name}">
+                    <h4>${p.name}</h4>
+                    <p>$${p.options[0].price.toFixed(2)}</p>
+                </div>
+            `).join('');
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            // Add user message
+            addMessage(text, 'user');
+            chatInput.value = '';
+
+            // AI thinking
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await callGeminiAPI(text);
+                typingIndicator.style.display = 'none';
+                addMessage(response.text, 'ai');
+
+                if (response.suggestedIds && response.suggestedIds.length > 0) {
+                    const suggested = window.products.filter(p => response.suggestedIds.includes(p.id));
+                    if (suggested.length > 0) updateSuggestions(suggested);
+                }
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                addMessage("Lo siento, tuve un problema de conexión. ¿Podrías intentar de nuevo?", 'ai');
+                console.error(error);
+            }
+        }
+
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.innerText = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function callGeminiAPI(query) {
+            const productsContext = window.products.map(p => ({
+                id: p.id,
+                nombre: p.name,
+                categoria: p.category,
+                precio_base: p.options[0].price,
+                descripcion: p.description,
+                uso: p.type
+            }));
+
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: `Actúa como el Asesor de Compras experto de Ultra Seco (ultraseco.shop). 
+                        Conoces perfectamente este catálogo de productos: ${JSON.stringify(productsContext)}.
+                        
+                        REGLAS:
+                        1. Sé amable, profesional y persuasivo.
+                        2. Si el usuario pregunta por un problema (humedad, filtración, suciedad), recomienda el producto exacto de Ultra Seco.
+                        3. Menciona precios solo si te lo preguntan.
+                        4. Mantén tus respuestas concisas pero informativas.
+                        5. MUY IMPORTANTE: Al final de tu respuesta, si corresponde, incluye las IDs de hasta 3 productos recomendados en este formato exacto: [SUGERIDOS: id1, id2]. Solo devuelve las IDs si realmente aplican.
+
+                        Pregunta del usuario: "${query}"`
+                    }]
+                }]
+            };
+
+            try {
+                const data = await window.ULTRA_SECO_CONFIG.callGemini(payload);
+                const fullText = data.candidates[0].content.parts[0].text;
+
+                // Extract suggestions
+                const suggestionMatch = fullText.match(/\[SUGERIDOS: (.*?)\]/);
+                let suggestedIds = [];
+                let cleanText = fullText;
+
+                if (suggestionMatch) {
+                    suggestedIds = suggestionMatch[1].split(',').map(s => s.trim());
+                    cleanText = fullText.replace(/\[SUGERIDOS: (.*?)\]/, '').trim();
+                }
+
+                return { text: cleanText, suggestedIds };
+            } catch (error) {
+                if (error.message === "API_KEY_LEAKED") {
+                    throw new Error("Clave API bloqueada. Por favor, genere una nueva en Google AI Studio.");
+                }
+                throw error;
+            }
+        }
+    </script>
+</body>
+
+</html>

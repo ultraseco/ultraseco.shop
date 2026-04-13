@@ -1,0 +1,2920 @@
+
+    /* ====================================================================
+       FUERZA APP INIT STRAP
+       ==================================================================== */
+    (function () {
+      try {
+        // Initialize DB & Seed Data
+        UF.init();
+
+        const App = {
+        views: {},
+        currentView: '',
+        role: null,
+        user: null,
+
+        // 1. App Startup
+        async start() {
+          try {
+            this.bindLogin();
+
+            // Check existing session (must await authSuccess so views inject before nav builds)
+            const session = Object.keys(UF.Auth.session()).length > 0 ? UF.Auth.session() : null;
+
+            if (session && session.role) {
+              await this.authSuccess(session.role, session.vendorId || null, session.name);
+            } else {
+              this.showLogin();
+            }
+
+            // Register Service Worker
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW:', reg.scope))
+                .catch(e => console.log('SW fail:', e));
+            }
+          } catch(err) {
+            alert("App.start throw: " + err.message);
+            console.error(err);
+          }
+        },
+
+        // 2. Login Logic
+        bindLogin() {
+          const roles = document.querySelectorAll('.role-btn');
+          const vForm = document.getElementById('login-vendor-form');
+          const pForm = document.getElementById('login-pin-form');
+          const select = document.getElementById('login-vendor-select');
+
+          // Populate vendors
+          const vendors = UF.data.getAll('vendors').filter(v => v.active);
+          select.innerHTML = '<option value="">-- Selecciona tu nombre --</option>' +
+            vendors.map(v => `<option value="${v.id}">${v.name} (${v.zone})</option>`).join('');
+
+          // Role toggle
+          roles.forEach(btn => btn.addEventListener('click', () => {
+            roles.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const r = btn.dataset.role;
+            if (r === 'vendor') {
+              vForm.style.display = 'block';
+              pForm.style.display = 'none';
+            } else {
+              vForm.style.display = 'none';
+              pForm.style.display = 'block';
+              document.getElementById('login-pin-input').focus();
+            }
+          }));
+
+          // Login action
+          document.getElementById('btn-login').addEventListener('click', async () => {
+            const role = document.querySelector('.role-btn.selected').dataset.role;
+            if (role === 'vendor') {
+              const vId = select.value;
+              if (!vId) return UF.toast('Selecciona tu nombre', 'warning');
+              const ok = UF.Auth.login('vendor', vId, null);
+              if (ok) await this.authSuccess('vendor', vId, ok.name);
+            } else {
+              const pin = document.getElementById('login-pin-input').value;
+              if (!pin) return UF.toast('Ingresa el PIN', 'warning');
+              const ok = UF.Auth.login(role, null, pin);
+              if (ok) {
+                const names = { CEO: 'CEO — Ultra Seco', admin: 'Administradora', ops: 'Equipo Operativo' };
+                await this.authSuccess(role, null, names[role]);
+              } else {
+                UF.toast('PIN Incorrecto', 'error');
+              }
+            }
+          });
+
+          // Mobile menu toggle
+          const overlay = document.getElementById('sidebar-overlay');
+          const sidebar = document.getElementById('sidebar');
+
+          if (window.innerWidth <= 768) {
+            document.getElementById('btn-mobile-menu').style.display = 'block';
+          }
+
+          const toggleMenu = () => {
+            overlay.classList.toggle('open');
+            sidebar.classList.toggle('open');
+          };
+
+          document.getElementById('btn-mobile-menu').addEventListener('click', toggleMenu);
+          overlay.addEventListener('click', toggleMenu);
+          document.getElementById('sidebar-nav').addEventListener('click', (e) => {
+            if (e.target.closest('.nav-item') && window.innerWidth <= 768) toggleMenu();
+          });
+
+          // Logout
+          document.getElementById('btn-logout').addEventListener('click', () => {
+            UF.Auth.logout();
+            window.location.reload();
+          });
+        },
+
+        showLogin() {
+          document.getElementById('uf-login').style.display = 'flex';
+          document.getElementById('uf-app').classList.remove('visible');
+        },
+
+        async authSuccess(role, vendorId, name) {
+          this.role = role;
+          this.user = { id: vendorId, name: name };
+
+          document.getElementById('lbl-user-name').textContent = name;
+          document.getElementById('lbl-role-badge').textContent =
+            role === 'vendor' ? 'VENDEDOR' : role === 'CEO' ? 'CEO' : role === 'admin' ? 'ADMIN' : 'OPS';
+
+          // Avatar initials & gradient
+          const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().substring(0, 2);
+          const avatarColors = { vendor: 'linear-gradient(135deg,#0284c7,#06b6d4)', CEO: 'linear-gradient(135deg,#7c3aed,#a78bfa)', admin: 'linear-gradient(135deg,#d97706,#fbbf24)', ops: 'linear-gradient(135deg,#059669,#34d399)' };
+          const avatarEl = document.getElementById('lbl-profile-avatar');
+          if (avatarEl) { avatarEl.textContent = initials; avatarEl.style.background = avatarColors[role] || avatarColors.vendor; }
+
+          document.getElementById('uf-login').style.display = 'none';
+          document.getElementById('uf-app').classList.add('visible');
+
+          // IMPORTANT: loadViews() must inject HTML BEFORE buildNavigation() auto-clicks
+          // a nav item which triggers renderVendorDashboard()
+          await this.loadViews();
+          this.buildNavigation();
+        },
+
+        // 3. Dynamic Navigation
+        buildNavigation() {
+          const nav = document.getElementById('sidebar-nav');
+          let html = '';
+
+          const makeLink = (id, icon, text) =>
+            `<button class="nav-item" data-view="${id}"><i class="${icon}"></i> <span>${text}</span></button>`;
+
+          const makeSection = (title) => `<div class="nav-section-label">${title}</div>`;
+
+          if (this.role === 'vendor') {
+            html += makeLink('dashboard', 'fa-solid fa-chart-pie', 'Dashboard IA');
+            html += makeSection('Ventas');
+            html += makeLink('clientes', 'fa-solid fa-users', 'Mis Clientes');
+            html += makeLink('pedidos', 'fa-solid fa-box-open', 'Pedidos');
+            html += makeLink('pagos', 'fa-solid fa-money-bill-wave', 'Cobranzas y Pagos');
+            html += makeSection('Mi Día');
+            html += makeLink('tareas', 'fa-solid fa-calendar-check', 'Tareas Diarias');
+            html += makeSection('Territorio');
+            html += makeLink('mapa', 'fa-solid fa-map-location-dot', 'Mapa Territorial');
+            html += makeSection('Motivación');
+            html += makeLink('ranking', 'fa-solid fa-trophy', 'Gamificación');
+            html += makeSection('Soporte');
+            html += makeLink('pop', 'fa-solid fa-shirt', 'POP / Uniformes');
+            html += makeLink('perfil', 'fa-solid fa-user-circle', 'Mi Perfil');
+          }
+          else if (this.role === 'admin') {
+            html += makeLink('admin-dash', 'fa-solid fa-gauge', 'Panel Administrativo');
+            html += makeSection('Gestión');
+            html += makeLink('admin-pedidos', 'fa-solid fa-clipboard-check', 'Aprobar Pedidos');
+            html += makeLink('admin-pagos', 'fa-solid fa-sack-dollar', 'Conciliar Pagos');
+            html += makeLink('admin-pop', 'fa-solid fa-tags', 'Requerimientos POP');
+            html += makeSection('Territorio');
+            html += makeLink('mapa', 'fa-solid fa-map-location-dot', 'Mapa Territorial');
+          }
+          else if (this.role === 'ops') {
+            html += makeLink('ops-dash', 'fa-solid fa-truck-fast', 'Logística y Despacho');
+            html += makeLink('ops-process', 'fa-solid fa-box', 'Preparación (En Proceso)');
+            html += makeLink('ops-dispatch', 'fa-solid fa-route', 'Guía de Despacho');
+          }
+          else if (this.role === 'CEO') {
+            html += makeLink('ceo-dash', 'fa-solid fa-chart-line', 'Dashboard Ejecutivo');
+            html += makeSection('Dirección');
+            html += makeLink('ceo-ventas', 'fa-solid fa-money-bill-trend-up', 'Flujo de Ventas');
+            html += makeLink('ceo-equipo', 'fa-solid fa-people-group', 'Ranking Equipo');
+            html += makeLink('ceo-postulantes', 'fa-solid fa-user-plus', 'Aprobar Postulantes');
+            html += makeSection('Inteligencia');
+            html += makeLink('mapa', 'fa-solid fa-map-location-dot', 'Mapa Territorial IA');
+          }
+
+          nav.innerHTML = html;
+
+          nav.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const viewId = e.currentTarget.dataset.view;
+              this.navigate(viewId);
+            });
+          });
+
+          // Auto-navigate to first view
+          const firstView = nav.querySelector('.nav-item');
+          if (firstView) firstView.click();
+        },
+
+        navigate(viewId) {
+          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+          const link = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+          if (link) {
+            link.classList.add('active');
+            document.getElementById('topbar-title').textContent = link.querySelector('span').textContent;
+          }
+          document.querySelectorAll('.uf-view').forEach(el => el.classList.remove('active'));
+          const view = document.getElementById(`view-${viewId}`);
+          if (view) {
+            view.classList.add('active');
+            const renders = {
+              dashboard: () => this.renderVendorDashboard(),
+              clientes: () => this.renderVendorClients(),
+              'nuevo-cliente': () => this.renderNuevoCliente(),
+              'nuevo-pedido': () => this.renderNuevoPedido(),
+              pedidos: () => this.renderPedidos(),
+              pagos: () => this.renderPagos(),
+              tareas: () => this.renderTareas(),
+              ranking: () => this.renderRanking(),
+              pop: () => this.renderPOP(),
+              perfil: () => this.renderPerfil(),
+              mapa: () => this.renderMapa(),
+              'admin-pedidos': () => this.renderAdminPedidos(),
+              'ops-process': () => this.renderOpsProcess(),
+              'ceo-dash': () => this.renderCEODashboard(),
+              'ceo-equipo': () => this.renderCEORanking(),
+              'ceo-ventas': () => this.renderCEOVentas(),
+            };
+            if (renders[viewId]) renders[viewId]();
+          }
+        },
+
+        async loadViews() {
+          const container = document.getElementById('app-views');
+          const stubView = `<div class="uf-view" id="view-${this.role}-dash"><div class="uf-card"><h3>Panel de ${this.role}</h3><p style="color:var(--text-3);margin-top:0.5rem;">Módulo en construcción.</p></div></div>`;
+          if (this.role === 'vendor') {
+            container.innerHTML =
+              this.htmlVendorDashboard() +
+              this.htmlVendorClients() +
+              this.htmlNuevoCliente() +
+              this.htmlNuevoPedido() +
+              this.htmlPedidos() +
+              this.htmlPagos() +
+              this.htmlTareas() +
+              this.htmlRanking() +
+              this.htmlPOP() +
+              this.htmlPerfil() +
+              this.htmlMapa();
+          } else if (this.role === 'admin') {
+            container.innerHTML = this.htmlAdminDashboard() + this.htmlAdminPedidos() + this.htmlMapa();
+          } else if (this.role === 'ops') {
+            container.innerHTML = stubView + this.htmlOpsProcess();
+          } else if (this.role === 'CEO') {
+            container.innerHTML = this.htmlCEODashboard() + this.htmlCEORanking() + this.htmlCEOVentas() + this.htmlMapa();
+          } else {
+            container.innerHTML = stubView;
+          }
+        },
+
+        /* =======================================================
+           HTML RENDERERS (Core Views)
+           ======================================================= */
+        htmlVendorDashboard() {
+          return `
+            <div id="view-dashboard" class="uf-view">
+
+              <!-- GERENTE IA HERO -->
+              <div class="ai-hero">
+                <div class="ai-hero-inner">
+                  <div class="ai-avatar-hero">🧠</div>
+                  <div class="ai-hero-content">
+                    <div class="ai-hero-label"><div class="ai-live-dot"></div> Gerente IA &middot; En Línea &middot; ${new Date().toLocaleDateString('es-VE', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+                    <div class="ai-hero-title" id="vd-greet">Analizando tu cartera...</div>
+                    <div class="ai-hero-msg" id="vd-briefing"><div class="ai-typing"><span></span><span></span><span></span></div></div>
+                    <div class="ai-alert-row" id="vd-alert-pills"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pipeline -->
+              <div class="pipeline-bar" id="vd-pipeline"></div>
+
+              <div style="display:grid; grid-template-columns:2fr 1fr; gap:1.5rem;">
+                <div>
+                  <!-- KPIs -->
+                  <div class="kpi-grid" id="vd-kpi-grid"></div>
+
+                  <div class="uf-card">
+                    <div class="uf-card-header">
+                      <div>
+                        <div class="uf-card-title"><i class="fa-solid fa-list-check" style="color:var(--indigo)"></i> Tareas de Hoy</div>
+                        <div class="uf-card-sub">Completa las 4 tareas para ganar el bono de disciplina</div>
+                      </div>
+                    </div>
+                    <div id="vd-tasks"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="commission-widget" style="margin-bottom:1.25rem;">
+                    <div class="commission-label">Comisión Proyectada del Mes</div>
+                    <div class="commission-amount" id="vd-com-total">$0.00</div>
+                    <div class="commission-base">Base 8%: <strong id="vd-com-base">$0.00</strong></div>
+
+                    <div class="bonus-row inactive" id="vd-bonus-team"><i class="fa-solid fa-users"></i> Bono Equipo +1%</div>
+                    <div class="mini-progress"><div class="mini-progress-bar green" id="vd-prog-team" style="width:0%"></div></div>
+
+                    <div class="bonus-row inactive" id="vd-bonus-tasks" style="margin-top:0.5rem;"><i class="fa-solid fa-calendar-check"></i> Bono Disciplina +1%</div>
+                    <div class="mini-progress"><div class="mini-progress-bar blue" id="vd-prog-tasks" style="width:0%"></div></div>
+                  </div>
+
+                  <div class="uf-card" style="padding:1.25rem;">
+                    <div class="uf-card-header" style="margin-bottom:0.75rem;">
+                      <div class="uf-card-title"><i class="fa-solid fa-medal" style="color:var(--amber)"></i> Mis Medallas</div>
+                      <span style="font-size:0.78rem; font-weight:800; color:var(--indigo); background:rgba(99,102,241,0.12); padding:0.2rem 0.55rem; border-radius:999px;"><span id="vd-xp">0</span> XP</span>
+                    </div>
+                    <div class="medal-grid" id="vd-medals"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlVendorClients() {
+          return `
+            <div id="view-clientes" class="uf-view">
+              <div class="page-hdr" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <h2>CRM de Ventas</h2>
+                  <p>Gestiona tu embudo de ventas y prospectos</p>
+                </div>
+                <button class="uf-btn uf-btn-primary" onclick="UF_App.navigate('nuevo-cliente')"><i class="fa-solid fa-plus"></i> Nuevo Cliente</button>
+              </div>
+
+              <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: start; overflow-x: auto; padding-bottom: 1rem;">
+                <div class="uf-card crm-col" style="background: var(--surface-2); border: 1px solid var(--border);">
+                  <div style="font-weight:800; color:var(--us-blue); margin-bottom:1rem; display:flex; justify-content:space-between;">
+                    <span><i class="fa-solid fa-user-plus"></i> Leads</span>
+                    <span id="crm-count-lead" class="uf-badge">0</span>
+                  </div>
+                  <div id="crm-col-lead" style="display:flex; flex-direction:column; gap:0.75rem; min-height: 200px;"></div>
+                </div>
+
+                <div class="uf-card crm-col" style="background: var(--surface-2); border: 1px solid var(--border);">
+                  <div style="font-weight:800; color:var(--amber); margin-bottom:1rem; display:flex; justify-content:space-between;">
+                    <span><i class="fa-solid fa-comments"></i> Prospectos</span>
+                    <span id="crm-count-prospect" class="uf-badge">0</span>
+                  </div>
+                  <div id="crm-col-prospect" style="display:flex; flex-direction:column; gap:0.75rem; min-height: 200px;"></div>
+                </div>
+
+                <div class="uf-card crm-col" style="background: var(--surface-2); border: 1px solid var(--border);">
+                  <div style="font-weight:800; color:var(--green); margin-bottom:1rem; display:flex; justify-content:space-between;">
+                    <span><i class="fa-solid fa-handshake"></i> Clientes Mantenimiento</span>
+                    <span id="crm-count-client" class="uf-badge">0</span>
+                  </div>
+                  <div id="crm-col-client" style="display:flex; flex-direction:column; gap:0.75rem; min-height: 200px;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlNuevoCliente() {
+          return `
+            <div id="view-nuevo-cliente" class="uf-view">
+              <div class="page-hdr" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <button class="uf-btn-ghost uf-btn-sm" style="margin-bottom:0.5rem;" onclick="UF_App.navigate('clientes')"><i class="fa-solid fa-arrow-left"></i> Volver al CRM</button>
+                  <h2>Alta de Nuevo Cliente</h2>
+                  <p>Completa la ficha para registrar un nuevo prospecto en la base de datos.</p>
+                </div>
+              </div>
+              <div class="uf-card" style="max-width:800px; margin:0 auto;">
+                <h3 style="margin-bottom:1.5rem; color:var(--us-blue); border-bottom:2px solid var(--border); padding-bottom:0.75rem;"><i class="fa-solid fa-building"></i> 1. Datos de la Empresa</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:1.5rem;">
+                  <div class="uf-form-group" style="grid-column: 1 / -1;"><label class="uf-label">Razón Social o Nombre Comercial *</label><input type="text" id="nc-name" class="uf-input" placeholder="Nombre completo de la empresa"></div>
+                  <div class="uf-form-group"><label class="uf-label">RIF / Cédula</label><input type="text" id="nc-rif" class="uf-input" placeholder="J-123456789"></div>
+                  <div class="uf-form-group"><label class="uf-label">Teléfono Base</label><input type="text" id="nc-company-phone" class="uf-input" placeholder="+58 414 1234567"></div>
+                  <div class="uf-form-group" style="grid-column: 1 / -1;"><label class="uf-label">Dirección Completa *</label><input type="text" id="nc-address" class="uf-input" placeholder="Avenida, Calle, Edificio, Local"></div>
+                  <div class="uf-form-group"><label class="uf-label">Ciudad base</label><input type="text" id="nc-city" class="uf-input" placeholder="Ej: Valencia, Estado Carabobo"></div>
+                  
+                  <!-- NUEVO: GPS LOCATION -->
+                  <div class="uf-form-group" style="display:flex; flex-direction:column; gap:0.5rem; grid-column: 1 / -1;">
+                     <label class="uf-label">Ubicación Precisa (Mapa)</label>
+                     <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <input type="text" id="nc-lat" class="uf-input" placeholder="Latitud" readonly style="background:var(--surface-1); color:var(--text-3); flex:1; min-width:80px;">
+                        <input type="text" id="nc-lng" class="uf-input" placeholder="Longitud" readonly style="background:var(--surface-1); color:var(--text-3); flex:1; min-width:80px;">
+                        <button type="button" class="uf-btn uf-btn-primary" onclick="UF_App_CaptureGPS()" style="height:36px; padding:0 1rem; flex:1; white-space:nowrap;"><i class="fa-solid fa-location-crosshairs"></i> Geo-Guardar GPS</button>
+                     </div>
+                  </div>
+                </div>
+
+                <h3 style="margin-bottom:1.5rem; color:var(--us-blue); border-bottom:2px solid var(--border); padding-bottom:0.75rem;"><i class="fa-solid fa-address-card"></i> 2. Contacto Comercial</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:1.5rem;">
+                  <div class="uf-form-group"><label class="uf-label">Encargado de Compras / Marketing</label><input type="text" id="nc-manager" class="uf-input" placeholder="Nombre del contacto principal"></div>
+                  <div class="uf-form-group"><label class="uf-label">Teléfono Directo</label><input type="text" id="nc-manager-phone" class="uf-input" placeholder="Móvil del encargado"></div>
+                  <div class="uf-form-group"><label class="uf-label">Correo Electrónico</label><input type="text" id="nc-email" class="uf-input" placeholder="correo@empresa.com"></div>
+                  <div class="uf-form-group"><label class="uf-label">Redes Sociales / Sitio Web</label><input type="text" id="nc-social" class="uf-input" placeholder="@instagram, www.empresa.com"></div>
+                </div>
+
+                <h3 style="margin-bottom:1.5rem; color:var(--us-blue); border-bottom:2px solid var(--border); padding-bottom:0.75rem;"><i class="fa-solid fa-filter"></i> 3. Parametrización CRM</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:2rem;">
+                  <div class="uf-form-group"><label class="uf-label">Categoría / Tipo *</label>
+                    <select id="nc-type" class="uf-select">
+                      <option value="Ferretería">Ferretería</option>
+                      <option value="Mayorista">Mayorista</option>
+                      <option value="Distribuidor">Distribuidor</option>
+                      <option value="Constructora">Constructora</option>
+                      <option value="Consumidor Final">Consumidor Final</option>
+                    </select>
+                  </div>
+                  <div class="uf-form-group"><label class="uf-label">Etapa inicial del Embudo *</label>
+                    <select id="nc-stage" class="uf-select">
+                      <option value="lead">Lead (Apenas contactado)</option>
+                      <option value="prospect">Prospecto (En evaluación/oferta)</option>
+                      <option value="client">Cliente Mantenimiento</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:1rem;">
+                  <button class="uf-btn uf-btn-ghost" onclick="UF_App.navigate('clientes')">Cancelar</button>
+                  <button class="uf-btn uf-btn-primary" onclick="UF_App_SaveNewClient()"><i class="fa-solid fa-save"></i> Guardar Cliente</button>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlMapa() {
+          return `
+            <div id="view-mapa" class="uf-view">
+              <div class="page-hdr" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                <div>
+                  <h2>🗺️ Mapa de Inteligencia Territorial</h2>
+                  <p>Presencia de marca, zonas de expansión y prospectos en Venezuela.</p>
+                </div>
+                <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+                  <button class="uf-btn uf-btn-ghost uf-btn-sm" onclick="UF_App_MapSearchProspects()"><i class="fa-solid fa-search-location"></i> Buscar Comercios</button>
+                  <button class="uf-btn uf-btn-primary uf-btn-sm" onclick="UF_App_MapAIBriefing()"><i class="fa-solid fa-brain"></i> Análisis IA</button>
+                </div>
+              </div>
+
+              <!-- Filtros -->
+              <div class="uf-card" style="margin-bottom:1rem; padding:0.75rem 1rem;">
+                <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+                  <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;">
+                    <label>Estado:</label>
+                    <select id="map-filter-state" class="uf-select" style="min-width:160px;" onchange="UF_App_MapRefresh()">
+                      <option value="">Cargando zonas...</option>
+                    </select>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;">
+                    <label>Tipo:</label>
+                    <select id="map-filter-type" class="uf-select" style="min-width:150px;" onchange="UF_App_MapRefresh()">
+                      <option value="">Todos los tipos</option>
+                      <option value="Ferretería">Ferretería</option>
+                      <option value="Mayorista">Mayorista</option>
+                      <option value="Distribuidor">Distribuidor</option>
+                      <option value="Constructora">Constructora</option>
+                      <option value="Consumidor Final">Consumidor Final</option>
+                    </select>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; color:var(--text-3);">
+                    <span class="uf-badge" style="background:#1d4ed8; color:white;">● Cliente Activo</span>
+                    <span class="uf-badge" style="background:#d97706; color:white;">● Lead/Prospecto</span>
+                    <span class="uf-badge" style="background:#059669; color:white;">● Prospecto OSM</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 1fr 340px; gap:1.5rem; align-items:start;">
+                <!-- Mapa -->
+                <div class="uf-card" style="padding:0; overflow:hidden; border-radius:12px;">
+                  <div id="uf-map" style="height:500px; width:100%; background:#1a2744;"></div>
+                </div>
+
+                <!-- Panel Lateral -->
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                  <!-- Orientación de Ruta (Vendor) -->
+                  <div class="uf-card" id="map-vendor-guide" style="display:none; background:rgba(30,58,138,0.2); border:1px solid #1d4ed8;">
+                    <h4 style="margin-bottom:0.75rem; font-size:0.95rem; color:var(--us-blue);"><i class="fa-solid fa-map-location-dot"></i> Mi Ruta Asignada</h4>
+                    <div style="font-size:0.85rem; color:var(--text-1);">
+                       <strong>Zonas Permitidas:</strong> <span id="map-guide-states" style="color:var(--us-blue);"></span>
+                    </div>
+                    <p style="font-size:0.8rem; margin-top:0.5rem; color:var(--text-2);">Enfoca tu prospección utilizando <i class="fa-solid fa-search-location"></i> Buscar Comercios dentro de estos estados.</p>
+                  </div>
+
+                  <!-- KPIs -->
+                  <div class="uf-card">
+                    <h4 style="margin-bottom:1rem; font-size:0.95rem; border-bottom:1px solid var(--border); padding-bottom:0.5rem;">📊 Resumen Territorial</h4>
+                    <div style="display:grid; gap:0.5rem;" id="map-kpi-panel">
+                      <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Clientes Activos</span><strong id="map-k-active">—</strong></div>
+                      <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Leads / Prospectos</span><strong id="map-k-leads">—</strong></div>
+                      <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Ciudades cubiertas</span><strong id="map-k-cities">—</strong></div>
+                      <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Prospectos OSM</span><strong id="map-k-osm" style="color:var(--green);">0</strong></div>
+                    </div>
+                  </div>
+
+                  <!-- AI Briefing -->
+                  <div class="uf-card" id="map-ai-panel" style="display:none;">
+                    <h4 style="margin-bottom:0.75rem; font-size:0.95rem; color:var(--us-blue);"><i class="fa-solid fa-brain"></i> Análisis IA</h4>
+                    <div id="map-ai-text" style="font-size:0.82rem; line-height:1.6; color:var(--text-2);"></div>
+                  </div>
+
+                  <!-- Buscador OSM -->
+                  <div class="uf-card" id="map-osm-results" style="display:none;">
+                    <h4 style="margin-bottom:0.75rem; font-size:0.95rem;"><i class="fa-solid fa-binoculars"></i> Comercios Encontrados</h4>
+                    <div id="map-osm-list" style="font-size:0.8rem; max-height:200px; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlAdminDashboard() {
+          return `
+            <div id="view-admin-dash" class="uf-view">
+              <div class="page-hdr">
+                <h2>Panel Administrativo</h2>
+                <p>Gestión de pedidos, pagos y delegación de tareas</p>
+              </div>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+                <div class="uf-card">
+                   <div class="uf-card-header"><h3 class="uf-card-title"><i class="fa-solid fa-tasks"></i> Delegar Tarea Específica</h3></div>
+                   <div id="admin-delegation-form">${this.htmlDelegationForm('admin')}</div>
+                </div>
+                <div class="uf-card">
+                   <div class="uf-card-header"><h3 class="uf-card-title">Resumen de Actividad</h3></div>
+                   <p style="color:var(--text-3); font-size:0.85rem;">Módulo de métricas administrativas en desarrollo.</p>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlAdminPedidos() {
+          return `
+            <div id="view-admin-pedidos" class="uf-view">
+              <div class="page-hdr">
+                <h2>Revisión de Pedidos</h2>
+                <p>Acepta pedidos para que sean procesados por el equipo operativo.</p>
+              </div>
+              <div class="uf-card">
+                <table class="uf-table" style="width:100%; border-collapse:collapse;">
+                  <thead><tr>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Cliente</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Vendedor</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Fecha</th>
+                    <th style="text-align:right;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Total</th>
+                    <th style="padding:0.75rem;"></th>
+                  </tr></thead>
+                  <tbody id="admin-pedidos-body"><tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">Cargando...</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlOpsProcess() {
+          return `
+            <div id="view-ops-process" class="uf-view">
+              <div class="page-hdr">
+                <h2>Carga y Despacho</h2>
+                <p>Prepara los pedidos y márcalos como despachados al camión.</p>
+              </div>
+              <div class="uf-card" style="overflow-x:auto;">
+                <table class="uf-table" style="width:100%; border-collapse:collapse;">
+                  <thead><tr>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Cliente</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Vendedor</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Pedido</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Items</th>
+                    <th style="padding:0.75rem;"></th>
+                  </tr></thead>
+                  <tbody id="ops-process-body"><tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">Cargando...</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlCEODashboard() {
+          return `
+            <div id="view-ceo-dash" class="uf-view">
+              <div class="page-hdr">
+                <h2>Vista Panorámica del Ecosistema</h2>
+                <p>Métricas y operaciones en tiempo real</p>
+              </div>
+
+              <div class="kpi-grid" id="ceo-kpi-grid">
+                <!-- Generated by JS -->
+              </div>
+
+              <div style="display:grid; grid-template-columns: 2fr 1fr; gap:1.5rem;">
+                <div style="display:grid; gap:1.5rem;">
+                  <div class="uf-card">
+                    <div class="uf-card-header"><h3 class="uf-card-title">Ranking de Vendedores</h3></div>
+                    <div id="ceo-ranking-list"></div>
+                  </div>
+                  <div class="uf-card">
+                    <div class="uf-card-header"><h3 class="uf-card-title"><i class="fa-solid fa-tasks"></i> Delegar Tarea Específica</h3></div>
+                    <div id="ceo-delegation-form">${this.htmlDelegationForm('ceo')}</div>
+                  </div>
+                </div>
+                
+                <div class="uf-card">
+                  <div class="uf-card-header"><h3 class="uf-card-title">Postulaciones Pendientes</h3></div>
+                  <div id="ceo-post-list"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlCEOVentas() {
+          return `
+            <div id="view-ceo-ventas" class="uf-view">
+              <div class="page-hdr">
+                <h2>Flujo de Ventas Global</h2>
+                <p>Visualiza y detalla todos los pedidos generados en el ecosistema.</p>
+              </div>
+              <div class="uf-card">
+                <table class="uf-table" style="width:100%; border-collapse:collapse;">
+                  <thead><tr>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Cliente</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Vendedor</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Fecha</th>
+                    <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Estatus</th>
+                    <th style="text-align:right;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Total</th>
+                    <th style="padding:0.75rem;"></th>
+                  </tr></thead>
+                  <tbody id="ceo-ventas-body"><tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--text-3);">Cargando...</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlDelegationForm(prefix) {
+          return `
+            <div style="display:grid; gap:1rem;">
+              <div class="uf-form-group">
+                <label class="uf-label">Asignar a:</label>
+                <select id="${prefix}-task-vendor" class="uf-select">
+                  <option value="">-- Seleccionar Vendedor --</option>
+                </select>
+              </div>
+              <div class="uf-form-group">
+                <label class="uf-label">Título de la Tarea:</label>
+                <input type="text" id="${prefix}-task-title" class="uf-input" placeholder="Ej: Visita prioritaria a Ferretería El Clavo">
+              </div>
+              <div class="uf-form-group">
+                <label class="uf-label">Instrucciones / Descripción:</label>
+                <textarea id="${prefix}-task-desc" class="uf-textarea" rows="3" placeholder="Detalle lo que el vendedor debe realizar..."></textarea>
+              </div>
+              <div class="uf-form-group">
+                <label class="uf-label">Fecha Límite:</label>
+                <input type="date" id="${prefix}-task-due" class="uf-input">
+              </div>
+              <button class="uf-btn uf-btn-primary uf-btn-block" onclick="UF_App_DelegateTask('${prefix}')">
+                <i class="fa-solid fa-paper-plane"></i> Delegar Tarea
+              </button>
+            </div>
+          `;
+        },
+
+        /* =======================================================
+           DYNAMIC DATA BINDING
+           ======================================================= */
+        renderVendorDashboard() {
+          const vId = this.user.id;
+          if (!vId) return;
+
+          // Briefing (new API returns {greet, msg})
+          const briefing = UF.Briefing.generate(vId);
+          document.getElementById('vd-greet').innerHTML = briefing.greet;
+          document.getElementById('vd-briefing').innerHTML = briefing.msg;
+
+          // IA alert pills
+          const pills = UF.Briefing.getMotivationalAlertPills(vId);
+          const pillsEl = document.getElementById('vd-alert-pills');
+          if (pillsEl) pillsEl.innerHTML = pills.map(p => `<div class="ai-alert-pill ${p.type}">${p.icon} ${p.label}</div>`).join('');
+
+          // Vendor KPIs
+          const myOrders = UF.data.where('orders', o => o.vendorId === vId && UF.sameMonth(o.date));
+          const myClients = UF.data.where('clients', c => c.vendorId === vId);
+          const mySales = myOrders.reduce((s, o) => s + (o.total || 0), 0);
+          const myCollected = UF.data.where('payments', p => p.vendorId === vId && p.confirmed && UF.sameMonth(p.date)).reduce((s, p) => s + (p.amount || 0), 0);
+          const kpiEl = document.getElementById('vd-kpi-grid');
+          if (kpiEl) kpiEl.innerHTML = `
+            <div class="kpi-card blue"><div class="kpi-icon"><i class="fa-solid fa-box-open"></i></div><div class="kpi-value">${myOrders.length}</div><div class="kpi-label">Pedidos del Mes</div></div>
+            <div class="kpi-card green"><div class="kpi-icon"><i class="fa-solid fa-money-bill-wave"></i></div><div class="kpi-value">${UF.fmt.usd(myCollected)}</div><div class="kpi-label">Cobrado Efectivo</div></div>
+            <div class="kpi-card amber"><div class="kpi-icon"><i class="fa-solid fa-users"></i></div><div class="kpi-value">${myClients.length}</div><div class="kpi-label">Clientes Activos</div></div>
+            <div class="kpi-card violet"><div class="kpi-icon"><i class="fa-solid fa-chart-line"></i></div><div class="kpi-value">${UF.fmt.usd(mySales)}</div><div class="kpi-label">Total Facturado</div></div>
+          `;
+
+          // Pipeline
+          const orders = UF.data.where('orders', o => o.vendorId === vId);
+          const PIPE_STAGES = [
+            { key: 'pending_approval', label: 'Pedido por Aceptar' },
+            { key: 'in_process', label: 'En Proceso' },
+            { key: 'on_truck', label: 'Despachado al Camión' },
+            { key: 'delivered', label: 'Pedido Entregado' },
+          ];
+          let pipeHtml = '';
+          PIPE_STAGES.forEach(({ key, label }) => {
+            const count = orders.filter(o => o.status === key).length;
+            pipeHtml += `<div class="pipeline-stage"><span class="pipeline-count">${count}</span><span class="pipeline-label">${label}</span></div>`;
+          });
+          document.getElementById('vd-pipeline').innerHTML = pipeHtml;
+
+          // Tasks (with icon)
+          const tasks = UF.Tasks.getToday(vId);
+          document.getElementById('vd-tasks').innerHTML = tasks.map(t => `
+            <div class="task-item ${t.done ? 'done' : ''}">
+              <button class="task-check" ${t.done ? 'disabled' : ''} onclick="UF_App_CompleteTask('${t.id}')">
+                ${t.done ? '<i class="fa-solid fa-check"></i>' : ''}
+              </button>
+              <div class="task-label">${t.icon} ${t.label}</div>
+              <div class="task-xp">+${t.xp} XP</div>
+            </div>
+          `).join('');
+
+          // Commission widget
+          const com = UF.Commission.calc(vId);
+          document.getElementById('vd-com-total').textContent = UF.fmt.usd(com.total);
+          document.getElementById('vd-com-base').innerHTML = UF.fmt.usd(com.base);
+
+          const teamEl = document.getElementById('vd-bonus-team');
+          teamEl.className = `bonus-row ${com.bonusTeam > 0 ? 'active' : 'inactive'}`;
+          teamEl.innerHTML = `<i class="fa-solid ${com.bonusTeam > 0 ? 'fa-circle-check' : 'fa-users'}"></i> Bono Equipo +1% <span style="margin-left:auto;font-size:0.72rem;opacity:0.7;">${com.teamProg.toFixed(0)}% meta</span>`;
+          document.getElementById('vd-prog-team').style.width = `${com.teamProg}%`;
+
+          const taskBonusEl = document.getElementById('vd-bonus-tasks');
+          taskBonusEl.className = `bonus-row ${com.bonusTasks > 0 ? 'active' : 'inactive'}`;
+          taskBonusEl.innerHTML = `<i class="fa-solid ${com.bonusTasks > 0 ? 'fa-circle-check' : 'fa-calendar-check'}"></i> Bono Disciplina +1% <span style="margin-left:auto;font-size:0.72rem;opacity:0.7;">${com.doneDays}/${com.daysInMonth} días</span>`;
+          document.getElementById('vd-prog-tasks').style.width = `${(com.doneDays / com.daysInMonth) * 100}%`;
+
+          // Medals
+          const xpInfo = UF.Gamification.getXP(vId);
+          document.getElementById('vd-xp').textContent = xpInfo.monthXP;
+          const medals = UF.Gamification.getMedals(vId);
+          document.getElementById('vd-medals').innerHTML = medals.map(m =>
+            `<div class="medal ${m.earned ? 'earned' : ''}" title="${m.desc}">${m.icon} ${m.name.split(' ')[0]}</div>`
+          ).join('');
+        },
+        renderVendorClients() {
+          const vId = this.user.id;
+          const clients = UF.data.where('clients', c => c.vendorId === vId);
+
+          let htmlLead = '';
+          let htmlProspect = '';
+          let htmlClient = '';
+          let counts = { lead: 0, prospect: 0, client: 0 };
+
+          clients.forEach(c => {
+            const stage = c.stage || 'client'; // default to client for retrocompatibility
+            if (counts[stage] !== undefined) counts[stage]++;
+
+            const score = c.score || 'B';
+            const scoreColor = { A: 'var(--green)', B: 'var(--us-blue-mid)', C: 'var(--amber)' }[score];
+            const badge = stage === 'client' ? `<span style="font-size:0.7rem; color:${scoreColor}; font-weight:800;">Score: ${score}</span>` : `<span style="font-size:0.7rem; color:var(--text-3);"><i class="fa-solid fa-clock"></i> ${UF.fmt.dateAgo(c.createdAt || Date.now())}</span>`;
+
+            const card = `
+              <div class="uf-card" style="padding:0.85rem; border:1px solid var(--border); box-shadow:none; cursor:pointer;" onclick="UF_App_OpenClientModal('${c.id}')">
+                <div style="font-weight:800; font-size:0.9rem; margin-bottom:0.25rem;">${c.razonSocial || c.name}</div>
+                <div style="font-size:0.75rem; color:var(--text-3); margin-bottom:0.55rem;"><i class="fa-solid fa-location-dot"></i> ${c.city || 'Desconocido'}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  ${badge}
+                </div>
+              </div>
+            `;
+
+            if (stage === 'lead') htmlLead += card;
+            else if (stage === 'prospect') htmlProspect += card;
+            else if (stage === 'client') htmlClient += card;
+          });
+
+          if (!htmlLead) htmlLead = `<div style="text-align:center; margin-top:2rem; padding:1.5rem; color:var(--text-3); font-size:0.8rem;">Sin leads.</div>`;
+          if (!htmlProspect) htmlProspect = `<div style="text-align:center; margin-top:2rem; padding:1.5rem; color:var(--text-3); font-size:0.8rem;">Sin prospectos.</div>`;
+          if (!htmlClient) htmlClient = `<div style="text-align:center; margin-top:2rem; padding:1.5rem; color:var(--text-3); font-size:0.8rem;">Sin clientes.</div>`;
+
+          const cl1 = document.getElementById('crm-col-lead'), cl2 = document.getElementById('crm-col-prospect'), cl3 = document.getElementById('crm-col-client');
+          if (cl1) cl1.innerHTML = htmlLead;
+          if (cl2) cl2.innerHTML = htmlProspect;
+          if (cl3) cl3.innerHTML = htmlClient;
+
+          const elL = document.getElementById('crm-count-lead'), elP = document.getElementById('crm-count-prospect'), elC = document.getElementById('crm-count-client');
+          if (elL) elL.textContent = counts.lead;
+          if (elP) elP.textContent = counts.prospect;
+          if (elC) elC.textContent = counts.client;
+        },
+
+        renderNuevoCliente() {
+          ['nc-name', 'nc-rif', 'nc-company-phone', 'nc-address', 'nc-city', 'nc-manager', 'nc-manager-phone', 'nc-email', 'nc-social'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+          });
+          const stageEl = document.getElementById('nc-stage');
+          if (stageEl) stageEl.value = 'lead';
+          const typeEl = document.getElementById('nc-type');
+          if (typeEl) typeEl.value = 'Ferretería';
+        },
+
+        renderPedidos() {
+          const vId = this.user.id;
+          const orders = UF.data.where('orders', o => o.vendorId === vId);
+          let tbody = '';
+          if (orders.length === 0) {
+            tbody = `<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">No hay pedidos en el sistema.</td></tr>`;
+          } else {
+            const PIPE_STAGES = {
+              'pending_approval': 'Pedido por Aceptar',
+              'in_process': 'En Proceso',
+              'on_truck': 'Despachado al Camión',
+              'delivered': 'Pedido Entregado',
+            };
+            orders.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(o => {
+              const client = UF.data.find('clients', o.clientId) || { razonSocial: 'Desconocido' };
+              const isDispatch = o.status === 'on_truck';
+              tbody += `
+                <tr>
+                  <td><div style="font-weight:700;">${client.razonSocial}</div><div style="font-size:0.75rem;color:var(--text-3);">Ped #${o.id.substring(4, 8).toUpperCase()}</div></td>
+                  <td>${UF.fmt.date(o.date)}</td>
+                  <td><span class="uf-badge ${UF.Orders.STATUS_CSS[o.status] || ''}">${PIPE_STAGES[o.status] || o.status}</span></td>
+                  <td style="text-align:right;"><strong>${UF.fmt.usd(o.total)}</strong><br><span style="font-size:0.75rem;color:var(--text-3);">${o.items.length} items</span></td>
+                  <td style="text-align:right;">
+                    ${isDispatch ? `<button class="uf-btn uf-btn-success uf-btn-sm" onclick="UF_App_ConfirmEntrega('${o.id}')"><i class="fa-solid fa-check"></i> Recibido</button>` : ''}
+                  </td>
+                </tr>`;
+            });
+          }
+          const bodyEl = document.getElementById('pedidos-table-body');
+          if (bodyEl) bodyEl.innerHTML = tbody;
+        },
+
+        renderNuevoPedido() {
+          const vId = this.user.id;
+
+          // 1. Populate Client Select
+          const clients = UF.data.where('clients', c => c.vendorId === vId);
+          const sel = document.getElementById('np-client-select');
+          if (sel) {
+            sel.innerHTML = '<option value="">Seleccione el cliente final...</option>' +
+              clients.map(c => `<option value="${c.id}">${c.razonSocial} (${c.stage})</option>`).join('');
+          }
+
+          // 2. Populate Catalog from window.products (catalog.js)
+          const catalogGrid = document.getElementById('np-catalog-grid');
+          if (catalogGrid && window.products) {
+            // Group by category
+            const categories = {};
+            window.products.forEach(p => {
+              if (!categories[p.category]) categories[p.category] = [];
+              categories[p.category].push(p);
+            });
+
+            let gridHtml = '';
+            for (let cat in categories) {
+              gridHtml += `<div style="font-weight:800; font-size:1.05rem; margin-top:0.5rem; color:var(--us-blue);">${cat}</div>
+                           <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:1rem; margin-bottom:1rem;">`;
+
+              categories[cat].forEach(p => {
+                const optHtml = p.options.map((opt, i) => `<option value="${i}" data-price="${opt.price}">${opt.label} - ${UF.fmt.usd(opt.price)}</option>`).join('');
+                gridHtml += `
+                  <div style="border:1px solid var(--border); border-radius:8px; overflow:hidden; background:white; display:flex; flex-direction:column;">
+                    <div style="height:120px; background:#f8fafc; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                      <img src="${p.image}" onerror="this.src='images/logo.png'" style="max-height:100px; max-width:100%; object-fit:contain;">
+                    </div>
+                    <div style="padding:0.75rem; flex:1; display:flex; flex-direction:column;">
+                      <div style="font-weight:700; font-size:0.9rem; margin-bottom:0.25rem;">${p.name}</div>
+                      <div style="margin-bottom:0.75rem; font-size:0.75rem; color:var(--text-3); flex:1;">${p.description}</div>
+                      <select id="np-sel-${p.id}" style="width:100%; padding:0.4rem; font-size:0.8rem; border:1px solid var(--border); border-radius:4px; margin-bottom:0.5rem;">
+                        ${optHtml}
+                      </select>
+                      <button class="uf-btn uf-btn-primary uf-btn-sm" style="width:100%;" onclick="UF_App_AddToCart('${p.id}')">Agregar</button>
+                    </div>
+                  </div>
+                `;
+              });
+              gridHtml += `</div>`;
+            }
+            catalogGrid.innerHTML = gridHtml;
+          } else if (catalogGrid) {
+            catalogGrid.innerHTML = '<div style="color:var(--amber);">⚠️ El catálogo global (catalog.js) no está disponible.</div>';
+          }
+
+          window.UF_App_CurrentCart = [];
+          window.UF_App_RenderCart();
+        },
+
+        renderAdminPedidos() {
+          const orders = UF.data.where('orders', o => o.status === 'pending_approval');
+          let tbody = '';
+          if (orders.length === 0) {
+            tbody = `<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">No hay pedidos por aceptar en este momento.</td></tr>`;
+          } else {
+            orders.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(o => {
+              const client = UF.data.find('clients', o.clientId) || { razonSocial: 'Desconocido' };
+              const vendor = UF.data.find('vendors', o.vendorId) || { name: 'Desconocido' };
+              tbody += `
+                <tr style="border-top:1px solid var(--border);">
+                  <td style="padding:0.85rem 0.75rem;font-weight:700;">${client.razonSocial}</td>
+                  <td style="padding:0.85rem 0.75rem;">${vendor.name}</td>
+                  <td style="padding:0.85rem 0.75rem;">${UF.fmt.date(o.date)}</td>
+                  <td style="padding:0.85rem 0.75rem;text-align:right;"><strong>${UF.fmt.usd(o.total)}</strong></td>
+                  <td style="padding:0.5rem 0.75rem;text-align:right; display:flex; gap:0.5rem; justify-content:flex-end;">
+                    <button class="uf-btn uf-btn-ghost uf-btn-sm" onclick="UF_App_OpenOrderModal('${o.id}')"><i class="fa-solid fa-eye"></i> Detalles</button>
+                    <button class="uf-btn uf-btn-ghost uf-btn-sm" style="color:#059669;" onclick="UF_App_DownloadDeliveryNote('${o.id}')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                    <button class="uf-btn uf-btn-primary uf-btn-sm" onclick="UF_App_AdminAceptarPedido('${o.id}')"><i class="fa-solid fa-check-double"></i> Aceptar</button>
+                  </td>
+                </tr>`;
+            });
+          }
+          const bodyEl = document.getElementById('admin-pedidos-body');
+          if (bodyEl) bodyEl.innerHTML = tbody;
+        },
+
+        renderOpsProcess() {
+          const orders = UF.data.where('orders', o => o.status === 'in_process');
+          let tbody = '';
+          if (orders.length === 0) {
+            tbody = `<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">No hay pedidos en preparación en este momento.</td></tr>`;
+          } else {
+            orders.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(o => {
+              const client = UF.data.find('clients', o.clientId) || { razonSocial: 'Desconocido' };
+              const vendor = UF.data.find('vendors', o.vendorId) || { name: 'Desconocido' };
+              tbody += `
+                <tr style="border-top:1px solid var(--border);">
+                  <td style="padding:0.85rem 0.75rem;font-weight:700;">${client.razonSocial}</td>
+                  <td style="padding:0.85rem 0.75rem;">${vendor.name}</td>
+                  <td style="padding:0.85rem 0.75rem;"><div style="font-size:0.75rem;color:var(--text-3);">Ped #${o.id.substring(4, 8).toUpperCase()}</div></td>
+                  <td style="padding:0.85rem 0.75rem;">${o.items.length} items</td>
+                  <td style="padding:0.5rem 0.75rem;text-align:right;">
+                    <button class="uf-btn uf-btn-success uf-btn-sm" onclick="UF_App_OpsDespacharPedido('${o.id}')"><i class="fa-solid fa-truck-fast"></i> Despachar</button>
+                  </td>
+                </tr>`;
+            });
+          }
+          const bodyEl = document.getElementById('ops-process-body');
+          if (bodyEl) bodyEl.innerHTML = tbody;
+        },
+
+        renderCEODashboard() {
+          const metrics = UF.Analytics.overview();
+
+          let kpi = `
+            <div class="kpi-card green">
+              <div class="kpi-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+              <div class="kpi-value">${UF.fmt.usd(metrics.totalCollected)}</div>
+              <div class="kpi-label">Cobranza Efectiva del Mes</div>
+              <div class="kpi-trend up">▲ Activo</div>
+            </div>
+            <div class="kpi-card blue">
+              <div class="kpi-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+              <div class="kpi-value">${UF.fmt.usd(metrics.totalSales)}</div>
+              <div class="kpi-label">Ventas Facturadas (Mes)</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-icon"><i class="fa-solid fa-people-group"></i></div>
+              <div class="kpi-value">${metrics.vendors}</div>
+              <div class="kpi-label">Vendedores Activos</div>
+            </div>
+            <div class="kpi-card violet">
+              <div class="kpi-icon"><i class="fa-solid fa-building"></i></div>
+              <div class="kpi-value">${metrics.activeClients}</div>
+              <div class="kpi-label">Clientes Comprando</div>
+            </div>
+          `;
+          document.getElementById('ceo-kpi-grid').innerHTML = kpi;
+
+          // Ranking
+          const rank = UF.Gamification.getRanking().slice(0, 5);
+          let rH = '';
+          const rankCols = ['gold', 'silver', 'bronze', '', ''];
+          rank.forEach((v, i) => {
+            rH += `
+               <div class="ranking-item">
+                 <div class="rank-num ${rankCols[i]}">${i + 1}</div>
+                 <div>
+                   <div style="font-weight:600; color:var(--text-primary); font-size:0.9rem;">${v.name}</div>
+                   <div style="font-size:0.75rem; color:var(--text-muted);">${v.zone} | Racha: ${v.streak}🔥</div>
+                 </div>
+                 <div class="rank-xp">${v.monthXP} XP</div>
+               </div>
+             `;
+          });
+          document.getElementById('ceo-ranking-list').innerHTML = rH;
+
+          // Postulations
+          const pq = UF.data.where('postulations', p => p.status === 'pending');
+          let pH = '';
+          if (pq.length === 0) pH = `<p style="padding:1rem; color:var(--text-muted); text-align:center;">No hay postulaciones pendientes.</p>`;
+          else {
+            pq.forEach(p => {
+              pH += `
+                <div class="alert-item" style="border-left: 3px solid var(--blue);">
+                  <div>
+                    <div style="font-weight:600; font-size:0.9rem; color:var(--text-primary);">${p.name} <span style="font-size:0.75rem; color:var(--blue); float:right;">Score: ${p.score}</span></div>
+                    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">${p.zone} | ${p.ramo} | ${p.clients} clientes activos</div>
+                    <div style="margin-top:0.5rem;">
+                      <button class="uf-btn uf-btn-sm uf-btn-success" onclick="UF.data.update('postulations','${p.id}',{status:'approved'}); UF.toast('Aprobado','success'); window.location.reload();">Aprobar</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+          }
+          document.getElementById('ceo-post-list').innerHTML = pH;
+        },
+
+        /* ===================================================
+           NEW VENDOR SCREENS — Pedidos, Pagos, Tareas, POP, Perfil
+           =================================================== */
+
+        htmlPedidos() {
+          return `<div id="view-pedidos" class="uf-view">
+            <div class="page-hdr">
+              <h2>📦 Mis Pedidos</h2>
+              <p>Crea y revisa el estado de tus pedidos</p>
+            </div>
+            <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+              <button class="uf-btn uf-btn-primary" onclick="UF_App.navigate('nuevo-pedido')"><i class="fa-solid fa-plus"></i> Nuevo Pedido</button>
+            </div>
+            <div class="uf-card" style="overflow-x:auto;">
+              <table class="uf-table" style="width:100%;border-collapse:collapse;">
+                <thead><tr>
+                  <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Cliente</th>
+                  <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Fecha</th>
+                  <th style="text-align:left;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Estatus</th>
+                  <th style="text-align:right;padding:0.75rem;font-size:0.73rem;text-transform:uppercase;color:var(--text-3);">Total</th>
+                  <th style="padding:0.75rem;"></th>
+                </tr></thead>
+                <tbody id="pedidos-table-body"><tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">Cargando...</td></tr></tbody>
+              </table>
+            </div>
+          </div>`;
+        },
+
+        htmlNuevoPedido() {
+          return `
+            <div id="view-nuevo-pedido" class="uf-view">
+              <div class="page-hdr" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <button class="uf-btn-ghost uf-btn-sm" style="margin-bottom:0.5rem;" onclick="UF_App.navigate('pedidos')"><i class="fa-solid fa-arrow-left"></i> Volver a Pedidos</button>
+                  <h2>🛒 Crear Nuevo Pedido</h2>
+                  <p>Escoge el cliente y agrega productos al pedido usando el catálogo global.</p>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 2fr 1fr; gap:1.5rem; align-items:start;">
+                <!-- Catálogo -->
+                <div class="uf-card" style="background:var(--surface-1);">
+                  <div style="margin-bottom:1.5rem; background:var(--surface-2); padding:1rem; border-radius:8px; border:1px solid var(--border);">
+                    <label class="uf-label">1. Cliente Asociado *</label>
+                    <select id="np-client-select" class="uf-select">
+                      <option value="">Cargando clientes...</option>
+                    </select>
+                  </div>
+                  
+                  <div style="margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:0.5rem;">
+                    <h3 style="font-size:1.1rem;">2. Catálogo de Productos</h3>
+                  </div>
+                  
+                  <div id="np-catalog-grid" style="display:flex; flex-direction:column; gap:1rem;">
+                    <!-- Renderizado dinámicamente desde catalog.js -->
+                  </div>
+                </div>
+
+                <!-- Carrito Lateral -->
+                <div class="uf-card sticky-sidebar" style="position:sticky; top:20px;">
+                  <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:0.5rem;"><i class="fa-solid fa-shopping-basket"></i> Resumen de Orden</h3>
+                  
+                  <div id="np-cart-items" style="min-height: 150px; border-bottom:1px solid var(--border); padding-bottom:1rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.75rem;">
+                    <div style="color:var(--text-3); text-align:center; padding:1rem; font-size:0.8rem;">Carrito vacío</div>
+                  </div>
+                  
+                  <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; margin-bottom:1rem;">
+                    <span>Total:</span>
+                    <span id="np-cart-total">$0.00</span>
+                  </div>
+
+                  <button class="uf-btn uf-btn-success" style="width:100%; padding:0.75rem; font-weight:700;" onclick="UF_App_SubmitOrder()"><i class="fa-solid fa-check"></i> Emitir Orden</button>
+                </div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlPagos() {
+          const methods = ['Transferencia Banesco', 'Transferencia Bancamiga', 'Pago Móvil Bancamiga', 'Zelle', 'Efectivo USD'];
+          return `<div id="view-pagos" class="uf-view">
+            <div class="page-hdr"><h2>💰 Cobranzas y Pagos</h2><p>Registra cobros y ve tu efectividad de cobranza</p></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem;">
+              <div class="kpi-card blue"><div class="kpi-icon"><i class="fa-solid fa-file-invoice"></i></div><div class="kpi-value" id="pg-facturado">—</div><div class="kpi-label">Facturado (Mes)</div></div>
+              <div class="kpi-card green"><div class="kpi-icon"><i class="fa-solid fa-check-circle"></i></div><div class="kpi-value" id="pg-cobrado">—</div><div class="kpi-label">Cobrado (Mes)</div></div>
+              <div class="kpi-card amber"><div class="kpi-icon"><i class="fa-solid fa-clock"></i></div><div class="kpi-value" id="pg-pendiente">—</div><div class="kpi-label">Pendiente</div></div>
+              <div class="kpi-card violet"><div class="kpi-icon"><i class="fa-solid fa-percent"></i></div><div class="kpi-value" id="pg-tasa">—</div><div class="kpi-label">Efectividad</div></div>
+            </div>
+            <div class="uf-card" style="margin-bottom:1.5rem;">
+              <div style="font-weight:800;font-size:0.95rem;color:var(--us-blue-deep);margin-bottom:1.25rem;">📝 Registrar Pago</div>
+              <div class="uf-form-group"><label class="uf-label">Cliente</label>
+                <select class="uf-select" id="pg-client"><option value="">-- Seleccionar cliente --</option></select></div>
+              <div class="uf-form-group"><label class="uf-label">Tipo de Pago</label>
+                <select class="uf-select" id="pg-type"><option value="full">Pago Completo</option><option value="partial">Abono Parcial</option></select></div>
+              <div class="uf-form-group"><label class="uf-label">Método</label>
+                <select class="uf-select" id="pg-method">${methods.map(m => `<option>${m}</option>`).join('')}</select></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                <div class="uf-form-group"><label class="uf-label">Monto (USD)</label><input type="number" class="uf-input" id="pg-amount" placeholder="0.00" min="0" step="0.01"></div>
+                <div class="uf-form-group"><label class="uf-label">Referencia</label><input type="text" class="uf-input" id="pg-ref" placeholder="Nº de referencia"></div>
+              </div>
+              <button class="uf-btn uf-btn-success uf-btn-block" onclick="UF_App_RegisterPago()"><i class="fa-solid fa-paper-plane"></i> Registrar Pago</button>
+            </div>
+            <div class="uf-card"><div style="font-weight:800;font-size:0.9rem;margin-bottom:1rem;">Historial de Cobros</div><div id="pg-history"></div></div>
+          </div>`;
+        },
+
+        htmlTareas() {
+          return `<div id="view-tareas" class="uf-view">
+            <div class="page-hdr"><h2>✅ Tareas Diarias</h2><p>Tu disciplina diaria activa el +1% adicional de comisión</p></div>
+            <div class="uf-card" style="background:linear-gradient(135deg,#0c4a6e,#0284c7);color:white;margin-bottom:1.25rem;padding:1.5rem 1.75rem;">
+              <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.35rem;">💡 Bono de Disciplina</div>
+              <div style="font-size:0.85rem;opacity:0.85;line-height:1.6;">Completa las 4 tareas obligatorias <strong>todos los días del mes</strong> y gana <span style="color:#67e8f9;font-weight:900;font-size:1.05rem;">+1%</span> extra de comisión sobre todo lo cobrado.</div>
+              <div style="margin-top:1rem;display:flex;gap:1rem;font-size:0.78rem;font-weight:700;">
+                <div id="tk-streak-badge" style="background:rgba(255,255,255,0.15);padding:0.35rem 0.85rem;border-radius:999px;">🔥 Racha: — días</div>
+                <div id="tk-month-badge" style="background:rgba(255,255,255,0.15);padding:0.35rem 0.85rem;border-radius:999px;">📅 — / — días completos</div>
+              </div>
+            </div>
+            <div class="uf-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                <div style="font-weight:800;color:var(--us-blue-deep);">Tareas de Hoy — <span id="tk-today-date"></span></div>
+                <div id="tk-day-status" style="font-size:0.75rem;font-weight:700;padding:0.25rem 0.75rem;border-radius:999px;background:#f0fdf4;color:var(--green);">Cargando...</div>
+              </div>
+              <div id="tk-list"></div>
+            </div>
+            <div id="delegated-tasks-container" class="uf-card" style="margin-top:1.25rem; display:none;">
+              <div style="font-weight:800;color:var(--us-blue-deep);margin-bottom:1rem;"><i class="fa-solid fa-comment-dots"></i> Tareas Delegadas por Dirección</div>
+              <div id="delegated-tasks-list"></div>
+            </div>
+            <div class="uf-card" style="margin-top:1.25rem;">
+              <div style="font-weight:800;color:var(--us-blue-deep);margin-bottom:1rem;">📅 Resumen del Mes</div>
+              <div id="tk-calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:0.7rem;text-align:center;"></div>
+            </div>
+          </div>`;
+        },
+
+        htmlRanking() {
+          return `<div id="view-ranking" class="uf-view">
+            <div class="page-hdr">
+              <h2>🏆 Gamificación y Puntos</h2>
+              <p>Compite por la gloria y acumula Experience Points (XP)</p>
+            </div>
+            <div class="uf-card" style="margin-bottom:1.5rem; background:linear-gradient(135deg,var(--us-blue),var(--us-blue-deep)); color:white;">
+              <div style="font-size:0.9rem;opacity:0.8;">Tu Puntuación Actual:</div>
+              <div style="font-size:2.5rem;font-weight:900;margin:0.5rem 0;"><span id="rank-xp-view">0</span> XP</div>
+            </div>
+            <div class="uf-card">
+              <div style="font-weight:800;margin-bottom:1rem;">Top Vendedores</div>
+              <div id="rank-list"></div>
+            </div>
+          </div>`;
+        },
+
+        htmlCEORanking() {
+          return `
+            <div id="view-ceo-equipo" class="uf-view">
+              <div class="page-hdr">
+                <h2>Top Empresa y Territorios</h2>
+                <p>Clasificación de gamificación y asignación formal de zonas de cobertura.</p>
+              </div>
+              <div class="uf-card">
+                <div id="ceo-rank-full"></div>
+              </div>
+            </div>
+          `;
+        },
+
+        htmlPOP() {
+          return `<div id="view-pop" class="uf-view">
+            <div class="page-hdr"><h2>🎽 POP / Uniformes / Exhibidores</h2><p>Solicita materiales de apoyo para tus ventas</p></div>
+            <div class="uf-card" style="margin-bottom:1.5rem;">
+              <div style="font-weight:800;font-size:0.95rem;margin-bottom:1.25rem;color:var(--us-blue-deep);">Nueva Solicitud</div>
+              <div class="uf-form-group"><label class="uf-label">Tipo</label>
+                <select class="uf-select" id="pop-type"><option value="pop">Material POP</option><option value="uniform">Uniformes</option><option value="exhibidor">Exhibidor</option><option value="muestra">Muestras</option><option value="otro">Otro</option></select></div>
+              <div class="uf-form-group"><label class="uf-label">Descripción / Detalle</label>
+                <textarea class="uf-textarea" id="pop-desc" rows="3" placeholder="Tallas, cantidades, cliente asociado, etc."></textarea></div>
+              <button class="uf-btn uf-btn-primary uf-btn-block" onclick="UF_App_SolicitarPOP()"><i class="fa-solid fa-paper-plane"></i> Enviar Solicitud</button>
+            </div>
+            <div class="uf-card"><div style="font-weight:800;margin-bottom:1rem;">Mis Solicitudes</div><div id="pop-list"><div style="text-align:center;padding:2rem;color:var(--text-3);">Sin solicitudes aún</div></div></div>
+          </div>`;
+        },
+
+        htmlPerfil() {
+          return `<div id="view-perfil" class="uf-view">
+            <div id="perfil-header" class="uf-card" style="margin-bottom:1.25rem;display:flex;gap:1.25rem;align-items:center;">
+              <div id="perfil-avatar" style="width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,var(--us-blue),var(--us-aqua));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;color:white;flex-shrink:0;"></div>
+              <div>
+                <div id="perfil-name" style="font-size:1.15rem;font-weight:900;color:var(--us-blue-deep);"></div>
+                <div id="perfil-zona" style="font-size:0.8rem;color:var(--text-3);margin-top:0.2rem;"></div>
+                <div id="perfil-stats-inline" style="margin-top:0.5rem;display:flex;gap:1rem;font-size:0.75rem;font-weight:700;color:var(--us-blue-mid);"></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;">
+              <div>
+                <div class="uf-card" style="margin-bottom:1.25rem;">
+                  <div style="font-weight:800;font-size:0.9rem;margin-bottom:1rem;color:var(--us-blue-deep);">📊 KPIs — Últimos 3 Meses</div>
+                  <div id="perfil-kpis"></div>
+                </div>
+                <div class="uf-card">
+                  <div style="font-weight:800;font-size:0.9rem;margin-bottom:1rem;color:var(--us-blue-deep);">🏅 Medallas Ganadas</div>
+                  <div id="perfil-medals" style="display:flex;flex-wrap:wrap;gap:0.5rem;"></div>
+                </div>
+              </div>
+              <div class="uf-card">
+                <div style="font-weight:800;font-size:0.9rem;margin-bottom:1rem;color:var(--us-blue-deep);">⚙️ Configuración</div>
+                <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                  <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:600;cursor:pointer;"><input type="checkbox" checked id="cfg-facturas"> Alertas de facturas</label>
+                  <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:600;cursor:pointer;"><input type="checkbox" checked id="cfg-aniversarios"> Aniversarios de clientes</label>
+                  <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:600;cursor:pointer;"><input type="checkbox" checked id="cfg-ia"> Avisos del Gerente IA</label>
+                  <hr style="border:none;border-top:1px solid var(--border);margin:0.5rem 0;">
+                  <button class="uf-btn uf-btn-danger uf-btn-block uf-btn-sm" onclick="UF.Auth.logout();window.location.reload();"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        },
+
+        /* === Render Functions for New Screens === */
+
+        renderPedidos() {
+          const vId = this.user.id;
+          const orders = UF.data.where('orders', o => o.vendorId === vId);
+          const statCls = { pending_approval: 'status-pending', in_process: 'status-process', on_truck: 'status-dispatch', delivered: 'status-delivered' };
+          const statLbl = { pending_approval: '🟡 Pedido por Aceptar', in_process: '🔵 En Proceso', on_truck: '🚚 Despachado al Camión', delivered: '✅ Pedido Entregado' };
+          const clients = {};
+          UF.data.getAll('clients').forEach(c => { clients[c.id] = c.razonSocial || c.name; });
+          const tbody = document.getElementById('pedidos-table-body');
+          if (!tbody) return;
+          if (orders.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-3);">Sin pedidos aún. ¡Crea tu primer pedido!</td></tr>`;
+            return;
+          }
+          tbody.innerHTML = orders.slice().reverse().map(o => `
+            <tr style="border-top:1px solid var(--border);">
+              <td style="padding:0.85rem 0.75rem;font-weight:700;">${clients[o.clientId] || o.clientId}</td>
+              <td style="padding:0.85rem 0.75rem;font-size:0.8rem;color:var(--text-3);">${UF.fmt.date(o.date || o.createdAt)}</td>
+              <td style="padding:0.85rem 0.75rem;"><span class="status-badge ${statCls[o.status] || ''}">${statLbl[o.status] || o.status}</span></td>
+              <td style="padding:0.85rem 0.75rem;text-align:right;font-weight:700;">${UF.fmt.usd(o.total)}</td>
+              <td style="padding:0.5rem 0.75rem;display:flex;gap:0.4rem;flex-wrap:wrap;">
+                <button class="uf-btn uf-btn-ghost uf-btn-sm" style="color:#4f46e5;" onclick="UF_App_GCal('Entrega: ${(clients[o.clientId] || o.clientId).replace(/\'/g, '')}', '${o.date || o.createdAt}', 'Pedido Ultra Seco \u00b7 Total: ${UF.fmt.usd(o.total)}\nID: ${o.id}', '')"><i class="fa-solid fa-calendar-plus"></i> Calendario</button>
+                <button class="uf-btn uf-btn-ghost uf-btn-sm" style="color:#059669;" onclick="UF_App_DownloadDeliveryNote('${o.id}')"><i class="fa-solid fa-file-pdf"></i> Nota PDF</button>
+                ${o.status === 'on_truck' ? `<button class="uf-btn uf-btn-sm uf-btn-success" onclick="UF_App_ConfirmEntrega('${o.id}')">✓ Entregado</button>` : ''}
+              </td>
+            </tr>`).join('');
+        },
+
+        renderPagos() {
+          const vId = this.user.id;
+          const invoices = UF.data.where('invoices', i => i.vendorId === vId);
+          const payments = UF.data.where('payments', p => p.vendorId === vId && p.confirmed && UF.sameMonth(p.date));
+          const paid = payments.reduce((s, p) => s + (p.amount || 0), 0);
+          const billed = invoices.filter(i => UF.sameMonth(i.date)).reduce((s, i) => s + (i.total || 0), 0);
+          const pending = Math.max(0, billed - paid);
+          const pct = billed > 0 ? Math.min(100, (paid / billed * 100)).toFixed(0) : '0';
+          const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+          setEl('pg-facturado', UF.fmt.usd(billed));
+          setEl('pg-cobrado', UF.fmt.usd(paid));
+          setEl('pg-pendiente', UF.fmt.usd(pending));
+          setEl('pg-tasa', pct + '%');
+          // Populate client selector
+          const sel = document.getElementById('pg-client');
+          if (sel) {
+            const clients = UF.data.where('clients', c => c.vendorId === vId);
+            sel.innerHTML = '<option value="">-- Seleccionar cliente --</option>' +
+              clients.map(c => `<option value="${c.id}">${c.razonSocial || c.name}</option>`).join('');
+          }
+          // Payment history
+          const hist = document.getElementById('pg-history');
+          if (hist) {
+            const recent = payments.slice().reverse().slice(0, 10);
+            hist.innerHTML = recent.length === 0
+              ? `<div style="text-align:center;padding:2rem;color:var(--text-3);">Sin cobros registrados este mes</div>`
+              : recent.map(p => `
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid var(--border);">
+                    <div>
+                      <div style="font-weight:700;font-size:0.85rem;">${(UF.data.getAll('clients').find(c => c.id === p.clientId) || {}).razonSocial || 'Cliente'}</div>
+                      <div style="font-size:0.72rem;color:var(--text-3);">${p.method} · ${UF.fmt.date(p.date)}</div>
+                    </div>
+                    <div style="font-weight:800;color:var(--green);">+${UF.fmt.usd(p.amount)}</div>
+                  </div>`).join('');
+          }
+        },
+
+        renderTareas() {
+          const vId = this.user.id;
+          const tasks = UF.Tasks.getToday(vId);
+          const xp = UF.Gamification.getXP(vId);
+          const today = new Date();
+          const el = id => document.getElementById(id);
+          if (el('tk-today-date')) el('tk-today-date').textContent = today.toLocaleDateString('es-VE', { weekday: 'long', day: 'numeric', month: 'long' });
+          if (el('tk-streak-badge')) el('tk-streak-badge').textContent = `🔥 Racha: ${xp.streak || 0} días`;
+          if (el('tk-month-badge')) {
+            const com = UF.Commission.calc(vId);
+            el('tk-month-badge').textContent = `📅 ${com.doneDays} / ${com.daysInMonth} días completos`;
+          }
+          const allDone = tasks.every(t => t.done);
+          if (el('tk-day-status')) {
+            el('tk-day-status').textContent = allDone ? '✅ ¡Día completo!' : `${tasks.filter(t => t.done).length}/${tasks.length} completadas`;
+            el('tk-day-status').style.background = allDone ? '#f0fdf4' : '#fff7ed';
+            el('tk-day-status').style.color = allDone ? 'var(--green)' : 'var(--amber)';
+          }
+          if (el('tk-list')) el('tk-list').innerHTML = tasks.map(t => `
+            <div class="task-item ${t.done ? 'done' : ''}">
+              <button class="task-check" ${t.done ? 'disabled' : ''} onclick="UF_App_CompleteTask('${t.id}')">
+                ${t.done ? '<i class="fa-solid fa-check"></i>' : ''}
+              </button>
+              <div class="task-label">${t.icon} ${t.label}</div>
+              <div class="task-xp">+${t.xp} XP</div>
+            </div>`).join('');
+          // Mini calendar
+          const cal = el('tk-calendar');
+          if (cal) {
+            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            const com = UF.Commission.calc(vId);
+            let html = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(d => `<div style="font-weight:800;color:var(--text-3);padding:4px;">${d}</div>`).join('');
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+            for (let i = 0; i < firstDay; i++) html += '<div></div>';
+            for (let d = 1; d <= daysInMonth; d++) {
+              const past = d < today.getDate();
+              const isToday = d === today.getDate();
+              const done = com.tasksDone && com.tasksDone.includes(d);
+              const bg = isToday ? 'var(--us-blue-mid)' : past && done ? 'var(--green)' : past ? 'var(--red)' : 'var(--surface-2)';
+              const col = (isToday || past && done || past) ? 'white' : 'var(--text-2)';
+              html += `<div style="background:${bg};color:${col};border-radius:6px;padding:5px 2px;font-weight:700;">${d}</div>`;
+            }
+            cal.innerHTML = html;
+          }
+
+          // Delegated Tasks
+          const delegated = UF.Tasks.getDelegated(vId);
+          const delContainer = el('delegated-tasks-container');
+          const delList = el('delegated-tasks-list');
+
+          if (delegated.length > 0) {
+            delContainer.style.display = 'block';
+            delList.innerHTML = delegated.map(t => `
+              <div class="task-item ${t.status === 'done' ? 'done' : ''}" style="border-left: 3px solid var(--indigo); padding-left: 1rem;">
+                <button class="task-check" ${t.status === 'done' ? 'disabled' : ''} onclick="UF_App_CompleteDelegatedTask('${t.id}')">
+                  ${t.status === 'done' ? '<i class="fa-solid fa-check"></i>' : ''}
+                </button>
+                <div style="flex:1;">
+                   <div class="task-label" style="font-weight:700;">${t.title}</div>
+                   <div style="font-size:0.75rem; color:var(--text-3); margin-top:0.15rem;">${t.description}</div>
+                   <div style="font-size:0.7rem; color:var(--indigo); margin-top:0.25rem;">
+                      <i class="fa-solid fa-user-shield"></i> De: ${t.senderName} | 
+                      <i class="fa-solid fa-calendar"></i> Límite: ${UF.fmt.date(t.dueDate)}
+                   </div>
+                </div>
+                <div class="task-xp" style="white-space:nowrap;">+30 XP</div>
+                <button class="uf-btn uf-btn-ghost uf-btn-sm" style="color:#4f46e5;padding:0.2rem 0.5rem;" onclick="UF_App_GCal('Tarea: ${(t.title || '').replace(/\'/g, '')}', '${t.dueDate}', 'Asignado por ${t.senderName}\u2013${t.description}', '')"><i class="fa-solid fa-calendar-plus"></i></button>
+              </div>
+            `).join('');
+          } else {
+            delContainer.style.display = 'none';
+          }
+        },
+
+        renderPOP() {
+          // Simple static stub — pop requests stored in localStorage
+          const vId = this.user.id;
+          const reqs = UF.data.where('popRequests', r => r.vendorId === vId);
+          const list = document.getElementById('pop-list');
+          if (!list) return;
+          const statColors = { requested: 'var(--amber)', approved: 'var(--us-blue-mid)', in_process: 'var(--violet)', dispatched: 'var(--green)', rejected: 'var(--red)' };
+          if (reqs.length === 0) {
+            list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-3);">Sin solicitudes aún</div>`;
+          } else {
+            list.innerHTML = reqs.slice().reverse().map(r => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 0;border-bottom:1px solid var(--border);">
+                <div>
+                  <div style="font-weight:700;font-size:0.85rem;">${r.type.toUpperCase()}</div>
+                  <div style="font-size:0.72rem;color:var(--text-3);">${r.desc?.substring(0, 60) || ''}</div>
+                </div>
+                <span style="font-size:0.72rem;font-weight:700;color:${statColors[r.status] || 'var(--text-3)'};">${r.status}</span>
+              </div>`).join('');
+          }
+        },
+
+        renderPerfil() {
+          const vId = this.user.id;
+          const vendor = UF.data.getAll('vendors').find(v => v.id === vId) || {};
+          const name = this.user.name;
+          const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().substring(0, 2);
+          const el = id => document.getElementById(id);
+          if (el('perfil-avatar')) el('perfil-avatar').textContent = initials;
+          if (el('perfil-name')) el('perfil-name').textContent = name;
+          if (el('perfil-zona')) el('perfil-zona').textContent = `📍 ${vendor.zone || 'Venezuela'} — ${vendor.sector || 'Ferretero'}`;
+          const xp = UF.Gamification.getXP(vId);
+          if (el('perfil-stats-inline')) el('perfil-stats-inline').innerHTML =
+            `<span>✨ ${xp.totalXP} XP total</span><span>🔥 Racha ${xp.streak || 0}d</span>`;
+          const medals = UF.Gamification.getMedals(vId);
+          if (el('perfil-medals')) el('perfil-medals').innerHTML = medals.filter(m => m.earned).map(m =>
+            `<div class="medal earned" title="${m.desc}">${m.icon} ${m.name.split(' ')[0]}</div>`).join('') ||
+            `<div style="color:var(--text-3);font-size:0.82rem;">Aún no has ganado medallas este mes. ¡Sigue así! 💪</div>`;
+          if (el('perfil-kpis')) {
+            const orders = UF.data.where('orders', o => o.vendorId === vId);
+            const payments = UF.data.where('payments', p => p.vendorId === vId && p.confirmed);
+            const totalSales = orders.reduce((s, o) => s + (o.total || 0), 0);
+            const totalPaid = payments.reduce((s, p) => s + (p.amount || 0), 0);
+            const clients = UF.data.where('clients', c => c.vendorId === vId);
+            el('perfil-kpis').innerHTML = `
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                <div style="background:var(--surface-2);border-radius:12px;padding:1rem;text-align:center;">
+                  <div style="font-size:1.2rem;font-weight:900;color:var(--us-blue-mid);">${UF.fmt.usd(totalSales)}</div>
+                  <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.2rem;">Ventas totales</div>
+                </div>
+                <div style="background:var(--surface-2);border-radius:12px;padding:1rem;text-align:center;">
+                  <div style="font-size:1.2rem;font-weight:900;color:var(--green);">${UF.fmt.usd(totalPaid)}</div>
+                  <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.2rem;">Cobranza acum.</div>
+                </div>
+                <div style="background:var(--surface-2);border-radius:12px;padding:1rem;text-align:center;">
+                  <div style="font-size:1.2rem;font-weight:900;color:var(--us-blue-mid);">${clients.length}</div>
+                  <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.2rem;">Clientes activos</div>
+                </div>
+                <div style="background:var(--surface-2);border-radius:12px;padding:1rem;text-align:center;">
+                  <div style="font-size:1.2rem;font-weight:900;color:var(--amber);">${orders.length}</div>
+                  <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.2rem;">Pedidos totales</div>
+                </div>
+              </div>`;
+          }
+        },
+
+        renderRanking() {
+          const vId = this.user.id;
+          const xp = UF.Gamification.getXP(vId);
+          const el = document.getElementById('rank-xp-view');
+          if (el) el.textContent = xp.monthXP;
+          const ranking = UF.Gamification.getRanking();
+          const list = document.getElementById('rank-list');
+          if (list) {
+            list.innerHTML = ranking.map((v, i) => `
+              <div class="rank-row ${v.id === vId ? 'me' : ''}">
+                <div class="rank-num rank-${i + 1}">${i + 1}</div>
+                <div>
+                  <div style="font-weight:700;">${v.name}</div>
+                  <div style="font-size:0.75rem;color:var(--text-3);">${v.zone}</div>
+                </div>
+                <div class="rank-xp">${v.monthXP} XP</div>
+              </div>
+            `).join('');
+          }
+        },
+
+        renderCEORanking() {
+          const ranking = UF.Gamification.getRanking();
+          const el = document.getElementById('ceo-rank-full');
+          if (el) el.innerHTML = ranking.map((v, i) => `
+            <div class="rank-row" style="flex-wrap: wrap; gap: 1rem; align-items:center;">
+              <div style="display:flex; align-items:center; gap: 1rem; flex:1; min-width: 250px;">
+                <div class="rank-num rank-${i + 1}">${i + 1}</div>
+                <div>
+                  <div style="font-weight:700;">${v.name}</div>
+                  <div style="font-size:0.75rem;color:var(--text-3);">Base: ${v.zone} | Racha: ${v.streak}🔥</div>
+                </div>
+              </div>
+              
+              <!-- Territorio Control -->
+              <div style="flex:2; min-width:300px; display:flex; align-items:center; gap: 0.5rem; background: var(--surface-1); padding: 0.5rem; border-radius: 8px;">
+                 <span style="font-size:0.75rem; color:var(--text-3); white-space:nowrap;"><i class="fa-solid fa-map"></i> Zonas Perm.:</span>
+                 <input type="text" id="ceo-zone-input-${v.id}" class="uf-input" style="font-size:0.75rem; padding:0.25rem 0.5rem; flex:1;" placeholder="Ej: Aragua, Carabobo" value="${(v.assignedZones || []).join(', ')}">
+                 <button class="uf-btn uf-btn-primary uf-btn-sm" style="padding:0.25rem 0.75rem;" onclick="UF_App_SaveZones('${v.id}')">Guardar</button>
+              </div>
+
+              <div class="rank-xp" style="text-align:right;">${v.monthXP} XP<br><span style="font-size:0.8rem; color:var(--green);">$${UF.fmt.usd(v.monthlySales)}</span></div>
+            </div>
+          `).join('');
+        },
+
+        renderCEOVentas() {
+          const orders = UF.data.getAll('orders');
+          const PIPE_STAGES = {
+            'pending_approval': 'Por Aceptar',
+            'in_process': 'En Proceso',
+            'on_truck': 'Despachado',
+            'delivered': 'Entregado',
+          };
+          let tbody = '';
+          if (orders.length === 0) {
+            tbody = `<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--text-3);">No hay pedidos en el sistema.</td></tr>`;
+          } else {
+            orders.sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt)).forEach(o => {
+              const client = UF.data.find('clients', o.clientId) || { razonSocial: 'Desconocido' };
+              const vendor = UF.data.find('vendors', o.vendorId) || { name: 'Desconocido' };
+              tbody += `
+                <tr style="border-top:1px solid var(--border);">
+                  <td style="padding:0.85rem 0.75rem;font-weight:700;">${client.razonSocial}</td>
+                  <td style="padding:0.85rem 0.75rem;">${vendor.name}</td>
+                  <td style="padding:0.85rem 0.75rem;">${UF.fmt.date(o.date || o.createdAt)}</td>
+                  <td style="padding:0.85rem 0.75rem;"><span class="uf-badge" style="border:1px solid var(--border);">${PIPE_STAGES[o.status] || o.status}</span></td>
+                  <td style="padding:0.85rem 0.75rem;text-align:right;"><strong>${UF.fmt.usd(o.total)}</strong></td>
+                  <td style="padding:0.5rem 0.75rem;text-align:right;">
+                    <button class="uf-btn uf-btn-ghost uf-btn-sm" onclick="UF_App_OpenOrderModal('${o.id}')"><i class="fa-solid fa-eye"></i> Detalles</button>
+                  </td>
+                </tr>`;
+            });
+          }
+          const bodyEl = document.getElementById('ceo-ventas-body');
+          if (bodyEl) bodyEl.innerHTML = tbody;
+        },
+
+      }; // End App
+
+
+      window.UF_App = App;
+
+      // ============================================================
+      // GOOGLE CALENDAR QUICK-ADD (Option B – no OAuth)
+      // ============================================================
+      window.UF_App_GCal = (title, isoDate, details = '', location = '') => {
+        // Build a single all-day event date string YYYYMMDD
+        const d = isoDate ? new Date(isoDate) : new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const start = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+        // end = next day for all-day event
+        const dEnd = new Date(d); dEnd.setDate(dEnd.getDate() + 1);
+        const end = `${dEnd.getFullYear()}${pad(dEnd.getMonth() + 1)}${pad(dEnd.getDate())}`;
+        const url = new URL('https://calendar.google.com/calendar/render');
+        url.searchParams.set('action', 'TEMPLATE');
+        url.searchParams.set('text', title);
+        url.searchParams.set('dates', start + '/' + end);
+        if (details) url.searchParams.set('details', details);
+        if (location) url.searchParams.set('location', location);
+        window.open(url.toString(), '_blank');
+      };
+
+
+      // ============================================================
+      // PDF DELIVERY NOTE GENERATOR – Ultra Seco
+      // ============================================================
+      window.UF_App_DownloadDeliveryNote = async (orderId) => {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) { UF.toast('jsPDF no disponible', 'warning'); return; }
+
+        const o = UF.data.find('orders', orderId);
+        if (!o) return;
+        const c = UF.data.find('clients', o.clientId) || { razonSocial: 'Desconocido', address: '', city: '', rif: '' };
+        const v = UF.data.find('vendors', o.vendorId) || { name: 'Desconocido', zone: '' };
+
+        // ── Company fiscal data (Ultra Seco) ──
+        const COMPANY = {
+          name: 'ULTRA SECO C.A.',
+          rif: 'J-123456789-0',           // ← actualizar con RIF real
+          address: 'Av. Bolívar Norte, C.C. RecreoCentro, PB Local 12, Valencia, Carabobo',
+          phone: '+58 241-000-0000',
+          email: 'ventas@ultraseco.shop',
+          web: 'www.ultraseco.shop',
+          regime: 'Contribuyente Ordinario · IVA 16%',
+        };
+
+        const PIPE_LABELS = {
+          'pending_approval': 'Por Aceptar',
+          'in_process': 'En Proceso',
+          'on_truck': 'Despachado al Camión',
+          'delivered': 'Entregado',
+        };
+
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const W = 210, M = 14;   // page width, margin
+
+        // ── Date helpers ──
+        const orderDate = new Date(o.date || o.createdAt || Date.now());
+        const fmtDate = d => d.toLocaleDateString('es-VE', { day: '2-digit', month: 'long', year: 'numeric' });
+        const pad = n => String(n).padStart(2, '0');
+        const docNum = o.id.substring(4).toUpperCase();
+        const ctrlNum = pad(Math.abs(o.id.charCodeAt(5) || 0) % 100) + '-' + pad(orderDate.getMonth() + 1) + '-' + orderDate.getFullYear();
+
+        // ── Load BLUE logo (for white background) ──
+        let logoDataUrl = null;
+        try {
+          const resp = await fetch('logo/logo-blue.png');
+          const blob = await resp.blob();
+          logoDataUrl = await new Promise(res => {
+            const reader = new FileReader();
+            reader.onload = () => res(reader.result);
+            reader.readAsDataURL(blob);
+          });
+        } catch (e) { /* optional */ }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 1 ── COMPANY HEADER (white bg)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // Top accent bar
+        doc.setFillColor(29, 78, 216);  // blue-700
+        doc.rect(0, 0, W, 2, 'F');
+
+        // Logo
+        if (logoDataUrl) {
+          doc.addImage(logoDataUrl, 'PNG', M, 6, 48, 16);
+        } else {
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(29, 78, 216);
+          doc.text('ULTRA SECO', M, 16);
+        }
+
+        // Company data (right column)
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(71, 85, 105);
+        doc.text(COMPANY.name, W - M, 8, { align: 'right' });
+        doc.text('RIF: ' + COMPANY.rif, W - M, 12, { align: 'right' });
+        doc.text(COMPANY.address, W - M, 16, { align: 'right', maxWidth: 85 });
+        doc.text(COMPANY.phone + '  ·  ' + COMPANY.email, W - M, 24, { align: 'right' });
+        doc.text(COMPANY.regime, W - M, 28, { align: 'right' });
+
+        // Divider
+        doc.setDrawColor(203, 213, 225);
+        doc.line(M, 32, W - M, 32);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 2 ── DOCUMENT TITLE BAND
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        doc.setFillColor(241, 245, 249);
+        doc.rect(0, 33, W, 18, 'F');
+
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(15, 23, 42);
+        doc.text('NOTA DE ENTREGA', M, 43);
+
+        // Number + Control
+        doc.setFontSize(7.5); doc.setTextColor(71, 85, 105);
+        doc.text('Nro. Pedido:', W - M - 60, 38);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(29, 78, 216);
+        doc.text(docNum, W - M, 38, { align: 'right' });
+
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(71, 85, 105);
+        doc.text('Nro. Control:', W - M - 60, 44);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(15, 23, 42);
+        doc.text(ctrlNum, W - M, 44, { align: 'right' });
+
+        doc.text('Fecha:', W - M - 60, 50);
+        doc.text(fmtDate(orderDate), W - M, 50, { align: 'right' });
+
+        // Status badge
+        const statusLabel = PIPE_LABELS[o.status] || o.status;
+        const statusColor = { delivered: [5, 150, 105], on_truck: [124, 58, 237], in_process: [37, 99, 235], pending_approval: [217, 119, 6] }[o.status] || [100, 116, 139];
+        doc.setFillColor(...statusColor);
+        doc.roundedRect(M, 37, 44, 8, 2, 2, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(255, 255, 255);
+        doc.text(statusLabel.toUpperCase(), M + 22, 42.5, { align: 'center' });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 3 ── FISCAL PARTIES (Cliente + Vendedor)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const partyTop = 55;
+        const halfW = (W - M * 2 - 6) / 2;
+
+        const drawPartyBox = (x, y, w, accentColor, label, name, rif, addr, extra) => {
+          doc.setFillColor(248, 250, 252);
+          doc.rect(x, y, w, 30, 'F');
+          doc.setDrawColor(226, 232, 240);
+          doc.rect(x, y, w, 30, 'S');
+          // accent left bar
+          doc.setFillColor(...accentColor); doc.rect(x, y, 2, 30, 'F');
+          // label
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); doc.setTextColor(...accentColor);
+          doc.text(label, x + 5, y + 5.5);
+          // name
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(15, 23, 42);
+          doc.text(name, x + 5, y + 11, { maxWidth: w - 9 });
+          // details
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(6.8); doc.setTextColor(71, 85, 105);
+          let lineY = y + 17;
+          if (rif) { doc.text('RIF / CI: ' + rif, x + 5, lineY); lineY += 4.5; }
+          if (addr) doc.text(addr, x + 5, lineY, { maxWidth: w - 9 });
+          if (extra) { doc.text(extra, x + 5, lineY + 4.5, { maxWidth: w - 9 }); }
+        };
+
+        drawPartyBox(
+          M, partyTop, halfW, [29, 78, 216],
+          'CLIENTE / RECEPTOR',
+          c.razonSocial || 'Sin nombre',
+          c.rif || '',
+          [c.address, c.city].filter(Boolean).join(', '),
+          c.phone ? 'Tel: ' + c.phone : ''
+        );
+
+        drawPartyBox(
+          M + halfW + 6, partyTop, halfW, [124, 58, 237],
+          'VENDEDOR / ASESOR',
+          v.name || 'Sin nombre',
+          '',
+          'Zona: ' + (v.zone || 'N/A'),
+          v.phone ? 'Tel: ' + v.phone : ''
+        );
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 4 ── ITEMS TABLE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const items = Array.isArray(o.items) ? o.items : [];
+        const IVA_RATE = 0.16;
+        let subtotalBruto = 0;
+        let totalDescLines = 0;
+
+        const tableRows = items.map((i, idx) => {
+          const precioBase = parseFloat(i.price || 0) / (1 + IVA_RATE); // base sin IVA
+          const qty = parseFloat(i.qty || 1);
+          const disc = parseFloat(i.discount || 0);
+          const lineBase = precioBase * qty;
+          const lineDisc = lineBase * (disc / 100);
+          const lineNet = lineBase - lineDisc;
+          subtotalBruto += lineBase;
+          totalDescLines += lineDisc;
+          return [
+            (idx + 1).toString(),
+            (i.name || i.product || 'Artículo') + (i.label ? '\n' + i.label : ''),
+            i.sku || '',
+            qty.toString(),
+            '$' + precioBase.toFixed(2),
+            disc > 0 ? disc + '%' : '—',
+            '$' + lineNet.toFixed(2),
+          ];
+        });
+
+        doc.autoTable({
+          startY: partyTop + 34,
+          head: [['#', 'Producto / Descripción', 'SKU', 'Cant.', 'P. Base', 'Desc.', 'Subtotal']],
+          body: tableRows.length ? tableRows : [['—', 'Sin artículos detallados', '', '', '', '', '']],
+          theme: 'plain',
+          styles: { fontSize: 7.5, cellPadding: 2.8, textColor: [15, 23, 42], lineColor: [226, 232, 240], lineWidth: 0.2 },
+          headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7, cellPadding: 3 },
+          alternateRowStyles: { fillColor: [248, 250, 252] },
+          columnStyles: {
+            0: { cellWidth: 8, halign: 'center' },
+            1: { cellWidth: 67 },
+            2: { cellWidth: 22, halign: 'center', textColor: [100, 116, 139] },
+            3: { cellWidth: 14, halign: 'center' },
+            4: { halign: 'right', cellWidth: 22 },
+            5: { halign: 'center', cellWidth: 16, textColor: [185, 28, 28] },
+            6: { halign: 'right', cellWidth: 24, fontStyle: 'bold' },
+          },
+          margin: { left: M, right: M },
+          didDrawPage: (data) => {
+            // re-draw top border on page 2+
+            if (data.pageNumber > 1) {
+              doc.setFillColor(29, 78, 216); doc.rect(0, 0, W, 2, 'F');
+            }
+          },
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 5 ── FISCAL TOTALS BLOCK
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let ty = doc.lastAutoTable.finalY + 6;
+        const globalDisc = parseFloat(o.globalDiscount || 0);
+        const globalDiscAmt = (subtotalBruto - totalDescLines) * (globalDisc / 100);
+        const baseImponible = subtotalBruto - totalDescLines - globalDiscAmt;
+        const ivaAmt = baseImponible * IVA_RATE;
+        const grandTotal = parseFloat(o.total || baseImponible + ivaAmt);
+
+        const totX = W - M - 72;
+        const totW = 72;
+
+        // Summary box background
+        doc.setFillColor(248, 250, 252); doc.setDrawColor(226, 232, 240);
+        doc.rect(totX - 2, ty - 2, totW + 4, 44, 'FD');
+
+        const totLine = (label, val, bold = false, red = false, big = false) => {
+          const lc = red ? [185, 28, 28] : [71, 85, 105];
+          const vc = big ? [15, 23, 42] : red ? [185, 28, 28] : [15, 23, 42];
+          doc.setFont('helvetica', bold ? 'bold' : 'normal'); doc.setFontSize(bold && big ? 9.5 : 7.8);
+          doc.setTextColor(...lc); doc.text(label, totX + 2, ty);
+          doc.setTextColor(...vc); doc.text(val, totX + totW - 2, ty, { align: 'right' });
+          ty += bold && big ? 6 : 5;
+        };
+
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); doc.setTextColor(29, 78, 216);
+        doc.text('RESUMEN FISCAL', totX + 2, ty - 0.5); ty += 4.5;
+        doc.setDrawColor(226, 232, 240); doc.line(totX, ty - 1.5, totX + totW, ty - 1.5); ty += 1;
+
+        totLine('Subtotal bruto (sin IVA):', '$' + subtotalBruto.toFixed(2));
+        if (totalDescLines) totLine('Descuentos por línea:', '- $' + totalDescLines.toFixed(2), false, true);
+        if (globalDisc > 0) totLine('Desc. global (' + globalDisc + '%):', '- $' + globalDiscAmt.toFixed(2), false, true);
+
+        doc.setDrawColor(203, 213, 225); doc.line(totX, ty - 1, totX + totW, ty - 1); ty += 1;
+        totLine('Base imponible (16% IVA):', '$' + baseImponible.toFixed(2), true);
+        totLine('IVA (16%):', '$' + ivaAmt.toFixed(2));
+        doc.setDrawColor(15, 23, 42); doc.line(totX, ty - 1.5, totX + totW, ty - 1.5);
+
+        // Grand total box
+        doc.setFillColor(15, 23, 42);
+        doc.roundedRect(totX - 2, ty - 1, totW + 4, 11, 2, 2, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(255, 255, 255);
+        doc.text('TOTAL A COBRAR (USD):', totX + 2, ty + 6.5);
+        doc.setFontSize(11); doc.setTextColor(52, 211, 153);
+        doc.text('$' + grandTotal.toFixed(2), totX + totW - 2, ty + 6.5, { align: 'right' });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 6 ── SIGNATURE BOXES + NOTES
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const sigY = ty + 18;
+        const sigW = (W - M * 2 - 10) / 3;
+
+        ['Vendedor / Asesor', 'Recibido conforme', 'Autorizado por'].forEach((label, i) => {
+          const sx = M + i * (sigW + 5);
+          doc.setDrawColor(203, 213, 225);
+          doc.line(sx, sigY + 18, sx + sigW, sigY + 18);
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+          doc.text(label, sx + sigW / 2, sigY + 22, { align: 'center' });
+          if (i === 0) { doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(15, 23, 42); doc.text(v.name || '', sx + sigW / 2, sigY + 14, { align: 'center' }); }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SECTION 7 ── FOOTER
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const footY = 285;
+        doc.setFillColor(241, 245, 249); doc.rect(0, footY - 2, W, 14, 'F');
+        doc.setFillColor(29, 78, 216); doc.rect(0, footY + 12, W, 2, 'F');
+        doc.setFont('helvetica', 'italic'); doc.setFontSize(6.5); doc.setTextColor(100, 116, 139);
+        doc.text('Este documento no tiene valor fiscal como factura. Solo sirve como comprobante de entrega de mercancía.', W / 2, footY + 2.5, { align: 'center' });
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5);
+        doc.text(COMPANY.name + '  ·  RIF: ' + COMPANY.rif + '  ·  ' + COMPANY.web, W / 2, footY + 7, { align: 'center' });
+        doc.text('Generado: ' + new Date().toLocaleString('es-VE'), W / 2, footY + 11, { align: 'center' });
+
+        // ── Save ──
+        const fileName = 'NotaEntrega_' + docNum + '_' + (c.razonSocial || 'cliente').replace(/\s+/g, '_') + '.pdf';
+        doc.save(fileName);
+        UF.toast('✅ Nota de Entrega generada', 'success');
+      };
+
+    window.UF_App_OpenOrderModal = (orderId) => {
+      const mc = document.getElementById('modals-container');
+      if (!mc) return;
+      const o = UF.data.find('orders', orderId);
+      if (!o) return;
+      const c = UF.data.find('clients', o.clientId) || { razonSocial: 'Desconocido', address: 'N/A', city: 'N/A', rif: '' };
+      const v = UF.data.find('vendors', o.vendorId) || { name: 'Desconocido', zone: 'N/A' };
+
+      const PIPE_CONFIG = {
+        'pending_approval': { label: 'Por Aceptar', color: '#d97706', bg: '#fef3c7', icon: 'fa-clock' },
+        'in_process': { label: 'En Proceso', color: '#2563eb', bg: '#dbeafe', icon: 'fa-gear' },
+        'on_truck': { label: 'Despachado al Camión', color: '#7c3aed', bg: '#ede9fe', icon: 'fa-truck' },
+        'delivered': { label: 'Entregado', color: '#059669', bg: '#d1fae5', icon: 'fa-circle-check' },
+      };
+      const pipe = PIPE_CONFIG[o.status] || { label: o.status, color: 'var(--text-2)', bg: 'var(--surface-2)', icon: 'fa-circle' };
+
+      const itemsArr = Array.isArray(o.items) ? o.items : [];
+
+      // Per-line subtotals (respecting saved discount per line)
+      let itemsHtml = '';
+      let lineSubtotal = 0;
+      if (itemsArr.length) {
+        const rows = itemsArr.map(i => {
+          const price = parseFloat(i.price || 0);
+          const qty = parseFloat(i.qty || 1);
+          const disc = parseFloat(i.discount || 0);
+          const sub = (price * qty) * (1 - disc / 100);
+          lineSubtotal += sub;
+          const discBadge = disc > 0
+            ? `<span style="background:#fee2e2;color:#b91c1c;font-size:0.65rem;font-weight:800;padding:1px 5px;border-radius:4px;margin-left:4px;">-${disc}%</span>`
+            : '';
+          return `
+              <tr>
+                <td style="padding:0.6rem 0.75rem;">
+                  <div style="font-weight:700;font-size:0.85rem;">${i.name || i.product || 'Artículo'}</div>
+                  <div style="font-size:0.7rem;color:var(--text-3);">${i.label || i.sku || ''}</div>
+                </td>
+                <td style="padding:0.6rem 0.5rem;text-align:center;font-size:0.85rem;color:var(--text-2);">${qty}</td>
+                <td style="padding:0.6rem 0.5rem;text-align:right;font-size:0.85rem;">${UF.fmt.usd(price)}${discBadge}</td>
+                <td style="padding:0.6rem 0.75rem;text-align:right;font-weight:800;font-size:0.85rem;color:var(--us-blue-mid);">${UF.fmt.usd(sub)}</td>
+              </tr>`;
+        }).join('');
+
+        itemsHtml = `
+            <table style="width:100%;border-collapse:collapse;">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border);">
+                  <th style="text-align:left;padding:0.4rem 0.75rem;font-size:0.68rem;text-transform:uppercase;color:var(--text-3);font-weight:700;">Producto</th>
+                  <th style="text-align:center;padding:0.4rem 0.5rem;font-size:0.68rem;text-transform:uppercase;color:var(--text-3);font-weight:700;">Cant.</th>
+                  <th style="text-align:right;padding:0.4rem 0.5rem;font-size:0.68rem;text-transform:uppercase;color:var(--text-3);font-weight:700;">P. Unit.</th>
+                  <th style="text-align:right;padding:0.4rem 0.75rem;font-size:0.68rem;text-transform:uppercase;color:var(--text-3);font-weight:700;">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>`;
+      } else {
+        itemsHtml = `<p style="color:var(--text-3);font-size:0.82rem;text-align:center;padding:1.5rem 0;">Sin artículos detallados en este registro.</p>`;
+      }
+
+      // Discount summary block
+      const globalDisc = parseFloat(o.globalDiscount || 0);
+      const globalDiscAmt = lineSubtotal * (globalDisc / 100);
+      const grandTotal = o.total; // always use the persisted total as source of truth
+
+      let discountRow = '';
+      if (globalDisc > 0) {
+        discountRow = `
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-2);padding:0.35rem 0;">
+              <span>Descuento global (${globalDisc}%):</span>
+              <span style="color:#b91c1c;font-weight:700;">− ${UF.fmt.usd(globalDiscAmt)}</span>
+            </div>`;
+      }
+      const subtotalRow = (itemsArr.length && lineSubtotal !== grandTotal)
+        ? `<div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-2);padding:0.35rem 0;"><span>Subtotal líneas:</span><span>${UF.fmt.usd(lineSubtotal)}</span></div>` : '';
+
+      const editedNote = o.editedAt
+        ? `<div style="font-size:0.68rem;color:var(--text-3);text-align:right;margin-top:0.25rem;"><i class="fa-solid fa-pen-clip"></i> Editado por ${o.editedBy || 'sistema'} · ${UF.fmt.date(o.editedAt)}</div>` : '';
+
+      mc.innerHTML = `
+          <div class="modal open" style="display:flex;">
+            <div class="modal-card" style="max-height:90vh; overflow-y:auto; width:98%; max-width:660px; padding:0;">
+
+              <!-- ── HEADER BANNER ── -->
+              <div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);padding:1.25rem 1.5rem;border-radius:12px 12px 0 0;position:relative;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                  <div>
+                    <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;color:#64748b;text-transform:uppercase;margin-bottom:0.2rem;">Pedido · Ultra Seco</div>
+                    <div style="font-size:1.45rem;font-weight:900;color:white;letter-spacing:-0.02em;">
+                      # ${o.id.substring(4).toUpperCase()}
+                    </div>
+                    <div style="margin-top:0.6rem;">
+                      <span style="display:inline-flex;align-items:center;gap:0.35rem;background:${pipe.bg};color:${pipe.color};font-size:0.75rem;font-weight:800;padding:0.3rem 0.75rem;border-radius:999px;">
+                        <i class="fa-solid ${pipe.icon}"></i> ${pipe.label}
+                      </span>
+                    </div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="display:flex;gap:0.4rem;justify-content:flex-end;margin-bottom:0.75rem;">
+                  <button style="background:rgba(255,255,255,0.1);border:none;border-radius:8px;color:#34d399;padding:0.4rem 0.75rem;cursor:pointer;font-size:0.8rem;font-weight:700;" onclick="UF_App_DownloadDeliveryNote('${o.id}')">
+                        <i class="fa-solid fa-file-pdf"></i> Nota PDF
+                      </button>
+                      <button style="background:rgba(255,255,255,0.1);border:none;border-radius:8px;color:#fbbf24;padding:0.4rem 0.75rem;cursor:pointer;font-size:0.8rem;font-weight:700;" onclick="UF_App_EditOrderMode('${o.id}')">
+                        <i class="fa-solid fa-pen"></i> Editar
+                      </button>
+                      <button style="background:rgba(255,255,255,0.08);border:none;border-radius:8px;color:#94a3b8;padding:0.4rem 0.6rem;cursor:pointer;" onclick="UF_App_CloseCRMModal()">
+                        <i class="fa-solid fa-times"></i>
+                      </button>
+                    </div>
+                    <div style="font-size:0.68rem;color:#64748b;margin-bottom:0.1rem;">Fecha de emisión</div>
+                    <div style="font-size:0.85rem;color:#cbd5e1;font-weight:600;">${UF.fmt.date(o.date || o.createdAt)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="padding:1.5rem;display:grid;gap:1.25rem;">
+
+                <!-- ── CLIENT + VENDOR CARDS ── -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                  <div style="background:var(--surface-2);border-radius:10px;padding:1rem;border-left:3px solid var(--us-blue-mid);">
+                    <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--us-blue-mid);margin-bottom:0.5rem;"><i class="fa-solid fa-building"></i> Cliente</div>
+                    <div style="font-weight:800;font-size:0.9rem;margin-bottom:0.2rem;">${c.razonSocial}</div>
+                    ${c.rif ? `<div style="font-size:0.72rem;color:var(--text-3);">RIF: ${c.rif}</div>` : ''}
+                    ${c.address ? `<div style="font-size:0.72rem;color:var(--text-3);margin-top:0.2rem;"><i class="fa-solid fa-location-dot"></i> ${c.address}${c.city ? ', ' + c.city : ''}</div>` : ''}
+                  </div>
+                  <div style="background:var(--surface-2);border-radius:10px;padding:1rem;border-left:3px solid #7c3aed;">
+                    <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#7c3aed;margin-bottom:0.5rem;"><i class="fa-solid fa-user-tie"></i> Vendedor</div>
+                    <div style="font-weight:800;font-size:0.9rem;margin-bottom:0.2rem;">${v.name}</div>
+                    <div style="font-size:0.72rem;color:var(--text-3);"><i class="fa-solid fa-map-pin"></i> Zona: ${v.zone || 'N/A'}</div>
+                  </div>
+                </div>
+
+                <!-- ── ITEMS TABLE ── -->
+                <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+                  <div style="background:var(--surface-2);padding:0.65rem 0.75rem;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-2);">
+                    <i class="fa-solid fa-boxes-stacked"></i> Artículos del Pedido
+                  </div>
+                  <div style="max-height:220px;overflow-y:auto;">
+                    ${itemsHtml}
+                  </div>
+                </div>
+
+                <!-- ── TOTALS ── -->
+                <div style="background:var(--surface-2);border-radius:10px;padding:1rem 1.25rem;">
+                  ${subtotalRow}
+                  ${discountRow}
+                  <div style="display:flex;justify-content:space-between;align-items:center;border-top:2px solid var(--border);padding-top:0.75rem;margin-top:0.5rem;">
+                    <span style="font-weight:800;font-size:1rem;">Total confirmado</span>
+                    <span style="font-weight:900;font-size:1.5rem;color:var(--green);">${UF.fmt.usd(grandTotal)}</span>
+                  </div>
+                  ${editedNote}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        `;
+    };
+
+
+
+    // ============================================================
+    // PROFESSIONAL ORDER EDITOR
+    // ============================================================
+    // In-memory working copy of the items being edited
+    window._editOrderItems = [];
+
+    window.UF_App_EditOrderMode = (orderId) => {
+      const mc = document.getElementById('modals-container');
+      if (!mc) return;
+      const o = UF.data.find('orders', orderId);
+      if (!o) return;
+
+      const items = Array.isArray(o.items) ? JSON.parse(JSON.stringify(o.items)) : [];
+      window._editOrderItems = items;
+      window._editOrderId = orderId;
+
+      // Build catalog options from window.products
+      const catalogOptions = (window.products || []).flatMap(p =>
+        (p.options || []).map((opt, i) => ({
+          productId: p.id, name: p.name, label: opt.label, price: opt.price, sku: opt.sku || '', optIndex: i
+        }))
+      );
+      const catOptHtml = [`<option value="">— Seleccionar producto del catálogo —</option>`,
+        ...catalogOptions.map((o, i) => `<option value="${i}">${o.name} · ${o.label} — $${o.price.toFixed(2)}</option>`)
+      ].join('');
+
+      mc.innerHTML = `
+          <div class="modal open" style="display:flex;">
+            <div style="background:#f5f5f7;border-radius:20px;max-height:92vh;overflow-y:auto;width:98%;max-width:740px;box-shadow:0 30px 80px rgba(0,0,0,0.35);">
+
+              <!-- Apple top bar -->
+              <div style="position:sticky;top:0;z-index:10;background:rgba(245,245,247,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.08);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;color:#6e6e73;text-transform:uppercase;">Editar Pedido</div>
+                  <div style="font-size:1.1rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;">#${o.id.substring(4).toUpperCase()}</div>
+                </div>
+                <div style="display:flex;gap:0.5rem;">
+                  <button onclick="UF_App_SaveEditedOrder()" style="background:#0071e3;color:white;border:none;border-radius:980px;padding:0.45rem 1.1rem;font-size:0.82rem;font-weight:600;cursor:pointer;">
+                    <i class="fa-solid fa-check"></i> Confirmar
+                  </button>
+                  <button onclick="UF_App_OpenOrderModal('${o.id}')" style="background:rgba(0,0,0,0.06);color:#1d1d1f;border:none;border-radius:980px;padding:0.45rem 1rem;font-size:0.82rem;font-weight:600;cursor:pointer;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div style="padding:1.5rem;display:grid;gap:1.25rem;">
+
+                <!-- Status -->
+                <div style="background:white;border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+                  <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#6e6e73;margin-bottom:0.5rem;">Estado del pedido</div>
+                  <select id="edit-order-status" style="width:100%;border:1px solid #d2d2d7;border-radius:8px;padding:0.55rem 0.75rem;font-size:0.9rem;color:#1d1d1f;background:white;appearance:none;-webkit-appearance:none;cursor:pointer;">
+                    <option value="pending_approval" ${o.status === 'pending_approval' ? 'selected' : ''}>🟡 Por Aceptar</option>
+                    <option value="in_process" ${o.status === 'in_process' ? 'selected' : ''}>🔵 En Proceso / Aprobado</option>
+                    <option value="on_truck" ${o.status === 'on_truck' ? 'selected' : ''}>🚚 Despachado al Camión</option>
+                    <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>✅ Entregado y Liquidado</option>
+                  </select>
+                </div>
+
+                <!-- Catalog picker -->
+                <div style="background:white;border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+                  <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#6e6e73;margin-bottom:0.6rem;"><i class="fa-solid fa-magnifying-glass"></i> Agregar del catálogo</div>
+                  <div style="display:flex;gap:0.6rem;">
+                    <select id="edit-catalog-select" style="flex:1;border:1px solid #d2d2d7;border-radius:8px;padding:0.5rem 0.75rem;font-size:0.82rem;color:#1d1d1f;background:white;">
+                      ${catOptHtml}
+                    </select>
+                    <button onclick="UF_App_AddFromCatalog()" style="background:#0071e3;color:white;border:none;border-radius:8px;padding:0.5rem 1rem;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;">
+                      <i class="fa-solid fa-plus"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Line items -->
+                <div style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+                  <div style="padding:0.85rem 1.3rem;border-bottom:1px solid #f2f2f7;">
+                    <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#6e6e73;">Líneas de producto</div>
+                  </div>
+                  <!-- column headers -->
+                  <div style="display:grid;grid-template-columns:2fr 72px 96px 72px 80px 32px;gap:0.35rem;padding:0.45rem 1rem;background:#f9f9fb;border-bottom:1px solid #e5e5ea;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#8e8e93;">
+                    <span>Producto</span><span style="text-align:center;">Cant.</span><span style="text-align:center;">P.Unit.</span><span style="text-align:center;">Desc.%</span><span style="text-align:right;">Subtotal</span><span></span>
+                  </div>
+                  <div id="edit-order-lines"></div>
+                  <div style="padding:0.75rem 1rem;border-top:1px solid #f2f2f7;">
+                    <button onclick="UF_App_AddEditLine()" style="width:100%;background:transparent;border:1px dashed #c7c7cc;border-radius:8px;color:#0071e3;font-size:0.82rem;font-weight:600;padding:0.55rem;cursor:pointer;">
+                      <i class="fa-solid fa-plus"></i> Agregar línea manual
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Totals -->
+                <div style="background:white;border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:grid;gap:0.55rem;">
+                  <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#6e6e73;">
+                    <span>Subtotal (antes de desc.)</span><span id="edit-subtotal">$0.00</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:#6e6e73;">
+                    <span>Descuento global (%)</span>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                      <input type="number" id="edit-global-discount" min="0" max="100" step="0.5" value="${o.globalDiscount || 0}" oninput="UF_App_RecalcEditOrder()" style="width:72px;text-align:right;border:1px solid #d2d2d7;border-radius:6px;padding:0.3rem 0.5rem;font-size:0.82rem;">
+                      <span id="edit-discount-amount" style="color:#ff3b30;font-weight:600;">-$0.00</span>
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e5e5ea;padding-top:0.75rem;margin-top:0.25rem;">
+                    <span style="font-weight:700;font-size:0.95rem;color:#1d1d1f;">Total a cobrar</span>
+                    <span id="edit-grand-total" style="font-weight:800;font-size:1.6rem;color:#30d158;letter-spacing:-0.03em;">$0.00</span>
+                  </div>
+                </div>
+
+                <!-- Danger zone -->
+                <button onclick="UF_App_DeleteOrder('${o.id}')" style="background:transparent;border:1px solid #ff3b30;border-radius:10px;color:#ff3b30;font-size:0.82rem;font-weight:600;padding:0.7rem;cursor:pointer;width:100%;">
+                  <i class="fa-solid fa-trash"></i> Anular / Eliminar este pedido permanentemente
+                </button>
+
+              </div>
+            </div>
+          </div>
+        `;
+
+      // Stash catalog list for the add function
+      window._editCatalogOptions = catalogOptions;
+      UF_App_RenderEditLines();
+      UF_App_RecalcEditOrder();
+    };
+
+    window.UF_App_AddFromCatalog = () => {
+      const sel = document.getElementById('edit-catalog-select');
+      if (!sel || sel.value === '') return;
+      const opt = window._editCatalogOptions[+sel.value];
+      if (!opt) return;
+      // Check if already exists by productId + label → increment qty instead
+      const existing = window._editOrderItems.find(i => i.productId === opt.productId && i.label === opt.label);
+      if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+      } else {
+        window._editOrderItems.push({ productId: opt.productId, name: opt.name, label: opt.label, price: opt.price, sku: opt.sku, qty: 1, discount: 0 });
+      }
+      UF_App_RenderEditLines();
+      UF_App_RecalcEditOrder();
+      sel.value = '';
+    };
+
+    window.UF_App_RenderEditLines = () => {
+      const container = document.getElementById('edit-order-lines');
+      if (!container) return;
+      const items = window._editOrderItems;
+
+      if (!items.length) {
+        container.innerHTML = `<div style="color:#8e8e93;font-size:0.82rem;text-align:center;padding:1.5rem;">Sin líneas. Selecciona del catálogo o agrega una línea manual.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((item, idx) => `
+          <div style="display:grid;grid-template-columns:2fr 72px 96px 72px 80px 32px;gap:0.35rem;align-items:center;padding:0.65rem 1rem;border-bottom:1px solid #f2f2f7;">
+            <div>
+              <div style="font-weight:600;font-size:0.82rem;color:#1d1d1f;">${item.name || item.product || 'Artículo'}</div>
+              <div style="font-size:0.68rem;color:#8e8e93;margin-top:1px;">${item.label || item.sku || ''}</div>
+            </div>
+            <input type="number" min="1" step="1" value="${item.qty || 1}"
+              style="text-align:center;border:1px solid #d2d2d7;border-radius:6px;padding:0.28rem 0.2rem;font-size:0.8rem;width:100%;"
+              oninput="window._editOrderItems[${idx}].qty = +this.value; UF_App_RecalcEditOrder()">
+            <input type="number" min="0" step="0.01" value="${(item.price || 0).toFixed(2)}"
+              style="text-align:center;border:1px solid #d2d2d7;border-radius:6px;padding:0.28rem 0.2rem;font-size:0.8rem;width:100%;"
+              oninput="window._editOrderItems[${idx}].price = +this.value; UF_App_RecalcEditOrder()">
+            <input type="number" min="0" max="100" step="0.5" value="${(item.discount || 0)}" placeholder="0"
+              style="text-align:center;border:1px solid #d2d2d7;border-radius:6px;padding:0.28rem 0.2rem;font-size:0.8rem;width:100%;"
+              oninput="window._editOrderItems[${idx}].discount = +this.value; UF_App_RecalcEditOrder()">
+            <div id="edit-line-subtotal-${idx}" style="text-align:right;font-weight:700;font-size:0.8rem;color:#0071e3;">
+              ${UF.fmt.usd(((item.price || 0) * (item.qty || 1)) * (1 - (item.discount || 0) / 100))}
+            </div>
+            <button onclick="UF_App_RemoveEditLine(${idx})" style="background:transparent;border:none;color:#ff3b30;cursor:pointer;padding:0.2rem;font-size:0.85rem;">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        `).join('');
+    };
+
+    window.UF_App_RemoveEditLine = (idx) => {
+      window._editOrderItems.splice(idx, 1);
+      UF_App_RenderEditLines();
+      UF_App_RecalcEditOrder();
+    };
+
+    window.UF_App_AddEditLine = () => {
+      window._editOrderItems.push({ name: 'Artículo Manual', qty: 1, price: 0, discount: 0, label: '' });
+      UF_App_RenderEditLines();
+      UF_App_RecalcEditOrder();
+    };
+
+    window.UF_App_RecalcEditOrder = () => {
+      const items = window._editOrderItems;
+
+      // Update per-line subtotals in the DOM
+      items.forEach((item, idx) => {
+        const qty = parseFloat(item.qty) || 0;
+        const price = parseFloat(item.price) || 0;
+        const disc = parseFloat(item.discount) || 0;
+        const lineSub = (qty * price) * (1 - disc / 100);
+        const el = document.getElementById('edit-line-subtotal-' + idx);
+        if (el) el.textContent = UF.fmt.usd(lineSub);
+      });
+
+      // Sum subtotals
+      const lineSubtotal = items.reduce((acc, item) => {
+        const qty = parseFloat(item.qty) || 0;
+        const price = parseFloat(item.price) || 0;
+        const disc = parseFloat(item.discount) || 0;
+        return acc + ((qty * price) * (1 - disc / 100));
+      }, 0);
+
+      const globalDiscPct = parseFloat(document.getElementById('edit-global-discount')?.value || 0);
+      const globalDiscAmt = lineSubtotal * (globalDiscPct / 100);
+      const grandTotal = lineSubtotal - globalDiscAmt;
+
+      const subtotalEl = document.getElementById('edit-subtotal');
+      if (subtotalEl) subtotalEl.textContent = UF.fmt.usd(lineSubtotal);
+      const discountEl = document.getElementById('edit-discount-amount');
+      if (discountEl) discountEl.textContent = '-' + UF.fmt.usd(globalDiscAmt);
+      const grandEl = document.getElementById('edit-grand-total');
+      if (grandEl) grandEl.textContent = UF.fmt.usd(grandTotal);
+    };
+
+    window.UF_App_SaveEditedOrder = () => {
+      const orderId = window._editOrderId;
+      if (!orderId) return;
+
+      const newStatus = document.getElementById('edit-order-status')?.value;
+      const globalDiscPct = parseFloat(document.getElementById('edit-global-discount')?.value || 0);
+
+      const items = window._editOrderItems;
+      const lineSubtotal = items.reduce((acc, item) => {
+        const qty = parseFloat(item.qty) || 0;
+        const price = parseFloat(item.price) || 0;
+        const disc = parseFloat(item.discount) || 0;
+        return acc + ((qty * price) * (1 - disc / 100));
+      }, 0);
+      const grandTotal = lineSubtotal * (1 - globalDiscPct / 100);
+
+      UF.data.update('orders', orderId, {
+        status: newStatus,
+        items: JSON.parse(JSON.stringify(items)),
+        globalDiscount: globalDiscPct,
+        total: Math.round(grandTotal * 100) / 100,
+        editedAt: new Date().toISOString(),
+        editedBy: window.UF_App?.role || 'admin',
+      });
+
+      UF.toast('✅ Pedido guardado correctamente', 'success');
+      UF_App_OpenOrderModal(orderId);
+
+      if (window.UF_App?.renderAdminPedidos) window.UF_App.renderAdminPedidos();
+      if (window.UF_App?.renderCEOVentas) window.UF_App.renderCEOVentas();
+    };
+
+    window.UF_App_DeleteOrder = (orderId) => {
+      if (!confirm('¿Anular este pedido permanentemente? Esta acción NO se puede deshacer.')) return;
+      UF.data.delete('orders', orderId);
+      UF_App_CloseCRMModal();
+      UF.toast('🗑️ Pedido anulado del sistema', 'info');
+      if (window.UF_App?.renderAdminPedidos) window.UF_App.renderAdminPedidos();
+      if (window.UF_App?.renderCEOVentas) window.UF_App.renderCEOVentas();
+    };
+    window.UF_App_CompleteTask = (taskId) => {
+      UF.Tasks.complete(App.user.id, taskId);
+      UF.toast('¡Tarea completada! 🎉 +XP', 'success');
+      // Refresh current view
+      App.renderVendorDashboard();
+      App.renderTareas();
+    };
+
+    window.UF_App_RegisterPago = () => {
+      const clientId = document.getElementById('pg-client')?.value;
+      const type = document.getElementById('pg-type')?.value;
+      const method = document.getElementById('pg-method')?.value;
+      const amount = parseFloat(document.getElementById('pg-amount')?.value || 0);
+      const ref = document.getElementById('pg-ref')?.value || '';
+      if (!clientId) return UF.toast('Selecciona un cliente', 'warning');
+      if (!amount || amount <= 0) return UF.toast('Ingresa un monto válido', 'warning');
+      const payment = {
+        id: 'pay_' + Date.now(),
+        vendorId: App.user.id,
+        clientId,
+        type,
+        method,
+        amount,
+        reference: ref,
+        date: new Date().toISOString(),
+        confirmed: true,
+      };
+      UF.data.add('payments', payment);
+      UF.Gamification.logXP(App.user.id, type === 'full' ? 'payment_full' : 'payment_partial');
+      UF.toast(`✅ Pago de ${UF.fmt.usd(amount)} registrado`, 'success');
+      document.getElementById('pg-amount').value = '';
+      document.getElementById('pg-ref').value = '';
+      App.renderPagos();
+    };
+
+    window.UF_App_ConfirmEntrega = (orderId) => {
+      UF.data.update('orders', orderId, { status: 'delivered', deliveredAt: new Date().toISOString() });
+      UF.Gamification.logXP(App.user.id, 'delivery_confirm');
+      UF.toast('✅ ¡Entrega confirmada! +50 XP', 'success');
+      App.renderPedidos();
+    };
+
+    window.UF_App_AdminAceptarPedido = (orderId) => {
+      UF.data.update('orders', orderId, { status: 'in_process', acceptedAt: new Date().toISOString() });
+      UF.toast('✅ Pedido aceptado y enviado a Operaciones', 'success');
+      if (App.renderAdminPedidos) App.renderAdminPedidos();
+    };
+
+    window.UF_App_OpsDespacharPedido = (orderId) => {
+      UF.data.update('orders', orderId, { status: 'on_truck', dispatchedAt: new Date().toISOString() });
+      UF.toast('🚚 Pedido marcado como despachado', 'success');
+      if (App.renderOpsProcess) App.renderOpsProcess();
+    };
+
+    window.UF_App_SolicitarPOP = () => {
+      const type = document.getElementById('pop-type')?.value;
+      const desc = document.getElementById('pop-desc')?.value || '';
+      if (!desc.trim()) return UF.toast('Describe tu solicitud', 'warning');
+      UF.data.add('popRequests', {
+        id: 'pop_' + Date.now(),
+        vendorId: App.user.id,
+        type,
+        desc,
+        status: 'requested',
+        date: new Date().toISOString(),
+      });
+      UF.toast('📦 Solicitud enviada', 'success');
+      document.getElementById('pop-desc').value = '';
+      App.renderPOP();
+    };
+
+    window.UF_App_CaptureGPS = () => {
+      if (!navigator.geolocation) return UF.toast('Tu navegador no soporta Geoposicionamiento.', 'error');
+      UF.toast('Solicitando GPS (acepta el permiso)...', 'info');
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const elLat = document.getElementById('nc-lat');
+        const elLng = document.getElementById('nc-lng');
+        if (elLat) elLat.value = pos.coords.latitude;
+        if (elLng) elLng.value = pos.coords.longitude;
+        UF.toast(`📍 GPS capturado con éxito (${pos.coords.accuracy.toFixed(0)}m precisión)`, 'success');
+      }, (err) => {
+        UF.toast('Error conectando GPS: ' + err.message, 'error');
+      }, { enableHighAccuracy: true });
+    };
+
+    window.UF_App_SaveNewClient = () => {
+      const razonSocial = document.getElementById('nc-name').value;
+      const rif = document.getElementById('nc-rif').value;
+      const address = document.getElementById('nc-address').value;
+      const city = document.getElementById('nc-city').value;
+
+      const lat = document.getElementById('nc-lat')?.value || null;
+      const lng = document.getElementById('nc-lng')?.value || null;
+
+      const phone = document.getElementById('nc-company-phone')?.value || '';
+      const email = document.getElementById('nc-email')?.value || '';
+      const social = document.getElementById('nc-social')?.value || '';
+      const manager = document.getElementById('nc-manager')?.value || '';
+      const managerPhone = document.getElementById('nc-manager-phone')?.value || '';
+      const stage = document.getElementById('nc-stage').value;
+      const type = document.getElementById('nc-type')?.value || 'Ferretería';
+
+      if (!razonSocial) return UF.toast('Ingresa la Razón Social', 'warning');
+      if (!address) return UF.toast('Ingresa la Dirección Completa', 'warning');
+
+      UF.data.add('clients', {
+        id: 'cli_' + Date.now().toString(36),
+        vendorId: App.user.id,
+        razonSocial,
+        rif,
+        address,
+        city,
+        lat,
+        lng,
+        phone,
+        email,
+        social,
+        manager,
+        managerPhone,
+        stage,
+        type,
+        score: 'B',
+        balance: 0,
+        createdAt: new Date().toISOString()
+      });
+
+      UF.toast('✅ Contacto guardado con éxito', 'success');
+
+      App.navigate('clientes');
+    };
+
+    window.UF_App_OpenClientModal = (clientId) => {
+      const mc = document.getElementById('modals-container');
+      if (!mc) return;
+      const c = UF.data.find('clients', clientId);
+      if (!c) return;
+
+      const interactions = UF.data.where('interactions', i => i.clientId === clientId).sort((a, b) => new Date(b.date) - new Date(a.date));
+      const orders = UF.data.where('orders', o => o.clientId === clientId).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const historyHtml = interactions.length ? interactions.map(i => `<div style="font-size:0.8rem; margin-bottom:0.5rem; border-left:2px solid var(--us-blue); padding-left:0.5rem;"><div style="color:var(--text-3); font-size:0.7rem;">${UF.fmt.date(i.date)}</div><div>${i.note}</div></div>`).join('') : '<p style="color:var(--text-3); font-size:0.8rem;">Sin notas previas.</p>';
+      const ordersHtml = orders.length ? orders.map(o => `<div style="font-size:0.8rem; margin-bottom:0.5rem; border-left:2px solid var(--green); padding-left:0.5rem;"><strong>${UF.fmt.date(o.date)}:</strong> ${UF.fmt.usd(o.total)} <br><span class="uf-badge" style="font-size:0.6rem; margin-top:0.15rem;">Estado: ${o.status}</span></div>`).join('') : '<p style="color:var(--text-3); font-size:0.8rem;">Sin compras previas.</p>';
+
+      mc.innerHTML = `
+          <div class="modal open" style="display:flex;">
+            <div class="modal-card" style="max-height:85vh; overflow-y:auto; width:95%; max-width:600px;">
+              <div class="modal-header">
+                <h3 style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+                  ${c.razonSocial || c.name}
+                  <span class="uf-badge" style="background:var(--surface-3); color:var(--text-1); font-size:0.6rem; border:1px solid var(--border);">${c.type || 'Ferretería'}</span>
+                </h3>
+                <button class="uf-btn-ghost uf-btn-sm" onclick="UF_App_CloseCRMModal()"><i class="fa-solid fa-times"></i></button>
+              </div>
+              <div class="modal-body" style="display:grid; gap:1rem;">
+                <div style="background:var(--surface-2); padding:1rem; border-radius:8px;">
+                  <div style="font-size:0.8rem; color:var(--text-3); margin-bottom:0.25rem;">Etapa del Embudo</div>
+                  <select id="cm-stage" class="uf-select" onchange="UF_App_UpdateClientStage('${c.id}', this.value)">
+                    <option value="lead" ${c.stage === 'lead' ? 'selected' : ''}>Lead (Captación)</option>
+                    <option value="prospect" ${c.stage === 'prospect' ? 'selected' : ''}>Prospecto (Evaluación)</option>
+                    <option value="client" ${(!c.stage || c.stage === 'client') ? 'selected' : ''}>Cliente Mantenimiento</option>
+                  </select>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                  <div>
+                    <div style="font-weight:800; border-bottom:1px solid var(--border); padding-bottom:0.5rem; margin-bottom:0.5rem;">📝 Notas y Visitas</div>
+                    <div style="max-height:200px; overflow-y:auto; margin-bottom:0.75rem;">${historyHtml}</div>
+                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                      <textarea id="cm-note" class="uf-textarea" placeholder="Llamada, visita, recado..." rows="2"></textarea>
+                      <button class="uf-btn uf-btn-primary uf-btn-sm" onclick="UF_App_SaveInteraction('${c.id}')"><i class="fa-solid fa-paper-plane"></i> Agregar Nota</button>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="font-weight:800; border-bottom:1px solid var(--border); padding-bottom:0.5rem; margin-bottom:0.5rem;">🛍️ Cotizaciones y Pedidos</div>
+                    <div style="max-height:260px; overflow-y:auto;">${ordersHtml}</div>
+                    <div style="margin-top:0.75rem;">
+                      <button class="uf-btn uf-btn-sm uf-btn-ghost" style="width:100%; border:1px solid var(--amber); color:var(--amber);" onclick="alert('Generador de cotización en desarrollo')"><i class="fa-solid fa-file-invoice"></i> Cotizar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+    };
+
+    window.UF_App_SaveInteraction = (clientId) => {
+      const note = document.getElementById('cm-note').value;
+      if (!note) return;
+      UF.data.add('interactions', {
+        id: 'int_' + Date.now().toString(36),
+        vendorId: App.user.id,
+        clientId,
+        note,
+        date: new Date().toISOString()
+      });
+      UF.toast('✅ Nota guardada', 'success');
+      UF_App_OpenClientModal(clientId); // refresh modal to show new note
+    };
+
+    window.UF_App_UpdateClientStage = (clientId, newStage) => {
+      UF.data.update('clients', clientId, { stage: newStage });
+      UF.toast('Etapa actualizada', 'info');
+      if (App.renderVendorClients) App.renderVendorClients();
+    };
+
+    window.UF_App_CloseCRMModal = () => {
+      const mc = document.getElementById('modals-container');
+      if (mc) mc.innerHTML = '';
+    };
+
+    // Order Cart System -----------------
+    window.UF_App_RenderCart = () => {
+      const cartEl = document.getElementById('np-cart-items');
+      const countEl = document.getElementById('np-cart-total');
+      if (!cartEl || !countEl || !window.UF_App_CurrentCart) return;
+
+      if (window.UF_App_CurrentCart.length === 0) {
+        cartEl.innerHTML = '<div style="color:var(--text-3); text-align:center; padding:1rem; font-size:0.8rem;">Carrito vacío</div>';
+        countEl.textContent = '$0.00';
+        return;
+      }
+
+      let total = 0;
+      cartEl.innerHTML = window.UF_App_CurrentCart.map((item, idx) => {
+        total += item.price * item.qty;
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface-2); padding:0.5rem; border-radius:6px; font-size:0.8rem;">
+              <div style="flex:1;">
+                <div style="font-weight:700;">${item.name}</div>
+                <div style="color:var(--text-3); font-size:0.75rem;">${item.label}</div>
+              </div>
+              <div style="text-align:right; margin-right:1rem;">
+                <div style="font-weight:700;">${item.qty} x ${UF.fmt.usd(item.price)}</div>
+              </div>
+              <button class="uf-btn-ghost uf-btn-sm" style="color:var(--amber); padding:0.25rem 0.5rem;" onclick="UF_App_RemoveFromCart(${idx})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          `;
+      }).join('');
+
+      countEl.textContent = UF.fmt.usd(total);
+    };
+
+    window.UF_App_AddToCart = (productId) => {
+      if (!window.UF_App_CurrentCart) window.UF_App_CurrentCart = [];
+      const sel = document.getElementById(`np-sel-${productId}`);
+      const product = window.products.find(p => p.id === productId);
+      if (!sel || !product) return;
+
+      const optIndex = sel.value;
+      const opt = product.options[optIndex];
+
+      // Find if already exists
+      const ex = window.UF_App_CurrentCart.find(i => i.id === product.id && i.label === opt.label);
+      if (ex) {
+        ex.qty += 1;
+      } else {
+        window.UF_App_CurrentCart.push({
+          id: product.id,
+          name: product.name,
+          label: opt.label,
+          price: opt.price,
+          sku: opt.sku,
+          qty: 1
+        });
+      }
+      UF_App_RenderCart();
+    };
+
+    window.UF_App_RemoveFromCart = (idx) => {
+      if (!window.UF_App_CurrentCart) return;
+      window.UF_App_CurrentCart.splice(idx, 1);
+      UF_App_RenderCart();
+    };
+
+    window.UF_App_SubmitOrder = () => {
+      const clientSel = document.getElementById('np-client-select');
+      if (!clientSel || !clientSel.value) return UF.toast('Error: Debes seleccionar un cliente.', 'warning');
+
+      if (!window.UF_App_CurrentCart || window.UF_App_CurrentCart.length === 0) {
+        return UF.toast('Error: El carrito está vacío.', 'warning');
+      }
+
+      const clientId = clientSel.value;
+      const total = window.UF_App_CurrentCart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+      UF.data.add('orders', {
+        id: 'ord_' + Date.now().toString(36),
+        vendorId: App.user.id,
+        clientId: clientId,
+        date: new Date().toISOString(),
+        status: 'pending_approval',
+        total: total,
+        items: [...window.UF_App_CurrentCart]
+      });
+
+      UF.toast('✅ Pedido emitido y enviado a revisión', 'success');
+      window.UF_App_CurrentCart = [];
+      App.navigate('pedidos');
+    };
+
+    // Task Delegation Handlers -------------------------
+    window.UF_App_PopulateVendorSelect = (selectId) => {
+      const sel = document.getElementById(selectId);
+      if (!sel) return;
+      const vendors = UF.data.getAll('vendors').filter(v => v.active);
+      sel.innerHTML = '<option value="">-- Seleccionar Vendedor --</option>' +
+        vendors.map(v => `<option value="${v.id}">${v.name} (${v.zone})</option>`).join('');
+    };
+
+    window.UF_App_DelegateTask = (prefix) => {
+      const receiverId = document.getElementById(`${prefix}-task-vendor`).value;
+      const title = document.getElementById(`${prefix}-task-title`).value;
+      const desc = document.getElementById(`${prefix}-task-desc`).value;
+      const dueDate = document.getElementById(`${prefix}-task-due`).value;
+
+      if (!receiverId || !title || !desc || !dueDate) {
+        return UF.toast('Complete todos los campos de la tarea', 'warning');
+      }
+
+      UF.Tasks.delegate(App.role, App.user.name, receiverId, title, desc, dueDate);
+      UF.toast('✅ Tarea delegada con éxito', 'success');
+
+      // Reset form
+      document.getElementById(`${prefix}-task-title`).value = '';
+      document.getElementById(`${prefix}-task-desc`).value = '';
+      document.getElementById(`${prefix}-task-due`).value = '';
+    };
+
+    window.UF_App_CompleteDelegatedTask = (taskId) => {
+      UF.Tasks.completeDelegated(taskId);
+      UF.toast('¡Tarea especial completada! 🎉 +30 XP', 'success');
+      App.renderTareas();
+    };
+
+    // Wrap some renders to auto-populate vendor selects
+    const originalCEODash = App.renderCEODashboard;
+    App.renderCEODashboard = function () {
+      originalCEODash.apply(this, arguments);
+      window.UF_App_PopulateVendorSelect('ceo-task-vendor');
+    };
+
+    App.renderAdminDashboard = function () {
+      window.UF_App_PopulateVendorSelect('admin-task-vendor');
+    };
+
+    // Update navigate to handle admin-dash
+    const originalNavigate = App.navigate;
+    App.navigate = function (viewId) {
+      originalNavigate.apply(this, arguments);
+      if (viewId === 'admin-dash') App.renderAdminDashboard();
+    };
+
+    // ----------------------------------------------------
+    // TERRITORY MAP LOGIC (LEAFLET + OSM + AI)
+    // ----------------------------------------------------
+    let ufMapInstance = null;
+    let ufMapMarkers = [];
+    let ufOSMMarkers = [];
+
+    window.UF_App_InitMap = () => {
+      if (!document.getElementById('uf-map')) return;
+      if (ufMapInstance) {
+        ufMapInstance.remove();
+      }
+      // Centro genérico en Venezuela
+      ufMapInstance = L.map('uf-map').setView([8.0, -66.0], 6);
+
+      // Capa base gratis de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '© OpenStreetMap'
+      }).addTo(ufMapInstance);
+
+      UF_App_MapRefresh();
+    };
+
+    // Diccionario aproximado de Coordenadas de Ciudades / Estados de Venezuela
+    const VZLA_CITIES = {
+      'Amazonas': [3.1764, -65.5752],
+      'Anzoátegui': [9.2312, -64.4426],
+      'Apure': [7.0135, -68.4871],
+      'Aragua': [10.2238, -67.4338],
+      'Barinas': [8.6226, -70.2075],
+      'Bolívar': [6.3095, -63.535],
+      'Carabobo': [10.1610, -67.9972],
+      'Cojedes': [9.6418, -68.5833],
+      'Delta Amacuro': [8.8872, -61.2727],
+      'Falcón': [11.1964, -69.8005],
+      'Guárico': [8.8111, -66.1772],
+      'Lara': [10.0678, -69.3472],
+      'Mérida': [8.5952, -71.1433],
+      'Miranda': [10.2520, -66.3861],
+      'Monagas': [9.4891, -63.0238],
+      'Nueva Esparta': [10.9972, -63.9113],
+      'Portuguesa': [9.0664, -69.2618],
+      'Sucre': [10.4578, -63.1764],
+      'Táchira': [7.7719, -72.2289],
+      'Trujillo': [9.3667, -70.4333],
+      'Vargas': [10.6038, -66.9314],
+      'Yaracuy': [10.3344, -68.7303],
+      'Zulia': [10.0574, -71.8624],
+      'Distrito Capital': [10.4806, -66.9036]
+    };
+
+    window.UF_App_MapRefresh = () => {
+      if (!ufMapInstance) return;
+
+      ufMapMarkers.forEach(m => m.remove());
+      ufMapMarkers = [];
+
+      const filterState = document.getElementById('map-filter-state')?.value;
+      const filterType = document.getElementById('map-filter-type')?.value;
+
+      // Limitar por rol si es vendor
+      let clients = UF.data.getAll('clients');
+      if (App.role === 'vendor') {
+        clients = clients.filter(c => c.vendorId === App.user.id);
+      }
+      if (filterType) clients = clients.filter(c => c.type === filterType);
+
+      if (filterState && VZLA_CITIES[filterState]) {
+        clients = clients.filter(c =>
+          (c.city || '').toLowerCase().includes(filterState.toLowerCase()) ||
+          (c.address || '').toLowerCase().includes(filterState.toLowerCase())
+        );
+        ufMapInstance.setView(VZLA_CITIES[filterState], 8);
+      } else if (!filterState) {
+        ufMapInstance.setView([8.0, -66.0], 6);
+      }
+
+      let totalActivos = 0;
+      let totalLeads = 0;
+      let cCities = new Set();
+
+      clients.forEach(c => {
+        const isActivo = c.stage === 'client';
+        if (isActivo) totalActivos++; else totalLeads++;
+
+        let color = isActivo ? '#1d4ed8' : '#d97706'; // Azul = activo, Ambar = prospecto
+
+        let coords = null;
+
+        if (c.lat && c.lng) {
+          // Si el cliente tiene coordenadas exactas (GPS), usarlas
+          coords = [parseFloat(c.lat), parseFloat(c.lng)];
+
+          // Aún así necesitamos sumar a la métrica cCities basándonos en string
+          for (let state in VZLA_CITIES) {
+            if ((c.city || '').toLowerCase().includes(state.toLowerCase()) || (c.address || '').toLowerCase().includes(state.toLowerCase())) {
+              cCities.add(state);
+              break;
+            }
+          }
+        } else {
+          // Estimación basada en diccionario de ciudades
+          for (let state in VZLA_CITIES) {
+            if ((c.city || '').toLowerCase().includes(state.toLowerCase()) || (c.address || '').toLowerCase().includes(state.toLowerCase())) {
+              // Offset aleatorio leve para que no colisionen pins en la estimación
+              coords = [
+                VZLA_CITIES[state][0] + (Math.random() - 0.5) * 0.1,
+                VZLA_CITIES[state][1] + (Math.random() - 0.5) * 0.1
+              ];
+              cCities.add(state);
+              break;
+            }
+          }
+          if (!coords) {
+            coords = [10.4806 + (Math.random() - 0.5) * 0.1, -66.9036 + (Math.random() - 0.5) * 0.1];
+            cCities.add('Indefinido');
+          }
+        }
+
+        const myIcon = L.divIcon({
+          className: 'custom-icon',
+          html: `<div style="background:${color}; width:16px; height:16px; border-radius:50%; border:2px solid white; box-shadow:0 0 5px rgba(0,0,0,0.5);"></div>`,
+          iconSize: [20, 20]
+        });
+
+        const m = L.marker(coords, { icon: myIcon }).addTo(ufMapInstance)
+          .bindPopup(`<strong>${c.razonSocial || c.name}</strong><br>${c.type || 'S/N'} - ${c.stage}<br>${c.city}`);
+
+        ufMapMarkers.push(m);
+      });
+
+      const actEl = document.getElementById('map-k-active');
+      if (actEl) actEl.textContent = totalActivos;
+      const ptsEl = document.getElementById('map-k-leads');
+      if (ptsEl) ptsEl.textContent = totalLeads;
+      const citEl = document.getElementById('map-k-cities');
+      if (citEl) citEl.textContent = cCities.size;
+
+      document.getElementById('map-ai-panel').style.display = 'none';
+    };
+
+    // ----------------------------------------------------
+    // OVERPASS API (OSM) BUSQUEDA DE COMERCIOS
+    // ----------------------------------------------------
+    window.UF_App_MapSearchProspects = async () => {
+      const state = document.getElementById('map-filter-state')?.value;
+      if (!state) return UF.toast('⚠️ Por favor selecciona un Estado primero para limitar la búsqueda OSM.', 'warning');
+      if (!ufMapInstance) return;
+
+      UF.toast('Cargando prospectos mediante OpenStreetMap...', 'info');
+
+      ufOSMMarkers.forEach(m => m.remove());
+      ufOSMMarkers = [];
+
+      const listEl = document.getElementById('map-osm-list');
+      const countEl = document.getElementById('map-k-osm');
+      if (listEl) listEl.innerHTML = '<div style="color:var(--text-3); text-align:center;">Buscando ferreterías (Overpass API)...</div>';
+      document.getElementById('map-osm-results').style.display = 'block';
+
+      // Overpass QL Query: hardware stores within a bounding box
+      const c = VZLA_CITIES[state];
+      if (!c) return;
+      const bbox = `${c[0] - 1.2},${c[1] - 1.2},${c[0] + 1.2},${c[1] + 1.2}`;
+      const query = `[out:json][timeout:25]; node["shop"="hardware"](${bbox}); out;`;
+      const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const p = data.elements || [];
+
+        if (countEl) countEl.textContent = p.length;
+
+        if (p.length === 0) {
+          if (listEl) listEl.innerHTML = '<div style="color:var(--text-3); text-align:center;">No se encontraron ferreterías registradas en OSM para la zona geográfica.</div>';
+          return;
+        }
+
+        let listHtml = '';
+        p.forEach(node => {
+          const tags = node.tags || {};
+          const name = tags.name || 'Ferretería Sin Nombre OSM';
+
+          // Extraer dirección si existe
+          let addressParts = [];
+          if (tags['addr:street']) addressParts.push(tags['addr:street']);
+          if (tags['addr:housenumber']) addressParts.push(tags['addr:housenumber']);
+          if (tags['addr:city']) addressParts.push(tags['addr:city']);
+          const address = addressParts.length > 0 ? addressParts.join(', ') : 'Dirección no registrada en OSM';
+
+          // Extraer teléfono
+          const phone = tags.phone || tags['contact:phone'] || tags['contact:mobile'] || 'Sin teléfono';
+          const phoneHtml = phone !== 'Sin teléfono' ? `<div style="font-size:0.7rem; margin-top:0.2rem; color:var(--text-1);"><i class="fa-solid fa-phone"></i> ${phone}</div>` : '';
+
+          listHtml += `<div style="background:var(--surface-1); padding:0.5rem; border-radius:4px; margin-bottom:0.5rem;">
+              <div style="color:var(--green); font-weight:700; font-size:0.85rem; margin-bottom:0.25rem;">${name}</div>
+              <div style="font-size:0.7rem; color:var(--text-2); line-height:1.2;"><i class="fa-solid fa-map-pin"></i> ${address}</div>
+              ${phoneHtml}
+            </div>`;
+
+          const myIcon = L.divIcon({
+            className: 'custom-icon',
+            html: `<div style="background:#059669; width:16px; height:16px; border-radius:50%; border:2px solid white; box-shadow:0 0 5px rgba(0,0,0,0.5);"></div>`,
+            iconSize: [20, 20]
+          });
+
+          // Popup HTML format
+          const popupDesc = `
+              <strong style="color:#059669; font-size:0.9rem;">${name}</strong>
+              <hr style="margin:4px 0; border:0; border-top:1px solid #ccc;">
+              <div style="font-size:0.85rem; margin-bottom:4px;">📍 ${address}</div>
+              ${phone !== 'Sin teléfono' ? `<div style="font-size:0.85rem; font-weight:600;">📞 ${phone}</div>` : ''}
+              <div style="font-size:0.7rem; color:#666; margin-top:6px;">Prospecto Vírgen (OSM)</div>
+            `;
+
+          const m = L.marker([node.lat, node.lon], { icon: myIcon }).addTo(ufMapInstance)
+            .bindPopup(popupDesc);
+          ufOSMMarkers.push(m);
+        });
+        if (listEl) listEl.innerHTML = listHtml;
+        UF.toast(`✅ ${p.length} establecimientos descubiertos.`, 'success');
+
+      } catch (e) {
+        UF.toast('Error conectando a OSM API.', 'error');
+        if (listEl) listEl.innerHTML = 'Error fetching OSM Overpass Data.';
+      }
+    };
+
+    // ----------------------------------------------------
+    // TERRITORIAL AI BRIEFING
+    // ----------------------------------------------------
+    window.UF_App_MapAIBriefing = async () => {
+      const state = document.getElementById('map-filter-state')?.value || 'Venezuela';
+      const aiEl = document.getElementById('map-ai-panel');
+      const textEl = document.getElementById('map-ai-text');
+      if (!aiEl || !textEl) return;
+
+      aiEl.style.display = 'block';
+      textEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando análisis espacial y comercial...';
+
+      setTimeout(() => {
+        textEl.innerHTML = `
+            <div style="margin-bottom:0.75rem;"><strong>🗺️ Briefing Estratégico: ${state}</strong></div>
+            <p style="margin-bottom:0.6rem;">Las huellas de la zona refieren una presencia ${state === 'Venezuela' ? 'disgregada' : 'alta en oportunidades de captación'} basados en la data cargada en el embudo CRM actual.</p>
+            <p style="margin-bottom:0.6rem;"><strong>Próximos Pasos Recomendados:</strong> Ejecuta un despliegue de ruta hacia los prospectos OSM para incluirlos en el embudo como nuevos Leads, y visita inmediatamente los de color Azul (Mantenimiento).</p>
+            <p style="margin-bottom:0;"><span style="color:var(--green); font-weight:700;">Dato Ultra:</span> Concentrarse en la categoría "Construcción" en regiones llaneras ha garantizado volúmenes dobles este trimestre. Apunta a ese mercado.</p>
+          `;
+      }, 1500);
+    };
+
+    // Conectar la vista al JS Router de Fuerza
+    App.renderMapa = function () {
+      // Generar dinámicamente las opciones de Estado
+      const selectEl = document.getElementById('map-filter-state');
+      if (selectEl) {
+        let allowedZones = Object.keys(VZLA_CITIES);
+
+        if (App.role === 'vendor') {
+          const vendorData = UF.data.find('vendors', App.user.id);
+          if (vendorData && vendorData.assignedZones && vendorData.assignedZones.length > 0) {
+            allowedZones = vendorData.assignedZones;
+          } else {
+            allowedZones = [(vendorData ? vendorData.zone : '')]; // fallback to base zone
+          }
+        }
+
+        selectEl.innerHTML = '<option value="">Todos los permitidos</option>' +
+          allowedZones.map(z => `<option value="${z}">${z}</option>`).join('');
+      }
+
+      // Renderizar panel de Ruta Asignada si es vendor
+      const guideEl = document.getElementById('map-vendor-guide');
+      if (guideEl) {
+        if (App.role === 'vendor') {
+          const vData = UF.data.find('vendors', App.user.id);
+          const zns = (vData && vData.assignedZones && vData.assignedZones.length > 0) ? vData.assignedZones.join(', ') : (vData ? vData.zone : 'Indefinido');
+          document.getElementById('map-guide-states').textContent = zns;
+          guideEl.style.display = 'block';
+        } else {
+          guideEl.style.display = 'none';
+        }
+      }
+
+      setTimeout(() => {
+        window.UF_App_InitMap();
+      }, 150);
+    };
+
+    // Guardar Zonas Asignadas por CEO
+    window.UF_App_SaveZones = (vendorId) => {
+      const val = document.getElementById('ceo-zone-input-' + vendorId).value;
+      const zonesArr = val.split(',').map(s => s.trim()).filter(s => s !== '');
+
+      const v = UF.data.find('vendors', vendorId);
+      if (v) {
+        v.assignedZones = zonesArr;
+        UF.data.update('vendors', vendorId, { assignedZones: zonesArr });
+        UF.toast('Territorio actualizado para ' + v.name, 'success');
+      }
+    };
+
+    // Boot
+    App.start();
+
+    } catch (e) {
+      alert("Error crítico en la app: " + e.message);
+      console.error(e);
+    }
+    })(); // End App Init
+  
