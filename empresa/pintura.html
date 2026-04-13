@@ -163,6 +163,10 @@
         }
 
         /* --- UTILITIES --- */
+        .relative {
+            position: relative;
+        }
+
         .grid {
             display: grid;
         }
@@ -317,6 +321,30 @@
             display: block;
         }
 
+        .resultado-real-panel {
+            background: rgba(0, 52, 89, 0.8);
+            backdrop-filter: blur(15px);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 340px;
+            border: 1px solid rgba(255,255,255,0.15);
+            z-index: 20;
+            margin-top: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+        }
+
+        @media (min-width: 1024px) {
+            .resultado-real-panel {
+                position: absolute;
+                bottom: -30px;
+                right: -30px;
+                margin-top: 0;
+            }
+        }
+
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
 
@@ -395,41 +423,41 @@
         <!-- HERO -->
         <section class="premium-hero">
             <div class="hero-grid">
-                <div class="hero-text">
+                <div class="hero-text text-center lg:text-left">
                     <div class="benefit-tag">
                         <i class="fa-solid fa-microchip"></i> Nanotecnología de Sílice
                     </div>
                     <h1>Pintura<br><span style="color: var(--primary-vivid)">Súper</span> Hidrofóbica</h1>
-                    <p
+                    <p class="text-justify lg:text-left mx-auto lg:mx-0"
                         style="font-size: 1.4rem; color: #475569; margin-bottom: 3rem; max-width: 600px; line-height: 1.6;">
                         Recubrimiento inteligente diseñado con resinas acrílicas puras y nanopartículas de silicio para
                         un blindaje molecular total.
                     </p>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
                         <a href="#comprar" class="cta-button" style="padding: 1.2rem 3rem;">Configurar Pedido</a>
-                        <a href="#analisis-tecnico" class="nav-button"
+                        <a href="#analisis-tecnico" class="nav-button bg-white text-gray-800 rounded-lg shadow-sm"
                             style="border: 2px solid #e2e8f0; display: flex; align-items: center; gap: 10px; padding: 1.1rem 2rem;">
                             <i class="fa-solid fa-chart-line"
                                 style="color: var(--primary-vivid); font-size: 1.5rem;"></i> Análisis Técnico
                         </a>
                     </div>
                 </div>
-                <div class="hero-image-container">
-                    <div class="floating-badge" style="top: 10%; left: -5%;">
+                <div class="hero-image-container relative flex items-center justify-center">
+                    <div class="floating-badge hidden lg:flex" style="top: 10%; left: -5%;">
                         <i class="fa-solid fa-droplet-slash" style="color: #3b82f6; font-size: 1.5rem;"></i>
                         <div>
                             <div style="font-weight: 800; color: var(--dark-navy);">Hidrofobia Extrema</div>
                             <div style="font-size: 0.7rem; color: #64748b;">Ángulo de contacto > 150</div>
                         </div>
                     </div>
-                    <div class="floating-badge" style="bottom: 10%; right: -5%;">
+                    <div class="floating-badge hidden lg:flex" style="bottom: 10%; right: -5%;">
                         <i class="fa-solid fa-wand-magic-sparkles" style="color: #f59e0b; font-size: 1.5rem;"></i>
                         <div>
                             <div style="font-weight: 800; color: var(--dark-navy);">Autolimpiante</div>
                             <div style="font-size: 0.7rem; color: #64748b;">Efecto Loto Molecular</div>
                         </div>
                     </div>
-                    <img src="images/pintura-hero.jpg" alt="Pintura Ultra Seco Premium Presentation">
+                    <img src="images/pintura-hero.jpg" alt="Pintura Ultra Seco Premium Presentation" class="w-full max-w-md lg:max-w-xl mx-auto rounded-3xl" style="box-shadow: 0 40px 80px rgba(0, 52, 89, 0.15);">
                 </div>
             </div>
         </section>
@@ -466,15 +494,14 @@
         </section>
 
         <!-- 2. AESTHETIC REVEAL: LUXURY VILLA -->
-        <section style="padding: 100px 5%; background: white;">
+        <section style="padding: 80px 5%; background: white;">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="reveal" style="position: relative;">
-                    <div style="border-radius: 40px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.12);">
+                <div class="reveal relative flex flex-col items-center lg:items-end w-full">
+                    <div style="border-radius: 40px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.12); width: 100%;">
                         <img src="images/luxury-villa.png" alt="Luxury Villa" style="width: 100%; display: block;">
                     </div>
                     <!-- Improved Resultado Real Panel -->
-                    <div class="reveal floating-refined"
-                        style="position: absolute; bottom: -30px; right: -30px; background: rgba(0, 52, 89, 0.8); backdrop-filter: blur(15px); color: white; padding: 2.5rem; border-radius: 32px; max-width: 340px; box-shadow: 0 40px 80px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); z-index: 20;">
+                    <div class="reveal resultado-real-panel">
                         <span
                             style="font-size: 0.75rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 2px; font-weight: 800; display: block; margin-bottom: 1rem; color: var(--primary-vivid);">
                             <i class="fa-solid fa-microscope"></i> RESULTADO REAL
@@ -499,15 +526,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="reveal" style="padding-left: 2rem;">
+                <div class="reveal lg:pl-8 text-center lg:text-left mt-8 lg:mt-0">
                     <div class="benefit-tag">Visión Arquitectónica</div>
-                    <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Blancura <span
+                    <h2 class="text-4xl lg:text-5xl font-black mb-6">Blancura <span
                             style="color: var(--primary-vivid)">Inalterable</span></h2>
-                    <p style="color: #64748b; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                    <p class="text-justify lg:text-left" style="color: #64748b; font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
                         No pintamos paredes, creamos monumentos a la limpieza. Nuestra tecnología de autolimpieza
                         asegura que el blanco radiante de hoy sea el mismo dentro de 5 años.
                     </p>
-                    <ul style="list-style: none; padding: 0; display: grid; gap: 1rem;">
+                    <ul class="flex flex-col items-center lg:items-start text-left" style="list-style: none; padding: 0; display: grid; gap: 1rem;">
                         <li
                             style="display: flex; gap: 10px; align-items: center; color: var(--dark-navy); font-weight: 600;">
                             <i class="fa-solid fa-check-circle" style="color: var(--primary-vivid);"></i> Resistencia al
@@ -671,11 +698,11 @@
                             style="padding: 1rem; border-radius: 8px; width: 100%; margin-bottom: 1.5rem; border: 2px solid #e2e8f0; font-size: 1rem; background: #f8fafc; color: #1e293b; outline: none; transition: border-color 0.2s; cursor: pointer;">
                             <option value="0" data-price="34.00">Galón - $34.00</option>
                         </select>
-                        <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 2rem; background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <div class="flex flex-wrap items-center justify-center text-center gap-4 mb-8 bg-slate-50 p-4 rounded-lg border border-slate-200">
                             <label for="qty-pintura" style="font-weight: 600; color: #475569;">Cantidad:</label>
                             <input type="number" id="qty-pintura" value="1" min="1"
                                 style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 1px solid #cbd5e1; font-size: 1rem; text-align: center; outline: none;">
-                            <span id="price-pintura" style="font-weight: 900; font-size: 1.7rem; color: #0f172a; margin-left: auto;">$34.00</span>
+                            <span id="price-pintura" class="ml-0 sm:ml-auto" style="font-weight: 900; font-size: 1.7rem; color: #0f172a;">$34.00</span>
                         </div>
 
                         <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"><i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Agregar al Carrito</button>
@@ -732,14 +759,15 @@
         </section>
 
         <!-- CTA FINAL -->
-        <section style="padding: 100px 10%; text-align: center;">
-            <div class="glass-panel" style="padding: 5rem; max-width: 900px; margin: 0 auto; border-radius: 40px;">
-                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">¿Necesitas asesoría personalizada?</h2>
-                <p style="font-size: 1.1rem; color: #64748b; margin-bottom: 3rem;">Nuestro equipo técnico está listo
-                    para ayudarte a calcular la cantidad exacta y elegir el color perfecto.</p>
+        <section style="padding: 4rem 5%;">
+            <div class="glass-panel" style="padding: 3rem 2rem; max-width: 900px; width: 100%; margin: 0 auto; border-radius: 32px; box-sizing: border-box;">
+                <h2 style="font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 1.5rem; text-align: center;">¿Necesitas asesoría personalizada?</h2>
+                <p style="font-size: 1.15rem; color: #64748b; margin: 0 auto 3rem auto; max-width: 700px; text-align: justify; line-height: 1.8;">
+                    Nuestro equipo técnico está listo para ayudarte a calcular la cantidad exacta y elegir el color perfecto.
+                </p>
                 <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
                     <a href="https://wa.me/584146023797" target="_blank" class="cta-button"
-                        style="background: #25d366; display: flex; align-items: center; gap: 10px; padding: 1.2rem 3rem;">
+                        style="background: #25d366; display: flex; align-items: center; gap: 10px; padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none;">
                         <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> Consultar por WhatsApp
                     </a>
                 </div>
@@ -763,7 +791,7 @@
     <!-- Scripts -->
     
     <script src="catalog.js"></script>
-    
+    <script>
 
 
         // Price Sync with Quality
