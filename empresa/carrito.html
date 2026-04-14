@@ -389,8 +389,8 @@
         const TIEMPO_CACHE_BCV = 4 * 60 * 60 * 1000; // 4 horas
 
         async function obtenerTasaOficial() {
-            const tasaGuardada = localStorage.getItem('tasaBCVCacheV2');
-            const tiempoGuardado = localStorage.getItem('tasaBCVTimestampV2');
+            const tasaGuardada = localStorage.getItem('tasaEuroBCVCacheV2');
+            const tiempoGuardado = localStorage.getItem('tasaEuroBCVTimestampV2');
             const ahora = new Date().getTime();
 
             // Si hay caché y tiene menos de 4 horas, usar caché
@@ -403,20 +403,20 @@
             }
 
             try {
-                // Consultamos una API más estable (DolarAPI Venezuela)
-                const response = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                // Consultamos una API más estable (DolarAPI Venezuela - Modo Euro)
+                const response = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
                 if (!response.ok) throw new Error("API devovió error: " + response.status);
                 const data = await response.json();
 
-                // Extraemos el valor del dólar promedio oficial
-                const precioDolar = data.promedio;
-                tasaBCV = parseFloat(precioDolar);
+                // Extraemos el valor del euro promedio oficial
+                const precioEuro = data.promedio;
+                tasaBCV = parseFloat(precioEuro);
 
                 // Guardamos la tasa en localStorage con una marca de tiempo
-                localStorage.setItem('tasaBCVCacheV2', tasaBCV);
-                localStorage.setItem('tasaBCVTimestampV2', ahora.toString());
+                localStorage.setItem('tasaEuroBCVCacheV2', tasaBCV);
+                localStorage.setItem('tasaEuroBCVTimestampV2', ahora.toString());
 
-                console.log("🌊 Ultra Seco - Tasa BCV Actualizada (DolarAPI):", tasaBCV);
+                console.log("🌊 Ultra Seco - Tasa Euro BCV Actualizada (DolarAPI):", tasaBCV);
 
                 // Disparar las funciones que actualizan los precios en pantalla
                 renderizarTabla();
