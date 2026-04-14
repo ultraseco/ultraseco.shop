@@ -764,7 +764,7 @@
             const display = document.getElementById(`price-${id}`);
             if (opt && qty && display) {
                 const price = parseFloat(opt.options[opt.selectedIndex].dataset.price);
-                display.textContent = `$${(price * qty.value).toFixed(2)}`;
+                display.textContent = `Ref. ${(price * qty.value).toFixed(2)}`;
             }
         }
 

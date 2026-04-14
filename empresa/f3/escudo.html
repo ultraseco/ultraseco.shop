@@ -431,7 +431,7 @@
                         <div class="text-right">
                             <span class="block text-xs text-slate-500 font-bold uppercase mb-1">Inversión Total</span>
                             <span id="price-escudo-ceramico"
-                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">$45.00</span>
+                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 45.00</span>
                         </div>
                     </div>
 
@@ -656,7 +656,7 @@
             div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
 
             // Renderizado simple de Markdown (Negritas)
-            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>Ref. 1</strong>');
             div.innerHTML = formattedText;
 
             chatBox.appendChild(div);

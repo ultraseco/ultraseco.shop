@@ -241,7 +241,7 @@
                             <div class="text-right">
                                 <p class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Total a Pagar
                                 </p>
-                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">$0.00</div>
+                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">Ref. 0.00</div>
                                 <div class="text-sm font-bold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full mt-2 border border-emerald-100"
                                     id="cart-total-bs">
                                     <i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span
@@ -462,7 +462,7 @@
                 emptyContent.classList.remove('hidden');
 
                 // Set total blocks to 0
-                document.getElementById('cart-total-usd').innerText = '$0.00';
+                document.getElementById('cart-total-usd').innerText = 'Ref. 0.00';
                 document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV)</span>`;
 
                 // Deshabilitar formulario
@@ -510,8 +510,8 @@
                                 <span class="px-3 py-1 font-bold text-sm select-none">${cantidadSafe}</span>
                             </div>
                         </td>
-                        <td class="text-right text-slate-500 font-medium">$${precioSafe.toFixed(2)}</td>
-                        <td class="text-right text-slate-900 font-black">$${subtotal.toFixed(2)}</td>
+                        <td class="text-right text-slate-500 font-medium">Ref. ${precioSafe.toFixed(2)}</td>
+                        <td class="text-right text-slate-900 font-black">Ref. ${subtotal.toFixed(2)}</td>
                         <td class="text-right">
                             <button onclick="eliminarItem(${index})" class="btn-remove" title="Eliminar Producto">
                                 <i class="fa-solid fa-xmark"></i>
@@ -529,7 +529,7 @@
 
 
             // Actualizar Totales
-            document.getElementById('cart-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
+            document.getElementById('cart-total-usd').innerText = `Ref. ${totalUSD.toFixed(2)}`;
             const totalBs = totalUSD * tasaBCV;
             document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV: ${tasaBCV.toFixed(2)})</span>`;
 
@@ -608,7 +608,7 @@
                         <li><strong>Banco:</strong> Banesco</li>
                         <li><strong>Titular:</strong> Pancho Wong</li>
                         <li><strong>Cédula/RIF:</strong> 17.669.750</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: $${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalUSD.toFixed(2)}</li>
                     </ul>
                 `;
             } else if (metodo === 'paypal') {
@@ -616,7 +616,7 @@
                     <p class="font-bold text-slate-900 mb-2"><i class="fa-brands fa-paypal"></i> Datos para PayPal</p>
                     <ul class="list-disc ml-5 space-y-1">
                         <li><strong>Correo:</strong> benhan37@hotmail.com</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: $${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalUSD.toFixed(2)}</li>
                     </ul>
                 `;
             } else if (metodo === 'zelle') {
@@ -625,7 +625,7 @@
                     <ul class="list-disc ml-5 space-y-1">
                         <li><strong>Zelle:</strong> 5072910322</li>
                         <li><strong>Nombre:</strong> wing lap</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: $${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalUSD.toFixed(2)}</li>
                     </ul>
                 `;
             } else if (metodo === 'efectivo') {
@@ -633,7 +633,7 @@
                     <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-money-bill-1-wave"></i> Dólares Efectivo</p>
                     <p class="text-sm text-slate-600 mb-3 mt-1">Para pagos en efectivo deberás acercarte a nuestra tienda física o realizar delivery.</p>
                     <ul class="list-disc ml-5 space-y-1">
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Mínimo a Entregar: $${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Mínimo a Entregar: Ref. ${totalUSD.toFixed(2)}</li>
                     </ul>
                 `;
             }
@@ -665,7 +665,7 @@
             }
 
             // 1. Preparar campos ocultos con la información del localStorage
-            const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} ($${item.precio})`).join(' | ');
+            const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} (Ref. ${item.precio})`).join(' | ');
             document.getElementById('hidden-resumen').value = resumenText;
             document.getElementById('hidden-total-usd').value = totalUSD.toFixed(2);
             document.getElementById('hidden-total-bs').value = (totalUSD * tasaBCV).toFixed(2);
@@ -696,11 +696,11 @@
                             const metodoSeleccionado = document.getElementById('metodo-pago').value;
 
                             // 2. Construir el mensaje de WhatsApp a enviar
-                            let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de $${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Ya adjunté el comprobante en la web. ¿Me confirman la recepción?`;
+                            let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Ya adjunté el comprobante en la web. ¿Me confirman la recepción?`;
 
                             // Si pagan en efectivo de una vez adaptamos un poco el mensaje
                             if (metodoSeleccionado === 'efectivo') {
-                                mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de $${totalUSD.toFixed(2)}. Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
+                                mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
                             }
 
                             // 3. Crear Enlace de Redirección codificado

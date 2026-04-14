@@ -582,7 +582,7 @@ function renderCartOverlay(ui) {
                 <div class="cart-footer" id="cart-footer" style="display: none;">
                     <div class="cart-subtotal">
                         <span class="cart-subtotal-label">Total:</span>
-                        <span class="cart-subtotal-amount" id="cart-total">$0.00</span>
+                        <span class="cart-subtotal-amount" id="cart-total">Ref. 0.00</span>
                     </div>
                     <button class="cart-checkout-btn" id="cart-checkout-btn">
                         <i class="fas fa-lock"></i>
@@ -715,7 +715,7 @@ function renderCartOverlay(ui) {
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
-                                    <span class="cart-item-price">$${lineTotal.toFixed(2)}</span>
+                                    <span class="cart-item-price">Ref. ${lineTotal.toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>

@@ -456,7 +456,7 @@ const UF = (() => {
                 const daysSince = Math.round((today - last) / 86400000);
 
                 if (c.balance > 0 && daysSince > 30)
-                    alerts.push({ type: 'danger', label: `${c.razonSocial}: $${c.balance} — ${daysSince}d sin comprar` });
+                    alerts.push({ type: 'danger', label: `${c.razonSocial}: Ref. ${c.balance} — ${daysSince}d sin comprar` });
                 else if (daysSince > 20)
                     alerts.push({ type: 'warn', label: `${c.razonSocial} lleva ${daysSince} días sin comprar` });
 
@@ -510,11 +510,11 @@ const UF = (() => {
             else lines.push(`💪 Nuevo día, nueva oportunidad. ¡Reactiva tu racha de tareas hoy!`);
 
             // Commission snapshot
-            lines.push(`💵 Comisión estimada este mes: <strong>$${com.total.toFixed(2)}</strong> sobre $${com.collected} cobrado.`);
+            lines.push(`💵 Comisión estimada este mes: <strong>Ref. ${com.total.toFixed(2)}</strong> sobre Ref. ${com.collected} cobrado.`);
 
             // Team goal message
             if (com.teamProg < 100) {
-                lines.push(`🎯 El equipo va al <strong>${com.teamProg.toFixed(0)}%</strong> de la meta. Faltan $${com.remaining.toFixed(0)} para activar el bono colectivo de +1%.`);
+                lines.push(`🎯 El equipo va al <strong>${com.teamProg.toFixed(0)}%</strong> de la meta. Faltan Ref. ${com.remaining.toFixed(0)} para activar el bono colectivo de +1%.`);
             } else {
                 lines.push(`🏆 El equipo alcanzó la meta. ¡El bono de +1% está <strong>ACTIVO</strong>!`);
             }
@@ -640,7 +640,7 @@ const UF = (() => {
        FORMATTERS
        ================================================ */
     const fmt = {
-        usd: (n) => `$${Number(n || 0).toFixed(2)}`,
+        usd: (n) => `Ref. ${Number(n || 0).toFixed(2)}`,
         date: (s) => { if (!s) return '-'; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('es-VE'); },
         dateAgo: (s) => { if (!s) return '-'; const diff = Math.round((new Date() - new Date(s)) / 86400000); if (diff === 0) return 'Hoy'; if (diff === 1) return 'Ayer'; return `Hace ${diff}d`; },
         pct: (n) => `${(n * 100).toFixed(1)}%`,

@@ -7,7 +7,7 @@ function updatePrice(productId) {
     if (select && priceDisplay) {
         const selectedOption = select.options[select.selectedIndex];
         const price = parseFloat(selectedOption.getAttribute('data-price'));
-        priceDisplay.textContent = `$${price.toFixed(2)}`;
+        priceDisplay.textContent = `Ref. ${price.toFixed(2)}`;
     }
 }
 
@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (product.options[index]) {
                     const currentPrice = product.options[index].price;
                     opt.setAttribute('data-price', currentPrice.toFixed(2));
-                    // Optional: Update text if it contains price (e.g. "Galón - $19.00")
+                    // Optional: Update text if it contains price (e.g. "Galón - Ref. 19.00")
                     // We use regex to replace the price part
                     const text = opt.text;
-                    const newText = text.replace(/\$\d+\.?\d*/, `$${currentPrice.toFixed(2)}`);
+                    const newText = text.replace(/\$\d+\.?\d*/, `Ref. ${currentPrice.toFixed(2)}`);
                     opt.text = newText;
                 }
             });
@@ -69,5 +69,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 2. Also update any static price displays that might not be linked to a select
-    // (e.g. if there's just a <span>$19.00</span>)
+    // (e.g. if there's just a <span>Ref. 19.00</span>)
 });

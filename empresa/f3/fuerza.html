@@ -496,8 +496,8 @@
                 <div>
                   <div class="commission-widget" style="margin-bottom:1.25rem;">
                     <div class="commission-label">Comisión Proyectada del Mes</div>
-                    <div class="commission-amount" id="vd-com-total">$0.00</div>
-                    <div class="commission-base">Base 8%: <strong id="vd-com-base">$0.00</strong></div>
+                    <div class="commission-amount" id="vd-com-total">Ref. 0.00</div>
+                    <div class="commission-base">Base 8%: <strong id="vd-com-base">Ref. 0.00</strong></div>
 
                     <div class="bonus-row inactive" id="vd-bonus-team"><i class="fa-solid fa-users"></i> Bono Equipo +1%</div>
                     <div class="mini-progress"><div class="mini-progress-bar green" id="vd-prog-team" style="width:0%"></div></div>
@@ -1278,7 +1278,7 @@
                   
                   <div style="display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; margin-bottom:1rem;">
                     <span>Total:</span>
-                    <span id="np-cart-total">$0.00</span>
+                    <span id="np-cart-total">Ref. 0.00</span>
                   </div>
 
                   <button class="uf-btn uf-btn-success" style="width:100%; padding:0.75rem; font-weight:700;" onclick="UF_App_SubmitOrder()"><i class="fa-solid fa-check"></i> Emitir Orden</button>
@@ -1672,7 +1672,7 @@
                  <button class="uf-btn uf-btn-primary uf-btn-sm" style="padding:0.25rem 0.75rem;" onclick="UF_App_SaveZones('${v.id}')">Guardar</button>
               </div>
 
-              <div class="rank-xp" style="text-align:right;">${v.monthXP} XP<br><span style="font-size:0.8rem; color:var(--green);">$${UF.fmt.usd(v.monthlySales)}</span></div>
+              <div class="rank-xp" style="text-align:right;">${v.monthXP} XP<br><span style="font-size:0.8rem; color:var(--green);">Ref. ${UF.fmt.usd(v.monthlySales)}</span></div>
             </div>
           `).join('');
         },
@@ -2207,7 +2207,7 @@
         }))
       );
       const catOptHtml = [`<option value="">— Seleccionar producto del catálogo —</option>`,
-        ...catalogOptions.map((o, i) => `<option value="${i}">${o.name} · ${o.label} — $${o.price.toFixed(2)}</option>`)
+        ...catalogOptions.map((o, i) => `<option value="${i}">${o.name} · ${o.label} — Ref. ${o.price.toFixed(2)}</option>`)
       ].join('');
 
       mc.innerHTML = `
@@ -2276,18 +2276,18 @@
                 <!-- Totals -->
                 <div style="background:white;border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:grid;gap:0.55rem;">
                   <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#6e6e73;">
-                    <span>Subtotal (antes de desc.)</span><span id="edit-subtotal">$0.00</span>
+                    <span>Subtotal (antes de desc.)</span><span id="edit-subtotal">Ref. 0.00</span>
                   </div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:#6e6e73;">
                     <span>Descuento global (%)</span>
                     <div style="display:flex;align-items:center;gap:0.5rem;">
                       <input type="number" id="edit-global-discount" min="0" max="100" step="0.5" value="${o.globalDiscount || 0}" oninput="UF_App_RecalcEditOrder()" style="width:72px;text-align:right;border:1px solid #d2d2d7;border-radius:6px;padding:0.3rem 0.5rem;font-size:0.82rem;">
-                      <span id="edit-discount-amount" style="color:#ff3b30;font-weight:600;">-$0.00</span>
+                      <span id="edit-discount-amount" style="color:#ff3b30;font-weight:600;">-Ref. 0.00</span>
                     </div>
                   </div>
                   <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e5e5ea;padding-top:0.75rem;margin-top:0.25rem;">
                     <span style="font-weight:700;font-size:0.95rem;color:#1d1d1f;">Total a cobrar</span>
-                    <span id="edit-grand-total" style="font-weight:800;font-size:1.6rem;color:#30d158;letter-spacing:-0.03em;">$0.00</span>
+                    <span id="edit-grand-total" style="font-weight:800;font-size:1.6rem;color:#30d158;letter-spacing:-0.03em;">Ref. 0.00</span>
                   </div>
                 </div>
 
@@ -2662,7 +2662,7 @@
 
       if (window.UF_App_CurrentCart.length === 0) {
         cartEl.innerHTML = '<div style="color:var(--text-3); text-align:center; padding:1rem; font-size:0.8rem;">Carrito vacío</div>';
-        countEl.textContent = '$0.00';
+        countEl.textContent = 'Ref. 0.00';
         return;
       }
 

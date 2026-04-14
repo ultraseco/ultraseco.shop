@@ -358,7 +358,7 @@
                                         Estimado</label>
                                     <div class="h-[50px] flex items-center text-3xl font-black text-cyan-400"
                                         id="price-champu">
-                                        $12.00
+                                        Ref. 12.00
                                     </div>
                                 </div>
                             </div>
@@ -389,7 +389,7 @@
 
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div class="bg-slate-800/50 p-4 rounded-lg text-center">
-                                <span class="block text-2xl font-bold text-white">$0.60</span>
+                                <span class="block text-2xl font-bold text-white">Ref. 0.60</span>
                                 <span class="text-xs text-slate-500 uppercase">Costo por Lavada</span>
                             </div>
                             <div class="bg-slate-800/50 p-4 rounded-lg text-center">
@@ -479,7 +479,7 @@
         PRODUCTO: Nano Shield Champ Concentrado.
         BENEFICIOS: Limpieza pH neutro, Hidrofobicidad inmediata (efecto loto), Brillo profundo.
         USO: Producto CONCENTRADO, se usa PURO (aproximadamente 50ml en un balde de 5L de agua). Lavar el auto a la sombra, usar guante de microfibra, enjuagar con agua a presión.
-        PRECIO: $12.00 (Litro), $35.00 (Galón).
+        PRECIO: Ref. 12.00 (Litro), Ref. 35.00 (Galón).
         COMPATIBILIDAD: Seguro para autos con recubrimientos cerámicos (booster) y ceras.`;
 
         // --- LÓGICA DE COMPRA ---
@@ -502,7 +502,7 @@
         function appendMessage(text, sender) {
             const div = document.createElement('div');
             div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
-            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>Ref. 1</strong>');
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
         }

@@ -458,15 +458,15 @@
                     <label for="opt-fortificador" style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
                     <select id="opt-fortificador" onchange="updatePrice('fortificador')"
                         style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
-                        <option value="0" data-price="18.50">Litro - $18.50</option>
-                        <option value="1" data-price="55.00">Galón (3.785L) - $55.00</option>
-                        <option value="2" data-price="240.00">Cuñete (18L) - $240.00</option>
+                        <option value="0" data-price="18.50">Litro - Ref. 18.50</option>
+                        <option value="1" data-price="55.00">Galón (3.785L) - Ref. 55.00</option>
+                        <option value="2" data-price="240.00">Cuñete (18L) - Ref. 240.00</option>
                     </select>
                     <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
                         <label for="qty-fortificador">Cantidad:</label>
                         <input type="number" id="qty-fortificador" value="1" min="1"
                             style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                        <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">$18.50</span>
+                        <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">Ref. 18.50</span>
                     </div>
 
                     <!-- Shopify Buy Button Container -->
@@ -685,7 +685,7 @@
             const select = document.getElementById(`opt-${productId}`);
             const priceDisplay = document.getElementById(`price-${productId}`);
             const price = select.options[select.selectedIndex].dataset.price;
-            priceDisplay.textContent = `$${price}`;
+            priceDisplay.textContent = `Ref. ${price}`;
         }
     </script>
     <script src="catalog.js"></script>

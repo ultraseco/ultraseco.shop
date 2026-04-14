@@ -485,17 +485,17 @@
                         style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
                     <select id="opt-solucion-interior" onchange="updatePrice('solucion-interior')"
                         style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
-                        <option value="0" data-price="13.99">1 Litro - $13.99</option>
-                        <option value="1" data-price="14.99">1 Litro (Atomizador) - $14.99</option>
-                        <option value="2" data-price="38.00">Galón (3.785L) - $38.00</option>
-                        <option value="3" data-price="170.00">Cuñete (18L) - $170.00</option>
+                        <option value="0" data-price="13.99">1 Litro - Ref. 13.99</option>
+                        <option value="1" data-price="14.99">1 Litro (Atomizador) - Ref. 14.99</option>
+                        <option value="2" data-price="38.00">Galón (3.785L) - Ref. 38.00</option>
+                        <option value="3" data-price="170.00">Cuñete (18L) - Ref. 170.00</option>
                     </select>
 
                     <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
                         <label for="qty-solucion-interior">Cantidad:</label>
                         <input type="number" id="qty-solucion-interior" value="1" min="1"
                             style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                        <span id="price-solucion-interior" style="font-weight: bold; font-size: 1.2rem;">$13.99</span>
+                        <span id="price-solucion-interior" style="font-weight: bold; font-size: 1.2rem;">Ref. 13.99</span>
                     </div>
 
                     <button onclick="addToCartStatic('solucion-interior')" class="cta-button"
@@ -813,7 +813,7 @@
             const select = document.getElementById(`opt-${productId}`);
             const priceDisplay = document.getElementById(`price-${productId}`);
             const price = select.options[select.selectedIndex].dataset.price;
-            priceDisplay.textContent = `$${price}`;
+            priceDisplay.textContent = `Ref. ${price}`;
         }
 
         // --- HELPER FUNCTIONS ---

@@ -187,7 +187,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-1 text-slate-300"><span>Costo de
-                                        Limpieza</span> <span class="text-yellow-400">$0 (Cero)</span></div>
+                                        Limpieza</span> <span class="text-yellow-400">Ref. 0 (Cero)</span></div>
                                 <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
                                     <div class="h-full bg-yellow-500 w-[5%]"></div>
                                 </div>
@@ -923,7 +923,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-center font-bold text-lg text-slate-900"
                                             id="qty-drum">0</td>
-                                        <td class="px-6 py-4 text-right font-mono text-slate-600" id="cost-drum">$0</td>
+                                        <td class="px-6 py-4 text-right font-mono text-slate-600" id="cost-drum">Ref. 0</td>
                                     </tr>
                                     <tr>
                                         <td class="px-6 py-4 font-medium text-slate-700">
@@ -931,7 +931,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-center font-bold text-lg text-slate-900"
                                             id="qty-pail">0</td>
-                                        <td class="px-6 py-4 text-right font-mono text-slate-600" id="cost-pail">$0</td>
+                                        <td class="px-6 py-4 text-right font-mono text-slate-600" id="cost-pail">Ref. 0</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1151,24 +1151,24 @@
                     </div>
                     <div class="bg-slate-50 p-4 rounded-lg">
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-600">Precio
-                                ULTRA-F3:</span><span class="font-bold" id="displayUltraPrice">$160.00</span></div>
+                                ULTRA-F3:</span><span class="font-bold" id="displayUltraPrice">Ref. 160.00</span></div>
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-600">Precio AFFF
-                                Importado:</span><span class="font-bold">$180.00</span></div>
+                                Importado:</span><span class="font-bold">Ref. 180.00</span></div>
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-600">Costo Limpieza
-                                Suelo:</span><span class="font-bold text-red-500">+$200.00</span></div>
+                                Suelo:</span><span class="font-bold text-red-500">+Ref. 200.00</span></div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center space-y-6">
                     <div class="text-center p-6 bg-white rounded-xl shadow-sm border border-slate-200">
                         <p class="text-sm text-slate-500 mb-1">Costo Total (Competencia)</p>
                         <p class="text-2xl font-bold text-red-500 line-through decoration-slate-400"
-                            id="competitorCost">$0</p>
+                            id="competitorCost">Ref. 0</p>
                     </div>
                     <div class="text-center p-6 bg-blue-600 rounded-xl shadow-lg text-white transform scale-105">
                         <p class="text-sm text-blue-100 mb-1">Costo Total con ULTRA-F3</p>
-                        <p class="text-4xl font-extrabold" id="ultraCost">$0</p>
+                        <p class="text-4xl font-extrabold" id="ultraCost">Ref. 0</p>
                         <div class="mt-4 pt-4 border-t border-blue-500">
-                            <p class="text-lg font-bold text-green-300">AHORRO: <span id="totalSavings">$0</span></p>
+                            <p class="text-lg font-bold text-green-300">AHORRO: <span id="totalSavings">Ref. 0</span></p>
                         </div>
                     </div>
                 </div>
@@ -1356,7 +1356,7 @@
                     if (statusEl) {
                         statusEl.classList.remove('hidden');
                         statusEl.classList.add('bg-green-100', 'text-green-800');
-                        statusEl.innerHTML = `? Precio sincronizado: $${ultraPrice}`;
+                        statusEl.innerHTML = `? Precio sincronizado: Ref. ${ultraPrice}`;
                     }
                 }
             } else {
@@ -1372,7 +1372,7 @@
             // Update Display
             const displayEl = document.getElementById('displayUltraPrice');
             if (displayEl) {
-                displayEl.innerText = `$${ultraPrice.toFixed(2)}`;
+                displayEl.innerText = `Ref. ${ultraPrice.toFixed(2)}`;
                 if (typeof products !== 'undefined' || window.products) {
                     displayEl.classList.add('text-blue-600', 'font-extrabold');
                 }
@@ -1385,9 +1385,9 @@
             const totalUltra = pails * ultraPrice;
             const savings = totalCompetitor - totalUltra;
 
-            document.getElementById('competitorCost').innerText = `$${totalCompetitor.toLocaleString()}`;
-            document.getElementById('ultraCost').innerText = `$${totalUltra.toLocaleString()}`;
-            document.getElementById('totalSavings').innerText = `$${savings.toLocaleString()}`;
+            document.getElementById('competitorCost').innerText = `Ref. ${totalCompetitor.toLocaleString()}`;
+            document.getElementById('ultraCost').innerText = `Ref. ${totalUltra.toLocaleString()}`;
+            document.getElementById('totalSavings').innerText = `Ref. ${savings.toLocaleString()}`;
         }
 
         // --- PODCAST LOGIC ---

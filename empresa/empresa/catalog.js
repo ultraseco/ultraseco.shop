@@ -591,7 +591,7 @@ function renderCartDrawer() {
                         <span>${item.quantity}</span>
                         <button class="qty-btn" onclick="updateQuantity('${item.sku}', 1)">+</button>
                     </div>
-                    <div class="item-price">$${(item.selectedOption.price * item.quantity).toFixed(2)}</div>
+                    <div class="item-price">Ref. ${(item.selectedOption.price * item.quantity).toFixed(2)}</div>
                     <button class="remove-btn" onclick="removeFromCart('${item.sku}')">
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -603,7 +603,7 @@ function renderCartDrawer() {
     footer.innerHTML = `
         <div class="cart-summary-row">
             <span>Subtotal</span>
-            <span>$${getTotalPrice()}</span>
+            <span>Ref. ${getTotalPrice()}</span>
         </div>
         <div class="cart-summary-row">
             <span>Envío</span>
@@ -611,7 +611,7 @@ function renderCartDrawer() {
         </div>
         <div class="cart-total-row">
             <span>Total</span>
-            <span>$${getTotalPrice()}</span>
+            <span>Ref. ${getTotalPrice()}</span>
         </div>
         <button class="checkout-btn" onclick="alert('Redirigiendo a pasarela de pago...')">
             <i class="fa-solid fa-lock"></i> Finalizar Compra
@@ -731,7 +731,7 @@ function renderCatalog(mode) {
                             <div class="product-footer">
                                 <div>
                                     <span class="options-label">Precio:</span>
-                                    <div class="product-price" id="price-display-${product.id}">$${displayPrice.toFixed(2)}</div>
+                                    <div class="product-price" id="price-display-${product.id}">Ref. ${displayPrice.toFixed(2)}</div>
                                 </div>
                                 <div style="display: flex; gap: 0.5rem;">
                                     ${product.link ? `<a href="${product.link}" class="product-action-btn wholesale-btn" style="text-decoration:none;"><i class="fa-solid fa-eye"></i></a>` : ''}
@@ -755,7 +755,7 @@ window.updateCardPrice = function (productId) {
     const priceDisplay = document.getElementById(`price-display-${productId}`);
     if (select && priceDisplay) {
         const price = parseFloat(select.options[select.selectedIndex].getAttribute('data-price'));
-        priceDisplay.textContent = `$${price.toFixed(2)}`;
+        priceDisplay.textContent = `Ref. ${price.toFixed(2)}`;
     }
 };
 

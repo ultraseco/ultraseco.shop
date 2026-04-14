@@ -375,7 +375,7 @@
                         <div class="text-right">
                             <span class="block text-xs text-slate-500 font-bold uppercase mb-1">Inversión Total</span>
                             <span id="price-cera"
-                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">$13.99</span>
+                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 13.99</span>
                         </div>
                     </div>
 
@@ -486,7 +486,7 @@
         1. Vendes "Nano Cera Protectora".
         2. Enfócate en: Protección contra manchas de comida (vino, café, aceite), brillo fácil, y repelencia de suciedad.
         3. Ideal para: Pisos de porcelanato, mármol, granito, y topes de cocina.
-        4. Si preguntan precio: Refiere al panel de configuración "Hogar" arriba ($13.99/Litro).
+        4. Si preguntan precio: Refiere al panel de configuración "Hogar" arriba (Ref. 13.99/Litro).
         5. Tono: Servicial, práctico y enfocado en la limpieza del hogar.`;
 
         // --- LÓGICA DE PRECIOS Y CARRITO ---
@@ -519,7 +519,7 @@
             div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
 
             // Renderizado simple de Markdown (Negritas)
-            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>Ref. 1</strong>');
             div.innerHTML = formattedText;
 
             chatBox.appendChild(div);

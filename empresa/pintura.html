@@ -696,13 +696,13 @@
                         <label for="opt-pintura" style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: #475569; text-transform: uppercase;">Presentación:</label>
                         <select id="opt-pintura" onchange="updatePrice('pintura')"
                             style="padding: 1rem; border-radius: 8px; width: 100%; margin-bottom: 1.5rem; border: 2px solid #e2e8f0; font-size: 1rem; background: #f8fafc; color: #1e293b; outline: none; transition: border-color 0.2s; cursor: pointer;">
-                            <option value="0" data-price="34.00">Galón - $34.00</option>
+                            <option value="0" data-price="34.00">Galón - Ref. 34.00</option>
                         </select>
                         <div class="flex flex-wrap items-center justify-center text-center gap-4 mb-8 bg-slate-50 p-4 rounded-lg border border-slate-200">
                             <label for="qty-pintura" style="font-weight: 600; color: #475569;">Cantidad:</label>
                             <input type="number" id="qty-pintura" value="1" min="1"
                                 style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 1px solid #cbd5e1; font-size: 1rem; text-align: center; outline: none;">
-                            <span id="price-pintura" class="ml-0 sm:ml-auto" style="font-weight: 900; font-size: 1.7rem; color: #0f172a;">$34.00</span>
+                            <span id="price-pintura" class="ml-0 sm:ml-auto" style="font-weight: 900; font-size: 1.7rem; color: #0f172a;">Ref. 34.00</span>
                         </div>
 
                         <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"><i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Agregar al Carrito</button>
@@ -804,7 +804,7 @@
             if (opt && qty && quality && display) {
                 const isAAA = quality.value === 'AAA';
                 const basePrice = parseFloat(isAAA ? opt.options[0].dataset.priceAaa : opt.options[0].dataset.priceAa);
-                display.textContent = `$${(basePrice * qty.value).toFixed(2)}`;
+                display.textContent = `Ref. ${(basePrice * qty.value).toFixed(2)}`;
             }
         }
 

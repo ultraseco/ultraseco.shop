@@ -772,7 +772,7 @@
             if (opt && qty && quality && display) {
                 const isAAA = quality.value === 'AAA';
                 const basePrice = parseFloat(isAAA ? opt.options[0].dataset.priceAaa : opt.options[0].dataset.priceAa);
-                display.textContent = `$${(basePrice * qty.value).toFixed(2)}`;
+                display.textContent = `Ref. ${(basePrice * qty.value).toFixed(2)}`;
             }
         }
 
