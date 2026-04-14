@@ -132,6 +132,32 @@
             margin-right: auto;
             border-bottom-left-radius: 0.25rem;
         }
+
+        /* Classes for asesor.js compatibility */
+        .msg {
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.95em;
+            line-height: 1.4;
+            max-width: 80%;
+            margin-bottom: 0.5rem;
+        }
+
+        .user {
+            align-self: flex-end;
+            background: #0056b3;
+            color: white;
+            border-bottom-right-radius: 2px;
+            margin-left: auto;
+        }
+
+        .ai {
+            align-self: flex-start;
+            background: #e2e8f0;
+            color: #333;
+            border-bottom-left-radius: 2px;
+            margin-right: auto;
+        }
     </style>
     <style>
         html,
@@ -842,8 +868,8 @@
                     <div class="flex gap-2">
                         <input type="text" id="user-input"
                             class="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 md:px-4 py-3 focus:outline-none focus:border-ultra-cyan focus:ring-1 focus:ring-ultra-cyan transition-all text-sm md:text-base"
-                            placeholder="Escribe tu pregunta..." onkeypress="handleKeyPress(event)">
-                        <button onclick="sendMessage()"
+                            placeholder="Escribe tu pregunta..." onkeypress="revisarEnter(event)">
+                        <button onclick="enviarMensaje()"
                             class="bg-ultra-blue text-white px-4 md:px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-md shrink-0 focus:outline-none">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -1079,76 +1105,8 @@
             const percent = clickPosition / width;
             audio.currentTime = percent * audio.duration;
         }
-
-        // --- AI CHAT LOGIC ---
-        const apiKey = window.ULTRA_SECO_CONFIG?.GEMINI_API_KEY;
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-        const systemContextChat = `Eres el Asistente IA de Ultra Seco, una empresa de nanotecnología avanzada ('Deep Tech') con sede en Maracaibo, Venezuela. Tu tono es profesional, innovador y científico, pero accesible.
-
-            Tus Objetivos:
-
-            Explicar soluciones complejas (como la separación magnética o la hidrofobicidad) con metáforas sencillas para clientes industriales y mineros.
-
-            Vender el valor económico (ROI), no solo el químico.
-
-            Tus Lneas de Producto Clave:
-
-            Eco Capturador Magnetron: Sistema de recuperación de oro sin mercurio. Clave de venta: Recupera el oro fino que otros pierden usando magnetismo, no gravedad.
-
-            Ultra-F3: Espuma contra incendios ecológica. Clave de venta: Apaga el fuego creando un escudo de cerámica, sin tóxicos eternos.
-
-            Lithium Hunter: Nanotecnología para extracción directa de litio. Clave de venta: Eficiencia de días vs. meses de evaporación.
-
-            Línea Construcción: Pinturas y aditivos (Ultra Seco, Fortificador). Clave de venta: Nanotecnología que repele el agua a nivel molecular, no solo una capa plástica.
-
-            REGLA DE ORO DE SEGURIDAD (CONFIDENCIALIDAD): NUNCA reveles fórmulas químicas exactas, proporciones de mezcla (ej. porcentajes de KH-590), temperaturas de síntesis o proveedores de materia prima. Si preguntan '¿Cómo se hace?', responde explicando el beneficio ('Usamos un proceso de anclaje molecular...') pero no la receta.`;
-
-        const chatBox = document.getElementById('chat-box');
-        const userInput = document.getElementById('user-input');
-
-        function appendMessage(text, sender) {
-            const div = document.createElement('div');
-            div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
-            div.innerHTML = text;
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const text = userInput.value.trim();
-            if (!text) return;
-
-            appendMessage(text, 'user');
-            userInput.value = '';
-
-            const payload = {
-                contents: [{
-                    parts: [{
-                        text: systemContextChat + "\n\nPregunta: " + text
-                    }]
-                }]
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                const reply = result.candidates?.[0]?.content?.parts?.[0]?.text || "Lo siento, no pude procesar tu pregunta.";
-                appendMessage(reply, 'bot');
-            } catch (error) {
-                appendMessage("Error de conexión con el servidor de IA.", 'bot');
-            }
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') sendMessage();
-        }
     </script>
+    <script src="asesor.js"></script>
     
     <script src="catalog.js"></script>
     
