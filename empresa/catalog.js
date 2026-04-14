@@ -69,7 +69,7 @@ window.products = [
         link: 'escudo.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 45.00, sku: 'ESCUDO-1L' },
+            { label: '1 Litro', price: 7.00, sku: 'ESCUDO-1L' },
         ]
     },
     {
@@ -106,7 +106,7 @@ window.products = [
         link: 'cera.html',
         type: 'retail_wholesale',
         options: [
-            { label: '500ml', price: 15.00, sku: 'CERA-500ML' },
+            { label: '1 Litro', price: 13.00, sku: 'CERA-1L' },
         ]
     },
     {
