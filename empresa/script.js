@@ -213,8 +213,9 @@ window.agregarAlCarritoManual = function(botonHTML) {
     const precioTexto = precioElem ? precioElem.textContent : '0';
     const cantidad = cantidadElem ? parseInt(cantidadElem.value) || 1 : 1;
     
-    // Limpiar el texto del precio (quitar el "$" y cualquier espacio) y convertir a número
-    const precioNumerico = parseFloat(precioTexto.replace('$', '').trim());
+    // Buscar el primer número válido en el texto (ej: de "Ref. 16.00" extraerá "16.00")
+    const matchPrecio = precioTexto.match(/\d+(\.\d+)?/);
+    const precioNumerico = matchPrecio ? parseFloat(matchPrecio[0]) : 0;
     
     // 3. Crear el objeto JSON con la información
     const productoJSON = {
