@@ -2,271 +2,271 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Interno | Base de Datos de Productos</title>
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Interno DB | Ultra Seco</title>
+    
+    <!-- CSS and Tools -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0c0c0e;
-            color: #e4e4e7;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,10%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,7%,1) 0, transparent 50%);
-            min-height: 100vh;
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .price-text { display: none; }
+        @media print {
+            .no-print { display: none !important; }
+            .price-text { display: block !important; }
+            input, select, button { display: none !important; }
+            table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+            th, td { border: 1px solid #ddd; padding: 5px; }
+            .print-header { display: block !important; text-align: center; margin-bottom: 20px; }
         }
-        .glass {
-            background: rgba(23, 23, 26, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .product-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-        }
-        .price-badge {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0c0c0e;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
-        }
+        .print-header { display: none; }
+        .bs-text { color: #2563eb; font-weight: bold; font-family: monospace; font-size: 10px; }
+        .loader { border-top-color: #3b82f6; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="min-h-screen flex flex-col">
 
-    <div class="max-w-7xl mx-auto">
-        <!-- Header -->
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-            <div>
-                <h1 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                    Portal Interno
-                </h1>
-                <p class="text-gray-400 mt-2 flex items-center gap-2">
-                    <i data-lucide="database" class="w-4 h-4"></i>
-                    Gestión de Base de Datos de Productos
-                </p>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="glass px-4 py-2 rounded-xl flex items-center gap-3">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-sm font-medium">Neon DB Conectado</span>
-                </div>
-                <button id="refreshBtn" class="glass p-2 rounded-xl hover:bg-white/5 transition-colors" title="Refrescar datos">
-                    <i data-lucide="refresh-cw" class="w-5 h-5 text-gray-400"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Total Productos</p>
-                <h3 id="totalProducts" class="text-2xl font-bold">--</h3>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Precio Promedio</p>
-                <h3 id="avgPrice" class="text-2xl font-bold">--</h3>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Categorías</p>
-                <h3 id="totalCats" class="text-2xl font-bold">--</h3>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Sin Stock</p>
-                <h3 id="outOfStock" class="text-2xl font-bold text-orange-400">--</h3>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="glass p-4 rounded-2xl mb-8 flex flex-col md:flex-row gap-4 items-center">
-            <div class="relative flex-1 w-full">
-                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por nombre o presentación..." 
-                    class="w-full bg-black/20 border border-white/5 rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-            </div>
-            <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0" id="categoryPills">
-                <!-- Category pills will be injected here -->
-            </div>
-            <select id="sortSelect" class="bg-black/20 border border-white/5 rounded-xl py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer">
-                <option value="name-asc">Nombre (A-Z)</option>
-                <option value="name-desc">Nombre (Z-A)</option>
-                <option value="price-asc">Precio (Menor-Mayor)</option>
-                <option value="price-desc">Precio (Mayor-Menor)</option>
-                <option value="stock-desc">Mayor Stock</option>
-            </select>
-        </div>
-
-        <!-- Products Grid -->
-        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Product cards will be injected here -->
-            <div class="col-span-full py-20 text-center text-gray-500">
-                <div class="animate-spin inline-block w-8 h-8 border-4 border-current border-t-transparent text-blue-500 rounded-full mb-4" role="status"></div>
-                <p>Cargando base de datos...</p>
-            </div>
+    <!-- PANTALLA DE ACCESO -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center">
+            <img src="images/logo.png" alt="Ultra Seco" class="h-16 mx-auto mb-4">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Portal Interno DB</h2>
+            <p class="text-slate-500 mb-6 text-sm">Control Base de Datos (Prisma/Neon)</p>
+            <input type="password" id="password-input" placeholder="Introducir clave de acceso"
+                class="w-full p-3 border rounded-lg mb-4 outline-none focus:ring-2 focus:ring-blue-500">
+            <button onclick="checkLogin()"
+                class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Entrar</button>
+            <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Clave incorrecta</p>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        // --- DATA SOURCE CONFIG ---
-        // Replace this with your actual fetch logic from Prisma/Proxy
-        const MOCK_DATA = []; // Will be populated by the fetch
+    <!-- PANEL PRINCIPAL -->
+    <div id="dashboard" class="hidden flex-1 flex flex-col">
+        <header class="bg-slate-800 text-white shadow-lg p-4 sticky top-0 z-40">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <img src="images/logo.png" alt="Logo" class="h-8 bg-white rounded p-1">
+                    <span class="font-bold text-lg">Portal Interno (Prisma DB)</span>
+                </div>
+                <div class="flex gap-4">
+                    <a href="index.html" class="hover:text-blue-300 text-sm"><i class="fa fa-home"></i> Volver</a>
+                    <button onclick="location.reload()" class="text-sm bg-slate-700 px-3 py-1 rounded">Salir</button>
+                </div>
+            </div>
+        </header>
 
-        let products = [];
-        let filteredProducts = [];
-        let currentCategory = 'all';
-
-        async function fetchProducts() {
-            try {
-                // Here we would ideally fetch from a local endpoint or Neon Data API
-                // For this visualization, we'll try to use the window data if injected, 
-                // or point to a local products.json if it exists.
-                const response = await fetch('data/products.json').catch(() => null);
-                if (response && response.ok) {
-                    products = await response.json();
-                } else {
-                    // Fallback to embedded data if any, or a message
-                    console.warn('No products found. Please ensure update-portal.js has been run.');
-                    products = window.INITIAL_PRODUCTS || [];
-                }
-                
-                renderPortal();
-            } catch (err) {
-                console.error('Error loading products:', err);
-                document.getElementById('productGrid').innerHTML = `
-                    <div class="col-span-full py-20 glass rounded-2xl text-center">
-                        <i data-lucide="alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Error al conectar con la base de datos</h3>
-                        <p class="text-gray-400">Verifica que el script de actualización haya generado data/products.json</p>
+        <main class="container mx-auto p-6">
+            <!-- PANEL DE CONTROL -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border mb-8 no-print">
+                <div class="flex flex-wrap gap-6 items-end">
+                    <!-- Tasa Euro -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Tasa Euro BCV (Bs.)</label>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="euro-rate" value="60.50" step="0.01" oninput="recalcAll()"
+                                class="w-32 p-1.5 border rounded font-bold text-blue-700 text-lg outline-none focus:ring-2 focus:ring-blue-400">
+                        </div>
                     </div>
-                `;
+
+                    <!-- Aumento Masivo -->
+                    <div class="bg-orange-50 p-3 rounded-lg border border-orange-100 flex items-end gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-orange-700 mb-1 uppercase">Aumento %</label>
+                            <input type="number" id="bulk-pct" placeholder="5"
+                                class="w-20 p-2 text-right font-bold border rounded focus:ring-2 focus:ring-orange-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-orange-700 mb-1 uppercase">Redondeo</label>
+                            <select id="rounding-rule" class="p-2 text-xs border rounded bg-white outline-none">
+                                <option value="none">Exacto</option>
+                                <option value="99">.99</option>
+                                <option value="50">.50</option>
+                            </select>
+                        </div>
+                        <button onclick="applyBulkUpdate()"
+                            class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded text-sm transition">Aplicar</button>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="flex flex-col gap-2 p-3 bg-slate-50 border rounded-lg">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Categoría</span>
+                        <div class="flex flex-wrap gap-2" id="category-checks">
+                            <!-- Injected checkboxes -->
+                        </div>
+                    </div>
+
+                    <!-- Buscador -->
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Buscar</label>
+                        <div class="relative">
+                            <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="filter" oninput="applyFilter()" placeholder="Producto..."
+                                class="w-full pl-10 p-2 border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="flex gap-2">
+                        <button onclick="saveChanges()"
+                            class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg shadow hover:scale-105 transition text-sm">
+                            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Guardar en DB
+                        </button>
+                        <button onclick="window.print()" class="bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm">
+                            <i class="fa-solid fa-print mr-2"></i> PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA EDITABLE -->
+            <div class="bg-white rounded-xl shadow-lg border overflow-hidden">
+                <table class="w-full text-left" id="main-table">
+                    <thead class="bg-slate-100 text-[10px] font-bold text-slate-600 uppercase">
+                        <tr>
+                            <th class="p-4">Producto</th>
+                            <th class="p-4">Presentación</th>
+                            <th class="p-4 text-right">Costo (USD)</th>
+                            <th class="p-4 text-right bg-blue-50">Detal ($)</th>
+                            <th class="p-4 text-right bg-green-50">Mayor ($)</th>
+                            <th class="p-4 text-right bg-purple-50">Distribuidor ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y text-sm" id="table-body">
+                        <!-- Products will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- SNAPSHOT DATA -->
+    <script>
+        // SNAPSHOT_START
+        window.INITIAL_PRODUCTS = [{"id":26,"nombre":"Aditivo Asfáltico","presentacion":"Granel (1000L)","precio":"16000","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.613Z"},{"id":25,"nombre":"Aditivo Asfáltico","presentacion":"Tambor (200L)","precio":"3500","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.513Z"},{"id":17,"nombre":"Cera Nano Protectora","presentacion":"500ml","precio":"15","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.593Z"},{"id":18,"nombre":"Champú Nano-Concentrado","presentacion":"1 Litro","precio":"12","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.693Z"},{"id":19,"nombre":"Champú Nano-Concentrado","presentacion":"Galón","precio":"35","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.794Z"},{"id":20,"nombre":"Eco Capturador (Minería)","presentacion":"1 Litro","precio":"85","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.903Z"},{"id":22,"nombre":"Eco Capturador (Minería)","presentacion":"Cuñete","precio":"1500","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.108Z"},{"id":21,"nombre":"Eco Capturador (Minería)","presentacion":"Galón","precio":"320","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.002Z"},{"id":27,"nombre":"Eco Capturador Magnetron","presentacion":"1 Litro","precio":"95","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.714Z"},{"id":29,"nombre":"Eco Capturador Magnetron","presentacion":"Cuñete","precio":"1650","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.923Z"},{"id":28,"nombre":"Eco Capturador Magnetron","presentacion":"Galón","precio":"345","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.827Z"},{"id":16,"nombre":"Escudo Cerámico","presentacion":"1 Litro","precio":"45","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.484Z"},{"id":13,"nombre":"Estuco Súper Hidrofóbico","presentacion":"1/4 Galón","precio":"6.4","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.184Z"},{"id":14,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Galón","precio":"19","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.284Z"},{"id":9,"nombre":"Fortificador de Superficies","presentacion":"1 Litro","precio":"19","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.664Z"},{"id":10,"nombre":"Fortificador de Superficies","presentacion":"Galón","precio":"52","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.773Z"},{"id":11,"nombre":"Fortificador de Superficies","presentacion":"Cuñete","precio":"254.5","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.974Z"},{"id":15,"nombre":"Nano Aditivo para Concreto","presentacion":"600gr","precio":"15","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.384Z"},{"id":12,"nombre":"Pintura Súper Hidrofóbica","presentacion":"Galón","precio":"34","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:16.073Z"},{"id":23,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Cuñete (18L)","precio":"450","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.304Z"},{"id":24,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Tambor (200L)","precio":"4800","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:17.414Z"},{"id":6,"nombre":"Ultra Seco Solución Exterior","presentacion":"1 Litro (Atomizador)","precio":"17.99","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.364Z"},{"id":7,"nombre":"Ultra Seco Solución Exterior","presentacion":"Galón (3.785L)","precio":"48","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.464Z"},{"id":8,"nombre":"Ultra Seco Solución Exterior","presentacion":"Cuñete (18L)","precio":"217.5","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.564Z"},{"id":5,"nombre":"Ultra Seco Solución Exterior","presentacion":"1 Litro","precio":"16.99","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.243Z"},{"id":2,"nombre":"Ultra Seco Solución Interior","presentacion":"1 Litro (Atomizador)","precio":"14.99","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:14.969Z"},{"id":4,"nombre":"Ultra Seco Solución Interior","presentacion":"Cuñete (18L)","precio":"170","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.136Z"},{"id":3,"nombre":"Ultra Seco Solución Interior","presentacion":"Galón (3.785L)","precio":"38","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:15.055Z"},{"id":1,"nombre":"Ultra Seco Solución Interior","presentacion":"1 Litro","precio":"13.99","costo":null,"precio_mayor":null,"precio_dist":null,"stock":0,"categoria":"General","fecha_act":"2026-04-16T21:02:14.545Z"}];
+        // SNAPSHOT_END
+    </script>
+
+    <!-- LOGIC -->
+    <script>
+        let products = window.INITIAL_PRODUCTS || [];
+
+        function checkLogin() {
+            const pass = document.getElementById('password-input').value;
+            if (pass === "ultra2024") { // Contraseña por defecto de portal.html
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                initPortal();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
             }
         }
 
-        function renderPortal() {
-            updateStats();
+        function initPortal() {
+            renderTable();
             renderCategories();
-            filterAndRender();
-            lucide.createIcons();
-        }
-
-        function updateStats() {
-            const total = products.length;
-            const avg = products.length ? (products.reduce((acc, p) => acc + parseFloat(p.precio), 0) / products.length).toFixed(2) : 0;
-            const cats = new Set(products.map(p => p.categoria)).size;
-            const outOfStock = products.filter(p => p.stock === 0).length;
-
-            document.getElementById('totalProducts').textContent = total;
-            document.getElementById('avgPrice').textContent = `Ref. ${avg}`;
-            document.getElementById('totalCats').textContent = cats;
-            document.getElementById('outOfStock').textContent = outOfStock;
+            recalcAll();
         }
 
         function renderCategories() {
-            const categories = ['all', ...new Set(products.map(p => p.categoria))];
-            const container = document.getElementById('categoryPills');
-            container.innerHTML = categories.map(cat => `
-                <button onclick="setCategory('${cat}')" 
-                    class="px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap
-                    ${currentCategory === cat ? 'bg-blue-600 text-white' : 'glass text-gray-400 hover:text-white'}">
-                    ${cat === 'all' ? 'Todos' : cat}
-                </button>
+            const cats = [...new Set(products.map(p => p.categoria || "General"))];
+            const container = document.getElementById('category-checks');
+            container.innerHTML = cats.map(cat => `
+                <label class="flex items-center gap-1.5 px-2 py-1 bg-white border rounded text-xs cursor-pointer hover:bg-blue-50 transition">
+                    <input type="checkbox" value="${cat}" checked onchange="applyFilter()" class="cat-check"> ${cat}
+                </label>
             `).join('');
         }
 
-        function filterAndRender() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const sortBy = document.getElementById('sortSelect').value;
-
-            filteredProducts = products.filter(p => {
-                const matchesSearch = p.nombre.toLowerCase().includes(searchTerm) || 
-                                     p.presentacion.toLowerCase().includes(searchTerm);
-                const matchesCat = currentCategory === 'all' || p.categoria === currentCategory;
-                return matchesSearch && matchesCat;
-            });
-
-            // Sorting
-            filteredProducts.sort((a, b) => {
-                if (sortBy === 'name-asc') return a.nombre.localeCompare(b.nombre);
-                if (sortBy === 'name-desc') return b.nombre.localeCompare(a.nombre);
-                if (sortBy === 'price-asc') return parseFloat(a.precio) - parseFloat(b.precio);
-                if (sortBy === 'price-desc') return parseFloat(b.precio) - parseFloat(a.precio);
-                if (sortBy === 'stock-desc') return b.stock - a.stock;
-                return 0;
-            });
-
-            const grid = document.getElementById('productGrid');
-            if (filteredProducts.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-20 text-center text-gray-500">No se encontraron productos coincidentes.</div>`;
-                return;
-            }
-
-            grid.innerHTML = filteredProducts.map(p => `
-                <div class="glass p-6 rounded-2xl product-card group">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-xs font-bold uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2 py-1 rounded">
-                            ${p.categoria}
-                        </span>
-                        <div class="flex items-center gap-1 text-sm ${p.stock > 0 ? 'text-green-500' : 'text-orange-500'}">
-                            <i data-lucide="package" class="w-4 h-4"></i>
-                            ${p.stock}
-                        </div>
-                    </div>
-                    <h4 class="text-xl font-bold mb-1">${p.nombre}</h4>
-                    <p class="text-gray-400 text-sm mb-6">${p.presentacion}</p>
-                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-                        <div class="price-badge px-4 py-2 rounded-xl text-white font-bold">
-                            Ref. ${parseFloat(p.precio).toFixed(2)}
-                        </div>
-                        <span class="text-[10px] text-gray-600 italic">
-                            Act: ${new Date(p.fecha_act).toLocaleDateString()}
-                        </span>
-                    </div>
-                </div>
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = products.map((p, i) => `
+                <tr class="product-row hover:bg-slate-50 transition-colors" data-search="${p.nombre} ${p.presentacion}" data-category="${p.categoria || 'General'}">
+                    <td class="p-4 font-bold text-slate-800">${p.nombre}</td>
+                    <td class="p-4 text-xs text-slate-500">${p.presentacion}</td>
+                    <td class="p-4 text-right">
+                        <input type="number" step="0.01" class="cost w-20 text-right p-1 border rounded bg-slate-50" value="${p.costo || 0}" oninput="recalcAll()">
+                    </td>
+                    <td class="p-4 text-right bg-blue-50/20">
+                        <input type="number" step="0.01" class="price-detal w-20 text-right p-1 border rounded font-bold" value="${p.precio || 0}" oninput="recalcAll()">
+                        <div class="bs-text">Bs --</div>
+                    </td>
+                    <td class="p-4 text-right bg-green-50/20">
+                        <input type="number" step="0.01" class="price-mayor w-20 text-right p-1 border rounded font-bold" value="${p.precio_mayor || 0}" oninput="recalcAll()">
+                        <div class="bs-text">Bs --</div>
+                    </td>
+                    <td class="p-4 text-right bg-purple-50/20">
+                        <input type="number" step="0.01" class="price-dist w-20 text-right p-1 border rounded font-bold" value="${p.precio_dist || 0}" oninput="recalcAll()">
+                        <div class="bs-text">Bs --</div>
+                    </td>
+                </tr>
             `).join('');
-            lucide.createIcons();
         }
 
-        window.setCategory = (cat) => {
-            currentCategory = cat;
-            renderPortal();
-        };
+        function recalcAll() {
+            const euro = parseFloat(document.getElementById('euro-rate').value) || 0;
+            const rows = document.querySelectorAll('.product-row');
+            
+            rows.forEach(row => {
+                const pDetal = parseFloat(row.querySelector('.price-detal').value) || 0;
+                const pMayor = parseFloat(row.querySelector('.price-mayor').value) || 0;
+                const pDist = parseFloat(row.querySelector('.price-dist').value) || 0;
+                
+                const bsDivs = row.querySelectorAll('.bs-text');
+                bsDivs[0].textContent = "Bs " + (pDetal * euro).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+                bsDivs[1].textContent = "Bs " + (pMayor * euro).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+                bsDivs[2].textContent = "Bs " + (pDist * euro).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+            });
+        }
 
-        // Listeners
-        document.getElementById('searchInput').addEventListener('input', filterAndRender);
-        document.getElementById('sortSelect').addEventListener('change', filterAndRender);
-        document.getElementById('refreshBtn').addEventListener('click', () => {
-            document.getElementById('refreshBtn').classList.add('animate-spin');
-            setTimeout(() => {
-                fetchProducts();
-                document.getElementById('refreshBtn').classList.remove('animate-spin');
-            }, 1000);
-        });
+        function applyFilter() {
+            const query = document.getElementById('filter').value.toLowerCase();
+            const activeCats = Array.from(document.querySelectorAll('.cat-check:checked')).map(cb => cb.value.toLowerCase());
+            const rows = document.querySelectorAll('.product-row');
 
-        // Initialize
-        fetchProducts();
+            rows.forEach(row => {
+                const searchStr = row.getAttribute('data-search').toLowerCase();
+                const category = row.dataset.category.toLowerCase();
+                const matchesQuery = searchStr.includes(query);
+                const matchesCat = activeCats.includes(category);
+
+                row.style.display = (matchesQuery && matchesCat) ? "" : "none";
+            });
+        }
+
+        function applyBulkUpdate() {
+            const pctInput = document.getElementById('bulk-pct').value;
+            const rounding = document.getElementById('rounding-rule').value;
+            if (!pctInput) return alert('Por favor, ingrese un porcentaje.');
+            
+            const pct = parseFloat(pctInput) / 100;
+            const rows = document.querySelectorAll('.product-row');
+            
+            rows.forEach(row => {
+                if (row.style.display !== "none") {
+                    const inputs = ['detal', 'mayor', 'dist'];
+                    inputs.forEach(type => {
+                        const input = row.querySelector(`.price-${type}`);
+                        const newVal = parseFloat(input.value) * (1 + pct);
+                        input.value = applyRounding(newVal, rounding);
+                    });
+                }
+            });
+            recalcAll();
+        }
+
+        function applyRounding(val, type) {
+            if (type === '99') return (Math.floor(val) + 0.99).toFixed(2);
+            if (type === '50') return (Math.floor(val) + 0.50).toFixed(2);
+            return val.toFixed(2);
+        }
+
+        function saveChanges() {
+            alert('⚠️ En desarrollo: Los cambios se guardarán en Neon DB en el siguiente paso.');
+            // Aquí se enviaría la data al servidor o se generaría un dump para Prisma
+        }
     </script>
 </body>
 </html>

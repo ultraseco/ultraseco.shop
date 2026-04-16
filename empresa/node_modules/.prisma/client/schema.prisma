@@ -12,6 +12,9 @@ model Producto {
   nombre       String
   presentacion String
   precio       Decimal  @db.Decimal(10, 2)
+  costo        Decimal? @db.Decimal(10, 2)
+  precio_mayor Decimal? @db.Decimal(10, 2)
+  precio_dist  Decimal? @db.Decimal(10, 2)
   stock        Int      @default(0)
   categoria    String?
   fecha_act    DateTime @default(now())

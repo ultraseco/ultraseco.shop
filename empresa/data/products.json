@@ -4,6 +4,9 @@
     "nombre": "Aditivo Asfáltico",
     "presentacion": "Granel (1000L)",
     "precio": "16000",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.613Z"
@@ -13,6 +16,9 @@
     "nombre": "Aditivo Asfáltico",
     "presentacion": "Tambor (200L)",
     "precio": "3500",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.513Z"
@@ -22,6 +28,9 @@
     "nombre": "Cera Nano Protectora",
     "presentacion": "500ml",
     "precio": "15",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.593Z"
@@ -31,6 +40,9 @@
     "nombre": "Champú Nano-Concentrado",
     "presentacion": "1 Litro",
     "precio": "12",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.693Z"
@@ -40,6 +52,9 @@
     "nombre": "Champú Nano-Concentrado",
     "presentacion": "Galón",
     "precio": "35",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.794Z"
@@ -49,6 +64,9 @@
     "nombre": "Eco Capturador (Minería)",
     "presentacion": "1 Litro",
     "precio": "85",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.903Z"
@@ -58,6 +76,9 @@
     "nombre": "Eco Capturador (Minería)",
     "presentacion": "Cuñete",
     "precio": "1500",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.108Z"
@@ -67,6 +88,9 @@
     "nombre": "Eco Capturador (Minería)",
     "presentacion": "Galón",
     "precio": "320",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.002Z"
@@ -76,6 +100,9 @@
     "nombre": "Eco Capturador Magnetron",
     "presentacion": "1 Litro",
     "precio": "95",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.714Z"
@@ -85,6 +112,9 @@
     "nombre": "Eco Capturador Magnetron",
     "presentacion": "Cuñete",
     "precio": "1650",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.923Z"
@@ -94,6 +124,9 @@
     "nombre": "Eco Capturador Magnetron",
     "presentacion": "Galón",
     "precio": "345",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.827Z"
@@ -103,6 +136,9 @@
     "nombre": "Escudo Cerámico",
     "presentacion": "1 Litro",
     "precio": "45",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.484Z"
@@ -112,6 +148,9 @@
     "nombre": "Estuco Súper Hidrofóbico",
     "presentacion": "1/4 Galón",
     "precio": "6.4",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.184Z"
@@ -121,6 +160,9 @@
     "nombre": "Estuco Súper Hidrofóbico",
     "presentacion": "Galón",
     "precio": "19",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.284Z"
@@ -130,6 +172,9 @@
     "nombre": "Fortificador de Superficies",
     "presentacion": "1 Litro",
     "precio": "19",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.664Z"
@@ -139,6 +184,9 @@
     "nombre": "Fortificador de Superficies",
     "presentacion": "Galón",
     "precio": "52",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.773Z"
@@ -148,6 +196,9 @@
     "nombre": "Fortificador de Superficies",
     "presentacion": "Cuñete",
     "precio": "254.5",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.974Z"
@@ -157,6 +208,9 @@
     "nombre": "Nano Aditivo para Concreto",
     "presentacion": "600gr",
     "precio": "15",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.384Z"
@@ -166,6 +220,9 @@
     "nombre": "Pintura Súper Hidrofóbica",
     "presentacion": "Galón",
     "precio": "34",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:16.073Z"
@@ -175,6 +232,9 @@
     "nombre": "Ultra F3 (Anti-Fuego)",
     "presentacion": "Cuñete (18L)",
     "precio": "450",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.304Z"
@@ -184,6 +244,9 @@
     "nombre": "Ultra F3 (Anti-Fuego)",
     "presentacion": "Tambor (200L)",
     "precio": "4800",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:17.414Z"
@@ -193,6 +256,9 @@
     "nombre": "Ultra Seco Solución Exterior",
     "presentacion": "1 Litro (Atomizador)",
     "precio": "17.99",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.364Z"
@@ -202,6 +268,9 @@
     "nombre": "Ultra Seco Solución Exterior",
     "presentacion": "Galón (3.785L)",
     "precio": "48",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.464Z"
@@ -211,6 +280,9 @@
     "nombre": "Ultra Seco Solución Exterior",
     "presentacion": "Cuñete (18L)",
     "precio": "217.5",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.564Z"
@@ -220,6 +292,9 @@
     "nombre": "Ultra Seco Solución Exterior",
     "presentacion": "1 Litro",
     "precio": "16.99",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.243Z"
@@ -229,6 +304,9 @@
     "nombre": "Ultra Seco Solución Interior",
     "presentacion": "1 Litro (Atomizador)",
     "precio": "14.99",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:14.969Z"
@@ -238,6 +316,9 @@
     "nombre": "Ultra Seco Solución Interior",
     "presentacion": "Cuñete (18L)",
     "precio": "170",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.136Z"
@@ -247,6 +328,9 @@
     "nombre": "Ultra Seco Solución Interior",
     "presentacion": "Galón (3.785L)",
     "precio": "38",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:15.055Z"
@@ -256,6 +340,9 @@
     "nombre": "Ultra Seco Solución Interior",
     "presentacion": "1 Litro",
     "precio": "13.99",
+    "costo": null,
+    "precio_mayor": null,
+    "precio_dist": null,
     "stock": 0,
     "categoria": "General",
     "fecha_act": "2026-04-16T21:02:14.545Z"
