@@ -119,9 +119,17 @@
                     <!-- Tasa Euro -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Tasa Euro BCV (Bs.)</label>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="euro-rate" value="400.49" step="0.01" oninput="recalcAll()"
-                                class="w-32 p-2 border rounded font-bold text-blue-700 text-lg outline-none focus:ring-2 focus:ring-blue-400">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="euro-rate" value="60.50" step="0.01" oninput="recalcAll()"
+                                    class="w-32 p-1.5 border rounded font-bold text-blue-700 text-lg outline-none focus:ring-2 focus:ring-blue-400">
+                                <button onclick="refrescarTasaManual()" title="Refrescar desde BCV" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-all">
+                                    <i class="fa-solid fa-rotate text-xs"></i>
+                                </button>
+                            </div>
+                            <div id="tasa-api-status" class="text-[10px] text-slate-400 font-medium ml-1">
+                                <i class="fa-solid fa-cloud-arrow-down mr-1"></i>Sincronizando BCV...
+                            </div>
                         </div>
                     </div>
 
@@ -1233,6 +1241,9 @@
                     initFirebase(DEFAULT_FIREBASE_CONFIG); // Fallback a default
                 }
             } else {
+                // Cargar tasa de Euro
+                obtenerTasaOficial();
+                
                 // Si no hay nada guardado, usar la configuración predeterminada hardcoded
                 initFirebase(DEFAULT_FIREBASE_CONFIG);
             }
