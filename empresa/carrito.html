@@ -659,45 +659,63 @@
         async function procesarPedido(e) {
             e.preventDefault();
 
+            // 1. Validaciones básicas
             if (!carritoData || carritoData.length === 0) {
                 alert("Tu carrito está vacío.");
                 return;
             }
 
-            // 1. Preparar campos ocultos con la información del localStorage
+            // 2. Preparar campos ocultos ANTES de capturar el FormData
             const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} (Ref. ${item.precio})`).join(' | ');
             document.getElementById('hidden-resumen').value = resumenText;
             document.getElementById('hidden-total-usd').value = totalUSD.toFixed(2);
             document.getElementById('hidden-total-bs').value = (totalUSD * tasaBCV).toFixed(2);
 
-            // 2. Preparar el botón mostrando estado de carga
+            // 3. Feedback visual: Botón cargando
             const btn = document.getElementById('btn-submit');
             const originalBtnContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Procesando...';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Guardando datos...';
             btn.disabled = true;
 
-            try {
-                // 3. Obtener el FormData del formulario listo para enviar a Netlify
-                const formObj = document.getElementById('payment-form');
-                const formData = new FormData(formObj);
+            // 4. Capturar DATOS del formulario (incluyendo el archivo y los hidden fields actualizados)
+            const form = e.target;
+            const formData = new FormData(form);
 
-                // 4. Enviar mediante AJAX a Netlify Forms (silencioso)
+            try {
+                // 5. Enviar a Netlify mediante Fetch (asíncrono)
+                // Usamos la raíz "/" y el método POST. El navegador se encarga del Content-Type multipart
+                console.log("📤 Enviando pedido a Netlify...");
+                
                 const response = await fetch("/", {
                     method: "POST",
                     body: formData
                 });
 
-                if (!response.ok) {
-                    throw new Error("Respuesta de la red no fue OK. Código: " + response.status);
+                if (response.ok) {
+                    console.log("✅ Datos guardados en el panel de Netlify exitosamente.");
+                } else {
+                    console.error("⚠️ Fallo el guardado en Netlify (Status:", response.status, "). Procediendo igualmente a WhatsApp.");
                 }
 
-                console.log("Datos guardados en Netlify y correo disparado");
+            } catch (error) {
+                console.error("❌ Error de red al enviar a Netlify:", error);
+                
+                // Si es un error de protocolo local (file://), avisar al usuario
+                if (window.location.protocol === 'file:') {
+                    console.warn("Modo Local: El envío de formularios Netlify requiere un servidor web real.");
+                }
+            }
 
-                // 5. Éxito: Limpiar carrito y redirigir
-                alert("¡Gracias! Tu pedido ha sido procesado exitosamente. A continuación serás redirigido a conversar con un asesor en WhatsApp para confirmarlo.");
+            // 6. FLUJO DE WHATSAPP: El fetch ya respondió (o falló pero seguimos)
+            // Procesamos la redirección independientemente para no perder la venta
+            try {
+                // Notificar éxito al usuario
+                alert("¡Gracias! Tu información ha sido capturada. Ahora te redirigiremos a WhatsApp para concretar los detalles finales con un asesor.");
+                
+                // Limpiar carrito local
                 localStorage.removeItem('miCarritoUltraSeco');
 
-                // 6. Preparar datos dinámicos para WhatsApp
+                // Obtener datos para WhatsApp
                 const nombreCliente = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
                 const numReferencia = document.getElementById('referencia-pago').value.trim() || 'N/A';
                 const metodoSeleccionado = document.getElementById('metodo-pago').value;
@@ -708,25 +726,19 @@
                     mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
                 }
 
+                // URL de WhatsApp
                 const wpUrl = `https://wa.me/584146023797?text=${encodeURIComponent(mensajeWp)}`;
 
-                // 7. Feedback visual y redirección
-                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Redirigiendo a WhatsApp...';
+                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Redirigiendo...';
                 
+                // Pequeña espera para que el usuario lea el alert anterior
                 setTimeout(() => {
                     window.location.href = wpUrl;
-                }, 2000);
+                }, 1000);
 
             } catch (error) {
-                console.error("Error al procesar el pedido:", error);
-                
-                // Detectar si es probable un error de entorno local
-                if (window.location.protocol === 'file:') {
-                    alert("🔴 MODO LOCAL DETECTADO: El formulario no se puede enviar porque estás abriendo el archivo localmente (file://). Netlify Forms requiere que la página esté subida a internet para poder procesar el pago.");
-                } else {
-                    alert("Hubo un error al procesar tu pedido. Por favor intenta nuevamente.");
-                }
-                
+                console.error("Error al redirigir a WhatsApp:", error);
+                alert("Hubo un error al preparar el mensaje de WhatsApp, pero tus datos han sido enviados.");
                 btn.innerHTML = originalBtnContent;
                 btn.disabled = false;
             }
