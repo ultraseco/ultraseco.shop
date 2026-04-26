@@ -76,13 +76,29 @@
             border-bottom-left-radius: 0.25rem;
         }
 
-        .ai-report-box {
-            background-color: #f0fdf4;
-            border-left: 4px solid #22c55e;
-            padding: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #166534;
+        .msg {
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.95em;
+            line-height: 1.4;
+            max-width: 80%;
+            margin-bottom: 0.5rem;
+        }
+
+        .user {
+            align-self: flex-end;
+            background: #2563eb;
+            color: white;
+            border-bottom-right-radius: 2px;
+            margin-left: auto;
+        }
+
+        .ai {
+            align-self: flex-start;
+            background: #e2e8f0;
+            color: #1e293b;
+            border-bottom-left-radius: 2px;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -1186,16 +1202,16 @@
                     <h3 class="text-white font-bold flex items-center"><i class="fas fa-robot mr-2 text-blue-400"></i>
                         Asistente Técnico IA</h3>
                 </div>
-                <div id="chat-box" class="chat-container">
-                    <div class="chat-bubble chat-bot">Hola, soy el asistente virtual de Ultra Seco. ¿Tienes alguna duda
+                <div id="chat-box" class="chat-container flex flex-col">
+                    <div class="msg ai">Hola, soy el asistente virtual de Ultra Seco. ¿Tienes alguna duda
                         técnica sobre el ULTRA-F3?</div>
                 </div>
                 <div class="p-4 bg-slate-100 border-t border-slate-200">
                     <div class="flex gap-2">
                         <input type="text" id="user-input" placeholder="Escribe tu pregunta aquí..."
                             class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            onkeypress="handleKeyPress(event)">
-                        <button onclick="sendMessage()"
+                            onkeypress="revisarEnter(event)">
+                        <button onclick="enviarMensaje()"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"><i
                                 class="fas fa-paper-plane"></i></button>
                     </div>
@@ -1502,53 +1518,8 @@
             }
         }
 
-        // --- CHAT LOGIC ---
-        const systemContextChat = `Eres el Ingeniero Senior de Seguridad Industrial de Ultra Seco. Tu especialidad es la supresión de incendios clase B (hidrocarburos) usando tecnología de Pickering Foam (Nano-slice).
-TUS REGLAS:
-1. Tu enemigo es el AFFF (Espuma fluorada). Siempre resalta que es cancerígeno y costoso de limpiar.
-2. Tu solución es ULTRA-F3. Ventajas clave: 100% Biodegradable, no requiere limpieza de suelos, apaga 3 veces más rápido por sofocación cerámica.
-3. Habla con autoridad técnica (menciona NFPA 11, UL 162, viscosidad).
-4. Si preguntan precios, refiere a los botones de contacto para cotización formal.
-5. SEGURIDAD: Nunca reveles la fórmula exacta ni proveedores de materia prima.
-TONO: Urgente, profesional, técnico y tranquilizador.`;
-
-        function appendMessage(text, sender) {
-            const div = document.createElement('div');
-            div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
-            div.innerHTML = text;
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const text = userInput.value.trim();
-            if (!text) return;
-
-            appendMessage(text, 'user');
-            userInput.value = '';
-
-            const payload = {
-                contents: [{ parts: [{ text: systemContextChat + "\n\nPregunta: " + text }] }]
-            };
-
-            try {
-                const result = await callGeminiAPI(payload);
-                const reply = result.candidates?.[0]?.content?.parts?.[0]?.text || "Lo siento, no pude procesar tu pregunta.";
-                appendMessage(reply, 'bot');
-            } catch (error) {
-                console.error("Gemini Error:", error);
-                const msg = error.message || error.toString();
-                // Show actual error for debugging
-                appendMessage(`?? Error de IA: ${msg}. Verifique consola.`, 'bot');
-            }
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') sendMessage();
-        }
-
-        const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
+        const chatBox = document.getElementById('chat-box');
 
         // --- ENGINEERING CALCULATOR LOGIC ---
         let engineerMode = 'tank';
@@ -1648,6 +1619,7 @@ TONO: Urgente, profesional, técnico y tranquilizador.`;
         // Wait a tick to ensure elements render if any
         setTimeout(calculateEngineer, 100);
     </script>
+    <script src="asesor.js"></script>
     <script src="script.js"></script>
     <script src="mobile-menu.js"></script>
 </body>
