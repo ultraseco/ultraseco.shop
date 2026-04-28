@@ -5,19 +5,23 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Producto {
-  id           Int      @id @default(autoincrement())
-  nombre       String
-  presentacion String
-  precio       Decimal  @db.Decimal(10, 2)
-  costo        Decimal? @db.Decimal(10, 2)
-  precio_mayor Decimal? @db.Decimal(10, 2)
-  precio_dist  Decimal? @db.Decimal(10, 2)
-  stock        Int      @default(0)
-  categoria    String?
-  fecha_act    DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  presentacion   String?
+  precio         Decimal? @db.Decimal(10, 2)
+  costo          Decimal? @db.Decimal(10, 2)
+  precio_mayor   Decimal? @db.Decimal(10, 2)
+  precio_dist    Decimal? @db.Decimal(10, 2)
+  stock          Int      @default(0)
+  categoria      String?
+  activo         Boolean  @default(true)
+  fecha_creacion DateTime @default(now())
+  fecha_act      DateTime @default(now()) @updatedAt
 
   @@unique([nombre, presentacion], name: "nombre_presentacion")
+  @@map("productos")
 }

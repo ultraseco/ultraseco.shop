@@ -96,9 +96,9 @@
 
                     <!-- Acciones -->
                     <div class="flex gap-2">
-                        <button onclick="saveChanges()"
-                            class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg shadow hover:scale-105 transition text-sm">
-                            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Guardar en DB
+                        <button id="btn-save" onclick="saveChanges()"
+                            class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg shadow hover:scale-105 transition text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> <span>Guardar en DB</span>
                         </button>
                         <button onclick="window.print()" class="bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm">
                             <i class="fa-solid fa-print mr-2"></i> PDF
@@ -141,10 +141,36 @@
 
         window.onload = initPortal;
 
-        function initPortal() {
+        async function initPortal() {
+            // Intentar cargar datos frescos del servidor primero
+            try {
+                const response = await fetch('/api/products'); // Necesitaré añadir este endpoint al server
+                if (response.ok) {
+                    const freshData = await response.json();
+                    if (freshData && freshData.length > 0) {
+                        products = freshData;
+                        console.log('✅ Datos cargados desde el servidor.');
+                    }
+                }
+            } catch (e) {
+                console.log('ℹ️ Usando snapshot local (servidor no detectado).');
+            }
+
             renderTable();
             renderCategories();
             recalcAll();
+            checkSyncStatus();
+        }
+
+        function checkSyncStatus() {
+            const lastSync = localStorage.getItem('last_db_sync');
+            if (lastSync) {
+                const date = new Date(parseInt(lastSync));
+                const statusEl = document.createElement('div');
+                statusEl.className = 'text-[10px] text-slate-400 mt-2 italic';
+                statusEl.innerHTML = `<i class="fa fa-check-circle text-green-500"></i> Última sincronización: ${date.toLocaleString()}`;
+                document.querySelector('main').prepend(statusEl);
+            }
         }
 
         function renderCategories() {
@@ -160,7 +186,7 @@
         function renderTable() {
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = products.map((p, i) => `
-                <tr class="product-row hover:bg-slate-50 transition-colors" data-search="${p.nombre} ${p.presentacion}" data-category="${p.categoria || 'General'}">
+                <tr class="product-row hover:bg-slate-50 transition-colors" data-id="${p.id}" data-search="${p.nombre} ${p.presentacion}" data-category="${p.categoria || 'General'}">
                     <td class="p-4 font-bold text-slate-800">${p.nombre}</td>
                     <td class="p-4 text-xs text-slate-500">${p.presentacion}</td>
                     <td class="p-4 text-right">
@@ -240,9 +266,44 @@
             return val.toFixed(2);
         }
 
-        function saveChanges() {
-            alert('⚠️ En desarrollo: Los cambios se guardarán en Neon DB en el siguiente paso.');
-            // Aquí se enviaría la data al servidor o se generaría un dump para Prisma
+        async function saveChanges() {
+            const btn = document.getElementById('btn-save');
+            const originalContent = btn.innerHTML;
+            
+            // 1. Recolectar datos
+            const updatedProducts = Array.from(document.querySelectorAll('.product-row')).map(row => ({
+                id: parseInt(row.dataset.id),
+                costo: parseFloat(row.querySelector('.cost').value),
+                precio: parseFloat(row.querySelector('.price-detal').value),
+                precio_mayor: parseFloat(row.querySelector('.price-mayor').value),
+                precio_dist: parseFloat(row.querySelector('.price-dist').value)
+            }));
+
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sincronizando...';
+            btn.disabled = true;
+
+            try {
+                // Enviamos los datos al servidor local que procesará Prisma
+                const response = await fetch('/api/save-prices', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedProducts)
+                });
+
+                if (!response.ok) throw new Error('Error en la respuesta del servidor');
+
+                const result = await response.json();
+                
+                alert('✅ Cambios guardados correctamente en Neon DB y snapshot actualizado.');
+                localStorage.setItem('last_db_sync', Date.now().toString());
+                location.reload();
+            } catch (error) {
+                console.error('Error saving:', error);
+                alert('❌ Error al guardar: Asegúrate de que el servidor de sincronización esté corriendo.');
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
