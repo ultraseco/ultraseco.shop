@@ -6,7 +6,7 @@ const ALLOWED_ORIGINS = ['https://ultraseco.github.io', 'http://localhost:3000',
 
 const HOST = "ep-snowy-unit-amlmh4fj.c-5.us-east-1.aws.neon.tech";
 const PASS = "npg_G14qwkDRAoQn"; // API Auth de Neon
-const CONN_STR = `postgresql://neondb_owner@${HOST}/neondb?sslmode=require`;
+const CONN_STR = `postgresql://neondb_owner:${PASS}@${HOST}/neondb?sslmode=require`;
 
 export default {
   async fetch(request, env) {
