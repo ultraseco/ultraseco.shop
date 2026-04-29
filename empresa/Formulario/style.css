@@ -37,6 +37,14 @@ header .logo {
     height: 40px;
 }
 
+header h1 {
+    color: #f8fafc;
+    margin: 0;
+    margin-left: 15px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 main {
     padding-top: 100px;
     padding-bottom: 50px;
