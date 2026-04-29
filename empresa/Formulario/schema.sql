@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS solicitudes_empleo (
     correo_electronico TEXT NOT NULL,
     vehiculo_propio BOOLEAN NOT NULL,
     vehiculo_modelo_year TEXT,
+    zona_ventas TEXT,
     
     -- II. Perfil Comercial y Experiencia
     experiencia_ferretera TEXT,
@@ -25,6 +26,8 @@ CREATE TABLE IF NOT EXISTS solicitudes_empleo (
     referencia_2_nombre TEXT,
     referencia_2_telefono TEXT,
     referencia_2_relacion TEXT,
+    foto_cedula TEXT,
+    foto_rif TEXT,
     
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

@@ -50,6 +50,17 @@
 
                 <div class="form-row">
                     <div class="form-group">
+                        <label for="foto_cedula">Foto Cédula de Identidad</label>
+                        <input type="file" id="foto_cedula" name="foto_cedula" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="foto_rif">Foto R.I.F.</label>
+                        <input type="file" id="foto_rif" name="foto_rif" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="nacionalidad">Nacionalidad</label>
                         <input type="text" id="nacionalidad" name="nacionalidad" required placeholder="Ej: Venezolana">
                     </div>
@@ -84,6 +95,10 @@
             <!-- II. Perfil Comercial y Experiencia -->
             <section>
                 <h3><i class="fa-solid fa-briefcase"></i> II. Perfil Comercial y Experiencia</h3>
+                <div class="form-group">
+                    <label for="zona_ventas">Zona o Región donde impulsaría ventas</label>
+                    <input type="text" id="zona_ventas" name="zona_ventas" required placeholder="Ej: Zona Norte, Estado Zulia...">
+                </div>
                 <div class="form-group">
                     <label for="experiencia_ferretera">¿Posee experiencia en el ramo ferretero o construcción?</label>
                     <textarea id="experiencia_ferretera" name="experiencia_ferretera" placeholder="Detalle años y empresas si aplica"></textarea>
@@ -135,12 +150,55 @@
         // URL del Cloudflare Worker configurado para Neon
         const WORKER_URL = 'https://formulario-ultraseco.workthingstesting.workers.dev/';
 
+        async function compressImage(file) {
+            return new Promise((resolve) => {
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const MAX_HEIGHT = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7));
+                    };
+                };
+            });
+        }
+
         document.getElementById('employmentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
             const messageDiv = document.getElementById('message');
 
             submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando imágenes...';
+            
+            const fileCedula = document.getElementById('foto_cedula').files[0];
+            const fileRif = document.getElementById('foto_rif').files[0];
+            const base64Cedula = await compressImage(fileCedula);
+            const base64Rif = await compressImage(fileRif);
+
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando solicitud...';
 
             const get = id => (document.getElementById(id) || {}).value || '';
@@ -157,6 +215,7 @@
                 correo_electronico: get('correo_electronico'),
                 vehiculo_propio: document.getElementById('vehiculo_propio').checked,
                 vehiculo_modelo_year: get('vehiculo_modelo_year'),
+                zona_ventas: get('zona_ventas'),
                 experiencia_ferretera: get('experiencia_ferretera'),
                 clientes_principales: get('clientes_principales'),
                 volumen_facturacion: get('volumen_facturacion'),
@@ -165,7 +224,9 @@
                 referencia_1_relacion: getN('referencia_1_relacion'),
                 referencia_2_nombre: getN('referencia_2_nombre'),
                 referencia_2_telefono: getN('referencia_2_telefono'),
-                referencia_2_relacion: getN('referencia_2_relacion')
+                referencia_2_relacion: getN('referencia_2_relacion'),
+                foto_cedula: base64Cedula,
+                foto_rif: base64Rif
             };
 
             const msg = [

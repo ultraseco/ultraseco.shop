@@ -347,7 +347,10 @@
                             <span class="info-label">Domicilio</span>
                             <span class="info-value">${record.domicilio}</span>
                         </div>
-                        
+                        <div class="info-item full-width" style="margin-top: 10px;">
+                            <span class="info-label" style="color: var(--ultra-blue)">Zona o Región de Ventas</span>
+                            <span class="info-value">${record.zona_ventas || 'No especificada'}</span>
+                        </div>
                         <div class="info-item full-width" style="margin-top: 10px;">
                             <span class="info-label" style="color: var(--ultra-blue)">Experiencia Ferretera</span>
                             <span class="info-value">${record.experiencia_ferretera || 'No especificada'}</span>
@@ -363,6 +366,14 @@
                                 1. ${record.referencia_1_nombre || 'N/A'} (${record.referencia_1_telefono || ''})<br>
                                 2. ${record.referencia_2_nombre || 'N/A'} (${record.referencia_2_telefono || ''})
                             </span>
+                        </div>
+
+                        <div class="info-item full-width" style="margin-top: 10px;">
+                            <span class="info-label">Documentos Adjuntos</span>
+                            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                ${record.foto_cedula ? `<a href="${record.foto_cedula}" target="_blank"><img src="${record.foto_cedula}" alt="Cédula" style="max-height: 100px; border-radius: 5px; border: 1px solid #ccc;"></a>` : '<span style="font-size:0.8rem;color:#666;">Sin Cédula</span>'}
+                                ${record.foto_rif ? `<a href="${record.foto_rif}" target="_blank"><img src="${record.foto_rif}" alt="RIF" style="max-height: 100px; border-radius: 5px; border: 1px solid #ccc;"></a>` : '<span style="font-size:0.8rem;color:#666;">Sin RIF</span>'}
+                            </div>
                         </div>
                     </div>
                 `;

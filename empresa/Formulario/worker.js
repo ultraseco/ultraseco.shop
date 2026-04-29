@@ -49,11 +49,12 @@ export default {
         INSERT INTO solicitudes_empleo (
           nombres_completos, apellidos_completos, cedula_identidad, fecha_nacimiento,
           nacionalidad, domicilio, telefono_movil, correo_electronico,
-          vehiculo_propio, vehiculo_modelo_year, experiencia_ferretera,
+          vehiculo_propio, vehiculo_modelo_year, zona_ventas, experiencia_ferretera,
           clientes_principales, volumen_facturacion,
           referencia_1_nombre, referencia_1_telefono, referencia_1_relacion,
-          referencia_2_nombre, referencia_2_telefono, referencia_2_relacion
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19) 
+          referencia_2_nombre, referencia_2_telefono, referencia_2_relacion,
+          foto_cedula, foto_rif
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22) 
         RETURNING id;
       `;
 
@@ -68,6 +69,7 @@ export default {
         data.correo_electronico || "",
         data.vehiculo_propio === true,
         data.vehiculo_modelo_year || "",
+        data.zona_ventas || "",
         data.experiencia_ferretera || "",
         data.clientes_principales || "",
         data.volumen_facturacion || "",
@@ -76,7 +78,9 @@ export default {
         data.referencia_1_relacion || "",
         data.referencia_2_nombre || "",
         data.referencia_2_telefono || "",
-        data.referencia_2_relacion || ""
+        data.referencia_2_relacion || "",
+        data.foto_cedula || null,
+        data.foto_rif || null
       ];
 
       const res = await fetch(`https://${HOST}/sql`, {
