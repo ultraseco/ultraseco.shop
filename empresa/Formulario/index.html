@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Trabajo - Ultra Seco</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../images/logo.png">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo.png" alt="Ultra Seco Logo" class="logo">
+            <h1>Ficha de Trabajo</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-header">
+            <h2>Postulación para Equipo de Ventas / Distribución</h2>
+            <p class="subtitle">Únete al equipo líder en control de humedad</p>
+        </div>
+
+        <form id="employmentForm">
+            <!-- I. Información Personal y de Contacto -->
+            <section>
+                <h3><i class="fa-solid fa-user"></i> I. Información Personal y de Contacto</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombres_completos">Nombres Completos</label>
+                        <input type="text" id="nombres_completos" name="nombres_completos" required placeholder="Ej: Juan Alberto">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos_completos">Apellidos Completos</label>
+                        <input type="text" id="apellidos_completos" name="apellidos_completos" required placeholder="Ej: Pérez Rodríguez">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cedula_identidad">Cédula de Identidad</label>
+                        <input type="text" id="cedula_identidad" name="cedula_identidad" required placeholder="V-12345678">
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nacionalidad">Nacionalidad</label>
+                        <input type="text" id="nacionalidad" name="nacionalidad" required placeholder="Ej: Venezolana">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono_movil">Teléfono Móvil (WhatsApp)</label>
+                        <input type="tel" id="telefono_movil" name="telefono_movil" required placeholder="0414-1234567">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo_electronico">Correo Electrónico</label>
+                    <input type="email" id="correo_electronico" name="correo_electronico" required placeholder="usuario@ejemplo.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="domicilio">Domicilio / Dirección de Residencia</label>
+                    <textarea id="domicilio" name="domicilio" required placeholder="Dirección detallada"></textarea>
+                </div>
+
+                <div class="form-row" style="align-items: center; gap: 20px;">
+                    <div class="checkbox-group" style="flex: 1;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="vehiculo_propio" name="vehiculo_propio" onchange="toggleVehiculoInfo()"> Tiene vehículo propio
+                        </label>
+                    </div>
+                    <div id="vehiculo_info" class="form-group" style="display: none; flex: 2; margin-bottom: 0;">
+                        <input type="text" id="vehiculo_modelo_year" name="vehiculo_modelo_year" placeholder="Modelo y Año del vehículo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- II. Perfil Comercial y Experiencia -->
+            <section>
+                <h3><i class="fa-solid fa-briefcase"></i> II. Perfil Comercial y Experiencia</h3>
+                <div class="form-group">
+                    <label for="experiencia_ferretera">¿Posee experiencia en el ramo ferretero o construcción?</label>
+                    <textarea id="experiencia_ferretera" name="experiencia_ferretera" placeholder="Detalle años y empresas si aplica"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="clientes_principales">¿Maneja actualmente una cartera de clientes?</label>
+                    <textarea id="clientes_principales" name="clientes_principales" placeholder="Mencione el tipo de clientes que atiende"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="volumen_facturacion">¿A cuánto asciende su volumen de facturación promedio mensual?</label>
+                    <input type="text" id="volumen_facturacion" name="volumen_facturacion" placeholder="Opcional">
+                </div>
+            </section>
+
+            <!-- III. Referencias Personales -->
+            <section>
+                <h3><i class="fa-solid fa-users"></i> III. Referencias Personales</h3>
+                <div class="reference-container">
+                    <div class="ref-item">
+                        <label>Referencia 1</label>
+                        <input type="text" name="referencia_1_nombre" placeholder="Nombre completo">
+                        <input type="tel" name="referencia_1_telefono" placeholder="Teléfono">
+                        <input type="text" name="referencia_1_relacion" placeholder="Relación (Amigo, Ex-jefe, etc)">
+                    </div>
+                    <div class="ref-item">
+                        <label>Referencia 2</label>
+                        <input type="text" name="referencia_2_nombre" placeholder="Nombre completo">
+                        <input type="tel" name="referencia_2_telefono" placeholder="Teléfono">
+                        <input type="text" name="referencia_2_relacion" placeholder="Relación">
+                    </div>
+                </div>
+            </section>
+
+            <button type="submit" id="submitBtn" class="btn-submit">
+                <i class="fa-solid fa-paper-plane"></i> Enviar Solicitud
+            </button>
+        </form>
+
+        <div id="message" class="message"></div>
+    </main>
+
+    <script>
+        function toggleVehiculoInfo() {
+            const check = document.getElementById('vehiculo_propio');
+            const info = document.getElementById('vehiculo_info');
+            info.style.display = check.checked ? 'block' : 'none';
+        }
+
+        // URL del Cloudflare Worker configurado para Neon
+        const WORKER_URL = 'https://formulario-ultraseco.workthingstesting.workers.dev/';
+
+        document.getElementById('employmentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando solicitud...';
+
+            const get = id => (document.getElementById(id) || {}).value || '';
+            const getN = name => (document.querySelector(`[name="${name}"]`) || {}).value || '';
+
+            const formData = {
+                nombres_completos: get('nombres_completos'),
+                apellidos_completos: get('apellidos_completos'),
+                cedula_identidad: get('cedula_identidad'),
+                fecha_nacimiento: get('fecha_nacimiento'),
+                nacionalidad: get('nacionalidad'),
+                domicilio: get('domicilio'),
+                telefono_movil: get('telefono_movil'),
+                correo_electronico: get('correo_electronico'),
+                vehiculo_propio: document.getElementById('vehiculo_propio').checked,
+                vehiculo_modelo_year: get('vehiculo_modelo_year'),
+                experiencia_ferretera: get('experiencia_ferretera'),
+                clientes_principales: get('clientes_principales'),
+                volumen_facturacion: get('volumen_facturacion'),
+                referencia_1_nombre: getN('referencia_1_nombre'),
+                referencia_1_telefono: getN('referencia_1_telefono'),
+                referencia_1_relacion: getN('referencia_1_relacion'),
+                referencia_2_nombre: getN('referencia_2_nombre'),
+                referencia_2_telefono: getN('referencia_2_telefono'),
+                referencia_2_relacion: getN('referencia_2_relacion')
+            };
+
+            const msg = [
+                '🟦 *NUEVA FICHA DE TRABAJO*',
+                `• Aspirante: ${formData.nombres_completos} ${formData.apellidos_completos}`,
+                `• Cédula: ${formData.cedula_identidad}`,
+                `• Teléfono: ${formData.telefono_movil}`
+            ].join('\n');
+            const waUrl = `https://wa.me/584146023797?text=${encodeURIComponent(msg)}`;
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        messageDiv.className = 'message success';
+                        messageDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> Registrado en Base de Datos. Redirigiendo...';
+                    }
+                } else {
+                    const errorData = await response.json();
+                    alert('Error al guardar en la base de datos: ' + (errorData.error || 'Error desconocido'));
+                    console.error('Error detallado:', errorData);
+                    messageDiv.className = 'message warning';
+                    messageDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Guardado solo en WhatsApp por ahora.';
+                }
+            } catch (error) {
+                console.error('Error DB:', error);
+                messageDiv.className = 'message warning';
+                messageDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Guardado solo en WhatsApp por ahora.';
+            }
+
+            setTimeout(() => {
+                e.target.reset();
+                document.getElementById('vehiculo_info').style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Solicitud';
+                window.open(waUrl, '_blank');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
