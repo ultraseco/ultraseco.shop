@@ -356,8 +356,11 @@
                             <span class="info-value">${record.experiencia_ferretera || 'No especificada'}</span>
                         </div>
                         <div class="info-item full-width">
-                            <span class="info-label" style="color: var(--ultra-blue)">Cartera de Clientes</span>
-                            <span class="info-value">${record.clientes_principales || 'No especificada'}</span>
+                            <span class="info-label" style="color: var(--ultra-blue)">Cartera de Clientes / Cantidad</span>
+                            <span class="info-value">
+                                ${record.clientes_principales || 'No especificada'}
+                                ${record.cantidad_clientes ? `<strong>(Cant: ${record.cantidad_clientes})</strong>` : ''}
+                            </span>
                         </div>
                         
                         <div class="info-item full-width" style="margin-top: 10px;">

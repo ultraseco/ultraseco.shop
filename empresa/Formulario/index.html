@@ -103,9 +103,15 @@
                     <label for="experiencia_ferretera">¿Posee experiencia en el ramo ferretero o construcción?</label>
                     <textarea id="experiencia_ferretera" name="experiencia_ferretera" placeholder="Detalle años y empresas si aplica"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="clientes_principales">¿Maneja actualmente una cartera de clientes?</label>
-                    <textarea id="clientes_principales" name="clientes_principales" placeholder="Mencione el tipo de clientes que atiende"></textarea>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientes_principales">¿Maneja actualmente una cartera de clientes?</label>
+                        <input type="text" id="clientes_principales" name="clientes_principales" placeholder="Tipo de clientes">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad_clientes">Cant. de clientes potenciales</label>
+                        <input type="number" id="cantidad_clientes" name="cantidad_clientes" placeholder="Ej: 50" min="0">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="volumen_facturacion">¿A cuánto asciende su volumen de facturación promedio mensual?</label>
@@ -218,6 +224,7 @@
                 zona_ventas: get('zona_ventas'),
                 experiencia_ferretera: get('experiencia_ferretera'),
                 clientes_principales: get('clientes_principales'),
+                cantidad_clientes: get('cantidad_clientes'),
                 volumen_facturacion: get('volumen_facturacion'),
                 referencia_1_nombre: getN('referencia_1_nombre'),
                 referencia_1_telefono: getN('referencia_1_telefono'),

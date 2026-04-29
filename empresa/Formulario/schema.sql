@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS solicitudes_empleo (
     -- II. Perfil Comercial y Experiencia
     experiencia_ferretera TEXT,
     clientes_principales TEXT,
+    cantidad_clientes INTEGER,
     volumen_facturacion TEXT,
     
     -- III. Referencias Personales
