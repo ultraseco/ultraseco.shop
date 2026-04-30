@@ -3,7 +3,7 @@
 
 [build]
   publish = "."
-  command = "echo 'No build required'"
+  command = "npm install"
 
 # 1. Redirecciones
 
