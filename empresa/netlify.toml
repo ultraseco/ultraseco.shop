@@ -21,6 +21,13 @@
   status = 301
   force = true
 
+# Redirigir API a Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
 # Manejo de 404 (opcional, redirige rutas no encontradas a la home)
 [[redirects]]
   from = "/*"
