@@ -21,8 +21,8 @@
         }
 
         try {
-            // Intentar varios paths posibles para el JSON
-            const paths = [DATA_SOURCE, 'data/products.json', '../empresa/data/products.json'];
+            // Intentar varios paths posibles, priorizando la API en vivo
+            const paths = ['/api/products', DATA_SOURCE, 'data/products.json', '../empresa/data/products.json'];
             let products = null;
 
             for (const path of paths) {

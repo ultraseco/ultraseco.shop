@@ -3,7 +3,8 @@
 
 [build]
   publish = "."
-  command = "echo 'No build required'"
+  command = "cd empresa && npm install"
+  functions = "empresa/netlify/functions"
 
 # 1. Redirecciones
 
@@ -19,6 +20,13 @@
   from = "/index.html"
   to = "/empresa/"
   status = 301
+  force = true
+
+# Redirigir API a Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
   force = true
 
 # Manejo de 404 (opcional, redirige rutas no encontradas a la home)
