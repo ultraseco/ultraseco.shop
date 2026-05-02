@@ -13,10 +13,10 @@ window.products = [
         link: 'interiores.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 13.99, sku: 'US-INT-1L' },
+            { label: '1 Litro', price: 15.99, sku: 'US-INT-1L' },
             { label: '1 Litro (Atomizador)', price: 14.99, sku: 'US-INT-1L-ATOM' },
-            { label: 'Galón (3.785L)', price: 38.00, sku: 'US-INT-GAL' },
-            { label: 'Cuñete (18L)', price: 170.00, sku: 'US-INT-CUN' },
+            { label: 'Galón (3.785L)', price: 43.00, sku: 'US-INT-GAL' },
+            { label: 'Cuñete (18L)', price: 194.00, sku: 'US-INT-CUN' },
         ]
     },
     {
@@ -28,10 +28,10 @@ window.products = [
         link: 'exteriores.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 16.99, sku: 'US-EXT-1L' },
+            { label: '1 Litro', price: 19.50, sku: 'US-EXT-1L' },
             { label: '1 Litro (Atomizador)', price: 17.99, sku: 'US-EXT-1L-ATOM' },
-            { label: 'Galón (3.785L)', price: 48.00, sku: 'US-EXT-GAL' },
-            { label: 'Cuñete (18L)', price: 217.50, sku: 'US-EXT-CUN' },
+            { label: 'Galón (3.785L)', price: 54.00, sku: 'US-EXT-GAL' },
+            { label: 'Cuñete (18L)', price: 250.00, sku: 'US-EXT-CUN' },
         ]
     },
     {
@@ -43,9 +43,9 @@ window.products = [
         link: 'fortificador.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 19.00, sku: 'US-FORT-1L' },
-            { label: 'Galón', price: 52.00, sku: 'US-FORT-GAL' },
-            { label: 'Cuñete', price: 254.50, sku: 'US-FORT-CUN' },
+            { label: '1 Litro', price: 21.00, sku: 'US-FORT-1L' },
+            { label: 'Galón', price: 57.00, sku: 'US-FORT-GAL' },
+            { label: 'Cuñete', price: 270.00, sku: 'US-FORT-CUN' },
         ]
     },
     {
@@ -57,7 +57,7 @@ window.products = [
         link: 'pintura.html',
         type: 'retail_wholesale',
         options: [
-            { label: 'Galón', price: 34.00, sku: 'PINT-GAL' },
+            { label: 'Galón', price: 37.00, sku: 'PINT-GAL' },
         ]
     },
     {
@@ -81,8 +81,8 @@ window.products = [
         link: 'estuco.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1/4 Galón', price: 6.40, sku: 'ESTUCO-1/4' },
-            { label: 'Galón', price: 19.00, sku: 'ESTUCO-GAL' },
+            { label: '1/4 Galón', price: 7.50, sku: 'ESTUCO-1/4' },
+            { label: 'Galón', price: 22.00, sku: 'ESTUCO-GAL' },
         ]
     },
     {
@@ -94,7 +94,7 @@ window.products = [
         link: 'nano-aditivo.html',
         type: 'retail_wholesale',
         options: [
-            { label: '600gr', price: 15.00, sku: 'ADITIVO-600G' }
+            { label: '500gr', price: 22.00, sku: 'ADITIVO-500G' }
         ]
     },
     {
@@ -118,7 +118,7 @@ window.products = [
         link: 'champu.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 12.00, sku: 'CHAMPU-1L' },
+            { label: '1 Litro', price: 15.00, sku: 'CHAMPU-1L' },
             { label: 'Galón', price: 35.00, sku: 'CHAMPU-GAL' },
         ]
     },

@@ -90,6 +90,8 @@
     function syncUI(products) {
         if (!products || !Array.isArray(products)) return;
 
+        const clean = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+
         console.log('🎨 Actualizando interfaz con los siguientes precios:');
         console.table(products.map(p => ({
             Nombre: p.nombre,
@@ -122,11 +124,18 @@
                 options.forEach(opt => {
                     const optionText = opt.textContent || opt.innerText;
                     // Buscar coincidencia por presentación en el texto de la opción o valor
-                    const product = products.find(p => 
-                        p.nombre.toLowerCase().includes(productName.toLowerCase()) && 
-                        (optionText.toLowerCase().includes(p.presentacion.toLowerCase()) || 
-                         opt.value.toLowerCase().includes(p.presentacion.toLowerCase()))
-                    );
+                    const product = products.find(p => {
+                        const dbName = clean(p.nombre);
+                        const targetName = clean(productName);
+                        const dbPres = clean(p.presentacion);
+                        const targetPres = clean(optionText);
+                        const targetValue = clean(opt.value);
+
+                        return dbName.includes(targetName) && 
+                               (targetPres.includes(dbPres) || 
+                                dbPres.includes(targetPres.split(' ')[0]) ||
+                                targetValue.includes(dbPres));
+                    });
                     
                     if (product) {
                         const price = parseFloat(product.precio).toFixed(2);
@@ -148,10 +157,13 @@
                 const priceElements = el.parentElement.querySelectorAll('.price, [data-price], .product-price');
                 priceElements.forEach(priceEl => {
                     const pres = priceEl.getAttribute('data-sync-pres') || '';
-                    const product = products.find(p => 
-                        p.nombre.toLowerCase().includes(productName.toLowerCase()) && 
-                        (pres ? p.presentacion.toLowerCase().includes(pres.toLowerCase()) : true)
-                    );
+                    const product = products.find(p => {
+                        const dbName = clean(p.nombre);
+                        const targetName = clean(productName);
+                        const dbPres = clean(p.presentacion);
+                        const targetPres = clean(pres);
+                        return dbName.includes(targetName) && (!pres || dbPres.includes(targetPres) || targetPres.includes(dbPres));
+                    });
                     if (product) {
                         priceEl.innerHTML = `$${parseFloat(product.precio).toFixed(2)}`;
                         priceEl.setAttribute('data-price', product.precio);
@@ -161,10 +173,13 @@
             // Caso 3: Otros elementos (SPAN, P, etc.)
             else {
                 const presentation = el.getAttribute('data-sync-pres');
-                const product = products.find(p => 
-                    p.nombre.toLowerCase().includes(productName.toLowerCase()) && 
-                    (!presentation || p.presentacion.toLowerCase().includes(presentation.toLowerCase()))
-                );
+                const product = products.find(p => {
+                    const dbName = clean(p.nombre);
+                    const targetName = clean(productName);
+                    const dbPres = clean(p.presentacion);
+                    const targetPres = clean(presentation);
+                    return dbName.includes(targetName) && (!presentation || dbPres.includes(targetPres) || targetPres.includes(dbPres));
+                });
                 if (product) {
                     let value = product.precio;
                     if (el.innerHTML.includes('Ref.')) {
