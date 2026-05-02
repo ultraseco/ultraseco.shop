@@ -24,7 +24,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="config.js"></script>
 
-    <!-- Shopify Buy Button SDK -->
     
 
     <style>
@@ -451,7 +450,7 @@
                 <!-- Product Controls -->
                 <div class="product-controls producto-contenedor" style="margin-top: 2rem; max-width: 400px;">
                     <label for="opt-fortificador" style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
-                    <select id="opt-fortificador" onchange="updatePrice('fortificador')"
+                    <select data-sync-product="Fortificador de Superficies" id="opt-fortificador" onchange="updatePrice('fortificador')"
                         style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
                         <option value="0" data-price="18.50">Litro - Ref. 18.50</option>
                         <option value="1" data-price="55.00">Galón (3.785L) - Ref. 55.00</option>
@@ -464,7 +463,6 @@
                         <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">Ref. 18.50</span>
                     </div>
 
-                    <!-- Shopify Buy Button Container -->
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem;"><i class="fa-solid fa-cart-plus"></i> Agregar al Carrito</button>
                 </div>
 
@@ -687,7 +685,6 @@
     <script src="catalog.js"></script>
     
 
-    <!-- Shopify Integration -->
     
     <script src="script.js"></script>
     <script src="mobile-menu.js"></script>

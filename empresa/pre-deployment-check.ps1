@@ -47,7 +47,7 @@ Write-Host "`n🎨 Archivos CSS/JS:" -ForegroundColor Yellow
 Test-RequiredFile "styles.css" "styles.css - Estilos principales"
 Test-RequiredFile "script.js" "script.js - JavaScript principal"
 Test-RequiredFile "catalog.js" "catalog.js - Catálogo de productos"
-Test-RequiredFile "shopify-integration.js" "shopify-integration.js - Integración Shopify"
+Test-RequiredFile "js/price-sync.js" "js/price-sync.js - Motor de precios Neon"
 
 # Verificar directorios de assets
 Write-Host "`n🖼️  Directorios de Assets:" -ForegroundColor Yellow
@@ -83,26 +83,19 @@ foreach ($page in $productPages) {
     }
 }
 
-# Verificar configuración de Shopify
-Write-Host "`n🛒 Verificación de Shopify:" -ForegroundColor Yellow
-if (Test-Path "shopify-integration.js") {
-    $content = Get-Content "shopify-integration.js" -Raw
+# Verificar sincronización de precios
+Write-Host "`n🛒 Verificación de Precios (Neon):" -ForegroundColor Yellow
+if (Test-Path "js/price-sync.js") {
+    $content = Get-Content "js/price-sync.js" -Raw
     
-    if ($content -match "cx0msw-x8\.myshopify\.com") {
-        Write-Host "[✓] Dominio de Shopify encontrado" -ForegroundColor Green
+    if ($content -match "/api/products") {
+        Write-Host "[✓] Endpoint de API Neon configurado" -ForegroundColor Green
     } else {
-        Write-Host "[!] Verificar dominio de Shopify" -ForegroundColor Yellow
+        Write-Host "[!] Verificar endpoint de API en price-sync.js" -ForegroundColor Yellow
         $script:warnings++
     }
-    
-    if ($content -match "storefrontAccessToken") {
-        Write-Host "[✓] Token de Shopify configurado" -ForegroundColor Green
-    } else {
-        Write-Host "[✗] Token de Shopify NO encontrado" -ForegroundColor Red
-        $script:errors++
-    }
 } else {
-    Write-Host "[✗] shopify-integration.js no encontrado" -ForegroundColor Red
+    Write-Host "[✗] js/price-sync.js no encontrado" -ForegroundColor Red
     $script:errors++
 }
 

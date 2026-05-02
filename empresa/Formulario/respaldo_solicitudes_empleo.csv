@@ -1,0 +1,9 @@
+id,nombres_completos,apellidos_completos,cedula_identidad,fecha_nacimiento,nacionalidad,domicilio,telefono_movil,correo_electronico,vehiculo_propio,vehiculo_modelo_year,experiencia_ferretera,clientes_principales,volumen_facturacion,referencia_1_nombre,referencia_1_telefono,referencia_1_relacion,referencia_2_nombre,referencia_2_telefono,referencia_2_relacion,created_at,estado,zona_ventas,cantidad_clientes
+9,ksgg ijsgjfg,iqsisv ijsbijv,2334345,1988-05-01,venezolano,"jsfv  kshbvifv",75839377,iwfg@wfdb.com,false,"",no,no,"","","","", "", "","",2026-05-02T17:48:50,nuevo,zulia,0
+8,Test Name,Test LastName,V-0000000,1990-01-01,Venezolana,Test Address,0414-0000000,test@test.com,false,"","","","","","","", "", "","",2026-04-29T17:08:27,nuevo,,
+7,sddh,dthefh,346346,1992-05-22,venezolano,"reyhtr rryheyhh rh",365645456,segf@gmail.com,false,"",wdththh,erherh,ejjfdgbedgh,"","","", "", "","",2026-04-29T17:03:47,nuevo,,
+6,dfgh,dfg,645,2026-04-22,venezolana,sdfhsdh,3564467,aserfgdef@sg.com,true,yaris 2008,dbdc,dcgbsd,45456,dghsdgh,447,sdghs,dfghadg,787857,dsfgdcb,2026-04-29T01:05:41,nuevo,,
+5,Verificacion,Final Exitosa,V-Final,,,"",,,false,"","","","","","","", "", "","",2026-04-28T22:47:59,nuevo,,
+4,Debug,Final Test Auth,,,,, , ,false,,,,,"","","", "", "","",2026-04-28T22:47:16,nuevo,,
+3,Final Hope 2,Success,,,,, , ,false,,,,,"","","", "", "","",2026-04-28T22:17:28,nuevo,,
+2,Test Final,MCP,123456,,,, , ,false,,,,,"","","", "", "","",2026-04-28T22:15:01,nuevo,,

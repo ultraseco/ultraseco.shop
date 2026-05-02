@@ -2,26 +2,32 @@
  * Cloudflare Worker — Formulario Ultra Seco → Neon DB
  * VERSIÓN DEFINITIVA Y VALIDADA
  */
-const ALLOWED_ORIGINS = ['https://ultraseco.github.io', 'http://localhost:3000', 'http://127.0.0.1:5500'];
+const ALLOWED_ORIGINS = ['https://ultraseco.github.io', 'https://ultraseco.shop', 'https://www.ultraseco.shop', 'http://ultraseco.shop', 'http://www.ultraseco.shop', 'http://localhost:3000', 'http://127.0.0.1:5500', 'http://localhost:8080', 'http://127.0.0.1:8080', 'http://localhost:5500'];
 
-const HOST = "ep-snowy-unit-amlmh4fj.c-5.us-east-1.aws.neon.tech";
-const PASS = "npg_G14qwkDRAoQn"; // API Auth de Neon
-const CONN_STR = `postgresql://neondb_owner:${PASS}@${HOST}/neondb?sslmode=require`;
+const HOST = "ep-little-sound-acmvj9id-pooler.sa-east-1.aws.neon.tech";
+const PASS = "npg_fdsCKZE0T2oI"; // API Auth de Neon
+const CONN_STR = `postgresql://neondb_owner:${PASS}@${HOST}/neondb?sslmode=require&channel_binding=require`;
 
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
+    const isAllowed = ALLOWED_ORIGINS.includes(origin);
+    
     const cors = {
-      'Access-Control-Allow-Origin': origin,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Origin': isAllowed || origin === 'null' || !origin ? origin || '*' : ALLOWED_ORIGINS[0],
+      'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     
+    // Solo bloqueamos si hay un origin explícito que no está en la lista (y no es local)
+    if (origin && origin !== 'null' && !isAllowed && !origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+        return new Response(JSON.stringify({ success: false, error: 'Origin not allowed' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+    }
     if (request.method === 'GET') {
       try {
-        const sql = `SELECT * FROM solicitudes_empleo ORDER BY created_at DESC;`;
+        const sql = `SELECT * FROM postulaciones ORDER BY created_at DESC;`;
         const res = await fetch(`https://${HOST}/sql`, {
           method: 'POST',
           headers: {
@@ -46,7 +52,7 @@ export default {
       const data = await request.json();
       
       const sql = `
-        INSERT INTO solicitudes_empleo (
+        INSERT INTO postulaciones (
           nombres_completos, apellidos_completos, cedula_identidad, fecha_nacimiento,
           nacionalidad, domicilio, telefono_movil, correo_electronico,
           vehiculo_propio, vehiculo_modelo_year, zona_ventas, experiencia_ferretera,

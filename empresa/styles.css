@@ -202,35 +202,7 @@ nav {
     transform: translateY(-10px);
 }
 
-/* Shopify Buy Button Containers */
-.feature-card [id^="shopify-"] {
-    margin-top: 1.5rem;
-    min-height: 120px;
-    display: block !important;
-    width: 100%;
-}
-
-.feature-card [id^="shopify-"] iframe {
-    width: 100% !important;
-    min-height: 120px !important;
-}
-
-/* Force Shopify iframes to have proper height */
-.feature-card [id^="shopify-"] iframe {
-    min-height: 250px !important;
-    height: 250px !important;
-    width: 100% !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Ensure Shopify buttons are visible */
-.shopify-buy__btn {
-    margin: 0.5rem 0 !important;
-    width: 100% !important;
-}
-
+/* feature-card updates */
 .feature-icon {
     font-size: 3rem;
     margin-bottom: 1rem;

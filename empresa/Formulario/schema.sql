@@ -1,5 +1,5 @@
 
-CREATE TABLE IF NOT EXISTS solicitudes_empleo (
+CREATE TABLE IF NOT EXISTS postulaciones (
     id SERIAL PRIMARY KEY,
     -- I. Información Personal y de Contacto
     nombres_completos TEXT NOT NULL,

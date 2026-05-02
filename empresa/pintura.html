@@ -18,7 +18,6 @@
     <title>Pintura Súper Hidrofóbica | Ultra Seco</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Shopify Buy Button SDK -->
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -661,7 +660,7 @@
                                 <label
                                     style="display: block; font-size: 0.7rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.5; text-transform: uppercase;">Calidad
                                     de Selección</label>
-                                <select id="calc-quality" onchange="runCalculator()"
+                                <select data-sync-product="Pintura Súper Hidrofóbica" id="calc-quality" onchange="runCalculator()"
                                     style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-weight: 600;">
                                     <option value="AAA">Línea AAA (+Rendimiento)</option>
                                     <option value="AA">Línea AA (Residencial)</option>
@@ -694,7 +693,7 @@
                         <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 800; color: #0f172a; text-align: center;">Opciones de Compra</h3>
 
                         <label for="opt-pintura" style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: #475569; text-transform: uppercase;">Presentación:</label>
-                        <select id="opt-pintura" onchange="updatePrice('pintura')"
+                        <select data-sync-product="Pintura Súper Hidrofóbica" id="opt-pintura" onchange="updatePrice('pintura')"
                             style="padding: 1rem; border-radius: 8px; width: 100%; margin-bottom: 1.5rem; border: 2px solid #e2e8f0; font-size: 1rem; background: #f8fafc; color: #1e293b; outline: none; transition: border-color 0.2s; cursor: pointer;">
                             <option value="0" data-price="34.00">Galón - Ref. 34.00</option>
                         </select>

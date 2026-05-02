@@ -19,8 +19,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- Shopify Buy Button SDK -->
-    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
 
     <link rel="stylesheet" href="styles.css">
 
@@ -518,16 +516,6 @@
                     </div>
                 </div>
 
-                <!-- Shopify Buy Button Container -->
-                <div class="product-controls" style="margin-top: 2rem; max-width: 500px;">
-                    <div id="shopify-solucion-exterior" style="min-height: 200px;">
-                        <!-- Shopify Buy Button se insertar aqu automticamente -->
-                        <div style="text-align: center; padding: 2rem; color: #64748b;">
-                            <i class="fa-solid fa-spinner fa-spin"
-                                style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
-                            <p>Cargando opciones de compra...</p>
-                        </div>
-                    </div>
                     <p style="font-size: 0.85rem; color: #64748b; margin-top: 1rem; text-align: center;">
                         <i class="fa-solid fa-lock"></i> Pago seguro procesado por Shopify
                     </p>
@@ -1132,10 +1120,10 @@
             if (event.key === 'Enter') sendMessage();
         }
     </script>
-    <script src="shopify-integration.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
     <script src="mobile-menu.js"></script>
+    <script src="empresa/js/price-sync.js"></script>
 </body>
 
 </html>

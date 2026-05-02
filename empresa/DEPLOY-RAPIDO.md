@@ -1,97 +1,48 @@
-# 🚀 Despliegue Rápido - Ultra Seco E-commerce
+# 🚀 Despliegue Rápido - Ultra Seco E-commerce (Arquitectura Autónoma)
 
 ## ✅ Estado Actual: LISTO PARA DEPLOYMENT
 
-**Fecha de verificación:** 2026-01-18  
-**Todos los archivos requeridos:** ✅ Presentes  
-**Configuración de Shopify:** ✅ Configurada  
+**Fecha de verificación:** 2026-05-02
+**Ecosistema:** Standalone (Neon PostgreSQL + Netlify Functions)
+**Dependencias Externas:** ❌ Shopify Eliminado | ✅ Neon Sincronizado
 
 ---
 
-## 🎯 Opción Recomendada: Netlify (Gratis y Fácil)
+## 🎯 Opción Recomendada: Netlify (Funciones + Hosting)
 
-### Paso 1: Crear cuenta en Netlify
-1. Ve a https://app.netlify.com/signup
-2. Regístrate con GitHub, GitLab o email
+### Paso 1: Configurar Base de Datos Neon
+1. Ve a https://neon.tech y crea un proyecto.
+2. Copia tu `DATABASE_URL` (Connection String).
+3. Asegúrate de tener la tabla `productos` con los datos actuales.
 
-### Paso 2: Deploy desde carpeta
-1. Ir a https://app.netlify.com/drop
-2. Arrastrar la carpeta completa `empresa/` al navegador
-3. ¡Listo! Tu sitio estará en vivo en segundos
+### Paso 2: Preparar Proyecto
+1. Asegúrate de que `netlify.toml` esté en la raíz de `/empresa/`.
+2. Verifica que `netlify/functions/products.js` use `@neondatabase/serverless`.
 
-**URL temporal:** Se generará automáticamente (ej: `random-name-123.netlify.app`)
-
-### Paso 3: Configurar dominio personalizado (Opcional)
-1. Ir a Site settings → Domain management
-2. Click en "Add custom domain"
-3. Seguir instrucciones para configurar DNS
-
----
-
-## 🔧 Opción Alternativa: Netlify CLI (Más control)
-
-```powershell
-# 1. Instalar Node.js si no lo tienes
-# Descargar de: https://nodejs.org/
-
-# 2. Instalar Netlify CLI
+### Paso 3: Deploy con Netlify CLI (Recomendado)
+```bash
+# 1. Instalar CLI
 npm install -g netlify-cli
 
-# 3. Login en Netlify
+# 2. Login
 netlify login
 
-# 4. Deploy (desde la carpeta empresa/)
-cd "c:\Users\benha\OneDrive\Desktop\ultra seco ecosistema\empresa"
+# 3. Vincular y configurar variables
+netlify init
+netlify env:set DATABASE_URL "tu_url_de_conexion_neon"
+
+# 4. Desplegar
 netlify deploy --prod
-
-# Cuando pregunte por el directorio, escribe: .
-# (punto = directorio actual)
-```
-
----
-
-## 🌐 Otras Opciones de Hosting
-
-### GitHub Pages (Gratis)
-```powershell
-# 1. Crear repositorio en GitHub
-# 2. Desde la carpeta empresa/:
-git init
-git add .
-git commit -m "Initial deployment"
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/ultra-seco.git
-git push -u origin main
-
-# 3. En GitHub: Settings → Pages → Deploy from branch "main"
-```
-
-**URL:** `https://TU_USUARIO.github.io/ultra-seco/`
-
-### Vercel (Gratis)
-```powershell
-npm install -g vercel
-cd "c:\Users\benha\OneDrive\Desktop\ultra seco ecosistema\empresa"
-vercel --prod
-```
-
-### Firebase Hosting (Gratis hasta cierto límite)
-```powershell
-npm install -g firebase-tools
-firebase login
-firebase init hosting
-firebase deploy
 ```
 
 ---
 
 ## 📋 Checklist Pre-Deployment
 
-Antes de hacer deployment, verificar:
+Antes de hacer deployment, verificar localmente:
 
 ```powershell
-# Ejecutar script de verificación
-cd "c:\Users\benha\OneDrive\Desktop\ultra seco ecosistema\empresa"
+# Ejecutar script de verificación autónoma
 powershell -ExecutionPolicy Bypass -File ".\verify-deployment.ps1"
 ```
 
@@ -99,44 +50,17 @@ powershell -ExecutionPolicy Bypass -File ".\verify-deployment.ps1"
 
 ---
 
-## 🔒 Configuraciones Importantes
+## 🔒 Configuraciones Críticas
 
-### 1. Shopify Configuration
-Archivo: `shopify-integration.js`
+### 1. Variables de Entorno
+En el dashboard de Netlify (Site Settings -> Env Variables):
+- `DATABASE_URL`: URL de conexión a Neon.
 
-```javascript
-const SHOPIFY_CONFIG = {
-    domain: 'cx0msw-x8.myshopify.com',  // ✅ Ya configurado
-    storefrontAccessToken: 'TU_TOKEN'    // ⚠️ Verificar que esté correcto
-};
-```
-
-### 2. URLs en Producción
-Después del deployment, actualizar (si es necesario):
-- Links de Instagram
-- Links de contacto
-- Meta tags de SEO
-- Favicon path
-
----
-
-## 🎨 Archivos Incluidos en Deployment
-
-### Archivos Principales (REQUIRED)
-- ✅ `index.html` - Página principal
-- ✅ `styles.css` - Estilos
-- ✅ `script.js` - JavaScript principal
-- ✅ `catalog.js` - Catálogo de productos
-- ✅ `shopify-integration.js` - Integración Shopify
-
-### Directorios de Assets (REQUIRED)
-- ✅ `images/` - 40 archivos
-- ✅ `assets/` - 3 archivos
-- ✅ `docs/` - 36 archivos (PDFs)
-- ✅ `logo/` - 19 archivos
-
-### Páginas de Productos (OPTIONAL)
-Todas las páginas individuales de productos están incluidas y funcionales.
+### 2. Sincronización de Precios
+El archivo `js/price-sync.js` se encarga de:
+1. Consultar `/api/products` (Netlify Function).
+2. Actualizar precios en tiempo real en el DOM.
+3. Usar el `FALLBACK` local si la base de datos no responde.
 
 ---
 
@@ -144,125 +68,41 @@ Todas las páginas individuales de productos están incluidas y funcionales.
 
 Después de hacer deployment, verificar:
 
-### Funcionalidad del Carrito
-1. [ ] Agregar producto al carrito
-2. [ ] Modificar cantidad
-3. [ ] Eliminar producto
-4. [ ] Botón "Finalizar Compra en Shopify" funciona
-5. [ ] Carrito persiste al recargar página
+### Gestión de Precios
+1. [ ] Los precios se cargan desde Neon (ver consola: "Prices synced from Neon DB").
+2. [ ] Los menús desplegables muestran los precios correctos.
+3. [ ] El fallback local funciona al desconectar internet.
 
-### Navegación General
-6. [ ] Página principal carga correctamente
-7. [ ] Todas las imágenes se ven
-8. [ ] Links internos funcionan
-9. [ ] Botón "Diagnosticar con IA" funciona
-10. [ ] Botón "Explorar Ecosistema" funciona
-
-### Responsive Design
-11. [ ] Versión móvil se ve bien
-12. [ ] Versión tablet se ve bien
-13. [ ] Versión desktop se ve bien
-
-### Performance
-14. [ ] Página carga en < 3 segundos
-15. [ ] No hay errores en consola del navegador (F12)
+### Carrito Autónomo
+4. [ ] Agregar producto al carrito funciona (miCarritoUltraSeco).
+5. [ ] El carrito persiste entre navegaciones.
+6. [ ] La redirección a `carrito.html` es instantánea.
 
 ---
 
 ## 🐛 Troubleshooting Rápido
 
-### El carrito no funciona
+### Los precios no cargan
 ```
-Solución: Verificar que shopify-integration.js se carga correctamente
-Revisar consola del navegador para errores
-```
-
-### Imágenes no cargan
-```
-Solución: Verificar que la carpeta images/ se subió completa
-Revisar rutas en catalog.js
+Solución: Verificar DATABASE_URL en Netlify.
+Revisar logs de funciones en Netlify Dashboard.
+Verificar que la tabla 'productos' existe en Neon.
 ```
 
-### Error 404 en páginas
+### Error de Conexión (CORS)
 ```
-Solución: Configurar redirects en Netlify
-Crear archivo _redirects en la raíz:
-/* /index.html 200
+Solución: El archivo netlify.toml ya maneja los redireccionamientos de /api/*.
+Asegúrate de no usar URLs absolutas en price-sync.js.
 ```
-
-### Checkout de Shopify no abre
-```
-Solución: Verificar SHOPIFY_CONFIG en shopify-integration.js
-Revisar que el token de Storefront API es válido
-```
-
----
-
-## 📊 Después del Deployment
-
-### 1. Configurar Analytics (Opcional)
-```html
-<!-- Agregar a index.html antes de </head> -->
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
-</script>
-```
-
-### 2. Configurar Dominio Personalizado
-Si tienes un dominio (ej: `ultraseco.com`):
-- En tu proveedor de dominio, agregar:
-  - Tipo: CNAME
-  - Host: www
-  - Valor: [tu-sitio].netlify.app
-
-### 3. Habilitar HTTPS
-- Netlify activa HTTPS automáticamente
-- Esperar 24 horas para propagación DNS
-
-### 4. Monitorear Tráfico
-- Netlify Dashboard muestra estadísticas básicas
-- Considerar Google Analytics para más detalles
 
 ---
 
 ## 🎯 URLs de Referencia
 
 - **Netlify Dashboard:** https://app.netlify.com/
-- **Netlify Drop (Deploy rápido):** https://app.netlify.com/drop
-- **Shopify Admin:** https://cx0msw-x8.myshopify.com/admin
-- **Documentación Netlify:** https://docs.netlify.com/
+- **Neon Console:** https://console.neon.tech/
+- **Ultra Seco Admin (Portal):** /portalinterno.html (para gestionar precios)
 
 ---
 
-## ✨ Próximos Pasos Recomendados
-
-Después de deployment exitoso:
-
-1. **SEO:** Agregar meta descriptions personalizadas
-2. **Analytics:** Configurar Google Analytics
-3. **Email:** Configurar email marketing (Mailchimp)
-4. **Chat:** Agregar chat en vivo (Tidio)
-5. **Reviews:** Implementar sistema de reseñas
-6. **Blog:** Considerar agregar sección de blog
-7. **Newsletter:** Formulario de suscripción
-
----
-
-## 🆘 Soporte
-
-Si algo falla:
-1. Revisar consola del navegador (F12)
-2. Revisar logs en Netlify Dashboard
-3. Ejecutar `verify-deployment.ps1` nuevamente
-4. Contactar soporte de Netlify si es necesario
-
----
-
-**¡Tu sitio está listo para el mundo! 🚀✨**
-
-*Última actualización: 2026-01-18*
+**¡Tu ecosistema autónomo está listo para el mundo! 🚀✨**

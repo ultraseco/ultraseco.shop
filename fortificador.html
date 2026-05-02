@@ -13,8 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="config.js"></script>
 
-    <!-- Shopify Buy Button SDK -->
-    <script async src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
 
     <style>
         body {
@@ -460,8 +458,10 @@
                         <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">$18.50</span>
                     </div>
 
-                    <!-- Shopify Buy Button Container -->
-                    <div id="shopify-fortificador" style="margin-top: 1rem;"></div>
+                    <button onclick="addToCartStatic('fortificador')"
+                        class="bg-ultra-blue text-white w-full py-3 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-md mt-2">
+                        <i class="fa-solid fa-cart-plus mr-2"></i> Agregar al Carrito
+                    </button>
                 </div>
 
                 <!-- Podcast -->
@@ -682,9 +682,8 @@
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
 
-    <!-- Shopify Integration -->
-    <script src="shopify-integration.js"></script>
     <script src="mobile-menu.js"></script>
+    <script src="empresa/js/price-sync.js"></script>
 </body>
 
 </html>

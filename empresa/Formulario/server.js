@@ -25,7 +25,7 @@ app.post('/api/solicitud', async (req, res) => {
   const data = req.body;
   
   const query = `
-    INSERT INTO solicitudes_empleo (
+    INSERT INTO postulaciones (
       nombres_completos, apellidos_completos, cedula_identidad, fecha_nacimiento, 
       nacionalidad, domicilio, telefono_movil, correo_electronico, 
       vehiculo_propio, vehiculo_modelo_year, experiencia_ferretera, 

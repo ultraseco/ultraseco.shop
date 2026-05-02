@@ -19,7 +19,7 @@ else {
 
 # Check CSS/JS files
 Write-Host "`nChecking CSS/JS files..."
-$requiredFiles = @("styles.css", "script.js", "catalog.js", "shopify-integration.js")
+$requiredFiles = @("styles.css", "script.js", "catalog.js", "js/price-sync.js")
 foreach ($file in $requiredFiles) {
     if (Test-Path $file) {
         Write-Host "[OK] $file" -ForegroundColor Green
@@ -44,15 +44,15 @@ foreach ($dir in $requiredDirs) {
     }
 }
 
-# Check Shopify configuration
-Write-Host "`nChecking Shopify configuration..."
-if (Test-Path "shopify-integration.js") {
-    $content = Get-Content "shopify-integration.js" -Raw
-    if ($content -match "cx0msw-x8") {
-        Write-Host "[OK] Shopify domain configured" -ForegroundColor Green
+# Check Neon configuration
+Write-Host "`nChecking Neon configuration..."
+if (Test-Path "js/price-sync.js") {
+    $content = Get-Content "js/price-sync.js" -Raw
+    if ($content -match "/api/products") {
+        Write-Host "[OK] Neon API endpoint configured" -ForegroundColor Green
     }
     else {
-        Write-Host "[WARNING] Check Shopify domain" -ForegroundColor Yellow
+        Write-Host "[WARNING] Check Neon API endpoint in price-sync.js" -ForegroundColor Yellow
         $warnings++
     }
 }
@@ -70,4 +70,3 @@ if ($errors -eq 0) {
 else {
     Write-Host "`n[FAILED] Fix errors before deployment!" -ForegroundColor Red
 }
-

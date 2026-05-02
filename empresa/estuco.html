@@ -23,7 +23,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Shopify Buy Button SDK -->
 
     <style>
         :root {
@@ -624,13 +623,12 @@
                 style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 0; overflow: hidden; border-radius: 40px; border: 1px solid #f1f5f9; background: white;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
 
-                    <!-- Shopify Buy Button Container -->
                     <!-- Manual Buy Container -->
                     <div class="product-controls producto-contenedor" style="padding: 3.5rem; border-right: 1px solid #f1f5f9; display: flex; flex-direction: column;">
                         <h2 style="font-size: 2rem; margin-bottom: 2rem; font-weight: 800; color: #0f172a;">Opciones de Compra</h2>
 
                         <label for="opt-estuco" style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: #475569; text-transform: uppercase;">Presentación:</label>
-                        <select id="opt-estuco" onchange="updatePrice('estuco')"
+                        <select data-sync-product="Estuco Súper Hidrofóbico" id="opt-estuco" onchange="updatePrice('estuco')"
                             style="padding: 1rem; border-radius: 8px; width: 100%; margin-bottom: 1.5rem; border: 2px solid #e2e8f0; font-size: 1rem; background: #f8fafc; color: #1e293b; outline: none; transition: border-color 0.2s; cursor: pointer;">
                             <option value="0" data-price="6.40">1/4 Galón - Ref. 6.40</option>
                             <option value="1" data-price="19.00">Galón - Ref. 19.00</option>
@@ -710,7 +708,7 @@
                                 <div>
                                     <label
                                         style="font-size: 0.6rem; opacity: 0.6; display: block; margin-bottom: 0.4rem;">Espesor</label>
-                                    <select id="calc-depth" onchange="runCalculator()"
+                                    <select data-sync-product="Estuco Bloqueador" id="calc-depth" onchange="runCalculator()"
                                         style="width: 100%; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 0.8rem;">
                                         <option value="1">1mm</option>
                                         <option value="2" selected>2mm</option>

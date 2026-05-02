@@ -7,8 +7,6 @@
     <title>Pintura Sper Hidrofbica | Ultra Seco</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Shopify Buy Button SDK -->
-    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -644,15 +642,11 @@
                     <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 2rem; color: var(--dark-navy);">
                         Configura tu pedido</h3>
 
-                    <!-- Shopify Buy Button Container -->
-                    <div id="shopify-pintura-hidrofobica" style="min-height: 300px;">
-                        <!-- Shopify Buy Button se insertar aqu automticamente -->
-                        <div style="text-align: center; padding: 3rem; color: #64748b;">
-                            <i class="fa-solid fa-spinner fa-spin"
-                                style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
-                            <p>Cargando opciones de compra...</p>
-                        </div>
-                    </div>
+                    <button onclick="addToCartStatic('pintura')"
+                        class="bg-ultra-blue text-white w-full py-4 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg mt-4"
+                        style="background-color: var(--primary-vivid);">
+                        <i class="fa-solid fa-cart-plus mr-2"></i> AGREGAR AL CARRITO
+                    </button>
                     <p style="font-size: 0.85rem; color: #64748b; margin-top: 1.5rem; text-align: center;">
                         <i class="fa-solid fa-lock"></i> Pago seguro procesado por Shopify
                     </p>
@@ -737,7 +731,7 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="shopify-integration.js"></script>
+    <script src="empresa/js/price-sync.js"></script>
     <script src="catalog.js"></script>
     <script src="cart-integration.js"></script>
     <script>
@@ -802,6 +796,7 @@
             if (typeof updateCartBadge === 'function') updateCartBadge();
         };
     </script>
+    <script src="empresa/js/price-sync.js"></script>
     <script src="mobile-menu.js"></script>
 </body>
 
