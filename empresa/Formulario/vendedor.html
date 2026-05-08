@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff de Vendedores - Ultra Seco</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../images/logo.png">
+    <style>
+        /* Estilos base compartidos */
+        body {
+            background-color: #f8fafc;
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            background: #475569;
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(29, 78, 216, 0.2);
+        }
+
+        .header-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 2rem 1rem 1rem;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .header-content h1 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 2rem;
+        }
+
+        .header-content h3 {
+            margin: 0;
+            color: #64748b;
+            font-weight: 400;
+            font-size: 1.1rem;
+        }
+
+        .records-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            margin-top: 2rem;
+        }
+
+        /* Estilo Tarjeta */
+        .record-card {
+            background: white;
+            border: 2px solid #10b981; /* Borde verde por defecto para vendedores aprobados */
+            background-color: #f0fdf4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .record-card:hover {
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #d1fae5;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #065f46;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header p {
+            margin: 0.25rem 0 0 0;
+            color: #047857;
+            font-size: 0.9rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #047857;
+            font-size: 0.8rem;
+        }
+
+        .info-value {
+            color: #0f172a;
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #475569;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .tag.blue { background: #dbeafe; color: #1d4ed8; }
+        .tag.green { background: #dcfce7; color: #15803d; }
+        .tag.badge { background: #10b981; color: white; height: fit-content; }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+        
+        .documents-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .documents-container img {
+            max-height: 100px;
+            border-radius: 5px;
+            border: 1px solid #cbd5e1;
+            transition: transform 0.2s;
+        }
+        
+        .documents-container img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header class="header-content">
+        <div class="logo-container" style="display: flex; justify-content: center; margin-bottom: 0.5rem;">
+            <img src="../images/logo.png" alt="Ultra Seco Logo" class="logo" style="max-height: 80px;">
+        </div>
+        <h1>Staff de Vendedores</h1>
+        <h3>Fuerza de ventas UltraSeco</h3>
+        
+        <div class="nav-links">
+            <a href="https://ultraseco.shop" target="_blank" class="nav-link">
+                <i class="fa-solid fa-box-open"></i> Productos
+            </a>
+            <a href="../fuerza.html" class="nav-link">
+                <i class="fa-solid fa-bolt"></i> Fuerza de Ventas
+            </a>
+            <a href="consulta.html" class="nav-link">
+                <i class="fa-solid fa-users-gear"></i> Consultar Postulaciones
+            </a>
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <div id="loading" class="loading">
+            <i class="fa-solid fa-spinner fa-spin"></i> Cargando equipo de ventas...
+        </div>
+
+        <div id="recordsGrid" class="records-grid">
+            <!-- Cards will be injected here -->
+        </div>
+    </main>
+
+    <script>
+        const WORKER_URL = 'https://formulario-ultraseco.workthingstesting.workers.dev/';
+
+        async function fetchRecords() {
+            try {
+                const response = await fetch(WORKER_URL);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Filtrar solo los postulantes que están aprobados
+                    const approvedRecords = result.data.filter(record => record.aprobado === true);
+                    renderRecords(approvedRecords);
+                } else {
+                    document.getElementById('recordsGrid').innerHTML = `<p style="color:red; text-align:center;">Error: ${result.error}</p>`;
+                }
+            } catch (error) {
+                document.getElementById('recordsGrid').innerHTML = `<p style="color:red; text-align:center;">Error de conexión: ${error.message}</p>`;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function renderRecords(records) {
+            const grid = document.getElementById('recordsGrid');
+            grid.innerHTML = '';
+
+            if (records.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #64748b; font-size: 1.1rem;">No hay vendedores aprobados en este momento.</p>';
+                return;
+            }
+
+            records.forEach(record => {
+                const date = new Date(record.created_at).toLocaleDateString('es-VE');
+                const hasCar = record.vehiculo_propio;
+                
+                const card = document.createElement('div');
+                card.className = 'record-card';
+                
+                // Vehículo Tag
+                const carTag = hasCar 
+                    ? `<span class="tag blue"><i class="fa-solid fa-car"></i> Vehículo: ${record.vehiculo_modelo_year || 'Sí'}</span>`
+                    : `<span class="tag"><i class="fa-solid fa-person-walking"></i> Sin Vehículo</span>`;
+                
+                // Info Grid
+                const html = `
+                    <div class="card-header">
+                        <div>
+                            <h4><i class="fa-solid fa-user-check"></i> ${record.nombres_completos} ${record.apellidos_completos}</h4>
+                            <p><i class="fa-regular fa-id-card"></i> ${record.cedula_identidad} | Ingreso: ${date}</p>
+                        </div>
+                        <span class="tag badge"><i class="fa-solid fa-check"></i> Activo</span>
+                    </div>
+                    
+                    <div class="tags">
+                        ${carTag}
+                        <span class="tag green"><i class="fa-brands fa-whatsapp"></i> ${record.telefono_movil}</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Correo</span>
+                            <span class="info-value">${record.correo_electronico || 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nacionalidad / Edad</span>
+                            <span class="info-value">${record.nacionalidad || 'N/A'}</span>
+                        </div>
+                        <div class="info-item full-width">
+                            <span class="info-label">Domicilio</span>
+                            <span class="info-value">${record.domicilio || 'N/A'}</span>
+                        </div>
+                        <div class="info-item full-width" style="margin-top: 10px;">
+                            <span class="info-label">Zona o Región de Ventas Asignada</span>
+                            <span class="info-value" style="font-weight: 600; color: #15803d;">${record.zona_ventas || 'No especificada'}</span>
+                        </div>
+                        <div class="info-item full-width" style="margin-top: 10px;">
+                            <span class="info-label">Experiencia Ferretera</span>
+                            <span class="info-value">${record.experiencia_ferretera || 'No especificada'}</span>
+                        </div>
+                        <div class="info-item full-width">
+                            <span class="info-label">Cartera de Clientes Base</span>
+                            <span class="info-value">
+                                ${record.clientes_principales || 'No especificada'}
+                                ${record.cantidad_clientes ? `<strong>(Aprox: ${record.cantidad_clientes})</strong>` : ''}
+                            </span>
+                        </div>
+                        
+                        <div class="info-item full-width" style="margin-top: 10px;">
+                            <span class="info-label">Contactos de Referencia</span>
+                            <span class="info-value">
+                                1. ${record.referencia_1_nombre || 'N/A'} <span style="color:#64748b">(${record.referencia_1_telefono || ''})</span><br>
+                                2. ${record.referencia_2_nombre || 'N/A'} <span style="color:#64748b">(${record.referencia_2_telefono || ''})</span>
+                            </span>
+                        </div>
+
+                        <div class="info-item full-width" style="margin-top: 10px;">
+                            <span class="info-label">Documentos Personales</span>
+                            <div class="documents-container">
+                                ${record.foto_cedula ? `<a href="${record.foto_cedula}" target="_blank"><img src="${record.foto_cedula}" alt="Cédula"></a>` : '<span style="font-size:0.8rem;color:#666;">Sin Cédula</span>'}
+                                ${record.foto_rif ? `<a href="${record.foto_rif}" target="_blank"><img src="${record.foto_rif}" alt="RIF"></a>` : '<span style="font-size:0.8rem;color:#666;">Sin RIF</span>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                card.innerHTML = html;
+                grid.appendChild(card);
+            });
+        }
+
+        // Cargar registros al iniciar
+        fetchRecords();
+    </script>
+</body>
+</html>
