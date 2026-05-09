@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Administrativo | Ultra Seco</title>
+    
+    <!-- CSS and Tools -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ultra-blue: #2563eb;
+            --ultra-cyan: #06b6d4;
+            --ultra-dark: #1e293b;
+            --ultra-slate: #475569;
+            --ultra-bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ultra-bg);
+            color: var(--ultra-dark);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-color: var(--ultra-blue);
+        }
+
+        .header-gradient {
+            background: linear-gradient(to right, #0f172a, #1e293b);
+        }
+
+        .icon-container {
+            background: linear-gradient(135deg, var(--ultra-blue), var(--ultra-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- PANTALLA DE ACCESO -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center">
+            <img src="images/logo.png" alt="Ultra Seco" class="h-16 mx-auto mb-4">
+            <h2 class="text-2xl font-bold mb-2">Acceso Administrativo</h2>
+            <p class="text-slate-500 mb-6 text-sm">Panel de Gestión Interna</p>
+            <input type="password" id="password-input" placeholder="Introducir clave de acceso"
+                class="w-full p-3 border rounded-lg mb-4 outline-none focus:ring-2 focus:ring-blue-500">
+            <button onclick="checkLogin()"
+                class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Entrar</button>
+            <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Clave incorrecta</p>
+        </div>
+    </div>
+
+    <!-- PANEL PRINCIPAL -->
+    <div id="dashboard" class="hidden flex-1 flex flex-col">
+        <header class="header-gradient text-white shadow-lg p-4 sticky top-0 z-40">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <img src="images/logo.png" alt="Logo" class="h-8 bg-white rounded p-1">
+                    <span class="font-bold text-lg">Portal Administrativo</span>
+                </div>
+                <div class="flex gap-6 items-center">
+                    <nav class="hidden md:flex gap-4">
+                        <a href="index.html" class="hover:text-blue-300 text-sm flex items-center gap-2 transition"><i class="fa fa-home"></i> Inicio</a>
+                        <a href="fuerza.html" class="hover:text-blue-300 text-sm flex items-center gap-2 transition"><i class="fa-solid fa-bolt"></i> Fuerza</a>
+                        <a href="Formulario/consulta.html" class="hover:text-blue-300 text-sm flex items-center gap-2 transition"><i class="fa-solid fa-users-gear"></i> Consultas</a>
+                    </nav>
+                    <button onclick="location.reload()" class="text-sm bg-slate-700 hover:bg-slate-600 px-4 py-1.5 rounded-lg transition border border-slate-600">
+                        <i class="fa-solid fa-right-from-bracket mr-2"></i>Salir
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto p-6 flex-1 flex flex-col justify-center">
+            <div class="max-w-5xl mx-auto w-full">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-extrabold text-slate-800 mb-4">Bienvenido al Ecosistema Administrativo</h1>
+                    <p class="text-slate-600 text-lg">Seleccione la herramienta que desea gestionar hoy.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- CARD 1: CONSULTA DE POSTULACIONES -->
+                    <a href="Formulario/consulta.html" class="glass-card p-8 rounded-3xl flex flex-col items-center text-center group">
+                        <div class="w-20 h-20 mb-6 flex items-center justify-center bg-blue-50 rounded-2xl group-hover:bg-blue-100 transition-colors">
+                            <i class="fa-solid fa-users-gear text-4xl icon-container"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Consultar Postulaciones</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Gestione y apruebe las nuevas solicitudes de vendedores y aliados.</p>
+                        <div class="mt-6 text-blue-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                            Acceder <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+
+                    <!-- CARD 2: VENDEDORES -->
+                    <a href="Formulario/vendedor.html" class="glass-card p-8 rounded-3xl flex flex-col items-center text-center group">
+                        <div class="w-20 h-20 mb-6 flex items-center justify-center bg-green-50 rounded-2xl group-hover:bg-green-100 transition-colors">
+                            <i class="fa-solid fa-id-card-clip text-4xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Staff de Vendedores</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Visualice el listado de vendedores aprobados y activos en el sistema.</p>
+                        <div class="mt-6 text-green-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                            Acceder <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+
+                    <!-- CARD 3: PORTAL INTERNO -->
+                    <a href="portalinterno.html" class="glass-card p-8 rounded-3xl flex flex-col items-center text-center group">
+                        <div class="w-20 h-20 mb-6 flex items-center justify-center bg-purple-50 rounded-2xl group-hover:bg-purple-100 transition-colors">
+                            <i class="fa-solid fa-database text-4xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Portal Interno (DB)</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Control de precios, stock y sincronización directa con la base de datos.</p>
+                        <div class="mt-6 text-purple-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                            Acceder <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="mt-16 bg-slate-800 rounded-2xl p-6 text-white flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-slate-700 p-3 rounded-xl">
+                            <i class="fa-solid fa-shield-check text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">Sesión Segura Activada</p>
+                            <p class="text-slate-400 text-xs">Acceso restringido solo para personal autorizado de Ultra Seco.</p>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-400 italic">
+                        v1.2.0 Build 2024
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="p-6 text-center text-slate-400 text-xs border-t bg-white">
+            &copy; 2024 Ultra Seco - Ecosistema de Gestión Interna. Todos los derechos reservados.
+        </footer>
+    </div>
+
+    <script>
+        function checkLogin() {
+            const pass = document.getElementById('password-input').value;
+            // Usando la misma clave configurada en portal.html
+            if (pass === "admin123") {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                localStorage.setItem('admin_logged_in', 'true');
+            } else {
+                const error = document.getElementById('login-error');
+                error.classList.remove('hidden');
+                setTimeout(() => error.classList.add('hidden'), 3000);
+            }
+        }
+
+        // Permitir entrar con la tecla Enter
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkLogin();
+            }
+        });
+    </script>
+</body>
+</html>
