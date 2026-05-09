@@ -8,6 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="../images/logo.png">
     <style>
+        /* Sobrescribir estilos de style.css para evitar header fixed */
+        header {
+            position: relative !important;
+            padding: 1rem 5% !important;
+            background: white !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            justify-content: flex-start !important;
+            height: auto !important;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        header h1 {
+            color: var(--ultra-dark) !important;
+            margin: 0 0 0 15px !important;
+        }
+
+        main {
+            padding-top: 2rem !important;
+        }
+
         /* Estilos específicos para Consulta */
         .controls-container {
             background: #f8fafc;
