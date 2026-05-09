@@ -51,6 +51,29 @@ export default {
     try {
       const data = await request.json();
       
+      // Manejar acciones administrativas (Aprobar Vendedor)
+      if (data.action === 'update_aprobado') {
+        const sql = `UPDATE postulaciones SET aprobado = $1 WHERE id = $2;`;
+        const params = [data.aprobado === true, data.id];
+        
+        const res = await fetch(`https://${HOST}/sql`, {
+          method: 'POST',
+          headers: {
+            'Neon-Connection-String': CONN_STR,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query: sql, params: params })
+        });
+        
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || "Error al actualizar en Neon");
+        
+        return new Response(JSON.stringify({ success: true }), { 
+          status: 200, 
+          headers: { ...cors, 'Content-Type': 'application/json' } 
+        });
+      }
+
       const sql = `
         INSERT INTO postulaciones (
           nombres_completos, apellidos_completos, cedula_identidad, fecha_nacimiento,
