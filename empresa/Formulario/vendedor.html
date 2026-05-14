@@ -195,6 +195,117 @@
         .documents-container img:hover {
             transform: scale(1.05);
         }
+
+        /* Estilos del Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-card {
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (min-width: 768px) {
+            .modal-card {
+                flex-direction: row;
+                overflow: hidden;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .modal-sidebar {
+            background: #f0fdf4;
+            padding: 2.5rem 2rem;
+            border-bottom: 1px solid #d1fae5;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .modal-sidebar {
+                width: 320px;
+                border-bottom: none;
+                border-right: 1px solid #d1fae5;
+                overflow-y: auto;
+            }
+        }
+
+        .modal-content {
+            padding: 2.5rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .record-card {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -231,8 +342,12 @@
         </div>
     </main>
 
+    <!-- Modal Container -->
+    <div id="sellerModal" class="modal-overlay" onclick="closeModal()"></div>
+
     <script>
         const WORKER_URL = 'https://formulario-ultraseco.workthingstesting.workers.dev/';
+        let allRecords = [];
 
         async function fetchRecords() {
             try {
@@ -241,8 +356,8 @@
                 
                 if (result.success) {
                     // Filtrar solo los postulantes que están aprobados
-                    const approvedRecords = result.data.filter(record => record.aprobado === true);
-                    renderRecords(approvedRecords);
+                    allRecords = result.data.filter(record => record.aprobado === true);
+                    renderRecords(allRecords);
                 } else {
                     document.getElementById('recordsGrid').innerHTML = `<p style="color:red; text-align:center;">Error: ${result.error}</p>`;
                 }
@@ -262,19 +377,20 @@
                 return;
             }
 
-            records.forEach(record => {
+            records.forEach((record, index) => {
                 const date = new Date(record.created_at).toLocaleDateString('es-VE');
                 const hasCar = record.vehiculo_propio;
                 
                 const card = document.createElement('div');
                 card.className = 'record-card';
+                card.onclick = () => openModal(index);
                 
                 // Vehículo Tag
                 const carTag = hasCar 
                     ? `<span class="tag blue"><i class="fa-solid fa-car"></i> Vehículo: ${record.vehiculo_modelo_year || 'Sí'}</span>`
                     : `<span class="tag"><i class="fa-solid fa-person-walking"></i> Sin Vehículo</span>`;
                 
-                // Info Grid
+                // Info Grid (Resumida para la tarjeta vertical)
                 const html = `
                     <div class="card-header">
                         <div>
@@ -317,28 +433,132 @@
                                 ${record.cantidad_clientes ? `<strong>(Aprox: ${record.cantidad_clientes})</strong>` : ''}
                             </span>
                         </div>
-                        
-                        <div class="info-item full-width" style="margin-top: 10px;">
-                            <span class="info-label">Contactos de Referencia</span>
-                            <span class="info-value">
-                                1. ${record.referencia_1_nombre || 'N/A'} <span style="color:#64748b">(${record.referencia_1_telefono || ''})</span><br>
-                                2. ${record.referencia_2_nombre || 'N/A'} <span style="color:#64748b">(${record.referencia_2_telefono || ''})</span>
-                            </span>
-                        </div>
-
-                        <div class="info-item full-width" style="margin-top: 10px;">
-                            <span class="info-label">Documentos Personales</span>
-                            <div class="documents-container">
-                                ${record.foto_cedula ? `<a href="${record.foto_cedula}" target="_blank"><img src="${record.foto_cedula}" alt="Cédula"></a>` : '<span style="font-size:0.8rem;color:#666;">Sin Cédula</span>'}
-                                ${record.foto_rif ? `<a href="${record.foto_rif}" target="_blank"><img src="${record.foto_rif}" alt="RIF"></a>` : '<span style="font-size:0.8rem;color:#666;">Sin RIF</span>'}
-                            </div>
-                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem; color: #10b981; font-size: 0.9rem; font-weight: 600;">
+                        <i class="fa-solid fa-plus-circle"></i> Ver información detallada
                     </div>
                 `;
                 
                 card.innerHTML = html;
                 grid.appendChild(card);
             });
+        }
+
+        function openModal(index) {
+            const record = allRecords[index];
+            const date = new Date(record.created_at).toLocaleDateString('es-VE');
+            const hasCar = record.vehiculo_propio;
+            
+            const carTag = hasCar 
+                ? `<span class="tag blue"><i class="fa-solid fa-car"></i> Vehículo: ${record.vehiculo_modelo_year || 'Sí'}</span>`
+                : `<span class="tag"><i class="fa-solid fa-person-walking"></i> Sin Vehículo</span>`;
+
+            const modalHtml = `
+                <div class="modal-card" onclick="event.stopPropagation()">
+                    <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div class="modal-sidebar">
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <div style="width: 80px; height: 80px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1rem;">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <h3 style="margin:0; color:#065f46; font-size:1.5rem;">${record.nombres_completos}</h3>
+                            <h3 style="margin:0.25rem 0 0 0; color:#065f46; font-size:1.5rem;">${record.apellidos_completos}</h3>
+                            <p style="margin:0.5rem 0 0 0; color:#047857; font-size: 1.1rem;"><i class="fa-regular fa-id-card"></i> ${record.cedula_identidad}</p>
+                        </div>
+                        
+                        <div class="tags" style="justify-content: center; margin-top: 1rem;">
+                            <span class="tag badge" style="font-size: 0.9rem; padding: 0.4rem 1rem;"><i class="fa-solid fa-check"></i> Vendedor Activo</span>
+                        </div>
+                        <div class="tags" style="justify-content: center;">
+                            ${carTag}
+                            <span class="tag green"><i class="fa-brands fa-whatsapp"></i> ${record.telefono_movil}</span>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #d1fae5; font-size: 0.95rem;">
+                            <div style="margin-bottom: 0.75rem;"><strong><i class="fa-solid fa-calendar-check" style="color: #10b981; width: 20px;"></i> Ingreso:</strong> ${date}</div>
+                            <div style="margin-bottom: 0.75rem;"><strong><i class="fa-solid fa-envelope" style="color: #10b981; width: 20px;"></i> Correo:</strong> <span style="word-break: break-all;">${record.correo_electronico || 'N/A'}</span></div>
+                            <div style="margin-bottom: 0.75rem;"><strong><i class="fa-solid fa-globe" style="color: #10b981; width: 20px;"></i> Nacionalidad/Edad:</strong> ${record.nacionalidad || 'N/A'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-content">
+                        <h4 style="margin:0 0 1.5rem 0; color:#0f172a; border-bottom:2px solid #e2e8f0; padding-bottom:0.75rem; font-size: 1.25rem;"><i class="fa-solid fa-address-card" style="color: #10b981;"></i> Información Detallada</h4>
+                        
+                        <div class="info-grid" style="gap: 1.5rem;">
+                            <div class="info-item full-width">
+                                <span class="info-label" style="font-size: 0.9rem;">Domicilio</span>
+                                <span class="info-value" style="font-size: 1.05rem;">${record.domicilio || 'N/A'}</span>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <span class="info-label" style="font-size: 0.9rem;">Zona o Región de Ventas Asignada</span>
+                                <span class="info-value" style="font-size: 1.1rem; font-weight: 600; color: #15803d; background: #dcfce7; padding: 0.5rem 1rem; border-radius: 8px; display: inline-block; margin-top: 0.25rem;">${record.zona_ventas || 'No especificada'}</span>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <span class="info-label" style="font-size: 0.9rem;">Experiencia Ferretera</span>
+                                <span class="info-value" style="font-size: 1.05rem;">${record.experiencia_ferretera || 'No especificada'}</span>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <span class="info-label" style="font-size: 0.9rem;">Cartera de Clientes Base</span>
+                                <span class="info-value" style="font-size: 1.05rem;">
+                                    ${record.clientes_principales || 'No especificada'}
+                                    ${record.cantidad_clientes ? `<strong style="color: #0f172a; margin-left: 0.5rem;">(Aprox: ${record.cantidad_clientes})</strong>` : ''}
+                                </span>
+                            </div>
+                            
+                            <div class="info-item full-width" style="margin-top: 0.5rem; background: #f8fafc; padding: 1.25rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <span class="info-label" style="font-size: 0.9rem; margin-bottom: 0.5rem; display: block;"><i class="fa-solid fa-users" style="color: #64748b;"></i> Contactos de Referencia</span>
+                                <div class="info-value" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <strong>1.</strong> ${record.referencia_1_nombre || 'N/A'}<br>
+                                        <span style="color:#475569; font-size: 0.95rem;"><i class="fa-solid fa-phone" style="font-size: 0.8rem;"></i> ${record.referencia_1_telefono || 'N/A'}</span>
+                                    </div>
+                                    <div>
+                                        <strong>2.</strong> ${record.referencia_2_nombre || 'N/A'}<br>
+                                        <span style="color:#475569; font-size: 0.95rem;"><i class="fa-solid fa-phone" style="font-size: 0.8rem;"></i> ${record.referencia_2_telefono || 'N/A'}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-item full-width" style="margin-top: 0.5rem;">
+                                <span class="info-label" style="font-size: 0.9rem; margin-bottom: 0.5rem; display: block;"><i class="fa-solid fa-file-lines" style="color: #64748b;"></i> Documentos Personales</span>
+                                <div class="documents-container" style="gap: 1.5rem;">
+                                    ${record.foto_cedula ? `
+                                        <div style="text-align: center;">
+                                            <a href="${record.foto_cedula}" target="_blank"><img src="${record.foto_cedula}" alt="Cédula" style="max-height: 150px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></a>
+                                            <div style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">Cédula de Identidad</div>
+                                        </div>
+                                    ` : '<div style="padding: 1rem; background: #f1f5f9; border-radius: 8px; color:#64748b; font-size: 0.9rem;">Sin Cédula Adjunta</div>'}
+                                    
+                                    ${record.foto_rif ? `
+                                        <div style="text-align: center;">
+                                            <a href="${record.foto_rif}" target="_blank"><img src="${record.foto_rif}" alt="RIF" style="max-height: 150px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></a>
+                                            <div style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">Registro de Información Fiscal (RIF)</div>
+                                        </div>
+                                    ` : '<div style="padding: 1rem; background: #f1f5f9; border-radius: 8px; color:#64748b; font-size: 0.9rem;">Sin RIF Adjunto</div>'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const modalOverlay = document.getElementById('sellerModal');
+            modalOverlay.innerHTML = modalHtml;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modalOverlay = document.getElementById('sellerModal');
+            modalOverlay.classList.remove('active');
+            setTimeout(() => {
+                modalOverlay.innerHTML = '';
+            }, 300);
+            document.body.style.overflow = '';
         }
 
         // Cargar registros al iniciar
