@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trazabilidad - Ultra F3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #f97316; /* orange-500 */
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .industrial-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0,0,0,0.05);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ultra: {
+                            gray: '#1f2937', // gray-800
+                            light: '#f3f4f6', // gray-100
+                            orange: '#f97316', // orange-500
+                            red: '#ef4444', // red-500
+                            green: '#22c55e', // green-500
+                            blue: '#3b82f6' // blue-500
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ultra-light text-ultra-gray min-h-screen">
+    <!-- Navbar / Header -->
+    <header class="bg-ultra-gray text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">UltraSeco</h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Seguridad Industrial</p>
+            </div>
+            <!-- Icon placeholder (could be an SVG logo) -->
+            <svg class="w-8 h-8 text-ultra-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4 pb-24" id="app">
+        <!-- Loading State -->
+        <div id="loading-state" class="flex flex-col items-center justify-center py-20">
+            <div class="spinner mb-4"></div>
+            <p class="text-gray-600 font-medium">Cargando datos del equipo...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden bg-white rounded-lg p-6 text-center industrial-shadow mt-8 border-t-4 border-ultra-red">
+            <svg class="w-16 h-16 text-ultra-red mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Error de Trazabilidad</h2>
+            <p id="error-message" class="text-gray-600 mb-6">No se pudo obtener la información.</p>
+            <button onclick="window.location.reload()" class="bg-ultra-gray text-white px-6 py-3 rounded-lg font-bold w-full uppercase tracking-wide">Intentar de nuevo</button>
+        </div>
+
+        <!-- Data State -->
+        <div id="data-state" class="hidden space-y-6 mt-4">
+            <!-- Header section -->
+            <div class="text-center">
+                <p class="text-sm text-gray-500 uppercase font-semibold mb-1">Modelo: Extintor Ultra F3™</p>
+                <h2 id="ext-id" class="text-4xl font-black text-gray-900 tracking-wider"></h2>
+            </div>
+
+            <!-- Dynamic Banner -->
+            <div id="status-banner" class="rounded-lg p-4 text-center font-bold text-white uppercase tracking-wider industrial-shadow transition-all duration-300">
+                <!-- Content injected via JS -->
+            </div>
+
+            <!-- Specs Table -->
+            <div class="bg-white rounded-lg overflow-hidden industrial-shadow border border-gray-200">
+                <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                    <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wide">Ficha Técnica del Equipo</h3>
+                </div>
+                <div class="divide-y divide-gray-100">
+                    <div class="flex justify-between px-4 py-3">
+                        <span class="text-gray-500 font-medium">Cliente</span>
+                        <span id="ext-client" class="font-semibold text-gray-900 text-right"></span>
+                    </div>
+                    <div class="flex justify-between px-4 py-3">
+                        <span class="text-gray-500 font-medium">Capacidad</span>
+                        <span id="ext-capacity" class="font-semibold text-gray-900"></span>
+                    </div>
+                    <div class="flex justify-between px-4 py-3">
+                        <span class="text-gray-500 font-medium">Última Carga</span>
+                        <span id="ext-last-charge" class="font-semibold text-gray-900"></span>
+                    </div>
+                    <div class="flex justify-between px-4 py-3">
+                        <span class="text-gray-500 font-medium">Vencimiento (COVENIN)</span>
+                        <span id="ext-due-date" class="font-semibold text-gray-900"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Docs Actions -->
+            <div class="grid grid-cols-1 gap-3 mt-4">
+                <a href="#" id="btn-cert" target="_blank" class="flex items-center justify-center space-x-2 bg-white border-2 border-gray-200 text-gray-700 font-bold py-4 px-4 rounded-lg active:bg-gray-50 transition">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Descargar Certificado COVENIN</span>
+                </a>
+                <a href="#" id="btn-msds" target="_blank" class="flex items-center justify-center space-x-2 bg-white border-2 border-gray-200 text-gray-700 font-bold py-4 px-4 rounded-lg active:bg-gray-50 transition">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Ver Ficha Técnica (MSDS)</span>
+                </a>
+            </div>
+
+            <!-- Primary Action Button Container -->
+            <div id="action-container" class="mt-8 hidden">
+                <button id="btn-recarga" class="w-full bg-ultra-red hover:bg-red-600 text-white font-black py-5 px-4 rounded-xl industrial-shadow transform active:scale-95 transition flex flex-col items-center justify-center space-y-1">
+                    <span class="text-lg uppercase tracking-wide">🔴 Autorizar Recarga (1-Click)</span>
+                    <span class="text-xs font-medium opacity-90">Retiro automático con Fletes Garrido</span>
+                </button>
+            </div>
+            
+            <!-- Success Message (hidden by default) -->
+            <div id="success-message" class="hidden mt-8 bg-green-50 border-l-4 border-ultra-green p-4 rounded-r-lg industrial-shadow">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-ultra-green" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-bold text-green-800">¡Recarga Autorizada!</h3>
+                        <p class="text-sm text-green-700 mt-1">Fletes Garrido ha sido notificado para el retiro en tus instalaciones. Recibirás los detalles de la guía por WhatsApp al número registrado.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // CONFIGURACIÓN (Reemplazar con la URL real de tu Cloudflare Worker)
+        const WORKER_API_URL = 'https://trazabilidad-ultraseco.workthingstesting.workers.dev';
+        
+        // Elementos del DOM
+        const elLoading = document.getElementById('loading-state');
+        const elError = document.getElementById('error-state');
+        const elData = document.getElementById('data-state');
+        const elErrorMessage = document.getElementById('error-message');
+        
+        const elStatusBanner = document.getElementById('status-banner');
+        const elActionContainer = document.getElementById('action-container');
+        const btnRecarga = document.getElementById('btn-recarga');
+        const elSuccessMessage = document.getElementById('success-message');
+
+        // Formateador de fechas simple
+        const formatDate = (dateString) => {
+            if (!dateString) return 'N/D';
+            const d = new Date(dateString);
+            return d.toLocaleDateString('es-VE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        };
+
+        // Renderizado del banner
+        const renderStatusBanner = (status) => {
+            elStatusBanner.className = 'rounded-lg p-4 text-center font-bold text-white uppercase tracking-wider industrial-shadow transition-all duration-300';
+            
+            if (['Activo', 'Recargado'].includes(status)) {
+                elStatusBanner.classList.add('bg-ultra-green');
+                elStatusBanner.textContent = 'Equipo Operativo y Vigente';
+            } else if (['Alerta_30', 'Alerta_15', 'Alerta_5', 'Vencido'].includes(status)) {
+                elStatusBanner.classList.add('bg-ultra-red');
+                elStatusBanner.textContent = 'Vencido o Próximo a Vencer (Requiere Recarga)';
+                // Mostrar botón de recarga
+                elActionContainer.classList.remove('hidden');
+            } else if (['Recarga_Autorizada', 'En_Planta'].includes(status)) {
+                elStatusBanner.classList.add('bg-ultra-blue');
+                elStatusBanner.textContent = 'Proceso de Recarga en Curso (Fletes Garrido)';
+                elActionContainer.classList.add('hidden'); // Ocultar si ya está autorizado
+            } else {
+                elStatusBanner.classList.add('bg-gray-500');
+                elStatusBanner.textContent = status.replace(/_/g, ' ');
+            }
+        };
+
+        const showError = (message) => {
+            elLoading.classList.add('hidden');
+            elData.classList.add('hidden');
+            elErrorMessage.textContent = message;
+            elError.classList.remove('hidden');
+        };
+
+        // Lógica principal
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Soportamos ?id= o ?id_qr= por flexibilidad
+            const idQr = urlParams.get('id') || urlParams.get('id_qr');
+
+            if (!idQr) {
+                showError('No se detectó un ID de extintor válido en la URL. Por favor, escanee el código QR físico del equipo nuevamente.');
+                return;
+            }
+
+            try {
+                // GET Fetch al worker
+                const response = await fetch(`${WORKER_API_URL}?id_qr=${idQr}`);
+                
+                if (!response.ok) {
+                    throw new Error(response.status === 404 ? 'Extintor no encontrado en la base de datos.' : 'Error al comunicarse con el servidor.');
+                }
+                
+                const data = await response.json();
+
+                // Poblar los datos en la UI
+                document.getElementById('ext-id').textContent = data.id_qr;
+                document.getElementById('ext-client').textContent = data.nombre_empresa || 'Cliente No Registrado';
+                document.getElementById('ext-capacity').textContent = `${data.capacidad_libras} lbs`;
+                document.getElementById('ext-last-charge').textContent = formatDate(data.fecha_ultima_carga);
+                document.getElementById('ext-due-date').textContent = formatDate(data.fecha_vencimiento);
+                
+                // Enlaces a docs (Si tienes urls reales, usa data.certificado_covenin_url)
+                // Por ahora se deja como '#', pero en un caso real se reemplazaría
+                document.getElementById('btn-cert').href = data.certificado_covenin_url || '#';
+                document.getElementById('btn-msds').href = data.msds_url || '#';
+
+                renderStatusBanner(data.estatus);
+
+                // Configurar lógica del botón POST
+                btnRecarga.addEventListener('click', async () => {
+                    // Deshabilitar botón
+                    btnRecarga.disabled = true;
+                    btnRecarga.classList.add('opacity-50', 'cursor-not-allowed');
+                    btnRecarga.innerHTML = '<span class="text-lg">Procesando...</span>';
+
+                    try {
+                        const postResponse = await fetch(`${WORKER_API_URL}?id_qr=${idQr}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+
+                        if (!postResponse.ok) throw new Error('Falló la autorización');
+
+                        // Cambiar UI al éxito
+                        elActionContainer.classList.add('hidden');
+                        elSuccessMessage.classList.remove('hidden');
+                        renderStatusBanner('Recarga_Autorizada');
+
+                    } catch (err) {
+                        alert('Hubo un error al autorizar la recarga. Por favor intente de nuevo o contacte soporte.');
+                        // Restaurar botón
+                        btnRecarga.disabled = false;
+                        btnRecarga.classList.remove('opacity-50', 'cursor-not-allowed');
+                        btnRecarga.innerHTML = `
+                            <span class="text-lg uppercase tracking-wide">🔴 Autorizar Recarga (1-Click)</span>
+                            <span class="text-xs font-medium opacity-90">Retiro automático con Fletes Garrido</span>
+                        `;
+                    }
+                });
+
+                // Mostrar estado de datos y ocultar loading
+                elLoading.classList.add('hidden');
+                elData.classList.remove('hidden');
+
+            } catch (err) {
+                showError(err.message);
+            }
+        });
+    </script>
+</body>
+</html>

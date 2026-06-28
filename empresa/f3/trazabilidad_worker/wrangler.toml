@@ -1,0 +1,6 @@
+name = "trazabilidad-ultraseco"
+main = "worker.js"
+compatibility_date = "2024-06-28"
+
+[observability]
+enabled = true
