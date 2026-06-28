@@ -36,7 +36,7 @@ export default {
 
         // --- CLIENTES ---
         if (action === 'get_clientes' && request.method === 'GET') {
-            const result = await executeSql(`SELECT id, nombre_empresa, rif_cedula, telefono_whatsapp, direccion_recoleccion, ciudad_estado FROM clientes ORDER BY fecha_registro DESC;`);
+            const result = await executeSql(`SELECT id, nombre_empresa, rif_cedula, telefono_whatsapp, direccion_recoleccion, ciudad_estado FROM clientes ORDER BY nombre_empresa ASC;`);
             return new Response(JSON.stringify(result.rows || []), { headers: { ...cors, 'Content-Type': 'application/json' } });
         }
         
@@ -53,7 +53,7 @@ export default {
             const sql = `
               SELECT e.id_qr, e.capacidad_libras, e.fecha_ultima_carga, e.fecha_vencimiento, e.estatus, c.nombre_empresa 
               FROM extintores e JOIN clientes c ON e.cliente_id = c.id 
-              ORDER BY e.fecha_registro DESC;
+              ORDER BY e.id_qr ASC;
             `;
             const result = await executeSql(sql);
             return new Response(JSON.stringify(result.rows || []), { headers: { ...cors, 'Content-Type': 'application/json' } });
@@ -61,8 +61,8 @@ export default {
         
         if (action === 'create_extintor' && request.method === 'POST') {
             const body = await request.json();
-            const sql = `INSERT INTO extintores (id_qr, cliente_id, capacidad_libras, fecha_ultima_carga, estatus) VALUES ($1,$2,$3,$4,$5) RETURNING id_qr;`;
-            const params = [body.id_qr, body.cliente_id, parseInt(body.capacidad_libras), body.fecha_ultima_carga, body.estatus || 'Activo'];
+            const sql = `INSERT INTO extintores (id_qr, cliente_id, capacidad_libras, fecha_ultima_carga, fecha_vencimiento, estatus) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id_qr;`;
+            const params = [body.id_qr, body.cliente_id, parseInt(body.capacidad_libras), body.fecha_ultima_carga, body.fecha_vencimiento, body.estatus || 'Activo'];
             const result = await executeSql(sql, params);
             return new Response(JSON.stringify({ success: true, id_qr: result.rows[0].id_qr }), { headers: { ...cors, 'Content-Type': 'application/json' } });
         }

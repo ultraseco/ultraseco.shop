@@ -158,17 +158,21 @@
                                 <option value="">Cargando clientes...</option>
                             </select>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Capacidad</label>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Capacidad</label>
                                 <div class="relative">
-                                    <input type="number" id="ext-capacidad" required min="1" value="10" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
-                                    <span class="absolute right-3 top-3.5 text-gray-400 font-bold text-xs">LBS</span>
+                                    <input type="number" id="ext-capacidad" required min="1" value="10" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow text-sm">
+                                    <span class="absolute right-2 top-3.5 text-gray-400 font-bold text-[10px]">LBS</span>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Última Carga</label>
-                                <input type="date" id="ext-fecha" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Última Carga</label>
+                                <input type="date" id="ext-fecha" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Vencimiento</label>
+                                <input type="date" id="ext-vencimiento" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow text-sm">
                             </div>
                         </div>
                         <div>
@@ -365,6 +369,7 @@
                 cliente_id: document.getElementById('ext-cliente').value,
                 capacidad_libras: document.getElementById('ext-capacidad').value,
                 fecha_ultima_carga: document.getElementById('ext-fecha').value,
+                fecha_vencimiento: document.getElementById('ext-vencimiento').value,
                 estatus: document.getElementById('ext-estatus').value
             };
 
@@ -378,6 +383,9 @@
                     e.target.reset();
                     // Set today as default date for next time
                     document.getElementById('ext-fecha').valueAsDate = new Date();
+                    const nextYear = new Date();
+                    nextYear.setFullYear(nextYear.getFullYear() + 1);
+                    document.getElementById('ext-vencimiento').valueAsDate = nextYear;
                     loadExtintores();
                 } else {
                     alert('Error: ' + data.error);
@@ -394,6 +402,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Establecer fecha actual por defecto en el form de extintor
             document.getElementById('ext-fecha').valueAsDate = new Date();
+            const nextYear = new Date();
+            nextYear.setFullYear(nextYear.getFullYear() + 1);
+            document.getElementById('ext-vencimiento').valueAsDate = nextYear;
             // Cargar clientes iniciales
             loadClientes();
         });
