@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Ultra F3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        
+        .industrial-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Ocultar scrollbars para que se vea premium pero siga siendo scrolleable */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .tab-active { border-bottom-color: #f97316 !important; color: #f97316 !important; font-weight: 700; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ultra: {
+                            gray: '#1f2937', 
+                            light: '#f9fafb', 
+                            orange: '#f97316', 
+                            red: '#ef4444', 
+                            green: '#22c55e', 
+                            blue: '#3b82f6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ultra-light text-ultra-gray min-h-screen">
+
+    <!-- Header Principal -->
+    <header class="bg-ultra-gray text-white p-5 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-black tracking-tight">UltraSeco <span class="text-ultra-orange">Admin</span></h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">Panel de Trazabilidad F3</p>
+            </div>
+            <svg class="w-8 h-8 text-ultra-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Navegación por pestañas -->
+        <div class="flex border-b-2 border-gray-200 mb-8 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-active text-gray-500 hover:text-gray-700 py-4 px-6 border-b-4 border-transparent uppercase tracking-wider font-semibold text-sm transition-colors whitespace-nowrap">
+                🏢 Gestión de Clientes
+            </button>
+            <button onclick="switchTab('extintores')" id="tab-extintores" class="text-gray-500 hover:text-gray-700 py-4 px-6 border-b-4 border-transparent uppercase tracking-wider font-semibold text-sm transition-colors whitespace-nowrap">
+                🧯 Gestión de Extintores
+            </button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN: CLIENTES -->
+        <!-- ============================================== -->
+        <div id="section-clientes" class="fade-in grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Columna Izquierda: Formulario -->
+            <div class="lg:col-span-1">
+                <div class="glass-panel rounded-xl p-6 industrial-shadow">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="text-ultra-orange">|</span> Nuevo Cliente</h2>
+                    
+                    <form id="form-cliente" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Nombre de la Empresa</label>
+                            <input type="text" id="cli-nombre" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange focus:border-transparent transition-shadow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">RIF / Cédula</label>
+                            <input type="text" id="cli-rif" required placeholder="Ej: J-12345678-9" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Teléfono (WhatsApp)</label>
+                            <input type="tel" id="cli-telefono" required placeholder="+584120000000" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Dirección de Recolección</label>
+                            <textarea id="cli-direccion" required rows="2" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Ciudad / Estado</label>
+                            <input type="text" id="cli-ciudad" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                        </div>
+                        <button type="submit" id="btn-submit-cliente" class="w-full bg-ultra-gray hover:bg-gray-800 text-white font-bold py-4 rounded-lg uppercase tracking-wider transition-colors mt-2">
+                            Registrar Cliente
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Tabla -->
+            <div class="lg:col-span-2">
+                <div class="glass-panel rounded-xl industrial-shadow overflow-hidden flex flex-col h-full">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-700">Directorio de Clientes</h3>
+                        <button onclick="loadClientes()" class="text-ultra-orange hover:text-orange-700 font-semibold text-sm flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            Actualizar
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto p-0">
+                        <table class="min-w-full divide-y divide-gray-200 text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Empresa</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">RIF/Cédula</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">WhatsApp</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Ubicación</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-clientes" class="bg-white divide-y divide-gray-100">
+                                <tr><td colspan="4" class="px-6 py-8 text-center text-gray-400">Cargando clientes...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN: EXTINTORES -->
+        <!-- ============================================== -->
+        <div id="section-extintores" class="hidden fade-in grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Columna Izquierda: Formulario -->
+            <div class="lg:col-span-1">
+                <div class="glass-panel rounded-xl p-6 industrial-shadow border-t-4 border-ultra-orange">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="text-ultra-orange">|</span> Nuevo Extintor</h2>
+                    
+                    <form id="form-extintor" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">ID Código QR</label>
+                            <input type="text" id="ext-qr" required placeholder="Ej: F3-999" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-mono focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Cliente Asignado</label>
+                            <select id="ext-cliente" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                                <option value="">Cargando clientes...</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Capacidad</label>
+                                <div class="relative">
+                                    <input type="number" id="ext-capacidad" required min="1" value="10" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                                    <span class="absolute right-3 top-3.5 text-gray-400 font-bold text-xs">LBS</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Última Carga</label>
+                                <input type="date" id="ext-fecha" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Estatus Inicial</label>
+                            <select id="ext-estatus" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange transition-shadow">
+                                <option value="Activo">Activo (Vigente)</option>
+                                <option value="Recargado">Recién Recargado</option>
+                                <option value="En_Planta">En Planta Garrido</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" id="btn-submit-extintor" class="w-full bg-ultra-orange hover:bg-orange-600 text-white font-bold py-4 rounded-lg uppercase tracking-wider transition-colors mt-4">
+                            Asignar Extintor
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Tabla -->
+            <div class="lg:col-span-2">
+                <div class="glass-panel rounded-xl industrial-shadow overflow-hidden flex flex-col h-full">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-700">Parque de Extintores F3</h3>
+                        <button onclick="loadExtintores()" class="text-ultra-orange hover:text-orange-700 font-semibold text-sm flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            Actualizar
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto p-0">
+                        <table class="min-w-full divide-y divide-gray-200 text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">ID QR</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Cliente</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Vencimiento</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estatus</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-extintores" class="bg-white divide-y divide-gray-100">
+                                <tr><td colspan="4" class="px-6 py-8 text-center text-gray-400">Cargando extintores...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // CONFIGURACIÓN API
+        const API_URL = 'https://trazabilidad-ultraseco.workthingstesting.workers.dev';
+        
+        let cacheClientes = []; // Para llenar el select rápido
+
+        // ==========================================
+        // UI & NAVEGACIÓN
+        // ==========================================
+        function switchTab(tab) {
+            document.getElementById('tab-clientes').classList.remove('tab-active');
+            document.getElementById('tab-extintores').classList.remove('tab-active');
+            document.getElementById('section-clientes').classList.add('hidden');
+            document.getElementById('section-extintores').classList.add('hidden');
+            
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+
+            if (tab === 'extintores') {
+                updateSelectClientes();
+                if(document.getElementById('tabla-extintores').children.length <= 1) {
+                    loadExtintores();
+                }
+            }
+        }
+
+        // ==========================================
+        // GESTIÓN DE CLIENTES
+        // ==========================================
+        async function loadClientes() {
+            const tbody = document.getElementById('tabla-clientes');
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Cargando...</td></tr>';
+            try {
+                const res = await fetch(`${API_URL}?action=get_clientes`);
+                const data = await res.json();
+                cacheClientes = data; // Guardar en caché para el select
+
+                if(data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-400 font-medium">No hay clientes registrados aún.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(cli => `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap font-bold text-gray-800">${cli.nombre_empresa}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-600">${cli.rif_cedula}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-600">${cli.telefono_whatsapp}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500 text-xs">${cli.ciudad_estado}</td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-red-500">Error al cargar clientes.</td></tr>';
+            }
+        }
+
+        document.getElementById('form-cliente').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-cliente');
+            btn.textContent = 'Guardando...'; btn.disabled = true;
+
+            const payload = {
+                nombre_empresa: document.getElementById('cli-nombre').value,
+                rif_cedula: document.getElementById('cli-rif').value,
+                telefono_whatsapp: document.getElementById('cli-telefono').value,
+                direccion_recoleccion: document.getElementById('cli-direccion').value,
+                ciudad_estado: document.getElementById('cli-ciudad').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}?action=create_cliente`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert('Cliente registrado exitosamente');
+                    e.target.reset();
+                    loadClientes();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error de conexión');
+            }
+            btn.textContent = 'Registrar Cliente'; btn.disabled = false;
+        });
+
+        // ==========================================
+        // GESTIÓN DE EXTINTORES
+        // ==========================================
+        function updateSelectClientes() {
+            const select = document.getElementById('ext-cliente');
+            if (cacheClientes.length === 0) {
+                select.innerHTML = '<option value="">Registra un cliente primero...</option>';
+                return;
+            }
+            select.innerHTML = '<option value="">Seleccione un cliente...</option>' + 
+                cacheClientes.map(c => `<option value="${c.id}">${c.nombre_empresa} (${c.rif_cedula})</option>`).join('');
+        }
+
+        function formatStatus(status) {
+            let color = 'bg-gray-100 text-gray-800';
+            if(['Activo', 'Recargado'].includes(status)) color = 'bg-green-100 text-green-800 border border-green-200';
+            if(['Alerta_30', 'Alerta_15', 'Alerta_5', 'Vencido'].includes(status)) color = 'bg-red-100 text-red-800 border border-red-200';
+            if(['Recarga_Autorizada', 'En_Planta'].includes(status)) color = 'bg-blue-100 text-blue-800 border border-blue-200';
+            return `<span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full uppercase ${color}">${status.replace('_', ' ')}</span>`;
+        }
+
+        async function loadExtintores() {
+            const tbody = document.getElementById('tabla-extintores');
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Cargando...</td></tr>';
+            try {
+                const res = await fetch(`${API_URL}?action=get_extintores`);
+                const data = await res.json();
+
+                if(data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-400 font-medium">No hay extintores registrados aún.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(ext => {
+                    const d = new Date(ext.fecha_vencimiento);
+                    const isAlert = d < new Date(new Date().setMonth(new Date().getMonth() + 1)); // Vence en < 1 mes
+                    const dateClass = isAlert && ext.estatus === 'Activo' ? 'text-red-600 font-bold' : 'text-gray-600';
+                    
+                    return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap font-mono font-bold text-ultra-gray">${ext.id_qr}</td>
+                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-700">${ext.nombre_empresa}<br><span class="text-xs text-gray-400 font-normal">${ext.capacidad_libras} lbs</span></td>
+                        <td class="px-6 py-4 whitespace-nowrap ${dateClass}">${d.toLocaleDateString('es-VE')}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatStatus(ext.estatus)}</td>
+                    </tr>
+                `}).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-red-500">Error al cargar extintores.</td></tr>';
+            }
+        }
+
+        document.getElementById('form-extintor').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-extintor');
+            btn.textContent = 'Guardando...'; btn.disabled = true;
+
+            const payload = {
+                id_qr: document.getElementById('ext-qr').value,
+                cliente_id: document.getElementById('ext-cliente').value,
+                capacidad_libras: document.getElementById('ext-capacidad').value,
+                fecha_ultima_carga: document.getElementById('ext-fecha').value,
+                estatus: document.getElementById('ext-estatus').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}?action=create_extintor`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert('Extintor asignado exitosamente');
+                    e.target.reset();
+                    // Set today as default date for next time
+                    document.getElementById('ext-fecha').valueAsDate = new Date();
+                    loadExtintores();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error de conexión');
+            }
+            btn.textContent = 'Asignar Extintor'; btn.disabled = false;
+        });
+
+        // ==========================================
+        // INICIALIZACIÓN
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Establecer fecha actual por defecto en el form de extintor
+            document.getElementById('ext-fecha').valueAsDate = new Date();
+            // Cargar clientes iniciales
+            loadClientes();
+        });
+    </script>
+</body>
+</html>
