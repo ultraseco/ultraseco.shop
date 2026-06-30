@@ -48,6 +48,21 @@ export default {
             return new Response(JSON.stringify({ success: true, id: result.rows[0].id }), { headers: { ...cors, 'Content-Type': 'application/json' } });
         }
 
+        if (action === 'update_cliente' && request.method === 'POST') {
+            const body = await request.json();
+            const sql = `UPDATE clientes SET nombre_empresa=$1, rif_cedula=$2, telefono_whatsapp=$3, direccion_recoleccion=$4, ciudad_estado=$5 WHERE id=$6;`;
+            const params = [body.nombre_empresa, body.rif_cedula, body.telefono_whatsapp, body.direccion_recoleccion, body.ciudad_estado, body.id];
+            await executeSql(sql, params);
+            return new Response(JSON.stringify({ success: true }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+        }
+
+        if (action === 'delete_cliente' && request.method === 'POST') {
+            const body = await request.json();
+            const sql = `DELETE FROM clientes WHERE id=$1;`;
+            await executeSql(sql, [body.id]);
+            return new Response(JSON.stringify({ success: true }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+        }
+
         // --- EXTINTORES ---
         if (action === 'get_extintores' && request.method === 'GET') {
             const sql = `

@@ -126,10 +126,11 @@
                                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">RIF/Cédula</th>
                                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">WhatsApp</th>
                                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Ubicación</th>
+                                    <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-clientes" class="bg-white divide-y divide-gray-100">
-                                <tr><td colspan="4" class="px-6 py-8 text-center text-gray-400">Cargando clientes...</td></tr>
+                                <tr><td colspan="5" class="px-6 py-8 text-center text-gray-400">Cargando clientes...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -227,6 +228,7 @@
         const API_URL = 'https://trazabilidad-ultraseco.workthingstesting.workers.dev';
         
         let cacheClientes = []; // Para llenar el select rápido
+        let currentEditClienteId = null;
 
         // ==========================================
         // UI & NAVEGACIÓN
@@ -251,16 +253,52 @@
         // ==========================================
         // GESTIÓN DE CLIENTES
         // ==========================================
+        function editCliente(cli) {
+            currentEditClienteId = cli.id;
+            document.getElementById('cli-nombre').value = cli.nombre_empresa;
+            document.getElementById('cli-rif').value = cli.rif_cedula;
+            document.getElementById('cli-telefono').value = cli.telefono_whatsapp;
+            document.getElementById('cli-direccion').value = cli.direccion_recoleccion;
+            document.getElementById('cli-ciudad').value = cli.ciudad_estado;
+            
+            const btn = document.getElementById('btn-submit-cliente');
+            btn.textContent = 'Guardar Cambios';
+            btn.classList.replace('bg-ultra-gray', 'bg-ultra-orange');
+            btn.classList.replace('hover:bg-gray-800', 'hover:bg-orange-600');
+            
+            // Hacer scroll hacia arriba para ver el formulario
+            document.getElementById('form-cliente').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        async function deleteCliente(id) {
+            if(!confirm('¿Está seguro de que desea eliminar este cliente? Esta acción no se puede deshacer y fallará si el cliente tiene extintores asignados.')) return;
+            
+            try {
+                const res = await fetch(`${API_URL}?action=delete_cliente`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id})
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert('Cliente eliminado exitosamente');
+                    loadClientes();
+                } else {
+                    alert('Error: ' + (data.error || 'No se pudo eliminar el cliente'));
+                }
+            } catch (error) {
+                alert('Error de conexión');
+            }
+        }
+
         async function loadClientes() {
             const tbody = document.getElementById('tabla-clientes');
-            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">Cargando...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Cargando...</td></tr>';
             try {
                 const res = await fetch(`${API_URL}?action=get_clientes`);
                 const data = await res.json();
                 cacheClientes = data; // Guardar en caché para el select
 
                 if(data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-400 font-medium">No hay clientes registrados aún.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-400 font-medium">No hay clientes registrados aún.</td></tr>';
                     return;
                 }
                 
@@ -270,10 +308,18 @@
                         <td class="px-6 py-4 whitespace-nowrap text-gray-600">${cli.rif_cedula}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-600">${cli.telefono_whatsapp}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500 text-xs">${cli.ciudad_estado}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button onclick='editCliente(${JSON.stringify(cli).replace(/'/g, "&#39;")})' class="text-blue-600 hover:text-blue-900 mx-2" title="Editar">
+                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </button>
+                            <button onclick="deleteCliente(${cli.id})" class="text-red-600 hover:text-red-900 mx-2" title="Eliminar">
+                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </td>
                     </tr>
                 `).join('');
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-red-500">Error al cargar clientes.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-red-500">Error al cargar clientes.</td></tr>';
             }
         }
 
@@ -290,14 +336,24 @@
                 ciudad_estado: document.getElementById('cli-ciudad').value
             };
 
+            const action = currentEditClienteId ? 'update_cliente' : 'create_cliente';
+            if (currentEditClienteId) payload.id = currentEditClienteId;
+
             try {
-                const res = await fetch(`${API_URL}?action=create_cliente`, {
+                const res = await fetch(`${API_URL}?action=${action}`, {
                     method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if(data.success) {
-                    alert('Cliente registrado exitosamente');
+                    alert(currentEditClienteId ? 'Cliente actualizado exitosamente' : 'Cliente registrado exitosamente');
                     e.target.reset();
+                    
+                    if (currentEditClienteId) {
+                        currentEditClienteId = null;
+                        btn.classList.replace('bg-ultra-orange', 'bg-ultra-gray');
+                        btn.classList.replace('hover:bg-orange-600', 'hover:bg-gray-800');
+                    }
+                    
                     loadClientes();
                 } else {
                     alert('Error: ' + data.error);
@@ -305,7 +361,9 @@
             } catch (error) {
                 alert('Error de conexión');
             }
-            btn.textContent = 'Registrar Cliente'; btn.disabled = false;
+            
+            btn.textContent = currentEditClienteId ? 'Guardar Cambios' : 'Registrar Cliente';
+            btn.disabled = false;
         });
 
         // ==========================================
