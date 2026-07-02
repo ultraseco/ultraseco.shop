@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Registro - Ultra F3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-left-color: #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .industrial-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ultra: {
+                            gray: '#1f2937', // gray-800
+                            light: '#f3f4f6', // gray-100
+                            orange: '#f97316', // orange-500
+                            red: '#ef4444', // red-500
+                            green: '#22c55e', // green-500
+                            blue: '#3b82f6' // blue-500
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ultra-light text-ultra-gray min-h-screen">
+    <!-- Navbar / Header -->
+    <header class="bg-ultra-gray text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">UltraSeco</h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Auto-Registro F3</p>
+            </div>
+            <svg class="w-8 h-8 text-ultra-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4 pb-24" id="app">
+        
+        <div class="bg-white rounded-xl industrial-shadow overflow-hidden border-t-4 border-ultra-orange mb-6">
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-100">
+                <h2 class="font-bold text-gray-800 text-center">Registro de Nuevo Equipo</h2>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-1">Código QR Asignado</p>
+                <div class="font-mono text-2xl font-black text-ultra-orange tracking-widest" id="display-qr">Cargando...</div>
+            </div>
+        </div>
+
+        <!-- PASO 1: VERIFICAR RIF -->
+        <div id="step-1" class="fade-in bg-white rounded-xl p-6 industrial-shadow mb-6">
+            <h3 class="font-bold text-lg mb-2">Paso 1: Identificación</h3>
+            <p class="text-sm text-gray-600 mb-4">Ingrese su RIF o Cédula de Identidad para verificar si ya es cliente nuestro.</p>
+            
+            <form id="form-verify" class="space-y-4">
+                <div>
+                    <input type="text" id="verify-rif" required placeholder="Ej: J-12345678-9 o V-12345678" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange uppercase transition-shadow text-center font-bold tracking-wide">
+                </div>
+                <button type="submit" id="btn-verify" class="w-full bg-ultra-gray hover:bg-gray-800 text-white font-bold py-4 rounded-lg uppercase tracking-wider transition-colors flex justify-center items-center gap-2">
+                    <span>Verificar Cliente</span>
+                    <div id="spinner-verify" class="spinner hidden"></div>
+                </button>
+            </form>
+        </div>
+
+        <!-- PASO 2: FORMULARIO COMPLETO O RESUMIDO -->
+        <div id="step-2" class="hidden fade-in bg-white rounded-xl p-6 industrial-shadow mb-6 border-t-4 border-ultra-gray">
+            <h3 class="font-bold text-lg mb-2">Paso 2: Datos y Asignación</h3>
+            
+            <div id="client-info-box" class="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 hidden">
+                <p class="text-xs text-blue-800 uppercase font-bold tracking-wider mb-1">Cliente Encontrado</p>
+                <p class="font-semibold text-gray-900" id="info-empresa"></p>
+                <p class="text-sm text-gray-600" id="info-rif"></p>
+            </div>
+
+            <form id="form-register" class="space-y-4">
+                <!-- Secciones de Cliente (se ocultan si ya existe) -->
+                <div id="new-client-fields" class="space-y-4">
+                    <p class="text-sm text-ultra-orange font-bold uppercase tracking-wide">Registro de Nuevo Cliente</p>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Nombre / Razón Social</label>
+                        <input type="text" id="reg-nombre" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">RIF / Cédula</label>
+                        <input type="text" id="reg-rif" readonly class="w-full bg-gray-200 border border-gray-200 rounded-lg px-4 py-3 font-bold text-gray-600 cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Teléfono (WhatsApp)</label>
+                        <input type="tel" id="reg-telefono" placeholder="+584120000000" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Dirección Exacta</label>
+                        <textarea id="reg-direccion" rows="2" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Ciudad / Estado</label>
+                        <input type="text" id="reg-ciudad" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange">
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-4 mt-2">
+                    <p class="text-sm text-ultra-orange font-bold uppercase tracking-wide mb-3">Datos del Equipo</p>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Capacidad (LBS)</label>
+                        <select id="reg-capacidad" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ultra-orange font-bold">
+                            <option value="10">10 Libras (Estándar)</option>
+                            <option value="15">15 Libras</option>
+                            <option value="20">20 Libras</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-register" class="w-full bg-ultra-orange hover:bg-orange-600 text-white font-black py-5 rounded-xl uppercase tracking-wider transition-colors mt-6 industrial-shadow flex justify-center items-center gap-2">
+                    <span>Activar Extintor</span>
+                    <div id="spinner-register" class="spinner hidden"></div>
+                </button>
+                <p class="text-[10px] text-center text-gray-400 mt-2">Al activar, el extintor comenzará su ciclo de vigencia de 1 año (COVENIN).</p>
+            </form>
+        </div>
+
+    </main>
+
+    <script>
+        const WORKER_API_URL = 'https://trazabilidad-ultraseco.workthingstesting.workers.dev';
+        
+        let idQr = null;
+        let existingClientId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            idQr = urlParams.get('id_qr') || urlParams.get('id');
+            
+            if (!idQr) {
+                alert("No se ha detectado un código QR válido en el enlace.");
+                document.getElementById('app').innerHTML = '<div class="text-center p-6 bg-red-50 text-red-600 rounded-lg border border-red-200">Error: Enlace inválido. Vuelva a escanear el QR.</div>';
+                return;
+            }
+
+            document.getElementById('display-qr').textContent = idQr;
+        });
+
+        // Paso 1: Verificar RIF
+        document.getElementById('form-verify').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const rifInput = document.getElementById('verify-rif').value.trim().toUpperCase();
+            const btn = document.getElementById('btn-verify');
+            const spinner = document.getElementById('spinner-verify');
+            
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            try {
+                const res = await fetch(`${WORKER_API_URL}?action=check_cliente_by_rif&rif=${encodeURIComponent(rifInput)}`);
+                if (!res.ok) throw new Error('Error de conexión');
+                const data = await res.json();
+
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+
+                if (data.found && data.cliente) {
+                    // Cliente existente
+                    existingClientId = data.cliente.id;
+                    document.getElementById('client-info-box').classList.remove('hidden');
+                    document.getElementById('info-empresa').textContent = data.cliente.nombre_empresa;
+                    document.getElementById('info-rif').textContent = data.cliente.rif_cedula;
+                    
+                    // Ocultar formulario de nuevo cliente y quitar required
+                    const fields = document.getElementById('new-client-fields');
+                    fields.classList.add('hidden');
+                    const inputs = fields.querySelectorAll('input, textarea');
+                    inputs.forEach(i => i.removeAttribute('required'));
+
+                } else {
+                    // Cliente nuevo
+                    existingClientId = null;
+                    document.getElementById('new-client-fields').classList.remove('hidden');
+                    document.getElementById('reg-rif').value = rifInput;
+                    
+                    // Hacer campos obligatorios
+                    ['reg-nombre', 'reg-telefono', 'reg-direccion', 'reg-ciudad'].forEach(id => {
+                        document.getElementById(id).setAttribute('required', 'true');
+                    });
+                }
+
+            } catch (err) {
+                alert("Hubo un error al verificar el RIF. Intente nuevamente.");
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+
+        // Paso 2: Registrar / Activar
+        document.getElementById('form-register').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-register');
+            const spinner = document.getElementById('spinner-register');
+            
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            try {
+                let clienteIdParaExtintor = existingClientId;
+
+                // Si es cliente nuevo, crearlo primero
+                if (!existingClientId) {
+                    const clientPayload = {
+                        nombre_empresa: document.getElementById('reg-nombre').value,
+                        rif_cedula: document.getElementById('reg-rif').value,
+                        telefono_whatsapp: document.getElementById('reg-telefono').value,
+                        direccion_recoleccion: document.getElementById('reg-direccion').value,
+                        ciudad_estado: document.getElementById('reg-ciudad').value
+                    };
+
+                    const cliRes = await fetch(`${WORKER_API_URL}?action=create_cliente`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(clientPayload)
+                    });
+                    
+                    if (!cliRes.ok) throw new Error('Error al crear cliente');
+                    const cliData = await cliRes.json();
+                    
+                    if (!cliData.success || !cliData.id) throw new Error(cliData.error || 'Error al crear cliente');
+                    
+                    clienteIdParaExtintor = cliData.id;
+                }
+
+                // Configurar fechas
+                const fechaHoy = new Date();
+                const fechaVence = new Date();
+                fechaVence.setFullYear(fechaVence.getFullYear() + 1);
+
+                // Formatear a YYYY-MM-DD
+                const fmtDate = (d) => d.toISOString().split('T')[0];
+
+                // Crear Extintor
+                const extPayload = {
+                    id_qr: idQr,
+                    cliente_id: clienteIdParaExtintor,
+                    capacidad_libras: document.getElementById('reg-capacidad').value,
+                    fecha_ultima_carga: fmtDate(fechaHoy),
+                    fecha_vencimiento: fmtDate(fechaVence),
+                    estatus: 'Activo'
+                };
+
+                const extRes = await fetch(`${WORKER_API_URL}?action=create_extintor`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(extPayload)
+                });
+
+                if (!extRes.ok) throw new Error('Error al asignar el extintor');
+                const extData = await extRes.json();
+                
+                if (!extData.success) throw new Error(extData.error || 'Error al asignar el extintor');
+
+                // Éxito, redirigir a la trazabilidad
+                alert('¡Equipo registrado y activado exitosamente!');
+                window.location.href = `trazabilidad/index.html?id_qr=${idQr}`;
+
+            } catch (err) {
+                alert("Ocurrió un error: " + err.message);
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+
+    </script>
+</body>
+</html>

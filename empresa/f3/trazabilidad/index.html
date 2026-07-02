@@ -215,7 +215,12 @@
                 const response = await fetch(`${WORKER_API_URL}?id_qr=${idQr}`);
                 
                 if (!response.ok) {
-                    throw new Error(response.status === 404 ? 'Extintor no encontrado en la base de datos.' : 'Error al comunicarse con el servidor.');
+                    if (response.status === 404) {
+                        // Extintor nuevo (no registrado), vamos al auto-registro
+                        window.location.href = `../autoregistro.html?id_qr=${idQr}`;
+                        return;
+                    }
+                    throw new Error('Error al comunicarse con el servidor.');
                 }
                 
                 const data = await response.json();

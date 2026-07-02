@@ -40,6 +40,19 @@ export default {
             return new Response(JSON.stringify(result.rows || []), { headers: { ...cors, 'Content-Type': 'application/json' } });
         }
         
+        if (action === 'check_cliente_by_rif' && request.method === 'GET') {
+            const rif = url.searchParams.get('rif');
+            if (!rif) return new Response(JSON.stringify({ error: 'Falta parámetro RIF' }), { status: 400, headers: { ...cors, 'Content-Type': 'application/json' } });
+            
+            const sql = `SELECT id, nombre_empresa, rif_cedula, telefono_whatsapp, direccion_recoleccion, ciudad_estado FROM clientes WHERE rif_cedula = $1 LIMIT 1;`;
+            const result = await executeSql(sql, [rif]);
+            
+            if (!result.rows || result.rows.length === 0) {
+                return new Response(JSON.stringify({ found: false }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+            }
+            return new Response(JSON.stringify({ found: true, cliente: result.rows[0] }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+        }
+        
         if (action === 'create_cliente' && request.method === 'POST') {
             const body = await request.json();
             const sql = `INSERT INTO clientes (nombre_empresa, rif_cedula, telefono_whatsapp, direccion_recoleccion, ciudad_estado) VALUES ($1,$2,$3,$4,$5) RETURNING id;`;
