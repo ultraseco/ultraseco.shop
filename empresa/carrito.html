@@ -245,7 +245,7 @@
                                 <div class="text-sm font-bold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full mt-2 border border-emerald-100"
                                     id="cart-total-bs">
                                     <i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span
-                                        class="text-xs font-normal opacity-75 ml-1">(Tasa BCV referencial)</span>
+                                        class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV referencial)</span>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +258,7 @@
                         Envío</h3>
                     <ul class="list-disc ml-5 space-y-3 text-sm text-slate-600">
                         <li><strong>MRW</strong> con cobro en destino</li>
-                        <li><strong>Zoom prepagado</strong> (tasa preferencial desde 3$ x kg)</li>
+                        <li><strong>Zoom</strong> con cobro en destino</li>
                         <li><strong>Fletes Garrido</strong> empresa de transporte privada con salida los miércoles y
                             viernes. Ofrece servicio puerta a puerta costos desde 6$ y un plazo de entrega de 48 a 72hrs
                             hábiles dependiendo del destino. Esta empresa trabaja por rutas y se recomienda para pedidos
@@ -384,46 +384,50 @@
     <script src="mobile-menu.js"></script>
 
     <script>
-        // Variable global para la tasa (valor por defecto por si falla la conexión)
-        let tasaBCV = 471.70;
+        // Variable global para la tasa Dólar BCV (valor por defecto por si falla la conexión)
+        let tasaBCV = 846.50;
         const TIEMPO_CACHE_BCV = 4 * 60 * 60 * 1000; // 4 horas
 
         async function obtenerTasaOficial() {
-            const tasaGuardada = localStorage.getItem('tasaEuroBCVCacheV2');
-            const tiempoGuardado = localStorage.getItem('tasaEuroBCVTimestampV2');
+            // Limpieza preventiva de caché previa basada en Euro
+            localStorage.removeItem('tasaEuroBCVCacheV2');
+            localStorage.removeItem('tasaEuroBCVTimestampV2');
+
+            const tasaGuardada = localStorage.getItem('tasaDolarBCVCache');
+            const tiempoGuardado = localStorage.getItem('tasaDolarBCVTimestamp');
             const ahora = new Date().getTime();
 
             // Si hay caché y tiene menos de 4 horas, usar caché
             if (tasaGuardada && tiempoGuardado && (ahora - tiempoGuardado) < TIEMPO_CACHE_BCV) {
                 tasaBCV = parseFloat(tasaGuardada);
-                console.log("🌊 Ultra Seco - Tasa BCV (Desde Caché V2):", tasaBCV);
+                console.log("🌊 Ultra Seco - Tasa Dólar BCV (Desde Caché):", tasaBCV);
                 renderizarTabla();
                 mostrarInstruccionesPago();
                 return;
             }
 
             try {
-                // Consultamos una API más estable (DolarAPI Venezuela - Modo Euro)
-                const response = await fetch('https://ve.dolarapi.com/v1/euros/oficial');
-                if (!response.ok) throw new Error("API devovió error: " + response.status);
+                // Consultamos DolarAPI Venezuela - Modo Dólar Oficial BCV
+                const response = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                if (!response.ok) throw new Error("API devolvió error: " + response.status);
                 const data = await response.json();
 
-                // Extraemos el valor del euro promedio oficial
-                const precioEuro = data.promedio;
-                tasaBCV = parseFloat(precioEuro);
+                // Extraemos el valor del dólar promedio oficial BCV
+                const precioDolar = data.promedio;
+                tasaBCV = parseFloat(precioDolar);
 
                 // Guardamos la tasa en localStorage con una marca de tiempo
-                localStorage.setItem('tasaEuroBCVCacheV2', tasaBCV);
-                localStorage.setItem('tasaEuroBCVTimestampV2', ahora.toString());
+                localStorage.setItem('tasaDolarBCVCache', tasaBCV);
+                localStorage.setItem('tasaDolarBCVTimestamp', ahora.toString());
 
-                console.log("🌊 Ultra Seco - Tasa Euro BCV Actualizada (DolarAPI):", tasaBCV);
+                console.log("🌊 Ultra Seco - Tasa Dólar BCV Actualizada (DolarAPI):", tasaBCV);
 
                 // Disparar las funciones que actualizan los precios en pantalla
                 renderizarTabla();
                 mostrarInstruccionesPago();
 
             } catch (error) {
-                console.error("Error al obtener tasa BCV, usando tasa por defecto o última guardada:", error);
+                console.error("Error al obtener tasa Dólar BCV, usando tasa por defecto o última guardada:", error);
                 if (tasaGuardada) tasaBCV = parseFloat(tasaGuardada);
                 renderizarTabla();
                 mostrarInstruccionesPago();
@@ -463,7 +467,7 @@
 
                 // Set total blocks to 0
                 document.getElementById('cart-total-usd').innerText = 'Ref. 0.00';
-                document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV)</span>`;
+                document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV)</span>`;
 
                 // Deshabilitar formulario
                 document.getElementById('btn-submit').disabled = true;
@@ -493,6 +497,8 @@
 
                     const subtotal = precioSafe * cantidadSafe;
                     totalUSD += subtotal;
+                    const precioBs = (precioSafe * tasaBCV).toFixed(2);
+                    const subtotalBs = (subtotal * tasaBCV).toFixed(2);
 
                     // Reconstruimos el item para guardarlo limpio
                     carritoFiltrado.push({
@@ -510,8 +516,14 @@
                                 <span class="px-3 py-1 font-bold text-sm select-none">${cantidadSafe}</span>
                             </div>
                         </td>
-                        <td class="text-right text-slate-500 font-medium">Ref. ${precioSafe.toFixed(2)}</td>
-                        <td class="text-right text-slate-900 font-black">Ref. ${subtotal.toFixed(2)}</td>
+                        <td class="text-right">
+                            <div class="text-slate-600 font-medium">Ref. ${precioSafe.toFixed(2)}</div>
+                            <div class="text-xs text-slate-400 font-normal">Bs. ${precioBs}</div>
+                        </td>
+                        <td class="text-right">
+                            <div class="text-slate-900 font-black">Ref. ${subtotal.toFixed(2)}</div>
+                            <div class="text-xs text-emerald-600 font-bold">Bs. ${subtotalBs}</div>
+                        </td>
                         <td class="text-right">
                             <button onclick="eliminarItem(${index})" class="btn-remove" title="Eliminar Producto">
                                 <i class="fa-solid fa-xmark"></i>
@@ -531,7 +543,7 @@
             // Actualizar Totales
             document.getElementById('cart-total-usd').innerText = `Ref. ${totalUSD.toFixed(2)}`;
             const totalBs = totalUSD * tasaBCV;
-            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa BCV: ${tasaBCV.toFixed(2)})</span>`;
+            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV: ${tasaBCV.toFixed(2)})</span>`;
 
             // Refrescar el contador de la barra de navegación usando la funcion en script.js
             if (typeof window.actualizarContadorCarrito === 'function') {
