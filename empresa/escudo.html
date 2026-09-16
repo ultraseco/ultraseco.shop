@@ -619,6 +619,7 @@
     </main>
 
     <script src="catalog.js"></script>
+    <script src="cart-integration.js"></script>
     
 
     <script>
@@ -663,7 +664,7 @@
             div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
 
             // Renderizado simple de Markdown (Negritas)
-            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>Ref. 1</strong>');
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             div.innerHTML = formattedText;
 
             chatBox.appendChild(div);
