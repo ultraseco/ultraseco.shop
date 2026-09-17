@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="../images/logo.png">
+    <!-- EmailJS SDK para envío de correos -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        // ⚠️ REEMPLAZA ESTOS VALORES CON TUS CREDENCIALES DE EMAILJS
+        // Instrucciones: https://www.emailjs.com/
+        const EMAILJS_PUBLIC_KEY  = 'TU_PUBLIC_KEY_AQUI';     // Account > API Keys
+        const EMAILJS_SERVICE_ID  = 'TU_SERVICE_ID_AQUI';     // Email Services > Service ID
+        const EMAILJS_TEMPLATE_ID = 'TU_TEMPLATE_ID_AQUI';   // Email Templates > Template ID
+        
+        (function(){
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        })();
+    </script>
 </head>
 <body>
     <header>
@@ -244,6 +257,8 @@
             ].join('\n');
             const waUrl = `https://wa.me/584146023797?text=${encodeURIComponent(msg)}`;
 
+            // === ENVÍO A BASE DE DATOS (Cloudflare Worker + Neon DB) ===
+            let dbOk = false;
             try {
                 const response = await fetch(WORKER_URL, {
                     method: 'POST',
@@ -253,21 +268,65 @@
                 
                 if (response.ok) {
                     const result = await response.json();
-                    if (result.success) {
-                        messageDiv.className = 'message success';
-                        messageDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> Registrado en Base de Datos. Redirigiendo...';
-                    }
+                    if (result.success) dbOk = true;
                 } else {
                     const errorData = await response.json();
-                    alert('Error al guardar en la base de datos: ' + (errorData.error || 'Error desconocido'));
-                    console.error('Error detallado:', errorData);
-                    messageDiv.className = 'message warning';
-                    messageDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Guardado solo en WhatsApp por ahora.';
+                    console.error('Error DB detallado:', errorData);
                 }
             } catch (error) {
                 console.error('Error DB:', error);
+            }
+
+            // === ENVÍO DE CORREO VÍA EMAILJS ===
+            let emailOk = false;
+            try {
+                const vehiculoInfo = formData.vehiculo_propio 
+                    ? `Sí — ${formData.vehiculo_modelo_year || 'Sin especificar modelo'}`
+                    : 'No';
+
+                const emailParams = {
+                    to_email:              'ultraseco_vzla@gmail.com',
+                    nombres_completos:     formData.nombres_completos,
+                    apellidos_completos:   formData.apellidos_completos,
+                    cedula_identidad:      formData.cedula_identidad,
+                    fecha_nacimiento:      formData.fecha_nacimiento,
+                    nacionalidad:          formData.nacionalidad,
+                    domicilio:             formData.domicilio,
+                    telefono_movil:        formData.telefono_movil,
+                    correo_electronico:    formData.correo_electronico,
+                    vehiculo_propio:       vehiculoInfo,
+                    zona_ventas:           formData.zona_ventas,
+                    experiencia_ferretera: formData.experiencia_ferretera || 'No especificada',
+                    clientes_principales:  formData.clientes_principales || 'No especificada',
+                    cantidad_clientes:     formData.cantidad_clientes || 'N/A',
+                    volumen_facturacion:   formData.volumen_facturacion || 'No especificado',
+                    referencia_1_nombre:   formData.referencia_1_nombre || 'N/A',
+                    referencia_1_telefono: formData.referencia_1_telefono || 'N/A',
+                    referencia_1_relacion: formData.referencia_1_relacion || 'N/A',
+                    referencia_2_nombre:   formData.referencia_2_nombre || 'N/A',
+                    referencia_2_telefono: formData.referencia_2_telefono || 'N/A',
+                    referencia_2_relacion: formData.referencia_2_relacion || 'N/A',
+                    fecha_envio:           new Date().toLocaleString('es-VE', { timeZone: 'America/Caracas' })
+                };
+
+                if (EMAILJS_PUBLIC_KEY !== 'TU_PUBLIC_KEY_AQUI') {
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams);
+                    emailOk = true;
+                    console.log('✅ Correo enviado correctamente a ultraseco_vzla@gmail.com');
+                } else {
+                    console.warn('⚠️ EmailJS no configurado. Reemplaza las credenciales en el código.');
+                }
+            } catch (emailError) {
+                console.error('Error al enviar correo:', emailError);
+            }
+
+            // Mostrar resultado final
+            if (dbOk || emailOk) {
+                messageDiv.className = 'message success';
+                messageDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Solicitud enviada exitosamente! Redirigiendo...';
+            } else {
                 messageDiv.className = 'message warning';
-                messageDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Guardado solo en WhatsApp por ahora.';
+                messageDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Solicitud enviada por WhatsApp. Revisa la consola para más detalles.';
             }
 
             setTimeout(() => {
