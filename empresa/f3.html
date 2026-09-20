@@ -1227,9 +1227,10 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-bold text-slate-300 mb-2">Presentación:</label>
-                                <select id="select-f3" data-sync-product="Ultra F3 (Anti-Fuego)" 
+                                <select id="select-f3" data-sync-product="Ultra F3 (Anti-Fuego)" onchange="document.getElementById('price-f3').textContent = 'Ref. ' + this.options[this.selectedIndex].dataset.price"
                                     class="w-full px-4 py-3 border border-slate-300 rounded-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                                    <option value="">Cargando presentaciones...</option>
+                                    <option data-price="450.00" value="Cuñete (18L)">Cuñete (18L) - Ref. 450.00</option>
+                                    <option data-price="4800.00" value="Tambor (200L)">Tambor (200L) - Ref. 4800.00</option>
                                 </select>
                             </div>
                             
@@ -1241,7 +1242,7 @@
                                 </div>
                                 <div class="flex-1 text-right">
                                     <label class="block text-sm font-bold text-slate-300 mb-2">Precio Unitario:</label>
-                                    <p data-sync-price="Ultra F3 (Anti-Fuego)" id="price-f3" class="text-3xl font-black text-amber-500">---</p>
+                                    <p id="price-f3" class="text-3xl font-black text-amber-500">Ref. 450.00</p>
                                 </div>
                             </div>
 
