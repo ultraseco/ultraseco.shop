@@ -694,6 +694,40 @@
     <!-- Shopify Integration -->
     <script src="shopify-integration.js"></script>
     <script src="mobile-menu.js"></script>
+
+<!-- WhatsApp Float Button -->
+<style>
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 32px;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 2px 6px 12px rgba(0,0,0,0.4);
+    color: white;
+}
+</style>
+<a href="https://wa.me/584146023797" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+<!-- End WhatsApp Float Button -->
 </body>
+
 
 </html>
