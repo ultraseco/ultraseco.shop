@@ -12,7 +12,7 @@
   {"id": 24, "nombre": "Fortificador de Superficies", "presentacion": "Cuñete", "precio": "270.00", "categoria": "Construcción"},
   {"id": 5, "nombre": "Pintura Súper Hidrofóbica", "presentacion": "Galón", "precio": "37.00", "categoria": "Construcción"},
   {"id": 25, "nombre": "Escudo Cerámico", "presentacion": "1 Litro", "precio": "7.00", "categoria": "Hogar"},
-  {"id": 6, "nombre": "Estuco Súper Hidrofóbico", "presentacion": "1/4 Galón", "precio": "7.50", "categoria": "Construcción"},
+  {"id": 6, "nombre": "Estuco Súper Hidrofóbico", "presentacion": "Estuco de 1/4 de galón", "precio": "8.50", "categoria": "Construcción"},
   {"id": 4, "nombre": "Estuco Súper Hidrofóbico", "presentacion": "Galón", "precio": "22.00", "categoria": "Construcción"},
   {"id": 27, "nombre": "Nano Aditivo para Concreto", "presentacion": "500gr", "precio": "22.00", "categoria": "Construcción"},
   {"id": 8, "nombre": "Cera Nano Protectora", "presentacion": "1 Litro", "precio": "13.00", "categoria": "Hogar"},

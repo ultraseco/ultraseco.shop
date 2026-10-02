@@ -23,7 +23,7 @@
         {"id":10,"nombre":"Fortificador de Superficies","presentacion":"Galón","precio":"57.00"},
         {"id":11,"nombre":"Fortificador de Superficies","presentacion":"Cuñete","precio":"270.00"},
         {"id":12,"nombre":"Pintura Súper Hidrofóbica","presentacion":"Galón","precio":"37.00"},
-        {"id":13,"nombre":"Estuco Súper Hidrofóbico","presentacion":"1/4 Galón","precio":"7.50"},
+        {"id":13,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Estuco de 1/4 de galón","precio":"8.50"},
         {"id":14,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Galón","precio":"22.00"},
         {"id":15,"nombre":"Nano Aditivo para Concreto","presentacion":"500gr","precio":"22.00"},
         {"id":16,"nombre":"Escudo Cerámico","presentacion":"1 Litro","precio":"7.00"},

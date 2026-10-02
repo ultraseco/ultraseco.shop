@@ -81,7 +81,7 @@ window.products = [
         link: 'estuco.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1/4 Galón', price: 7.50, sku: 'ESTUCO-1/4' },
+            { label: 'Estuco de 1/4 de galón', price: 8.50, sku: 'ESTUCO-1/4' },
             { label: 'Galón', price: 22.00, sku: 'ESTUCO-GAL' },
         ]
     },
