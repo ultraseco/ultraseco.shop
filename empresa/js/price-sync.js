@@ -131,10 +131,12 @@
                         const targetPres = clean(optionText);
                         const targetValue = clean(opt.value);
 
-                        return dbName.includes(targetName) && 
-                               (targetPres.includes(dbPres) || 
-                                dbPres.includes(targetPres.split(' ')[0]) ||
-                                targetValue.includes(dbPres));
+                        if (!dbName.includes(targetName)) return false;
+                        
+                        // Exact match on value if available, or check if presentation exactly starts the option text
+                        return targetPres.startsWith(dbPres) || 
+                               targetValue === dbPres || 
+                               (targetValue !== "" && dbPres.includes(targetValue));
                     });
                     
                     if (product) {
