@@ -14,6 +14,7 @@
   {"id": 25, "nombre": "Escudo Cerámico", "presentacion": "1 Litro", "precio": "7.00", "categoria": "Hogar"},
   {"id": 6, "nombre": "Estuco Súper Hidrofóbico", "presentacion": "Estuco de 1/4 de galón", "precio": "8.50", "categoria": "Construcción"},
   {"id": 4, "nombre": "Estuco Súper Hidrofóbico", "presentacion": "Galón", "precio": "22.00", "categoria": "Construcción"},
+  {"id": 30, "nombre": "Estuco Súper Hidrofóbico", "presentacion": "Cuñete de 4 galones", "precio": "100.00", "categoria": "Construcción"},
   {"id": 27, "nombre": "Nano Aditivo para Concreto", "presentacion": "500gr", "precio": "22.00", "categoria": "Construcción"},
   {"id": 8, "nombre": "Cera Nano Protectora", "presentacion": "1 Litro", "precio": "13.00", "categoria": "Hogar"},
   {"id": 3, "nombre": "Champú Nano-Concentrado", "presentacion": "1 Litro", "precio": "15.00", "categoria": "Vehicular"},

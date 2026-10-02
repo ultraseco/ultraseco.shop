@@ -83,6 +83,7 @@ window.products = [
         options: [
             { label: 'Estuco de 1/4 de galón', price: 8.50, sku: 'ESTUCO-1/4' },
             { label: 'Galón', price: 22.00, sku: 'ESTUCO-GAL' },
+            { label: 'Cuñete de 4 galones', price: 100.00, sku: 'ESTUCO-CUN' },
         ]
     },
     {
