@@ -1,4 +1,4 @@
-const WORKER_URL = "https://asesor-ultraseco.workthingstesting.workers.dev";
+const WORKER_URL = "https://asesor-nuevo.workthingstesting.workers.dev";
 
 async function enviarMensaje() {
     const input = document.getElementById("user-input");
