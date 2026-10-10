@@ -710,13 +710,15 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    console.log("✅ Correo enviado exitosamente a ultraseco_vzla@gmail.com");
+                    console.log("✅ Correo enviado exitosamente");
                 } else {
                     console.error("⚠️ Web3Forms respondió con error:", result.message);
+                    alert("Error de Web3Forms al enviar correo: " + result.message);
                 }
 
             } catch (error) {
                 console.error("❌ Error de red al enviar el pedido:", error);
+                alert("Error de red al intentar enviar el correo. Puede que un AdBlocker o el navegador lo esté bloqueando: " + error.message);
             }
 
             // 7. FLUJO DE WHATSAPP: El fetch ya respondió (o falló pero seguimos)
