@@ -1,4 +1,4 @@
-const WORKER_URL = "https://asesor-ia-ultraseco.ultraseco-vzla.workers.dev";
+const WORKER_URL = "https://asesor-ia-v2.ultraseco-vzla.workers.dev";
 
 async function enviarMensaje() {
     const input = document.getElementById("user-input");
