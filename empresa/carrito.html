@@ -684,22 +684,22 @@
             document.getElementById('hidden-total-usd').value = totalUSD.toFixed(2);
             document.getElementById('hidden-total-bs').value = (totalUSD * tasaBCV).toFixed(2);
 
-            // 3. Feedback visual: Botón cargando
-            const btn = document.getElementById('btn-submit');
-            const originalBtnContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Guardando datos...';
-            btn.disabled = true;
+            // 3. Actualizar asunto con el nombre del cliente para identificar el pedido en el correo
+            const nombreParaAsunto = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
+            document.getElementById('hidden-subject').value = `🛒 Nuevo Pedido Ultra Seco — ${nombreParaAsunto} | Ref. ${totalUSD.toFixed(2)}`;
 
             // 4. Capturar DATOS del formulario (incluyendo el archivo y los hidden fields actualizados)
             const form = e.target;
             const formData = new FormData(form);
 
-            // 5. Actualizar asunto con el nombre del cliente para identificar el pedido en el correo
-            const nombreParaAsunto = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
-            document.getElementById('hidden-subject').value = `🛒 Nuevo Pedido Ultra Seco — ${nombreParaAsunto} | Ref. ${totalUSD.toFixed(2)}`;
+            // 5. Feedback visual: Botón cargando
+            const btn = document.getElementById('btn-submit');
+            const originalBtnContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Procesando...';
+            btn.disabled = true;
 
             try {
-                // 5b. Enviar a Web3Forms (llega a ultraseco_vzla@gmail.com)
+                // 6. Enviar a Web3Forms (llega a ultraseco_vzla@gmail.com)
                 console.log("📤 Enviando pedido a Web3Forms...");
 
                 const response = await fetch("https://api.web3forms.com/submit", {
@@ -719,15 +719,9 @@
                 console.error("❌ Error de red al enviar el pedido:", error);
             }
 
-            // 6. FLUJO DE WHATSAPP: El fetch ya respondió (o falló pero seguimos)
+            // 7. FLUJO DE WHATSAPP: El fetch ya respondió (o falló pero seguimos)
             // Procesamos la redirección independientemente para no perder la venta
             try {
-                // Notificar éxito al usuario
-                alert("¡Gracias! Tu información ha sido capturada. Ahora te redirigiremos a WhatsApp para concretar los detalles finales con un asesor.");
-                
-                // Limpiar carrito local
-                localStorage.removeItem('miCarritoUltraSeco');
-
                 // Obtener datos para WhatsApp
                 const nombreCliente = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
                 const numReferencia = document.getElementById('referencia-pago').value.trim() || 'N/A';
@@ -742,12 +736,16 @@
                 // URL de WhatsApp
                 const wpUrl = `https://wa.me/584146023797?text=${encodeURIComponent(mensajeWp)}`;
 
-                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Redirigiendo...';
+                btn.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Abriendo WhatsApp...';
                 
-                // Pequeña espera para que el usuario lea el alert anterior
-                setTimeout(() => {
-                    window.location.href = wpUrl;
-                }, 1000);
+                // Notificar éxito al usuario
+                alert("¡Gracias! Tu información ha sido capturada. Ahora te contactaremos por WhatsApp para concretar los detalles finales con un asesor.");
+                
+                // Limpiar carrito local
+                localStorage.removeItem('miCarritoUltraSeco');
+
+                // Abrir WhatsApp en una nueva pestaña o redirigir
+                window.location.href = wpUrl;
 
             } catch (error) {
                 console.error("Error al redirigir a WhatsApp:", error);
