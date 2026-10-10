@@ -338,18 +338,8 @@
                                     placeholder="Últimos 4 o 6 dígitos" class="form-input">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Capture /
-                                    Comprobante</label>
-                                <div class="relative">
-                                    <input type="file" id="comprobante" name="comprobante" accept="image/*" required
-                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                        onchange="actualizarNombreArchivo(this)">
-                                    <div class="form-input flex items-center justify-between bg-white cursor-pointer"
-                                        id="comprobante-label">
-                                        <span class="text-slate-400">Subir imagen...</span>
-                                        <i class="fa-solid fa-cloud-arrow-up text-blue-500"></i>
-                                    </div>
-                                </div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Capture / Comprobante</label>
+                                <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-circle-info text-blue-500"></i> Te pediremos enviar el capture de tu pago a través del chat de WhatsApp en el siguiente paso.</p>
                             </div>
                         </div>
 
@@ -571,7 +561,6 @@
             const container = document.getElementById('instrucciones-banco');
             const comprobantesContainer = document.getElementById('comprobantes-container');
             const refPago = document.getElementById('referencia-pago');
-            const comprobanteFile = document.getElementById('comprobante');
 
             if (!metodo) {
                 container.classList.add('hidden');
@@ -584,11 +573,9 @@
             if (metodo === 'efectivo') {
                 if (comprobantesContainer) comprobantesContainer.classList.add('hidden');
                 if (refPago) refPago.required = false;
-                if (comprobanteFile) comprobanteFile.required = false;
             } else {
                 if (comprobantesContainer) comprobantesContainer.classList.remove('hidden');
                 if (refPago) refPago.required = true;
-                if (comprobanteFile) comprobanteFile.required = true;
             }
 
             let html = '';
@@ -654,20 +641,7 @@
             container.innerHTML = html;
         }
 
-        function actualizarNombreArchivo(input) {
-            const label = document.getElementById('comprobante-label');
-            const placeholder = label.querySelector('span');
 
-            if (input.files && input.files.length > 0) {
-                placeholder.textContent = input.files[0].name;
-                placeholder.classList.remove('text-slate-400');
-                placeholder.classList.add('text-slate-800', 'font-medium');
-            } else {
-                placeholder.textContent = 'Subir imagen...';
-                placeholder.classList.add('text-slate-400');
-                placeholder.classList.remove('text-slate-800', 'font-medium');
-            }
-        }
 
         async function procesarPedido(e) {
             e.preventDefault();
@@ -729,7 +703,7 @@
                 const numReferencia = document.getElementById('referencia-pago').value.trim() || 'N/A';
                 const metodoSeleccionado = document.getElementById('metodo-pago').value;
 
-                let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Ya adjunté el comprobante en la web. ¿Me confirman la recepción?`;
+                let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Te adjunto el capture del pago por acá. ¿Me confirman la recepción?`;
 
                 if (metodoSeleccionado === 'efectivo') {
                     mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
