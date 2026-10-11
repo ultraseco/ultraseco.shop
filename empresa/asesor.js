@@ -1,4 +1,4 @@
-const WORKER_URL = "https://muddy-queen-629b.ultraseco-vzla.workers.dev";
+const WORKER_URL = "https://asesor-ultraseco.ultraseco-vzla.workers.dev";
 
 async function enviarMensaje() {
     const input = document.getElementById("user-input");
