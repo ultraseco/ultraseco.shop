@@ -565,16 +565,16 @@
                     <label for="opt-exteriores" style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: #475569; text-transform: uppercase;">Presentación:</label>
                     <select data-sync-product="Ultra Seco Solución Exterior" id="opt-exteriores" onchange="updatePrice('exteriores')"
                         style="padding: 1rem; border-radius: 8px; width: 100%; margin-bottom: 1.5rem; border: 2px solid #e2e8f0; font-size: 1rem; background: #f8fafc; color: #1e293b; outline: none; transition: border-color 0.2s; cursor: pointer;">
-                        <option value="0" data-price="16.99">1 Litro - Ref. 16.99</option>
-                        <option value="1" data-price="17.99">1 Litro (Atomizador) - Ref. 17.99</option>
-                        <option value="2" data-price="48.00">Galón (3.785L) - Ref. 48.00</option>
-                        <option value="3" data-price="217.50">Cuñete (18L) - Ref. 217.50</option>
+                        <option value="0" data-price="16.99">1 Litro - Ref. 16.99 + IVA=19.71</option>
+                        <option value="1" data-price="17.99">1 Litro (Atomizador) - Ref. 17.99 + IVA=20.87</option>
+                        <option value="2" data-price="48.00">Galón (3.785L) - Ref. 48 + IVA=55.68</option>
+                        <option value="3" data-price="217.50">Cuñete (18L) - Ref. 217.50 + IVA=252.30</option>
                     </select>
                     <div class="flex flex-wrap items-center justify-center text-center gap-4 mb-8 bg-slate-50 p-4 rounded-lg border border-slate-200">
                         <label for="qty-exteriores" style="font-weight: 600; color: #475569;">Cantidad:</label>
-                        <input type="number" id="qty-exteriores" value="1" min="1"
+                        <input type="number" id="qty-exteriores" value="1" min="1" onchange="updatePrice('exteriores')" oninput="updatePrice('exteriores')"
                             style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 1px solid #cbd5e1; font-size: 1rem; text-align: center; outline: none;">
-                        <span id="price-exteriores" class="ml-0 sm:ml-auto" style="font-weight: 900; font-size: 1.7rem; color: #0f172a;">Ref. 16.99</span>
+                        <span id="price-exteriores" class="ml-0 sm:ml-auto" style="font-weight: 900; font-size: 1.7rem; color: #0f172a;">Ref. 16.99 + IVA=19.71</span>
                     </div>
 
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button w-full flex items-center justify-center gap-2" style="padding: 1.2rem; font-size: 1.1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"><i class="fa-solid fa-cart-plus"></i> Agregar al Carrito</button>
@@ -936,9 +936,20 @@
 
         function updatePrice(productId) {
             const select = document.getElementById(`opt-${productId}`);
+            const qty = document.getElementById(`qty-${productId}`);
             const priceDisplay = document.getElementById(`price-${productId}`);
-            const price = select.options[select.selectedIndex].dataset.price;
-            priceDisplay.textContent = `Ref. ${price}`;
+            if (select && priceDisplay) {
+                const price = parseFloat(select.options[select.selectedIndex].dataset.price);
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
+                } else {
+                    const totalConIVA = totalBase * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
+                }
+            }
         }
 
         // --- HELPER FUNCTIONS ---

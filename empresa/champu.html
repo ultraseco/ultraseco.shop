@@ -335,8 +335,8 @@
                                 <div class="relative">
                                     <select data-sync-product="Champú Nano-Concentrado" id="opt-champu" onchange="updatePrice('champu')"
                                         class="w-full p-4 bg-slate-900 border border-slate-700 rounded-xl text-white appearance-none cursor-pointer focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition outline-none font-medium">
-                                        <option value="0" data-price="12.00">1 Litro (Concentrado)</option>
-                                        <option value="1" data-price="35.00">Galón (3.78 Litros)</option>
+                                        <option value="0" data-price="12.00">1 Litro (Concentrado) - Ref. 12 + IVA=13.92</option>
+                                        <option value="1" data-price="35.00">Galón (3.78 Litros) - Ref. 35 + IVA=40.60</option>
                                     </select>
                                     <div
                                         class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
@@ -365,7 +365,7 @@
                                         Estimado</label>
                                     <div class="h-[50px] flex items-center text-3xl font-black text-cyan-400"
                                         id="price-champu">
-                                        Ref. 12.00
+                                        Ref. 12 + IVA=13.92
                                     </div>
                                 </div>
                             </div>
@@ -486,7 +486,7 @@
         PRODUCTO: Nano Shield Champ Concentrado.
         BENEFICIOS: Limpieza pH neutro, Hidrofobicidad inmediata (efecto loto), Brillo profundo.
         USO: Producto CONCENTRADO, se usa PURO (aproximadamente 50ml en un balde de 5L de agua). Lavar el auto a la sombra, usar guante de microfibra, enjuagar con agua a presión.
-        PRECIO: Ref. 12.00 (Litro), Ref. 35.00 (Galón).
+        PRECIO: Ref. 12 + IVA=13.92 (Litro), Ref. 35 + IVA=40.60 (Galón).
         COMPATIBILIDAD: Seguro para autos con recubrimientos cerámicos (booster) y ceras.`;
 
         // --- LÓGICA DE COMPRA ---
@@ -496,6 +496,24 @@
             if (val < 1) val = 1;
             input.value = val;
             updatePrice('champu');
+        }
+
+        function updatePrice(productId) {
+            const select = document.getElementById(`opt-${productId}`);
+            const qty = document.getElementById(`qty-${productId}`);
+            const priceDisplay = document.getElementById(`price-${productId}`);
+            if (select && priceDisplay) {
+                const price = parseFloat(select.options[select.selectedIndex].dataset.price);
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
+                } else {
+                    const totalConIVA = totalBase * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
+                }
+            }
         }
 
         // Audio Player Logic
@@ -509,7 +527,7 @@
         function appendMessage(text, sender) {
             const div = document.createElement('div');
             div.classList.add('chat-bubble', sender === 'user' ? 'chat-user' : 'chat-bot');
-            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>Ref. 1</strong>');
+            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
         }

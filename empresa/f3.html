@@ -1227,22 +1227,22 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-bold text-slate-300 mb-2">Presentación:</label>
-                                <select id="select-f3" data-sync-product="Ultra F3 (Anti-Fuego)" onchange="document.getElementById('price-f3').textContent = 'Ref. ' + this.options[this.selectedIndex].dataset.price"
+                                <select id="select-f3" data-sync-product="Ultra F3 (Anti-Fuego)" onchange="updateF3Price()"
                                     class="w-full px-4 py-3 border border-slate-300 rounded-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                                    <option data-price="450.00" value="Cuñete (18L)">Cuñete (18L) - Ref. 450.00</option>
-                                    <option data-price="4800.00" value="Tambor (200L)">Tambor (200L) - Ref. 4800.00</option>
+                                    <option data-price="450.00" value="Cuñete (18L)">Cuñete (18L) - Ref. 450 + IVA=522</option>
+                                    <option data-price="4800.00" value="Tambor (200L)">Tambor (200L) - Ref. 4800 + IVA=5568</option>
                                 </select>
                             </div>
                             
                             <div class="flex items-center gap-4">
                                 <div class="flex-1">
                                     <label class="block text-sm font-bold text-slate-300 mb-2">Cantidad:</label>
-                                    <input type="number" id="qty-f3" value="1" min="1" 
+                                    <input type="number" id="qty-f3" value="1" min="1" onchange="updateF3Price()" oninput="updateF3Price()"
                                         class="w-full px-4 py-3 border border-slate-300 rounded-sm focus:ring-2 focus:ring-blue-500 outline-none">
                                 </div>
                                 <div class="flex-1 text-right">
                                     <label class="block text-sm font-bold text-slate-300 mb-2">Precio Unitario:</label>
-                                    <p id="price-f3" class="text-3xl font-black text-amber-500">Ref. 450.00</p>
+                                    <p id="price-f3" class="text-3xl font-black text-amber-500">Ref. 450 + IVA=522</p>
                                 </div>
                             </div>
 
@@ -1278,7 +1278,7 @@
                     </div>
                     <div class="bg-slate-900 p-4 rounded-sm">
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-400">Precio
-                                ULTRA-F3:</span><span class="font-bold" id="displayUltraPrice" data-sync-price="Ultra F3 (Anti-Fuego)">Ref. 160.00</span></div>
+                                ULTRA-F3:</span><span class="font-bold" id="displayUltraPrice" data-sync-price="Ultra F3 (Anti-Fuego)">Ref. 450 + IVA=522</span></div>
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-400">Precio AFFF
                                 Importado:</span><span class="font-bold">Ref. 180.00</span></div>
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-400">Costo Limpieza
@@ -1483,7 +1483,7 @@
                     if (statusEl) {
                         statusEl.classList.remove('hidden');
                         statusEl.classList.add('bg-green-100', 'text-green-800');
-                        statusEl.innerHTML = `? Precio sincronizado: Ref. ${ultraPrice}`;
+                        statusEl.innerHTML = `✓ Precio sincronizado: ${typeof window.formatPriceWithIVA === 'function' ? window.formatPriceWithIVA(ultraPrice) : 'Ref. ' + ultraPrice}`;
                     }
                 }
             } else {
@@ -1499,7 +1499,13 @@
             // Update Display
             const displayEl = document.getElementById('displayUltraPrice');
             if (displayEl) {
-                displayEl.innerText = `Ref. ${ultraPrice.toFixed(2)}`;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    displayEl.innerText = window.formatPriceWithIVA(ultraPrice);
+                } else {
+                    const totalConIVA = ultraPrice * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    displayEl.innerText = `Ref. ${formatNum(ultraPrice)} + IVA=${formatNum(totalConIVA)}`;
+                }
                 if (typeof products !== 'undefined' || window.products) {
                     displayEl.classList.add('text-amber-500', 'font-extrabold');
                 }
@@ -1515,6 +1521,24 @@
             document.getElementById('competitorCost').innerText = `Ref. ${totalCompetitor.toLocaleString()}`;
             document.getElementById('ultraCost').innerText = `Ref. ${totalUltra.toLocaleString()}`;
             document.getElementById('totalSavings').innerText = `Ref. ${savings.toLocaleString()}`;
+        }
+
+        function updateF3Price() {
+            const select = document.getElementById('select-f3');
+            const qty = document.getElementById('qty-f3');
+            const priceDisplay = document.getElementById('price-f3');
+            if (select && priceDisplay) {
+                const price = parseFloat(select.options[select.selectedIndex].dataset.price);
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
+                } else {
+                    const totalConIVA = totalBase * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
+                }
+            }
         }
 
         // --- PODCAST LOGIC ---

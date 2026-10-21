@@ -88,6 +88,22 @@
         }
     }
 
+    function formatPriceNum(num) {
+        const n = parseFloat(num);
+        if (isNaN(n)) return num;
+        return (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+    }
+
+    function formatPriceWithIVA(price) {
+        const p = parseFloat(price);
+        if (isNaN(p)) return price;
+        const total = p * 1.16;
+        return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+    }
+
+    window.formatPriceNum = window.formatPriceNum || formatPriceNum;
+    window.formatPriceWithIVA = window.formatPriceWithIVA || formatPriceWithIVA;
+
     function syncUI(products) {
         if (!products || !Array.isArray(products)) return;
 
@@ -97,7 +113,7 @@
         console.table(products.map(p => ({
             Nombre: p.nombre,
             Pres: p.presentacion,
-            Precio: `$${p.precio}`
+            Precio: formatPriceWithIVA(p.precio)
         })));
 
         // 1. Sincronizar con window.products (catalog.js)
@@ -122,35 +138,43 @@
             // Caso 1: El elemento es un SELECT (Menú desplegable)
             if (el.tagName === 'SELECT') {
                 const options = el.querySelectorAll('option');
-                options.forEach(opt => {
-                    const optionText = opt.textContent || opt.innerText;
-                    // Buscar coincidencia por presentación en el texto de la opción o valor
-                    const product = products.find(p => {
-                        const dbName = clean(p.nombre);
-                        const targetName = clean(productName);
-                        const dbPres = clean(p.presentacion);
-                        const targetPres = clean(optionText);
-                        const targetValue = clean(opt.value);
 
-                        if (!dbName.includes(targetName)) return false;
-                        
-                        // Exact match on value if available, or check if presentation exactly starts the option text
-                        return targetPres.startsWith(dbPres) || 
-                               targetValue === dbPres || 
-                               (targetValue !== "" && dbPres.includes(targetValue));
-                    });
-                    
-                    if (product) {
-                        const price = parseFloat(product.precio).toFixed(2);
-                        opt.setAttribute('data-price', product.precio);
-                        // Actualizar el texto de la opción para mostrar el precio nuevo si tiene formato Ref. o $
-                        if (optionText.includes('Ref.')) {
-                            opt.textContent = `${product.presentacion} - Ref. ${price}`;
-                        } else if (optionText.includes('$')) {
-                            opt.textContent = `${product.presentacion} - $${price}`;
-                        }
+                // Si el select solo tiene una opción que dice "Cargando..."
+                if (options.length <= 1 && options[0] && (options[0].textContent.includes('Cargando') || options[0].value === '')) {
+                    const matchingProducts = products.filter(p => clean(p.nombre).includes(clean(productName)));
+                    if (matchingProducts.length > 0) {
+                        el.innerHTML = matchingProducts.map(p => `
+                            <option value="${p.presentacion}" data-price="${p.precio}">${p.presentacion} - ${formatPriceWithIVA(p.precio)}</option>
+                        `).join('');
                     }
-                });
+                } else {
+                    options.forEach(opt => {
+                        const optionText = opt.textContent || opt.innerText;
+                        // Buscar coincidencia por presentación en el texto de la opción o valor
+                        const product = products.find(p => {
+                            const dbName = clean(p.nombre);
+                            const targetName = clean(productName);
+                            const dbPres = clean(p.presentacion);
+                            const targetPres = clean(optionText);
+                            const targetValue = clean(opt.value);
+
+                            if (!dbName.includes(targetName)) return false;
+                            
+                            // Exact match on value if available, or check if presentation exactly starts the option text
+                            return targetPres.startsWith(dbPres) || 
+                                   targetValue === dbPres || 
+                                   (targetValue !== "" && dbPres.includes(targetValue));
+                        });
+                        
+                        if (product) {
+                            opt.setAttribute('data-price', product.precio);
+                            // Actualizar el texto de la opción para mostrar el precio nuevo con IVA
+                            if (optionText.includes('Ref.') || optionText.includes('+ IVA=') || optionText.includes('$')) {
+                                opt.textContent = `${product.presentacion} - ${formatPriceWithIVA(product.precio)}`;
+                            }
+                        }
+                    });
+                }
                 
                 // Disparar el evento change para actualizar el precio mostrado al lado si existe
                 el.dispatchEvent(new Event('change'));
@@ -168,7 +192,7 @@
                         return dbName.includes(targetName) && (!pres || dbPres.includes(targetPres) || targetPres.includes(dbPres));
                     });
                     if (product) {
-                        priceEl.innerHTML = `$${parseFloat(product.precio).toFixed(2)}`;
+                        priceEl.innerHTML = formatPriceWithIVA(product.precio);
                         priceEl.setAttribute('data-price', product.precio);
                     }
                 });
@@ -185,13 +209,20 @@
                 });
                 if (product) {
                     let value = product.precio;
-                    if (el.innerHTML.includes('Ref.')) {
-                        el.innerHTML = `Ref. ${parseFloat(value).toFixed(2)}`;
-                    } else {
-                        el.innerHTML = `$${parseFloat(value).toFixed(2)}`;
-                    }
+                    el.innerHTML = formatPriceWithIVA(value);
                     el.setAttribute('data-price', value);
                 }
+            }
+        });
+
+        // 3. Sincronizar elementos con [data-sync-price]
+        const priceSyncElements = document.querySelectorAll('[data-sync-price]');
+        priceSyncElements.forEach(el => {
+            const productName = el.getAttribute('data-sync-price');
+            const product = products.find(p => clean(p.nombre).includes(clean(productName)));
+            if (product) {
+                el.innerHTML = formatPriceWithIVA(product.precio);
+                el.setAttribute('data-price', product.precio);
             }
         });
 

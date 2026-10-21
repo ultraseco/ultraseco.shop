@@ -452,15 +452,15 @@
                     <label for="opt-fortificador" style="display: block; margin-bottom: 0.5rem;">Presentación:</label>
                     <select data-sync-product="Fortificador de Superficies" id="opt-fortificador" onchange="updatePrice('fortificador')"
                         style="padding: 10px; border-radius: 5px; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc;">
-                        <option value="0" data-price="21.00">Litro - Ref. 21.00</option>
-                        <option value="1" data-price="57.00">Galón (3.785L) - Ref. 57.00</option>
-                        <option value="2" data-price="270.00">Cuñete (18L) - Ref. 270.00</option>
+                        <option value="0" data-price="21.00">Litro - Ref. 21 + IVA=24.36</option>
+                        <option value="1" data-price="57.00">Galón (3.785L) - Ref. 57 + IVA=66.12</option>
+                        <option value="2" data-price="270.00">Cuñete (18L) - Ref. 270 + IVA=313.20</option>
                     </select>
                     <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
                         <label for="qty-fortificador">Cantidad:</label>
-                        <input type="number" id="qty-fortificador" value="1" min="1"
+                        <input type="number" id="qty-fortificador" value="1" min="1" onchange="updatePrice('fortificador')" oninput="updatePrice('fortificador')"
                             style="width: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                        <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">Ref. 21.00</span>
+                        <span id="price-fortificador" style="font-weight: bold; font-size: 1.2rem;">Ref. 21 + IVA=24.36</span>
                     </div>
 
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-top: 1rem; margin-bottom: 1rem;"><i class="fa-solid fa-cart-plus"></i> Agregar al Carrito</button>
@@ -677,9 +677,20 @@
 
         function updatePrice(productId) {
             const select = document.getElementById(`opt-${productId}`);
+            const qty = document.getElementById(`qty-${productId}`);
             const priceDisplay = document.getElementById(`price-${productId}`);
-            const price = select.options[select.selectedIndex].dataset.price;
-            priceDisplay.textContent = `Ref. ${price}`;
+            if (select && priceDisplay) {
+                const price = parseFloat(select.options[select.selectedIndex].dataset.price);
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
+                } else {
+                    const totalConIVA = totalBase * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
+                }
+            }
         }
     </script>
     <script src="catalog.js"></script>

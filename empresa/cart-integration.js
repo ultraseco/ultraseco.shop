@@ -1,13 +1,26 @@
-﻿// Integration script to connect static HTML controls with catalog.js logic
+function formatPriceNum(num) {
+    const n = parseFloat(num);
+    if (isNaN(n)) return num;
+    return (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+}
+
+function formatPriceWithIVA(price) {
+    const p = parseFloat(price);
+    if (isNaN(p)) return price;
+    const total = p * 1.16;
+    return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+}
 
 function updatePrice(productId) {
     const select = document.getElementById(`opt-${productId}`);
     const priceDisplay = document.getElementById(`price-${productId}`);
+    const qtyInput = document.getElementById(`qty-${productId}`);
 
     if (select && priceDisplay) {
         const selectedOption = select.options[select.selectedIndex];
         const price = parseFloat(selectedOption.getAttribute('data-price'));
-        priceDisplay.textContent = `Ref. ${price.toFixed(2)}`;
+        const quantity = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+        priceDisplay.textContent = formatPriceWithIVA(price * quantity);
     }
 }
 

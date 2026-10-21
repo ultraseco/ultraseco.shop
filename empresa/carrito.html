@@ -241,7 +241,7 @@
                             <div class="text-right">
                                 <p class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Total a Pagar
                                 </p>
-                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">Ref. 0.00</div>
+                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">Ref. 0 + IVA=0</div>
                                 <div class="text-sm font-bold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full mt-2 border border-emerald-100"
                                     id="cart-total-bs">
                                     <i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span
@@ -428,6 +428,22 @@
         let carritoData = [];
         let totalUSD = 0;
 
+        function formatPriceNum(num) {
+            const n = parseFloat(num);
+            if (isNaN(n)) return num;
+            return (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+        }
+
+        function formatPriceWithIVA(price) {
+            const p = parseFloat(price);
+            if (isNaN(p)) return price;
+            const total = p * 1.16;
+            return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+        }
+
+        window.formatPriceNum = window.formatPriceNum || formatPriceNum;
+        window.formatPriceWithIVA = window.formatPriceWithIVA || formatPriceWithIVA;
+
         function cargarCarrito() {
             const guardado = localStorage.getItem('miCarritoUltraSeco');
 
@@ -457,7 +473,7 @@
                 emptyContent.classList.remove('hidden');
 
                 // Set total blocks to 0
-                document.getElementById('cart-total-usd').innerText = 'Ref. 0.00';
+                document.getElementById('cart-total-usd').innerText = 'Ref. 0 + IVA=0';
                 document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV)</span>`;
 
                 // Deshabilitar formulario
@@ -508,11 +524,11 @@
                             </div>
                         </td>
                         <td class="text-right">
-                            <div class="text-slate-600 font-medium">Ref. ${precioSafe.toFixed(2)}</div>
+                            <div class="text-slate-600 font-medium">${formatPriceWithIVA(precioSafe)}</div>
                             <div class="text-xs text-slate-400 font-normal">Bs. ${precioBs}</div>
                         </td>
                         <td class="text-right">
-                            <div class="text-slate-900 font-black">Ref. ${subtotal.toFixed(2)}</div>
+                            <div class="text-slate-900 font-black">${formatPriceWithIVA(subtotal)}</div>
                             <div class="text-xs text-emerald-600 font-bold">Bs. ${subtotalBs}</div>
                         </td>
                         <td class="text-right">
@@ -531,10 +547,11 @@
             carritoData = carritoFiltrado;
 
 
-            // Actualizar Totales
-            document.getElementById('cart-total-usd').innerText = `Ref. ${totalUSD.toFixed(2)}`;
-            const totalBs = totalUSD * tasaBCV;
-            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV: ${tasaBCV.toFixed(2)})</span>`;
+            // Actualizar Totales con IVA
+            const totalConIVA = totalUSD * 1.16;
+            document.getElementById('cart-total-usd').innerText = formatPriceWithIVA(totalUSD);
+            const totalBs = totalConIVA * tasaBCV;
+            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Total a Pagar: Ref. ${totalConIVA.toFixed(2)} — Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV: ${tasaBCV.toFixed(2)})</span>`;
 
             // Refrescar el contador de la barra de navegación usando la funcion en script.js
             if (typeof window.actualizarContadorCarrito === 'function') {
@@ -578,6 +595,7 @@
                 if (refPago) refPago.required = true;
             }
 
+            const totalConIVA = totalUSD * 1.16;
             let html = '';
             if (metodo === 'pago_movil') {
                 html = `
@@ -587,7 +605,7 @@
                         <li><strong>Teléfono:</strong> 0414-6023797</li>
                         <li><strong>RIF/CI:</strong> J-504413054</li>
                         <li><strong>Titular:</strong> ULTRA SECO CA</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * tasaBCV).toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalConIVA * tasaBCV).toFixed(2)} (IVA 16% incluido)</li>
                     </ul>
                 `;
             } else if (metodo === 'transferencia') {
@@ -598,7 +616,7 @@
                         <li><strong>Cuenta:</strong> 0172-0401-72-4018567596</li>
                         <li><strong>Titular:</strong> ULTRA SECO CA</li>
                         <li><strong>RIF:</strong> J-504413054</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalUSD * tasaBCV).toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Bs. ${(totalConIVA * tasaBCV).toFixed(2)} (IVA 16% incluido)</li>
                     </ul>
                 `;
             } else if (metodo === 'custodia') {
@@ -608,7 +626,7 @@
                         <li><strong>Banco:</strong> Banesco</li>
                         <li><strong>Titular:</strong> Pancho Wong</li>
                         <li><strong>Cédula/RIF:</strong> 17.669.750</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalConIVA.toFixed(2)} (IVA 16% incluido)</li>
                     </ul>
                 `;
             } else if (metodo === 'paypal') {
@@ -616,7 +634,7 @@
                     <p class="font-bold text-slate-900 mb-2"><i class="fa-brands fa-paypal"></i> Datos para PayPal</p>
                     <ul class="list-disc ml-5 space-y-1">
                         <li><strong>Correo:</strong> benhan37@hotmail.com</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalConIVA.toFixed(2)} (IVA 16% incluido)</li>
                     </ul>
                 `;
             } else if (metodo === 'zelle') {
@@ -625,7 +643,7 @@
                     <ul class="list-disc ml-5 space-y-1">
                         <li><strong>Zelle:</strong> 5072910322</li>
                         <li><strong>Nombre:</strong> wing lap</li>
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Exacto: Ref. ${totalConIVA.toFixed(2)} (IVA 16% incluido)</li>
                     </ul>
                 `;
             } else if (metodo === 'efectivo') {
@@ -633,7 +651,7 @@
                     <p class="font-bold text-slate-900 mb-2"><i class="fa-solid fa-money-bill-1-wave"></i> Dólares Efectivo</p>
                     <p class="text-sm text-slate-600 mb-3 mt-1">Para pagos en efectivo deberás acercarte a nuestra tienda física o realizar delivery.</p>
                     <ul class="list-disc ml-5 space-y-1">
-                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Mínimo a Entregar: Ref. ${totalUSD.toFixed(2)}</li>
+                        <li class="mt-2 text-emerald-700 font-bold border-t border-blue-200 pt-2">Monto Mínimo a Entregar: Ref. ${totalConIVA.toFixed(2)} (IVA 16% incluido)</li>
                     </ul>
                 `;
             }
@@ -653,14 +671,15 @@
             }
 
             // 2. Preparar campos ocultos ANTES de capturar el FormData
-            const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} (Ref. ${item.precio})`).join(' | ');
+            const totalConIVA = totalUSD * 1.16;
+            const resumenText = carritoData.map(item => `${item.cantidad}x ${item.nombre} (${formatPriceWithIVA(item.precio)})`).join(' | ');
             document.getElementById('hidden-resumen').value = resumenText;
-            document.getElementById('hidden-total-usd').value = totalUSD.toFixed(2);
-            document.getElementById('hidden-total-bs').value = (totalUSD * tasaBCV).toFixed(2);
+            document.getElementById('hidden-total-usd').value = totalConIVA.toFixed(2);
+            document.getElementById('hidden-total-bs').value = (totalConIVA * tasaBCV).toFixed(2);
 
             // 3. Actualizar asunto con el nombre del cliente para identificar el pedido en el correo
             const nombreParaAsunto = document.getElementById('cliente-nombre').value.trim() || 'Cliente';
-            document.getElementById('hidden-subject').value = `🛒 Nuevo Pedido Ultra Seco — ${nombreParaAsunto} | Ref. ${totalUSD.toFixed(2)}`;
+            document.getElementById('hidden-subject').value = `🛒 Nuevo Pedido Ultra Seco — ${nombreParaAsunto} | Ref. ${totalConIVA.toFixed(2)}`;
 
             // 4. Capturar DATOS del formulario (incluyendo el archivo y los hidden fields actualizados)
             const form = e.target;
@@ -703,10 +722,10 @@
                 const numReferencia = document.getElementById('referencia-pago').value.trim() || 'N/A';
                 const metodoSeleccionado = document.getElementById('metodo-pago').value;
 
-                let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi número de referencia es ${numReferencia}. Te adjunto el capture del pago por acá. ¿Me confirman la recepción?`;
+                let mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalConIVA.toFixed(2)} (${formatPriceWithIVA(totalUSD)}). Mi número de referencia es ${numReferencia}. Te adjunto el capture del pago por acá. ¿Me confirman la recepción?`;
 
                 if (metodoSeleccionado === 'efectivo') {
-                    mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalUSD.toFixed(2)}. Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
+                    mensajeWp = `¡Hola Ultra Seco! 🌊 He realizado un pedido a nombre de ${nombreCliente} por un total de Ref. ${totalConIVA.toFixed(2)} (${formatPriceWithIVA(totalUSD)}). Mi método de pago es Dólares Efectivo. ¿Me confirman la recepción del pedido?`;
                 }
 
                 // URL de WhatsApp

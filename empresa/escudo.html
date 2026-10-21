@@ -412,7 +412,7 @@
                         <div class="relative">
                             <select data-sync-product="Escudo Cerámico" id="opt-escudo-ceramico" onchange="updatePrice('escudo-ceramico')"
                                 class="w-full p-4 bg-slate-900/50 border border-white/20 rounded-xl text-white font-bold appearance-none cursor-pointer focus:outline-none focus:border-cyan-400 transition">
-                                <option value="0" data-price="7.00">Recarga Profesional (1 Litro)</option>
+                                <option value="0" data-price="7.00">Recarga Profesional (1 Litro) - Ref. 7 + IVA=8.12</option>
                             </select>
                             <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-cyan-400">
                                 <i class="fa-solid fa-chevron-down"></i>
@@ -438,7 +438,7 @@
                         <div class="text-right">
                             <span class="block text-xs text-slate-500 font-bold uppercase mb-1">Inversión Total</span>
                             <span id="price-escudo-ceramico"
-                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 7.00</span>
+                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 7 + IVA=8.12</span>
                         </div>
                     </div>
 
@@ -640,6 +640,24 @@
             if (val < 1) val = 1;
             input.value = val;
             updatePrice('escudo-ceramico');
+        }
+
+        function updatePrice(productId) {
+            const select = document.getElementById(`opt-${productId}`);
+            const qty = document.getElementById(`qty-${productId}`);
+            const priceDisplay = document.getElementById(`price-${productId}`);
+            if (select && priceDisplay) {
+                const price = parseFloat(select.options[select.selectedIndex].dataset.price);
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
+                } else {
+                    const totalConIVA = totalBase * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
+                }
+            }
         }
 
         // --- CALCULADORA ---

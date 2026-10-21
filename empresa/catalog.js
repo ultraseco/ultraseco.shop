@@ -2,6 +2,22 @@
 // ULTRA SECO - DYNAMIC PRODUCT CATALOG & CART
 // ============================================
 
+function formatPriceNum(num) {
+    const n = parseFloat(num);
+    if (isNaN(n)) return num;
+    return (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+}
+
+function formatPriceWithIVA(price) {
+    const p = parseFloat(price);
+    if (isNaN(p)) return price;
+    const total = p * 1.16;
+    return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+}
+
+window.formatPriceNum = window.formatPriceNum || formatPriceNum;
+window.formatPriceWithIVA = window.formatPriceWithIVA || formatPriceWithIVA;
+
 // --- PRODUCT DATA (Moved to top for safety) ---
 window.products = [
     {
@@ -581,7 +597,7 @@ function renderCartDrawer() {
                         <span>${item.quantity}</span>
                         <button class="qty-btn" onclick="updateQuantity('${item.sku}', 1)">+</button>
                     </div>
-                    <div class="item-price">Ref. ${(item.selectedOption.price * item.quantity).toFixed(2)}</div>
+                    <div class="item-price">${formatPriceWithIVA(item.selectedOption.price * item.quantity)}</div>
                     <button class="remove-btn" onclick="removeFromCart('${item.sku}')">
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -590,18 +606,22 @@ function renderCartDrawer() {
         </div>
 `).join('');
 
+    const subtotal = parseFloat(getTotalPrice());
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+
     footer.innerHTML = `
         <div class="cart-summary-row">
             <span>Subtotal</span>
-            <span>Ref. ${getTotalPrice()}</span>
+            <span>Ref. ${formatPriceNum(subtotal)}</span>
         </div>
         <div class="cart-summary-row">
-            <span>Envío</span>
-            <span>Calculado al pagar</span>
+            <span>IVA (16%)</span>
+            <span>Ref. ${formatPriceNum(iva)}</span>
         </div>
         <div class="cart-total-row">
-            <span>Total</span>
-            <span>Ref. ${getTotalPrice()}</span>
+            <span>Total a Pagar</span>
+            <span>Ref. ${formatPriceNum(total)}</span>
         </div>
         <button class="checkout-btn" onclick="alert('Redirigiendo a pasarela de pago...')">
             <i class="fa-solid fa-lock"></i> Finalizar Compra
@@ -713,7 +733,7 @@ function renderCatalog(mode) {
                                 <select id="select-${product.id}" onchange="updateCardPrice('${product.id}')" 
                                     style="width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
                                     ${product.options.map((opt, idx) => `
-                                        <option value="${idx}" data-price="${opt.price}">${opt.label}</option>
+                                        <option value="${idx}" data-price="${opt.price}">${opt.label} - ${formatPriceWithIVA(opt.price)}</option>
                                     `).join('')}
                                 </select>
                             </div>
@@ -721,7 +741,7 @@ function renderCatalog(mode) {
                             <div class="product-footer">
                                 <div>
                                     <span class="options-label">Precio:</span>
-                                    <div class="product-price" id="price-display-${product.id}">Ref. ${displayPrice.toFixed(2)}</div>
+                                    <div class="product-price" id="price-display-${product.id}">${formatPriceWithIVA(displayPrice)}</div>
                                 </div>
                                 <div style="display: flex; gap: 0.5rem;">
                                     ${product.link ? `<a href="${product.link}" class="product-action-btn wholesale-btn" style="text-decoration:none;"><i class="fa-solid fa-eye"></i></a>` : ''}
@@ -745,7 +765,7 @@ window.updateCardPrice = function (productId) {
     const priceDisplay = document.getElementById(`price-display-${productId}`);
     if (select && priceDisplay) {
         const price = parseFloat(select.options[select.selectedIndex].getAttribute('data-price'));
-        priceDisplay.textContent = `Ref. ${price.toFixed(2)}`;
+        priceDisplay.textContent = formatPriceWithIVA(price);
     }
 };
 

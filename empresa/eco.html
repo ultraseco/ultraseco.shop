@@ -453,21 +453,23 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-600 mb-1">Presentación:</label>
-                                <select id="select-eco" data-sync-product="Eco Capturador (Minería)" 
+                                <select id="select-eco" data-sync-product="Eco Capturador (Minería)" onchange="updateEcoPrice()"
                                     class="w-full p-3 rounded-lg border-2 border-gray-100 focus:border-yellow-500 outline-none transition-all">
-                                    <option value="">Cargando presentaciones...</option>
+                                    <option value="1 Litro" data-price="85.00">1 Litro - Ref. 85 + IVA=98.60</option>
+                                    <option value="Galón" data-price="320.00">Galón - Ref. 320 + IVA=371.20</option>
+                                    <option value="Cuñete" data-price="1500.00">Cuñete - Ref. 1500 + IVA=1740</option>
                                 </select>
                             </div>
 
                             <div class="flex items-center justify-between bg-slate-50 p-4 rounded-lg">
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase">Cantidad</label>
-                                    <input type="number" id="qty-eco" value="1" min="1" 
+                                    <input type="number" id="qty-eco" value="1" min="1" onchange="updateEcoPrice()" oninput="updateEcoPrice()"
                                         class="w-20 bg-transparent text-xl font-bold text-slate-900 outline-none">
                                 </div>
                                 <div class="text-right">
                                     <p class="text-xs font-bold text-gray-400 uppercase">Precio Unitario</p>
-                                    <p data-sync-price="Eco Capturador (Minería)" id="price-eco" class="text-2xl font-black text-yellow-600">---</p>
+                                    <p data-sync-price="Eco Capturador (Minería)" id="price-eco" class="text-2xl font-black text-yellow-600">Ref. 85 + IVA=98.60</p>
                                 </div>
                             </div>
 
@@ -867,7 +869,7 @@ TONO: Práctico, educativo y enfocado en la eficiencia operativa. Eres el aliado
                 ? 'bg-yellow-600 text-slate-900 rounded-l-xl rounded-br-xl'
                 : 'bg-slate-700 text-slate-200 rounded-r-xl rounded-bl-xl';
 
-            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>Ref. 1</strong>');
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
             div.innerHTML = `
                 ${avatar}
@@ -926,6 +928,26 @@ TONO: Práctico, educativo y enfocado en la eficiencia operativa. Eres el aliado
 
         function handleKeyPress(event) {
             if (event.key === 'Enter') sendMessage();
+        }
+
+        function updateEcoPrice() {
+            const select = document.getElementById('select-eco');
+            const qty = document.getElementById('qty-eco');
+            const priceDisplay = document.getElementById('price-eco');
+            if (select && priceDisplay) {
+                const opt = select.options[select.selectedIndex];
+                if (!opt || !opt.dataset.price) return;
+                const price = parseFloat(opt.dataset.price);
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                if (typeof window.formatPriceWithIVA === 'function') {
+                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
+                } else {
+                    const totalConIVA = totalBase * 1.16;
+                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
+                }
+            }
         }
 
         // Init icons for the whole page

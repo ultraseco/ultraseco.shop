@@ -258,11 +258,11 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Estuco Súper Hidrofóbico" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=6.40>1/4 Galón - Ref. 6.40</option>
-                            <option data-price=19.00>Galón - Ref. 19.00</option>
+                        <select data-sync-product="Estuco Súper Hidrofóbico" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=6.40>1/4 Galón - Ref. 6.40 + IVA=7.42</option>
+                            <option data-price=19.00>Galón - Ref. 19 + IVA=22.04</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 6.40</span>
+                        <span class="producto-precio" style="display: none;">Ref. 6.40 + IVA=7.42</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -276,12 +276,12 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Fortificador de Superficies" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=19.00>1 Litro - Ref. 19.00</option>
-                            <option data-price=52.00>Galón - Ref. 52.00</option>
-                            <option data-price=254.50>Cuñete - Ref. 254.50</option>
+                        <select data-sync-product="Fortificador de Superficies" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=19.00>1 Litro - Ref. 19 + IVA=22.04</option>
+                            <option data-price=52.00>Galón - Ref. 52 + IVA=60.32</option>
+                            <option data-price=254.50>Cuñete - Ref. 254.50 + IVA=295.22</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 19.00</span>
+                        <span class="producto-precio" style="display: none;">Ref. 19 + IVA=22.04</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -295,13 +295,13 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Ultra Seco Solución Exterior" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=16.99>1 Litro - Ref. 16.99</option>
-                            <option data-price=17.99>1 Litro (Atomizador) - Ref. 17.99</option>
-                            <option data-price=48.00>Galón (3.785L) - Ref. 48.00</option>
-                            <option data-price=217.50>Cuñete (18L) - Ref. 217.50</option>
+                        <select data-sync-product="Ultra Seco Solución Exterior" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=16.99>1 Litro - Ref. 16.99 + IVA=19.71</option>
+                            <option data-price=17.99>1 Litro (Atomizador) - Ref. 17.99 + IVA=20.87</option>
+                            <option data-price=48.00>Galón (3.785L) - Ref. 48 + IVA=55.68</option>
+                            <option data-price=217.50>Cuñete (18L) - Ref. 217.50 + IVA=252.30</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 16.99</span>
+                        <span class="producto-precio" style="display: none;">Ref. 16.99 + IVA=19.71</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -315,13 +315,13 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Ultra Seco Solución Interior" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=13.99>1 Litro - Ref. 13.99</option>
-                            <option data-price=14.99>1 Litro (Atomizador) - Ref. 14.99</option>
-                            <option data-price=38.00>Galón (3.785L) - Ref. 38.00</option>
-                            <option data-price=170.00>Cuñete (18L) - Ref. 170.00</option>
+                        <select data-sync-product="Ultra Seco Solución Interior" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=13.99>1 Litro - Ref. 13.99 + IVA=16.23</option>
+                            <option data-price=14.99>1 Litro (Atomizador) - Ref. 14.99 + IVA=17.39</option>
+                            <option data-price=38.00>Galón (3.785L) - Ref. 38 + IVA=44.08</option>
+                            <option data-price=170.00>Cuñete (18L) - Ref. 170 + IVA=197.20</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 13.99</span>
+                        <span class="producto-precio" style="display: none;">Ref. 13.99 + IVA=16.23</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -335,10 +335,10 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Pintura Súper Hidrofóbica" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=34.00>Galón - Ref. 34.00</option>
+                        <select data-sync-product="Pintura Súper Hidrofóbica" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=34.00>Galón - Ref. 34 + IVA=39.44</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 34.00</span>
+                        <span class="producto-precio" style="display: none;">Ref. 34 + IVA=39.44</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -352,10 +352,10 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Nano Aditivo para Concreto" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=15.00>600gr - Ref. 15.00</option>
+                        <select data-sync-product="Nano Aditivo para Concreto" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=15.00>600gr - Ref. 15 + IVA=17.40</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 15.00</span>
+                        <span class="producto-precio" style="display: none;">Ref. 15 + IVA=17.40</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -373,10 +373,12 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Eco Capturador (Minería)" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option value="">Cargando...</option>
+                        <select data-sync-product="Eco Capturador (Minería)" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=85.00>1 Litro - Ref. 85 + IVA=98.60</option>
+                            <option data-price=320.00>Galón - Ref. 320 + IVA=371.20</option>
+                            <option data-price=1500.00>Cuñete - Ref. 1500 + IVA=1740</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">---</span>
+                        <span class="producto-precio" style="display: none;">Ref. 85 + IVA=98.60</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #fbbf24, #d97706); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -391,10 +393,11 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Ultra F3 (Anti-Fuego)" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option value="">Cargando...</option>
+                        <select data-sync-product="Ultra F3 (Anti-Fuego)" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=450.00>Cuñete (18L) - Ref. 450 + IVA=522</option>
+                            <option data-price=4800.00>Tambor (200L) - Ref. 4800 + IVA=5568</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">---</span>
+                        <span class="producto-precio" style="display: none;">Ref. 450 + IVA=522</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #dc2626, #991b1b); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -409,10 +412,11 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Aditivo Asfáltico" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option value="">Cargando...</option>
+                        <select data-sync-product="Aditivo Asfáltico" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=3500.00>Tambor (200L) - Ref. 3500 + IVA=4060</option>
+                            <option data-price=16000.00>Granel (1000L) - Ref. 16000 + IVA=18560</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">---</span>
+                        <span class="producto-precio" style="display: none;">Ref. 3500 + IVA=4060</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #1e3a8a, #3b82f6); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -427,10 +431,12 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Eco Capturador Magnetron" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option value="">Cargando...</option>
+                        <select data-sync-product="Eco Capturador Magnetron" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=95.00>1 Litro - Ref. 95 + IVA=110.20</option>
+                            <option data-price=345.00>Galón - Ref. 345 + IVA=400.20</option>
+                            <option data-price=1650.00>Cuñete - Ref. 1650 + IVA=1914</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">---</span>
+                        <span class="producto-precio" style="display: none;">Ref. 95 + IVA=110.20</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #0ea5e9, #2563eb); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -449,11 +455,11 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Champú Nano-Concentrado" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=12.00>1 Litro - Ref. 12.00</option>
-                            <option data-price=35.00>Galón - Ref. 35.00</option>
+                        <select data-sync-product="Champú Nano-Concentrado" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=12.00>1 Litro - Ref. 12 + IVA=13.92</option>
+                            <option data-price=35.00>Galón - Ref. 35 + IVA=40.60</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 12.00</span>
+                        <span class="producto-precio" style="display: none;">Ref. 12 + IVA=13.92</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -471,10 +477,10 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Cera Nano Protectora" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=13.00>1 Litro - Ref. 13.00</option>
+                        <select data-sync-product="Cera Nano Protectora" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=13.00>1 Litro - Ref. 13 + IVA=15.08</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 13.00</span>
+                        <span class="producto-precio" style="display: none;">Ref. 13 + IVA=15.08</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>
@@ -488,10 +494,10 @@
 
                     <div style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: #475569; display: block; margin-bottom: 0.3rem;">Presentación:</label>
-                        <select data-sync-product="Escudo Cerámico" onchange="this.parentElement.querySelector('.producto-precio').textContent = this.options[this.selectedIndex].dataset.price" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
-                            <option data-price=7.00>1 Litro - Ref. 7.00</option>
+                        <select data-sync-product="Escudo Cerámico" onchange="this.parentElement.querySelector('.producto-precio').textContent = formatPriceWithIVA(this.options[this.selectedIndex].dataset.price)" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #cbd5e1; background-color: #f8fafc; color: #1e293b; font-size: 0.95rem; font-weight: 500; cursor: pointer;">
+                            <option data-price=7.00>1 Litro - Ref. 7 + IVA=8.12</option>
                         </select>
-                        <span class="producto-precio" style="display: none;">Ref. 7.00</span>
+                        <span class="producto-precio" style="display: none;">Ref. 7 + IVA=8.12</span>
                     </div>
                     <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; padding: 0.8rem; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;"><i class="fa-solid fa-cart-shopping"></i> Agregar al carrito</button>
                 </div>

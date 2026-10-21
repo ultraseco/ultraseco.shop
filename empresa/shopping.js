@@ -1,4 +1,4 @@
-﻿// Shopping Cart & E-commerce Logic
+// Shopping Cart & E-commerce Logic
 
 // Product Database (Placeholders - User to update)
 const PRODUCTS_DB = {
@@ -257,7 +257,7 @@ function setupModals() {
                 <div class="p-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex justify-between text-lg font-bold mb-4">
                         <span>Total:</span>
-                        <span id="cart-total">Ref. 0.00</span>
+                        <span id="cart-total">Ref. 0 + IVA=0</span>
                     </div>
                     <button onclick="proceedToCheckout()" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-700 transition">
                         Procesar Compra
@@ -315,7 +315,7 @@ function renderCartModal() {
 
     if (cart.length === 0) {
         container.innerHTML = '<p class="text-center text-gray-500 mt-10">Tu carrito está vacío.</p>';
-        totalEl.innerText = 'Ref. 0.00';
+        totalEl.innerText = 'Ref. 0 + IVA=0';
         return;
     }
 
@@ -323,14 +323,16 @@ function renderCartModal() {
     container.innerHTML = cart.map(item => {
         const itemTotal = item.priceRetail * item.quantity;
         total += itemTotal;
+        const fmtPrice = (typeof formatPriceWithIVA === 'function') ? formatPriceWithIVA(item.priceRetail) : `Ref. ${item.priceRetail.toFixed(2)}`;
+        const fmtTotal = (typeof formatPriceWithIVA === 'function') ? formatPriceWithIVA(itemTotal) : `Ref. ${itemTotal.toFixed(2)}`;
         return `
             <div class="flex justify-between items-center border-b pb-2">
                 <div>
                     <h4 class="font-bold text-slate-800">${item.name}</h4>
-                    <p class="text-sm text-gray-500">Ref. ${item.priceRetail.toFixed(2)} x ${item.quantity}</p>
+                    <p class="text-sm text-gray-500">${fmtPrice} x ${item.quantity}</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="font-bold text-blue-600">Ref. ${itemTotal.toFixed(2)}</span>
+                    <span class="font-bold text-blue-600">${fmtTotal}</span>
                     <button onclick="removeFromCart('${item.id}')" class="text-red-400 hover:text-red-600">
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -339,7 +341,7 @@ function renderCartModal() {
         `;
     }).join('');
 
-    totalEl.innerText = `Ref. ${total.toFixed(2)}`;
+    totalEl.innerText = (typeof formatPriceWithIVA === 'function') ? formatPriceWithIVA(total) : `Ref. ${total.toFixed(2)}`;
 }
 
 function proceedToCheckout() {

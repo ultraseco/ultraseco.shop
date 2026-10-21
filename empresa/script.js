@@ -1,3 +1,17 @@
+// Funciones globales de formateo de precio con IVA (16%)
+window.formatPriceNum = function(num) {
+    const n = parseFloat(num);
+    if (isNaN(n)) return num;
+    return (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+};
+
+window.formatPriceWithIVA = function(price) {
+    const p = parseFloat(price);
+    if (isNaN(p)) return price;
+    const total = p * 1.16;
+    return `Ref. ${window.formatPriceNum(p)} + IVA=${window.formatPriceNum(total)}`;
+};
+
 // Define showPage globally so it's available immediately
 window.showPage = function (pageId, activeButton) {
     const pages = document.querySelectorAll('.page-content');
@@ -213,9 +227,14 @@ window.agregarAlCarritoManual = function(botonHTML) {
     const precioTexto = precioElem ? precioElem.textContent : '0';
     const cantidad = cantidadElem ? parseInt(cantidadElem.value) || 1 : 1;
     
-    // Buscar el primer número válido en el texto (ej: de "Ref. 16.00" extraerá "16.00")
-    const matchPrecio = precioTexto.match(/\d+(\.\d+)?/);
-    const precioNumerico = matchPrecio ? parseFloat(matchPrecio[0]) : 0;
+    // Obtener precio numérico base: preferir dataset.price del select si existe
+    let precioNumerico = 0;
+    if (selectElem && selectElem.options[selectElem.selectedIndex] && selectElem.options[selectElem.selectedIndex].dataset.price) {
+        precioNumerico = parseFloat(selectElem.options[selectElem.selectedIndex].dataset.price);
+    } else {
+        const matchPrecio = precioTexto.match(/\d+(\.\d+)?/);
+        precioNumerico = matchPrecio ? parseFloat(matchPrecio[0]) : 0;
+    }
     
     // 3. Crear el objeto JSON con la información
     const productoJSON = {
