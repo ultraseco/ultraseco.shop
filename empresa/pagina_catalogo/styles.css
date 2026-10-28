@@ -214,45 +214,48 @@ button, select, input {
 }
 
 .hero-banner-container {
-  background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-  border: 1px solid #e0f2fe;
-  border-radius: var(--radius-lg);
-  padding: 3rem 2rem 3.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0.5rem 0 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
 
 /* Imagen horizontal libre de marco tipo tarjeta */
 .hero-logo-banner-wrap {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1020px;
   margin: 0 auto 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent; /* Sin marco de tarjeta */
-  border: none;             /* Sin bordes */
-  box-shadow: none;         /* Sin sombras de tarjeta */
+  background: transparent;
+  border: none;
+  box-shadow: none;
   padding: 0;
 }
 
 .hero-logo-banner-img {
   width: 100%;
-  max-width: 900px;
+  max-width: 980px;
   height: auto;
-  max-height: 250px;
+  max-height: 340px;
   object-fit: contain;
   display: block;
-  mix-blend-mode: multiply; /* Fusión natural con el fondo claro */
+  mix-blend-mode: normal; /* Imagen con bordes definidos y paleta propia */
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   transition: var(--transition);
 }
 
 .hero-logo-banner-img:hover {
-  transform: scale(1.01);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -5px rgba(0, 0, 0, 0.12), 0 10px 12px -6px rgba(0, 0, 0, 0.06);
 }
 
 /* Contenido de texto posicionado debajo de la imagen */
@@ -1017,7 +1020,7 @@ button, select, input {
    ========================================================================== */
 @media (max-width: 1024px) {
   .hero-banner-container {
-    padding: 2.5rem 1.5rem;
+    padding: 0.5rem 0 1.5rem;
   }
 
   .footer-container {

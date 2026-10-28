@@ -92,15 +92,15 @@ function Hero() {
   return (
     <section className="hero-section" id="inicio">
       <div className="hero-banner-container">
-        {/* Imagen abarcando el horizontal de la sección, sin marco tipo tarjeta */}
+        {/* Cartel Ultraseco abarcando el horizontal de la sección, con bordes definidos y sin marco tipo tarjeta */}
         <div className="hero-logo-banner-wrap">
           <img 
-            src="../images/logotipo%20ultraseco.png" 
-            alt="Logotipo Ultraseco" 
+            src="../images/cartel%20ultraseco.png" 
+            alt="Cartel Ultraseco" 
             className="hero-logo-banner-img"
             onError={(e) => { 
               if (e.target.src.includes('%20')) {
-                e.target.src = '../images/logotipo ultraseco.png';
+                e.target.src = '../images/cartel ultraseco.png';
               } else {
                 e.target.src = '../images/logo.png'; 
               }
