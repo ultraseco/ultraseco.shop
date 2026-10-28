@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Catálogo Comercial | Ultraseco.shop (Prototipo Independiente)</title>
+  <meta name="description" content="Catálogo comercial oficial de Ultraseco.shop: Estuco, soluciones hidrofóbicas para interiores y exteriores, fortificadores de concreto y protección avanzada contra el fuego.">
+  <link rel="icon" type="image/png" href="../images/logo.png">
+
+  <!-- Tipografía Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Iconos Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Estilos Luminosos y Frescos del Catálogo -->
+  <link rel="stylesheet" href="styles.css?v=5">
+
+  <!-- React 18 & ReactDOM UMD -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel Standalone para interpretar JSX en el navegador de manera autónoma -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+</head>
+
+<body>
+  <!-- Contenedor Principal de React -->
+  <div id="root">
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; color: #0284c7;">
+      <div style="text-align: center;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+        <p style="font-weight: 600; color: #334155;">Cargando catálogo comercial Ultraseco...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Datos Comerciales Reales de los 12 Productos -->
+  <script src="products-data.js?v=5"></script>
+
+  <!-- Aplicación React Modular -->
+  <script type="text/babel" src="app.jsx?v=5"></script>
+</body>
+
+</html>
