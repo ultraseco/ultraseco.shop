@@ -1040,12 +1040,30 @@ button, select, input {
   }
 
   .product-image-wrap {
-    height: 190px;
+    height: 230px;
   }
 
   .footer-container {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Smartphones (Android & iPhone): Imágenes de productos más grandes y legibles */
+  .catalog-grid {
+    grid-template-columns: 1fr; /* Una columna cómoda en smartphones */
+    row-gap: 2.5rem;
+  }
+
+  .product-image-wrap {
+    height: 285px; /* Altura generosa para apreciar envases y etiquetas en pantalla táctil */
+    padding: 0.5rem;
+  }
+
+  .product-bottle-img {
+    max-height: 100%;
+    width: auto;
   }
 }
 
@@ -1069,6 +1087,11 @@ button, select, input {
 
   .catalog-grid {
     grid-template-columns: 1fr; /* Una columna cómoda en móviles pequeños */
+  }
+
+  .product-image-wrap {
+    height: 285px; /* Imagen de producto destacada y más grande en teléfonos */
+    padding: 0.5rem;
   }
 
   .whatsapp-widget-float {
