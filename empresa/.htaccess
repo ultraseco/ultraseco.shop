@@ -50,7 +50,7 @@
 
 # Configuración de tipos MIME
 <IfModule mod_mime.c>
-    AddType application/javascript js
+    AddType application/javascript js jsx
     AddType text/css css
     AddType image/webp webp
 </IfModule>
