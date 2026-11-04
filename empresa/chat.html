@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+    <title>Asesor Virtual IA | Ultra Seco</title>
+
+    <!-- Essential Styles and Scripts for Header -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --brand-primary: #0284c7;
+            --brand-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0b1329 0%, #0f172a 50%, #1e293b 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 80px;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        .advisor-page-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.25rem 3rem;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        /* Columna Izquierda: Tarjeta del Asesor */
+        .advisor-card {
+            flex: 0 0 380px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
+            padding: 2rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advisor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #0284c7, #06b6d4, #3b82f6);
+        }
+
+        .advisor-photo-wrap {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            margin: 0.5rem auto 1.25rem;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #0ea5e9 100%);
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+        }
+
+        .advisor-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffffff;
+            display: block;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.85rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        /* Columna Derecha: Contenedor del Chat */
+        .chat-container {
+            flex: 1 1 500px;
+            max-width: 680px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            min-height: 580px;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 1.15rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .header-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        #chat-box {
+            flex: 1;
+            height: 450px;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #f8fafc;
+        }
+
+        /* Mensajes y avatar por fila */
+        .msg-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            width: 100%;
+        }
+
+        .ai-row {
+            justify-content: flex-start;
+        }
+
+        .user-row {
+            justify-content: flex-end;
+        }
+
+        .msg-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #38bdf8;
+            margin-top: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        .msg {
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 82%;
+            word-break: break-word;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .user {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai {
+            background: #ffffff;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1.5px solid #cbd5e1;
+            padding: 12px 18px;
+            border-radius: 9999px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .chat-input:focus {
+            border-color: var(--brand-primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-send:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+        }
+
+        /* Sugerencias Rápidas */
+        .quick-chips {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding: 0.5rem 1.25rem 0.85rem;
+            background: #f8fafc;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        .quick-chip {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-chip:hover {
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+            background: #f0f9ff;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 968px) {
+            .advisor-page-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 1rem 2rem;
+                gap: 1.5rem;
+            }
+
+            .advisor-card {
+                flex: none;
+                width: 100%;
+                max-width: 520px;
+                padding: 1.5rem;
+            }
+
+            .advisor-photo-wrap {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 0.75rem;
+            }
+
+            .chat-container {
+                width: 100%;
+                max-width: 520px;
+                min-height: 520px;
+            }
+
+            #chat-box {
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header
+        class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300">
+        <nav
+            style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Ultra Seco" style="height: 40px;">
+            </a>
+
+            <!-- Mobile menu toggle button -->
+            <button class="mobile-menu-toggle flex md:hidden text-white" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+
+            <ul class="nav-links flex items-center gap-6 list-none m-0 p-0">
+                <li><a href="index.html#inicio" class="!text-white hover:!text-[#00a8e8] text-[14px] font-semibold transition"
+                        style="text-decoration: none;">Inicio</a></li>
+                <li><a href="asesor.html" class="!text-[#38bdf8] hover:!text-[#00a8e8] text-[14px] font-semibold transition"
+                        style="text-decoration: none;">Asesor IA</a></li>
+                <li><a href="index.html#catalogo" class="!text-white hover:!text-[#00a8e8] text-[14px] font-semibold transition"
+                        style="text-decoration: none;">Productos</a></li>
+                <li>
+                    <button onclick="window.history.back()"
+                        class="flex items-center gap-2 !text-white hover:!text-[#00a8e8] text-[14px] font-bold bg-transparent border-none cursor-pointer transition">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </li>
+                <li><a href="asesor.html"
+                        class="bg-cyan-600 !text-white px-4 py-2 rounded-full font-bold text-sm hover:bg-cyan-500 transition"
+                        style="text-decoration: none;"><i class="fa-solid fa-brain"></i> Asesor IA
+                    </a>
+                </li>
+            
+                <li><a href="carrito.html" class="!text-white hover:!text-[#00a8e8] text-[14px] font-semibold transition flex items-center gap-2" style="text-decoration: none; position: relative;">
+                    <i class="fa-solid fa-cart-shopping"></i> Carrito
+                    <span id="cart-badge" style="position: absolute; top: -8px; right: -12px; background: #ef4444; color: white; border-radius: 50%; height: 20px; min-width: 20px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; justify-content: center; display: none;">0</span>
+                </a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contenedor Principal: Tarjeta Amigable del Asesor (Izquierda) + Chat Interactivo (Derecha) -->
+    <main class="w-full">
+        <div class="advisor-page-container">
+            
+            <!-- Columna Izquierda: Tarjeta de Presentación del Asesor Virtual -->
+            <aside class="advisor-card">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>En Línea &bull; 24/7</span>
+                </div>
+
+                <div class="advisor-photo-wrap">
+                    <img src="images/ultraseco_asesor.jpg" alt="Asesor Virtual Ultra Seco" class="advisor-photo" onerror="this.onerror=null;this.src='images/logo.png';">
+                </div>
+
+                <h2 class="text-xl font-black text-slate-900 mb-1">Ing. Asesor Ultra Seco</h2>
+                <p class="text-xs font-semibold text-sky-700 tracking-wider uppercase mb-3">Especialista en Nanoprotección</p>
+
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                    ¡Hola! Te acompaño en cada etapa de tu proyecto para diagnosticar problemas de humedad, filtraciones, protección contra fuego o acabados y recomendarte la formulación exacta.
+                </p>
+
+                <div class="w-full bg-slate-50 rounded-xl p-3 border border-slate-200 text-left mb-4 space-y-2 text-xs text-slate-600">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        <span>Diagnóstico molecular sin costo</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        <span>Cálculo exacto de rendimientos y litros</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        <span>Guía de aplicación paso a paso</span>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/584146023797?text=Hola%20Ultra%20Seco!%20Deseo%20atención%20con%20un%20asesor%20humano." target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl border border-emerald-500 text-emerald-700 hover:bg-emerald-50 transition font-bold text-xs flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
+                    <span>¿Prefieres hablar por WhatsApp?</span>
+                </a>
+            </aside>
+
+            <!-- Columna Derecha: Chat Interactivo -->
+            <section class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-header-info">
+                        <img src="images/ultraseco_asesor.jpg" alt="Asesor Ultra Seco" class="header-avatar" onerror="this.onerror=null;this.src='images/logo.png';">
+                        <div>
+                            <div class="font-bold text-sm sm:text-base leading-tight">Asesor Virtual Ultra Seco</div>
+                            <div class="text-[11px] text-cyan-300 font-medium">Respuestas técnicas instantáneas con IA</div>
+                        </div>
+                    </div>
+                    <span class="text-xs text-slate-300 hidden sm:inline"><i class="fa-solid fa-shield-halved text-cyan-400 mr-1"></i> Certificado</span>
+                </div>
+
+                <div id="chat-box">
+                    <!-- Mensaje de bienvenida acompañado del avatar -->
+                    <div class="msg-row ai-row">
+                        <img src="images/ultraseco_asesor.jpg" alt="Asesor Ultra Seco" class="msg-avatar shrink-0" onerror="this.onerror=null;this.src='images/logo.png';">
+                        <div class="msg ai">
+                            <b>Asesor:</b> ¡Hola! Soy tu asesor técnico de Ultra Seco. ¿En qué superficie o problema de impermeabilización te gustaría que te ayude hoy?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preguntas Rápidas Frecuentes -->
+                <div class="quick-chips">
+                    <button type="button" class="quick-chip" onclick="enviarSugerencia('¿Cómo eliminar la humedad ascendente en paredes?')">
+                        💧 Humedad en paredes
+                    </button>
+                    <button type="button" class="quick-chip" onclick="enviarSugerencia('¿Cuál es la diferencia entre Solución Interior y Exterior?')">
+                        🏠 Interior vs Exterior
+                    </button>
+                    <button type="button" class="quick-chip" onclick="enviarSugerencia('¿Cómo funciona el extintor Ultra F3?')">
+                        🔥 Extintor Ultra F3
+                    </button>
+                    <button type="button" class="quick-chip" onclick="enviarSugerencia('¿Cómo aplicar el Estuco Súper Hidrofóbico?')">
+                        🧱 Aplicar Estuco
+                    </button>
+                </div>
+
+                <div class="input-area">
+                    <input type="text" id="user-input" class="chat-input" placeholder="Escribe tu consulta o duda aquí..." onkeypress="revisarEnter(event)">
+                    <button class="btn-send" onclick="enviarMensaje()">
+                        <span>ENVIAR</span>
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="asesor.js"></script>
+    <script src="script.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="js/price-sync.js"></script>
+
+    <script>
+        function enviarSugerencia(texto) {
+            const input = document.getElementById('user-input');
+            if (input) {
+                input.value = texto;
+                enviarMensaje();
+            }
+        }
+    </script>
+
+    <!-- WhatsApp Float Button -->
+    <style>
+    .whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25d366;
+        color: white;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 32px;
+        box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .whatsapp-float:hover {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 2px 6px 12px rgba(0,0,0,0.4);
+        color: white;
+    }
+    </style>
+    <a href="https://wa.me/584146023797" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+</body>
+</html>

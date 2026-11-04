@@ -1,4 +1,5 @@
 const WORKER_URL = "https://asesor-ultraseco.ultraseco-vzla.workers.dev";
+const AVATAR_URL = "images/ultraseco_asesor.jpg";
 
 async function enviarMensaje() {
     const input = document.getElementById("user-input");
@@ -8,13 +9,22 @@ async function enviarMensaje() {
     if (!mensaje) return;
 
     // 1. Mostrar mensaje del usuario
-    chatBox.innerHTML += `<div class="msg user"><b>Tú:</b> ${mensaje}</div>`;
+    chatBox.innerHTML += `
+        <div class="msg-row user-row">
+            <div class="msg user"><b>Tú:</b> ${escapeHtml(mensaje)}</div>
+        </div>
+    `;
     input.value = "";
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // 2. Mostrar estado de carga (ID único para poder borrarlo luego)
+    // 2. Mostrar estado de carga con avatar del asesor
     const tempId = "loading-" + Date.now();
-    chatBox.innerHTML += `<div class="msg ai" id="${tempId}"><b>Asesor:</b> Escribiendo...</div>`;
+    chatBox.innerHTML += `
+        <div class="msg-row ai-row" id="${tempId}">
+            <img src="${AVATAR_URL}" alt="Asesor Ultra Seco" class="msg-avatar shrink-0">
+            <div class="msg ai"><i class="fa-solid fa-circle-notch fa-spin text-cyan-600 mr-2"></i><b>Asesor:</b> Escribiendo...</div>
+        </div>
+    `;
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
@@ -28,20 +38,44 @@ async function enviarMensaje() {
 
         const data = await response.json();
         
-        // 3. Reemplazar "Escribiendo..." con la respuesta real de Groq
-        const elementoAI = document.getElementById(tempId);
-        if (data.reply) {
-            elementoAI.innerHTML = `<b>Asesor:</b> ${data.reply}`;
-        } else {
-            elementoAI.innerHTML = `<b>Asesor:</b> No recibí una respuesta clara. Revisa tu API Key.`;
+        // 3. Reemplazar "Escribiendo..." con la respuesta real
+        const elementoFilaAI = document.getElementById(tempId);
+        if (elementoFilaAI) {
+            const replyText = data.reply ? data.reply : "No recibí una respuesta clara. Por favor intenta de nuevo.";
+            elementoFilaAI.innerHTML = `
+                <img src="${AVATAR_URL}" alt="Asesor Ultra Seco" class="msg-avatar shrink-0">
+                <div class="msg ai"><b>Asesor:</b> ${formatearRespuesta(replyText)}</div>
+            `;
         }
 
     } catch (error) {
         console.error(error);
-        const elementoError = document.getElementById(tempId);
-        elementoError.innerHTML = `<b>Asesor:</b> Error de conexión. Asegúrate de que el Worker esté desplegado.`;
+        const elementoFilaAI = document.getElementById(tempId);
+        if (elementoFilaAI) {
+            elementoFilaAI.innerHTML = `
+                <img src="${AVATAR_URL}" alt="Asesor Ultra Seco" class="msg-avatar shrink-0">
+                <div class="msg ai text-red-600"><b>Asesor:</b> Error de conexión. Por favor intenta de nuevo o comunícate con nosotros por WhatsApp.</div>
+            `;
+        }
     }
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function formatearRespuesta(texto) {
+    // Convierte saltos de línea y negritas en markdown simple
+    let res = escapeHtml(texto);
+    res = res.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    res = res.replace(/\n/g, '<br>');
+    return res;
+}
+
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 function revisarEnter(event) {
