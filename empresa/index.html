@@ -617,6 +617,10 @@ button, select, input {
   transition: var(--transition);
 }
 
+.qty-btn i {
+  pointer-events: none;
+}
+
 .qty-btn:hover:not(:disabled) {
   background-color: #e2e8f0;
   color: var(--brand-dark);
@@ -1869,23 +1873,23 @@ button, select, input {
         if (!product || !st) return;
 
         var opt = product.presentations[st.selectedIdx] || product.presentations[0];
-        var priceBlock = document.querySelector("[data-price-block="" + productId + ""]");
+        var priceBlock = document.querySelector('[data-price-block="' + productId + '"]');
         if (priceBlock) {
           if (!opt || opt.price === null || opt.price === undefined) {
-            priceBlock.innerHTML = "<span class="price-pending-badge">" + ((opt && opt.pendingNote) || "Cotizar con asesor") + "</span>";
+            priceBlock.innerHTML = '<span class="price-pending-badge">' + ((opt && opt.pendingNote) || 'Cotizar con asesor') + '</span>';
           } else {
             var basePrice = parseFloat(opt.price);
             var total = basePrice * (1 + (product.taxRate || 0.16));
             priceBlock.innerHTML =
-              "<div class="price-ref-text">ref. " + formatPriceNum(basePrice) + " + IVA</div>" +
-              "<div class="price-total-text">Total: Ref. " + formatPriceNum(total) + "</div>";
+              '<div class="price-ref-text">ref. ' + formatPriceNum(basePrice) + ' + IVA</div>' +
+              '<div class="price-total-text">Total: Ref. ' + formatPriceNum(total) + '</div>';
           }
         }
 
-        var qtyVal = document.querySelector("[data-qty-val="" + productId + ""]");
+        var qtyVal = document.querySelector('[data-qty-val="' + productId + '"]');
         if (qtyVal) qtyVal.textContent = st.quantity;
 
-        var decBtn = document.querySelector("[data-qty-dec="" + productId + ""]");
+        var decBtn = document.querySelector('[data-qty-dec="' + productId + '"]');
         if (decBtn) decBtn.disabled = st.quantity <= 1;
       }
 
