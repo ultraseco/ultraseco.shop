@@ -143,8 +143,8 @@
       image: `${BASE_PATH}images/extintor_f3.png`,
       detailUrl: `${BASE_PATH}extintores-f3.html`,
       presentations: [
-        { label: 'Portátil 2.5 Gal (6L)', price: null, pendingNote: 'Cotizar con asesor', sku: 'EXT-F3-6L' },
-        { label: 'Portátil 9 Litros', price: null, pendingNote: 'Cotizar con asesor', sku: 'EXT-F3-9L' }
+        { label: 'Portátil 10 Lb (4 Lts)', price: null, pendingNote: 'Cotizar con asesor', sku: 'EXT-F3-10LB' },
+        { label: 'Portátil 20 Lb (8 Lts)', price: null, pendingNote: 'Cotizar con asesor', sku: 'EXT-F3-20LB' }
       ],
       taxRate: 0.16,
       isQuoteOnly: true
