@@ -19,9 +19,9 @@
         {"id":6,"nombre":"Ultra Seco Solución Exterior","presentacion":"1 Litro (Atomizador)","precio":"17.99"},
         {"id":7,"nombre":"Ultra Seco Solución Exterior","presentacion":"Galón (3.785L)","precio":"54.00"},
         {"id":8,"nombre":"Ultra Seco Solución Exterior","presentacion":"Cuñete (18L)","precio":"250.00"},
-        {"id":9,"nombre":"Fortificador de Superficies","presentacion":"1 Litro","precio":"21.00"},
-        {"id":10,"nombre":"Fortificador de Superficies","presentacion":"Galón","precio":"57.00"},
-        {"id":11,"nombre":"Fortificador de Superficies","presentacion":"Cuñete","precio":"270.00"},
+        {"id":9,"nombre":"Fortificador de Superficies","presentacion":"1 Litro","precio":"19.00"},
+        {"id":10,"nombre":"Fortificador de Superficies","presentacion":"Galón","precio":"52.00"},
+        {"id":11,"nombre":"Fortificador de Superficies","presentacion":"Cuñete","precio":"254.50"},
         {"id":12,"nombre":"Pintura Súper Hidrofóbica","presentacion":"Galón","precio":"37.00"},
         {"id":13,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Estuco de 1/4 de galón","precio":"8.50"},
         {"id":14,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Galón","precio":"22.00"},
@@ -43,7 +43,7 @@
         {"id":29,"nombre":"Eco Capturador Magnetron","presentacion":"Cuñete","precio":"1650.00"}
     ];
 
-    const VERSION = '3.0.0';
+    const VERSION = '3.0.1';
     const CACHE_KEY = `ultraseco_prices_v${VERSION}`;
     const CACHE_TTL = 1000 * 60 * 5; // 5 minutos
 

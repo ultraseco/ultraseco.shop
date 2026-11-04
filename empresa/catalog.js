@@ -59,9 +59,9 @@ window.products = [
         link: 'fortificador.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 21.00, sku: 'US-FORT-1L' },
-            { label: 'Galón', price: 57.00, sku: 'US-FORT-GAL' },
-            { label: 'Cuñete', price: 270.00, sku: 'US-FORT-CUN' },
+            { label: '1 Litro', price: 19.00, sku: 'US-FORT-1L' },
+            { label: 'Galón', price: 52.00, sku: 'US-FORT-GAL' },
+            { label: 'Cuñete', price: 254.50, sku: 'US-FORT-CUN' },
         ]
     },
     {

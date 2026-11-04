@@ -99,9 +99,9 @@ const CATALOG_PRODUCTS = [
       base: 'Silicatos nanocoloidales reactivos'
     },
     options: [
-      { label: '1 Litro', priceRetail: 21.00, priceWholesale: 17.85, sku: 'US-FORT-1L' },
-      { label: 'Galón', priceRetail: 57.00, priceWholesale: 48.45, sku: 'US-FORT-GAL' },
-      { label: 'Cuñete', priceRetail: 270.00, priceWholesale: 229.50, sku: 'US-FORT-CUN' }
+      { label: '1 Litro', priceRetail: 19.00, priceWholesale: 16.15, sku: 'US-FORT-1L' },
+      { label: 'Galón', priceRetail: 52.00, priceWholesale: 44.20, sku: 'US-FORT-GAL' },
+      { label: 'Cuñete', priceRetail: 254.50, priceWholesale: 216.33, sku: 'US-FORT-CUN' }
     ]
   },
   {
