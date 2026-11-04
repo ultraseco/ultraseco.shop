@@ -89,7 +89,7 @@
       name: 'Nanoshield (Nano Aditivo para Concreto)',
       category: 'Construcción',
       description: 'Impermeabilización integral para mezclas de concreto y morteros desde el fraguado.',
-      image: `${BASE_PATH}images/aditivo.png`,
+      image: `${BASE_PATH}images/nano-aditivo.jpg`,
       detailUrl: `${BASE_PATH}nano-aditivo.html`,
       presentations: [
         { label: '600 gramos', price: 15.00, sku: 'NANO-ADIT-600G' },
