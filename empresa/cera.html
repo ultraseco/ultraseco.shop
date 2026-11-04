@@ -12,11 +12,12 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 
     
     <title>Nano Cera Protectora | Ultra Seco</title>
 
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="config.js"></script>
@@ -39,6 +40,27 @@
             background-color: var(--deep-azure);
             color: #e2e8f0;
             overflow-x: hidden;
+            width: 100%;
+        }
+
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Auto-ajuste fluido de textos para PC y Smartphone */
+        .hero-title-responsive {
+            font-size: clamp(1.75rem, 6.2vw, 4.25rem);
+            line-height: 1.1;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .price-total-responsive {
+            font-size: clamp(1.25rem, 4.5vw, 2rem);
+            line-height: 1.2;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Fondo de Lujo Animado (Dark Theme Base) */
@@ -129,7 +151,7 @@
 
 <body class="luxury-bg">
 
-    <header
+    <header id="main-header"
         class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
         <nav
             style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
@@ -171,41 +193,41 @@
     <main>
         <!-- HERO SECTION -->
         <section
-            class="h-[650px] flex items-center relative overflow-hidden pt-20 bg-[url('images/shining-surface.png')] bg-cover bg-center">
+            class="min-h-[580px] lg:h-[650px] flex items-center relative overflow-hidden pt-24 pb-12 lg:py-0 lg:pt-20 bg-[url('images/shining-surface.png')] bg-cover bg-center">
             <!-- Portada General Sin Filtros -->
 
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
 
                 <div
-                    class="glass-panel p-8 bg-white/70 backdrop-blur-md rounded-3xl border border-white/40 shadow-xl lg:col-span-1">
+                    class="glass-panel p-5 sm:p-8 bg-white/75 backdrop-blur-md rounded-3xl border border-white/40 shadow-xl lg:col-span-1 w-full max-w-full overflow-hidden">
                     <div
-                        class="inline-flex items-center gap-2 mb-6 border border-cyan-600/30 px-4 py-1 rounded-full bg-cyan-100/50 backdrop-blur-sm">
-                        <i class="fa-solid fa-house-chimney text-cyan-700"></i>
-                        <span class="text-cyan-800 font-bold text-xs tracking-widest uppercase">PISOS Y COCINAS</span>
+                        class="inline-flex items-center gap-2 mb-4 sm:mb-6 border border-cyan-600/30 px-3 sm:px-4 py-1 rounded-full bg-cyan-100/50 backdrop-blur-sm max-w-full">
+                        <i class="fa-solid fa-house-chimney text-cyan-700 shrink-0"></i>
+                        <span class="text-cyan-800 font-bold text-[11px] sm:text-xs tracking-wider sm:tracking-widest uppercase truncate">PISOS Y COCINAS</span>
                     </div>
 
-                    <h1 class="font-['Montserrat'] text-5xl lg:text-7xl font-black leading-tight mb-6 text-slate-900">
+                    <h1 class="font-['Montserrat'] hero-title-responsive font-black mb-4 sm:mb-6 text-slate-900">
                         NANO CERA<br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600">PROTECTORA</span>
                     </h1>
 
-                    <p class="text-xl text-slate-700 mb-8 font-medium">
+                    <p class="text-base sm:text-lg lg:text-xl text-slate-700 mb-6 sm:mb-8 font-medium leading-relaxed break-words">
                         Crea una <strong>barrera invisible</strong> en tus pisos, topes y cocina. Repele vino, café y
                         suciedad con tecnología hidrofóbica avanzada.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 items-stretch sm:items-center">
                         <a href="#comprar"
-                            class="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-full font-bold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 transition flex items-center gap-2">
-                            Adquirir Protección <i class="fa-solid fa-arrow-right"></i>
+                            class="px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-full font-bold text-sm sm:text-base shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 transition flex items-center justify-center gap-2 text-center">
+                            <span>Adquirir Protección</span> <i class="fa-solid fa-arrow-right"></i>
                         </a>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center sm:justify-start gap-3">
                             <div
-                                class="w-12 h-12 rounded-full border border-cyan-600/20 flex items-center justify-center bg-white/50 backdrop-blur-md text-cyan-700">
+                                class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-cyan-600/20 flex items-center justify-center bg-white/50 backdrop-blur-md text-cyan-700 shrink-0">
                                 <i class="fa-solid fa-droplet-slash"></i>
                             </div>
-                            <span class="text-sm font-semibold text-slate-800">Cero<br>Manchas</span>
+                            <span class="text-sm font-semibold text-slate-800 leading-tight">Cero<br>Manchas</span>
                         </div>
                     </div>
                 </div>
@@ -217,40 +239,40 @@
 
         <!-- SECCIÓN TECNOLOGÍA (TEMA CLARO/CERÁMICO) -->
         <section
-            class="py-16 bg-[url('images/piso_granito_cera.jpg')] bg-cover bg-center bg-fixed relative overflow-hidden">
+            class="py-12 sm:py-16 bg-[url('images/piso_granito_cera.jpg')] bg-cover bg-center bg-scroll lg:bg-fixed relative overflow-hidden">
             <!-- Overlay removed as per user request -->
-            <div class="max-w-7xl mx-auto px-6 relative z-10">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-2">LIMPIEZA <span
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 mb-2 break-words">LIMPIEZA <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600">INTELIGENTE</span>
                     </h2>
-                    <p class="text-slate-500 font-medium">Nanotecnología aplicada para un hogar impecable.</p>
+                    <p class="text-sm sm:text-base text-slate-600 font-medium">Nanotecnología aplicada para un hogar impecable.</p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-center">
 
                     <!-- Left Column -->
-                    <div class="space-y-6 producto-contenedor">
+                    <div class="space-y-4 sm:space-y-6 producto-contenedor">
                         <div
-                            class="text-center lg:text-right group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            class="text-center lg:text-right group p-4 rounded-xl bg-white/80 lg:bg-transparent hover:bg-white hover:shadow-xl transition duration-300">
                             <i class="fa-solid fa-wine-glass-empty text-3xl text-cyan-500 mb-3 block"></i>
                             <h3 class="text-lg font-bold text-slate-800 mb-1">Anti-Manchas</h3>
-                            <p class="text-slate-500 text-sm">Vino, café y salsas se limpian con una pasada. Nada
+                            <p class="text-slate-600 text-sm leading-relaxed break-words">Vino, café y salsas se limpian con una pasada. Nada
                                 penetra el poro.</p>
                         </div>
                         <div
-                            class="text-center lg:text-right group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            class="text-center lg:text-right group p-4 rounded-xl bg-white/80 lg:bg-transparent hover:bg-white hover:shadow-xl transition duration-300">
                             <i class="fa-solid fa-water text-3xl text-cyan-500 mb-3 block"></i>
                             <h3 class="text-lg font-bold text-slate-800 mb-1">Hidrofóbico</h3>
-                            <p class="text-slate-500 text-sm">El agua se agrupa en perlas y resbala, manteniendo tus
+                            <p class="text-slate-600 text-sm leading-relaxed break-words">El agua se agrupa en perlas y resbala, manteniendo tus
                                 pisos secos y seguros.</p>
                         </div>
                     </div>
 
                     <!-- Center: Product Image -->
-                    <div class="relative h-[300px] flex items-center justify-center">
+                    <div class="relative h-[280px] sm:h-[300px] flex items-center justify-center my-2 lg:my-0">
                         <div
-                            class="w-64 h-80 bg-white rounded-[2.5rem] shadow-2xl shadow-cyan-500/30 z-10 relative overflow-hidden group flex items-center justify-center p-4">
+                            class="w-56 sm:w-64 h-72 sm:h-80 bg-white rounded-[2.5rem] shadow-2xl shadow-cyan-500/30 z-10 relative overflow-hidden group flex items-center justify-center p-4">
                             <!-- Using object-fit: contain to ensure bottle is fully visible -->
                             <img src="images/cera.jpg" alt="Nano Cera Protectora"
                                 class="w-full h-full object-contain transition duration-700 group-hover:scale-110">
@@ -267,24 +289,24 @@
 
                         <!-- Decorative Glow Behind -->
                         <div
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 bg-cyan-400/20 rounded-[3rem] blur-2xl -z-0">
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 sm:w-64 h-72 sm:h-80 bg-cyan-400/20 rounded-[3rem] blur-2xl -z-0">
                         </div>
                     </div>
 
                     <!-- Right Column -->
-                    <div class="space-y-6 producto-contenedor">
+                    <div class="space-y-4 sm:space-y-6 producto-contenedor">
                         <div
-                            class="text-center lg:text-left group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            class="text-center lg:text-left group p-4 rounded-xl bg-white/80 lg:bg-transparent hover:bg-white hover:shadow-xl transition duration-300">
                             <i class="fa-solid fa-sparkles text-3xl text-purple-500 mb-3 block"></i>
                             <h3 class="text-lg font-bold text-slate-800 mb-1">Brillo Espejo</h3>
-                            <p class="text-slate-500 text-sm">Realza la belleza natural del granito, mármol y
+                            <p class="text-slate-600 text-sm leading-relaxed break-words">Realza la belleza natural del granito, mármol y
                                 porcelanato.</p>
                         </div>
                         <div
-                            class="text-center lg:text-left group p-4 rounded-xl hover:bg-white hover:shadow-xl transition duration-300">
+                            class="text-center lg:text-left group p-4 rounded-xl bg-white/80 lg:bg-transparent hover:bg-white hover:shadow-xl transition duration-300">
                             <i class="fa-solid fa-bacteria text-3xl text-emerald-500 mb-3 block"></i>
                             <h3 class="text-lg font-bold text-slate-800 mb-1">Higiene Total</h3>
-                            <p class="text-slate-500 text-sm">Evita la proliferación de bacterias en topes de cocina y
+                            <p class="text-slate-600 text-sm leading-relaxed break-words">Evita la proliferación de bacterias en topes de cocina y
                                 áreas de comida.</p>
                         </div>
                     </div>
@@ -293,67 +315,67 @@
         </section>
 
         <!-- SECCIÓN PROTOCOLO -->
-        <section class="py-12 bg-[url('images/piso_granito_cera.jpg')] bg-cover bg-center bg-fixed relative">
+        <section class="py-10 sm:py-12 bg-[url('images/piso_granito_cera.jpg')] bg-cover bg-center bg-scroll lg:bg-fixed relative overflow-hidden">
             <!-- Overlay removed as per user request -->
-            <div class="max-w-6xl mx-auto px-6 relative z-10">
-                <div class="flex items-center gap-4 mb-8">
-                    <span class="h-px bg-slate-200 flex-1"></span>
-                    <h3 class="text-slate-400 font-bold uppercase tracking-widest text-xs">Protocolo de Aplicación</h3>
-                    <span class="h-px bg-slate-200 flex-1"></span>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+                <div class="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                    <span class="h-px bg-slate-300 flex-1"></span>
+                    <h3 class="text-slate-600 font-bold uppercase tracking-wider sm:tracking-widest text-xs text-center">Protocolo de Aplicación</h3>
+                    <span class="h-px bg-slate-300 flex-1"></span>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
                     <div
-                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
-                        <span class="block text-3xl font-black text-cyan-600 mb-2">01</span>
-                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Limpiar</h4>
-                        <p class="text-xs text-slate-600 font-medium mt-1">Superficie seca y libre de grasa</p>
+                        class="p-4 sm:p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-2xl sm:text-3xl font-black text-cyan-600 mb-1 sm:mb-2">01</span>
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide break-words">Limpiar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1 break-words">Superficie seca y libre de grasa</p>
                     </div>
                     <div
-                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
-                        <span class="block text-3xl font-black text-cyan-600 mb-2">02</span>
-                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Aplicar</h4>
-                        <p class="text-xs text-slate-600 font-medium mt-1">Spray uniforme o Mopa</p>
+                        class="p-4 sm:p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-2xl sm:text-3xl font-black text-cyan-600 mb-1 sm:mb-2">02</span>
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide break-words">Aplicar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1 break-words">Spray uniforme o Mopa</p>
                     </div>
                     <div
-                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
-                        <span class="block text-3xl font-black text-cyan-600 mb-2">03</span>
-                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Extender</h4>
-                        <p class="text-xs text-slate-600 font-medium mt-1">Paño de microfibra limpio</p>
+                        class="p-4 sm:p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-2xl sm:text-3xl font-black text-cyan-600 mb-1 sm:mb-2">03</span>
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide break-words">Extender</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1 break-words">Paño de microfibra limpio</p>
                     </div>
                     <div
-                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
-                        <span class="block text-3xl font-black text-cyan-600 mb-2">04</span>
-                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Secar</h4>
-                        <p class="text-xs text-slate-600 font-medium mt-1">Dejar actuar 30 mins</p>
+                        class="p-4 sm:p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-2xl sm:text-3xl font-black text-cyan-600 mb-1 sm:mb-2">04</span>
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide break-words">Secar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1 break-words">Dejar actuar 30 mins</p>
                     </div>
                     <div
-                        class="p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
-                        <span class="block text-3xl font-black text-cyan-600 mb-2">05</span>
-                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Activar</h4>
-                        <p class="text-xs text-slate-600 font-medium mt-1">Frotar con paño o pulidora</p>
+                        class="col-span-2 md:col-span-1 p-4 sm:p-5 border border-slate-200 rounded-xl bg-white text-center shadow-lg hover:border-cyan-400 hover:shadow-cyan-100 transition duration-300">
+                        <span class="block text-2xl sm:text-3xl font-black text-cyan-600 mb-1 sm:mb-2">05</span>
+                        <h4 class="font-bold text-slate-900 text-xs sm:text-sm uppercase tracking-wide break-words">Activar</h4>
+                        <p class="text-xs text-slate-600 font-medium mt-1 break-words">Frotar con paño o pulidora</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="comprar" class="py-8 px-6 relative bg-[url('images/piso_granito_2_cera.jpg')] bg-cover bg-center">
+        <section id="comprar" class="py-8 px-4 sm:px-6 relative bg-[url('images/piso_granito_2_cera.jpg')] bg-cover bg-center overflow-hidden">
             <!-- Background changed: removed bg-fixed to reduce zoom effect and better show the image details/shine -->
 
             <div
                 class="glass-panel max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 overflow-hidden relative z-10 shadow-2xl shadow-cyan-900/50 backdrop-blur-md bg-slate-900/60">
 
-                <div id="prod-cera" class="p-6 lg:p-10 border-b lg:border-b-0 lg:border-r border-white/10 producto-contenedor">
+                <div id="prod-cera" class="p-5 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-white/10 producto-contenedor min-w-0">
                     <span class="producto-nombre hidden" style="display:none;">Nano Cera Protectora</span>
-                    <h2 class="text-3xl font-black text-white mb-8">Configuración <span
+                    <h2 class="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8 break-words">Configuración <span
                             class="text-cyan-400">Hogar</span></h2>
 
-                    <div class="mb-8">
+                    <div class="mb-6 sm:mb-8">
                         <label
                             class="block text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Presentación</label>
                         <div class="relative">
                             <select data-sync-product="Cera Nano Protectora" id="opt-cera" onchange="updatePrice('cera')"
-                                class="w-full p-4 bg-slate-900/50 border border-white/20 rounded-xl text-white font-bold appearance-none cursor-pointer focus:outline-none focus:border-cyan-400 transition">
+                                class="w-full p-3.5 sm:p-4 pr-10 bg-slate-900/50 border border-white/20 rounded-xl text-white text-sm sm:text-base font-bold appearance-none cursor-pointer focus:outline-none focus:border-cyan-400 transition truncate">
                                 <option value="0" data-price="13.00">1 Litro - Ref. 13 + IVA=15.08</option>
                             </select>
                             <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-cyan-400">
@@ -362,62 +384,62 @@
                         </div>
                     </div>
 
-                    <div class="flex items-end justify-between mb-10">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-8 sm:mb-10">
                         <div>
                             <label
                                 class="block text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Cantidad</label>
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-3 sm:gap-4">
                                 <button
-                                    class="w-10 h-10 rounded-lg bg-slate-800 text-white hover:bg-cyan-500 transition"
+                                    class="w-10 h-10 rounded-lg bg-slate-800 text-white hover:bg-cyan-500 transition shrink-0"
                                     onclick="updateQty(-1)">-</button>
                                 <input type="number" id="qty-cera" value="1" min="1" readonly
                                     class="w-12 bg-transparent text-center text-white font-bold text-xl">
                                 <button
-                                    class="w-10 h-10 rounded-lg bg-slate-800 text-white hover:bg-cyan-500 transition"
+                                    class="w-10 h-10 rounded-lg bg-slate-800 text-white hover:bg-cyan-500 transition shrink-0"
                                     onclick="updateQty(1)">+</button>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-slate-500 font-bold uppercase mb-1">Inversión Total</span>
+                        <div class="text-left sm:text-right min-w-0">
+                            <span class="block text-xs text-slate-400 font-bold uppercase mb-1">Inversión Total</span>
                             <span id="price-cera"
-                                class="text-4xl font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 13 + IVA=15.08</span>
+                                class="block price-total-responsive font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 13 + IVA=15.08</span>
                         </div>
                     </div>
 
-                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"><i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Agregar al Carrito</button>
+                    <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; justify-content: center; padding: 1rem 1.2rem; font-size: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"><i class="fa-solid fa-cart-plus" style="margin-right: 4px;"></i> Agregar al Carrito</button>
                 </div>
 
-                <div class="p-10 lg:p-16 bg-slate-900/30 flex flex-col justify-between">
+                <div class="p-5 sm:p-10 lg:p-16 bg-slate-900/30 flex flex-col justify-between min-w-0">
 
-                    <div class="mb-10">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Cobertura Estimada
+                    <div class="mb-8 sm:mb-10">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest">Cobertura Estimada
                         </h4>
-                        <div class="flex items-center gap-4 bg-slate-800/50 p-4 rounded-xl border border-white/5">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-4 bg-slate-800/50 p-3.5 sm:p-4 rounded-xl border border-white/5">
                             <input type="number" id="calc-area" value="50" oninput="runCoverageCalculator()"
                                 class="w-16 bg-transparent border-b border-white/20 text-center text-white font-bold focus:outline-none">
-                            <span class="text-slate-400 text-sm">m de piso =</span>
-                            <span id="calc-result" class="text-cyan-400 font-bold ml-auto">1.2 Litros</span>
+                            <span class="text-slate-400 text-sm">m² de piso =</span>
+                            <span id="calc-result" class="text-cyan-400 font-bold sm:ml-auto">1.2 Litros</span>
                         </div>
-                        <p class="text-xs text-slate-500 mt-2">*Rendimiento aprox. 40m por litro en superficies lisas.
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">*Rendimiento aprox. 40m² por litro en superficies lisas.
                         </p>
                     </div>
 
                     <a href="docs/cera-ficha-tecnica.html" target="_blank"
                         class="flex items-center justify-center gap-3 p-4 border border-white/10 rounded-xl text-slate-300 hover:text-white hover:border-cyan-400/50 hover:bg-cyan-400/50 transition mb-4 group">
                         <i
-                            class="fa-solid fa-file-invoice text-2xl text-cyan-500 group-hover:scale-110 transition-transform"></i>
-                        <div class="text-left">
+                            class="fa-solid fa-file-invoice text-2xl text-cyan-500 group-hover:scale-110 transition-transform shrink-0"></i>
+                        <div class="text-left min-w-0">
                             <span class="block text-xs font-bold uppercase">Documentación</span>
-                            <span class="text-sm">Ver Ficha Técnica (HTML)</span>
+                            <span class="text-sm break-words">Ver Ficha Técnica (HTML)</span>
                         </div>
                     </a>
 
                     <a href="https://wa.me/584146023797" target="_blank"
                         class="flex items-center justify-center gap-3 p-4 border border-white/10 rounded-xl text-slate-300 hover:text-white hover:border-cyan-400/50 hover:bg-cyan-400/50 transition">
-                        <i class="fa-brands fa-whatsapp text-2xl text-green-500"></i>
-                        <div class="text-left">
+                        <i class="fa-brands fa-whatsapp text-2xl text-green-500 shrink-0"></i>
+                        <div class="text-left min-w-0">
                             <span class="block text-xs font-bold uppercase">Soporte Técnico</span>
-                            <span class="text-sm">Consultar Aplicación</span>
+                            <span class="text-sm break-words">Consultar Aplicación</span>
                         </div>
                     </a>
 
@@ -426,50 +448,50 @@
         </section>
 
         <!-- VIDEO & AI (PISOS Y COCINAS) -->
-        <section class="py-20 px-6 relative bg-[url('images/hospital-bg.png')] bg-cover bg-center bg-fixed">
+        <section class="py-12 sm:py-20 px-4 sm:px-6 relative bg-[url('images/hospital-bg.png')] bg-cover bg-center bg-scroll lg:bg-fixed overflow-hidden">
             <!-- Using hospital-bg or similar specifically for clean, sterile look -->
 
-            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 relative z-10">
                 <!-- VIDEO SECTION -->
                 <div
-                    class="glass-panel p-2 flex flex-col items-center justify-center overflow-hidden shadow-2xl shadow-cyan-500/20 backdrop-blur-md bg-slate-900/60">
+                    class="glass-panel p-2 flex flex-col items-center justify-center overflow-hidden shadow-2xl shadow-cyan-500/20 backdrop-blur-md bg-slate-900/60 min-w-0">
                     <div class="w-full relative pt-[56.25%] bg-black rounded-xl overflow-hidden group">
                         <!-- Placeholder video until specific footer video is ready, or reuse promo -->
                         <video src="videos/escudo-promo.mp4" controls
                             class="absolute inset-0 w-full h-full object-cover"></video>
                     </div>
                     <div class="p-4 w-full flex justify-between items-center">
-                        <div>
-                            <span class="text-cyan-400 text-xs font-bold uppercase tracking-widest">Demostración</span>
-                            <h3 class="text-white font-bold text-lg">Efecto Hidrofóbico en Pisos</h3>
+                        <div class="min-w-0">
+                            <span class="text-cyan-400 text-xs font-bold uppercase tracking-widest block">Demostración</span>
+                            <h3 class="text-white font-bold text-base sm:text-lg break-words">Efecto Hidrofóbico en Pisos</h3>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    class="glass-panel p-8 relative overflow-hidden shadow-2xl shadow-cyan-500/20 backdrop-blur-md bg-slate-900/60">
+                    class="glass-panel p-5 sm:p-8 relative overflow-hidden shadow-2xl shadow-cyan-500/20 backdrop-blur-md bg-slate-900/60 min-w-0">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-600"></div>
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-white font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-robot text-cyan-400"></i> Experto en Pisos IA
+                    <div class="flex justify-between items-center gap-2 mb-6">
+                        <h3 class="text-white font-bold text-base sm:text-lg flex items-center gap-2 min-w-0">
+                            <i class="fa-solid fa-robot text-cyan-400 shrink-0"></i> <span class="truncate">Experto en Pisos IA</span>
                         </h3>
                         <span
-                            class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded border border-green-500/30">ONLINE</span>
+                            class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded border border-green-500/30 shrink-0">ONLINE</span>
                     </div>
 
                     <div id="chat-box" class="chat-container mb-4">
-                        <div class="chat-bubble chat-bot">
+                        <div class="chat-bubble chat-bot break-words">
                             Hola. Soy experto en el cuidado de pisos y cocinas. ¿Tienes manchas de grasa, vino o
-                            ¿problemas de brillo?
+                            problemas de brillo?
                         </div>
                     </div>
 
                     <div class="flex gap-2">
                         <input type="text" id="user-input" placeholder="Pregunta sobre cuidado de pisos..."
-                            class="flex-1 bg-slate-900/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition"
+                            class="flex-1 min-w-0 bg-slate-900/50 border border-white/10 rounded-lg px-3 sm:px-4 py-3 text-sm sm:text-base text-white focus:outline-none focus:border-cyan-400 transition"
                             onkeypress="handleKeyPress(event)">
                         <button onclick="sendMessage()"
-                            class="bg-cyan-500 text-black px-4 rounded-lg hover:bg-cyan-400 transition">
+                            class="bg-cyan-500 text-black px-4 rounded-lg hover:bg-cyan-400 transition shrink-0">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
