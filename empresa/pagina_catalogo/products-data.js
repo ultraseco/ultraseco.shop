@@ -141,7 +141,7 @@
       category: 'Soluciones Contra el Fuego',
       description: 'Extintor portátil de última generación equipado con tecnología Ultra F3 biodegradable.',
       image: `${BASE_PATH}images/extintor_f3.png`,
-      detailUrl: `${BASE_PATH}f3.html`,
+      detailUrl: `${BASE_PATH}extintores-f3.html`,
       presentations: [
         { label: 'Portátil 2.5 Gal (6L)', price: null, pendingNote: 'Cotizar con asesor', sku: 'EXT-F3-6L' },
         { label: 'Portátil 9 Litros', price: null, pendingNote: 'Cotizar con asesor', sku: 'EXT-F3-9L' }
