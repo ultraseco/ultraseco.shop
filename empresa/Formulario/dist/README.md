@@ -1,1 +1,0 @@
-This folder contains the built output assets for the worker "formulario-ultraseco" generated at 2026-04-28T21:58:28.643Z.
