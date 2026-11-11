@@ -28,5 +28,6 @@
   {"id": 16, "nombre": "Aditivo Asfáltico", "presentacion": "Granel (1000L)", "precio": "16000.00", "categoria": "Industria"},
   {"id": 17, "nombre": "Eco Capturador Magnetron", "presentacion": "1 Litro", "precio": "95.00", "categoria": "Industria"},
   {"id": 18, "nombre": "Eco Capturador Magnetron", "presentacion": "Galón", "precio": "345.00", "categoria": "Industria"},
-  {"id": 19, "nombre": "Eco Capturador Magnetron", "presentacion": "Cuñete", "precio": "1650.00", "categoria": "Industria"}
+  {"id": 19, "nombre": "Eco Capturador Magnetron", "presentacion": "Cuñete", "precio": "1650.00", "categoria": "Industria"},
+  {"id": 31, "nombre": "Extintor 10Lb", "presentacion": "10 Lb", "precio": "93.00", "categoria": "Industria"}
 ]
