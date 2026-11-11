@@ -1617,14 +1617,24 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="extintor-f3">
-              <span class="price-pending-badge">Cotizar con asesor</span>
+              <div class="price-ref-text">ref. 93 + IVA</div>
+              <div class="price-total-text">Total: Ref. 107.88</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
-                <a href="https://wa.me/584146023797?text=Hola%20Ultraseco!%20Deseo%20cotizar%20Extintor%20F3" target="_blank" rel="noopener noreferrer" class="btn-quote-solid" title="Cotizar directamente con un asesor">
-                  <i class="fa-brands fa-whatsapp"></i>
-                  <span>Cotizar</span>
-                </a>
+                <div class="qty-stepper" aria-label="Selector de cantidad">
+                  <button type="button" class="qty-btn" data-qty-dec="extintor-f3" disabled title="Disminuir cantidad" aria-label="Disminuir cantidad">
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                  <span class="qty-value" data-qty-val="extintor-f3">1</span>
+                  <button type="button" class="qty-btn" data-qty-inc="extintor-f3" title="Aumentar cantidad" aria-label="Aumentar cantidad">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <button type="button" class="btn-buy-solid" data-buy-btn="extintor-f3" title="Comprar Extintor F3">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  <span>Comprar</span>
+                </button>
               </div>
               <a href="extintores-f3.html" class="btn-view-details" data-nav-link title="Ver detalles completos de Extintor F3">
                 <span>Ver detalles</span>
@@ -1829,7 +1839,7 @@ button, select, input {
   <script>
     (function () {
       var BASE_PATH = "";
-      var PRODUCTS = [{"id":"estuco","name":"Estuco Súper Hidrofóbico","category":"Construcción","description":"Pasta bloqueadora de humedad ascendente y salitre para frisados.","image":"images/estuco.jpg","detailUrl":"estuco.html","presentations":[{"label":"1/4 de galón","price":6.4,"sku":"ESTUCO-1/4"},{"label":"1 galón","price":19,"sku":"ESTUCO-GAL"},{"label":"Cuñete (4 galones)","price":100,"sku":"ESTUCO-CUN"}],"taxRate":0.16},{"id":"solucion-interior","name":"Solución Interior","category":"Construcción","description":"Nanotecnología hidrofóbica invisible para paredes y techos interiores.","image":"images/interiores.jpg","detailUrl":"interiores.html","presentations":[{"label":"1 Litro","price":13.99,"sku":"US-INT-1L"},{"label":"1 Litro (Atomizador)","price":14.99,"sku":"US-INT-1L-ATOM"},{"label":"1 galón (3.785L)","price":38,"sku":"US-INT-GAL"},{"label":"Cuñete (18L)","price":170,"sku":"US-INT-CUN"}],"taxRate":0.16},{"id":"solucion-exterior","name":"Solución Exterior","category":"Construcción","description":"Blindaje invisible para fachadas, muros y piedras con máxima resistencia UV.","image":"images/exteriores.jpg","detailUrl":"exteriores.html","presentations":[{"label":"1 Litro","price":16.99,"sku":"US-EXT-1L"},{"label":"1 Litro (Atomizador)","price":17.99,"sku":"US-EXT-1L-ATOM"},{"label":"1 galón (3.785L)","price":48,"sku":"US-EXT-GAL"},{"label":"Cuñete (18L)","price":217.5,"sku":"US-EXT-CUN"}],"taxRate":0.16},{"id":"fortificador","name":"Fortificador de Superficies","category":"Construcción","description":"Consolidante nanotecnológico para concreto y pisos arenosos deleznables.","image":"images/fortificador.jpg","detailUrl":"fortificador.html","presentations":[{"label":"1 Litro","price":19,"sku":"US-FORT-1L"},{"label":"1 galón","price":52,"sku":"US-FORT-GAL"},{"label":"Cuñete","price":254.5,"sku":"US-FORT-CUN"}],"taxRate":0.16},{"id":"pintura","name":"Pintura Súper Hidrofóbica","category":"Construcción","description":"Pintura elastomérica impermeable con nanotecnología autolimpiable.","image":"images/pintura.jpg","detailUrl":"pintura.html","presentations":[{"label":"1 galón","price":34,"sku":"PINT-GAL"}],"taxRate":0.16},{"id":"nanoshield","name":"Nanoshield (Nano Aditivo para Concreto)","category":"Construcción","description":"Impermeabilización integral para mezclas de concreto y morteros desde el fraguado.","image":"images/nano-aditivo.jpg","detailUrl":"nano-aditivo.html","presentations":[{"label":"600 gramos","price":15,"sku":"NANO-ADIT-600G"},{"label":"500 gramos","price":22,"sku":"NANO-ADIT-500G"}],"taxRate":0.16},{"id":"nano-cera-protectora","name":"Nano Cera Protectora","category":"Hogar & Vehicular","description":"Cera hidrofóbica y sellador protector para acabados brillantes y cristales.","image":"images/cera.jpg","detailUrl":"cera.html","presentations":[{"label":"500 ml","price":15,"sku":"CERA-500ML"},{"label":"1 Litro","price":13,"sku":"CERA-1L"}],"taxRate":0.16},{"id":"escudo-ceramico","name":"Escudo Cerámico","category":"Hogar","description":"Revestimiento cerámico ultrabrillante y antisarro para vidrios y porcelanato.","image":"images/escudo.jpg","detailUrl":"escudo.html","presentations":[{"label":"1 Litro","price":45,"sku":"ESCUDO-1L"}],"taxRate":0.16},{"id":"concentrado-espuma-f3","name":"Concentrado Espuma F3","category":"Soluciones Contra el Fuego","description":"Espuma extintora biodegradable libre de flúor (Fluorine-Free) para fuegos clase A y B.","image":"images/ultra-f3.jpg","detailUrl":"f3.html","presentations":[{"label":"Cuñete (18L)","price":220,"sku":"F3-CONC-CUN"},{"label":"Tambor (200L)","price":4800,"sku":"F3-CONC-TAM"}],"taxRate":0.16},{"id":"extintor-f3","name":"Extintor F3","category":"Soluciones Contra el Fuego","description":"Extintor portátil de última generación equipado con tecnología Ultra F3 biodegradable.","image":"images/extintor_f3.png","detailUrl":"extintores-f3.html","presentations":[{"label":"Portátil 10 Lb (4 Lts)","price":null,"pendingNote":"Cotizar con asesor","sku":"EXT-F3-10LB"},{"label":"Portátil 20 Lb (8 Lts)","price":null,"pendingNote":"Cotizar con asesor","sku":"EXT-F3-20LB"}],"taxRate":0.16,"isQuoteOnly":true},{"id":"solucion-extintores-f3","name":"Solución para Extintores F3","category":"Soluciones Contra el Fuego","description":"Agente extintor listo para carga y recarga de extintores portátiles y rodantes.","image":"images/ultra-f3-ar.jpg","detailUrl":"f3.html","presentations":[{"label":"Cuñete (18L)","price":220,"sku":"F3-RECARGA-CUN"},{"label":"Tambor (200L)","price":4800,"sku":"F3-RECARGA-TAM"}],"taxRate":0.16},{"id":"shampoo-nano-concentrado","name":"Shampoo Nano Concentrado","category":"Cuidado Vehicular","description":"Lavado activo que encapsula la suciedad con efecto cera hidrofóbica instantáneo.","image":"images/champu.png","detailUrl":"champu.html","presentations":[{"label":"1 Litro","price":12,"sku":"CHAMPU-1L"},{"label":"1 galón","price":35,"sku":"CHAMPU-GAL"}],"taxRate":0.16}];
+      var PRODUCTS = [{"id":"estuco","name":"Estuco Súper Hidrofóbico","category":"Construcción","description":"Pasta bloqueadora de humedad ascendente y salitre para frisados.","image":"images/estuco.jpg","detailUrl":"estuco.html","presentations":[{"label":"1/4 de galón","price":6.4,"sku":"ESTUCO-1/4"},{"label":"1 galón","price":19,"sku":"ESTUCO-GAL"},{"label":"Cuñete (4 galones)","price":100,"sku":"ESTUCO-CUN"}],"taxRate":0.16},{"id":"solucion-interior","name":"Solución Interior","category":"Construcción","description":"Nanotecnología hidrofóbica invisible para paredes y techos interiores.","image":"images/interiores.jpg","detailUrl":"interiores.html","presentations":[{"label":"1 Litro","price":13.99,"sku":"US-INT-1L"},{"label":"1 Litro (Atomizador)","price":14.99,"sku":"US-INT-1L-ATOM"},{"label":"1 galón (3.785L)","price":38,"sku":"US-INT-GAL"},{"label":"Cuñete (18L)","price":170,"sku":"US-INT-CUN"}],"taxRate":0.16},{"id":"solucion-exterior","name":"Solución Exterior","category":"Construcción","description":"Blindaje invisible para fachadas, muros y piedras con máxima resistencia UV.","image":"images/exteriores.jpg","detailUrl":"exteriores.html","presentations":[{"label":"1 Litro","price":16.99,"sku":"US-EXT-1L"},{"label":"1 Litro (Atomizador)","price":17.99,"sku":"US-EXT-1L-ATOM"},{"label":"1 galón (3.785L)","price":48,"sku":"US-EXT-GAL"},{"label":"Cuñete (18L)","price":217.5,"sku":"US-EXT-CUN"}],"taxRate":0.16},{"id":"fortificador","name":"Fortificador de Superficies","category":"Construcción","description":"Consolidante nanotecnológico para concreto y pisos arenosos deleznables.","image":"images/fortificador.jpg","detailUrl":"fortificador.html","presentations":[{"label":"1 Litro","price":19,"sku":"US-FORT-1L"},{"label":"1 galón","price":52,"sku":"US-FORT-GAL"},{"label":"Cuñete","price":254.5,"sku":"US-FORT-CUN"}],"taxRate":0.16},{"id":"pintura","name":"Pintura Súper Hidrofóbica","category":"Construcción","description":"Pintura elastomérica impermeable con nanotecnología autolimpiable.","image":"images/pintura.jpg","detailUrl":"pintura.html","presentations":[{"label":"1 galón","price":34,"sku":"PINT-GAL"}],"taxRate":0.16},{"id":"nanoshield","name":"Nanoshield (Nano Aditivo para Concreto)","category":"Construcción","description":"Impermeabilización integral para mezclas de concreto y morteros desde el fraguado.","image":"images/nano-aditivo.jpg","detailUrl":"nano-aditivo.html","presentations":[{"label":"600 gramos","price":15,"sku":"NANO-ADIT-600G"},{"label":"500 gramos","price":22,"sku":"NANO-ADIT-500G"}],"taxRate":0.16},{"id":"nano-cera-protectora","name":"Nano Cera Protectora","category":"Hogar & Vehicular","description":"Cera hidrofóbica y sellador protector para acabados brillantes y cristales.","image":"images/cera.jpg","detailUrl":"cera.html","presentations":[{"label":"500 ml","price":15,"sku":"CERA-500ML"},{"label":"1 Litro","price":13,"sku":"CERA-1L"}],"taxRate":0.16},{"id":"escudo-ceramico","name":"Escudo Cerámico","category":"Hogar","description":"Revestimiento cerámico ultrabrillante y antisarro para vidrios y porcelanato.","image":"images/escudo.jpg","detailUrl":"escudo.html","presentations":[{"label":"1 Litro","price":45,"sku":"ESCUDO-1L"}],"taxRate":0.16},{"id":"concentrado-espuma-f3","name":"Concentrado Espuma F3","category":"Soluciones Contra el Fuego","description":"Espuma extintora biodegradable libre de flúor (Fluorine-Free) para fuegos clase A y B.","image":"images/ultra-f3.jpg","detailUrl":"f3.html","presentations":[{"label":"Cuñete (18L)","price":220,"sku":"F3-CONC-CUN"},{"label":"Tambor (200L)","price":4800,"sku":"F3-CONC-TAM"}],"taxRate":0.16},{"id":"extintor-f3","name":"Extintor F3","category":"Soluciones Contra el Fuego","description":"Extintor portátil de última generación equipado con tecnología Ultra F3 biodegradable.","image":"images/extintor_f3.png","detailUrl":"extintores-f3.html","presentations":[{"label":"Portátil 10 Lb (4 Lts)","price":93,"sku":"EXT-F3-10LB"},{"label":"Portátil 20 Lb (8 Lts)","price":null,"pendingNote":"Cotizar con asesor","sku":"EXT-F3-20LB"}],"taxRate":0.16},{"id":"solucion-extintores-f3","name":"Solución para Extintores F3","category":"Soluciones Contra el Fuego","description":"Agente extintor listo para carga y recarga de extintores portátiles y rodantes.","image":"images/ultra-f3-ar.jpg","detailUrl":"f3.html","presentations":[{"label":"Cuñete (18L)","price":220,"sku":"F3-RECARGA-CUN"},{"label":"Tambor (200L)","price":4800,"sku":"F3-RECARGA-TAM"}],"taxRate":0.16},{"id":"shampoo-nano-concentrado","name":"Shampoo Nano Concentrado","category":"Cuidado Vehicular","description":"Lavado activo que encapsula la suciedad con efecto cera hidrofóbica instantáneo.","image":"images/champu.png","detailUrl":"champu.html","presentations":[{"label":"1 Litro","price":12,"sku":"CHAMPU-1L"},{"label":"1 galón","price":35,"sku":"CHAMPU-GAL"}],"taxRate":0.16}];
       var productMap = {};
       var state = {};
 
@@ -2048,27 +2058,39 @@ button, select, input {
         if (e.key === "Escape") closeModal();
       });
 
-      // Sincronizar precios de Concentrado Espuma F3 y Solución para Extintores F3 con la lista de precios del Portal Interno (/api/products)
+      // Sincronizar precios de Concentrado Espuma F3, Extintor F3 y Solución para Extintores F3 con la lista de precios del Portal Interno (/api/products)
       function syncF3PricesFromPortal(dbProducts) {
         if (!Array.isArray(dbProducts)) return;
-        var f3Targets = ["concentrado-espuma-f3", "solucion-extintores-f3"];
+        var f3Targets = ["concentrado-espuma-f3", "extintor-f3", "solucion-extintores-f3"];
         dbProducts.forEach(function (row) {
           var dbName = (row.nombre || "").toLowerCase();
-          if (dbName.indexOf("ultra f3") !== -1 || dbName.indexOf("espuma f3") !== -1 || dbName.indexOf("extintores f3") !== -1) {
-            var dbPres = (row.presentacion || "").toLowerCase();
-            var newPrice = parseFloat(row.precio);
-            if (!isNaN(newPrice) && newPrice > 0) {
-              f3Targets.forEach(function (pid) {
-                var prod = productMap[pid];
-                if (prod && Array.isArray(prod.presentations)) {
-                  prod.presentations.forEach(function (opt) {
-                    if ((opt.label || "").toLowerCase() === dbPres) {
-                      opt.price = newPrice;
-                    }
-                  });
+          var dbPres = (row.presentacion || "").toLowerCase();
+          var newPrice = parseFloat(row.precio);
+          if (isNaN(newPrice) || newPrice <= 0) return;
+
+          if (dbName.indexOf("extintor") !== -1) {
+            var extProd = productMap["extintor-f3"];
+            if (extProd && Array.isArray(extProd.presentations)) {
+              extProd.presentations.forEach(function (opt) {
+                var optLabel = (opt.label || "").toLowerCase();
+                if (optLabel.indexOf("10 lb") !== -1 && (dbName.indexOf("10lb") !== -1 || dbName.indexOf("10 lb") !== -1 || dbPres.indexOf("10 lb") !== -1 || dbPres.indexOf("10lb") !== -1)) {
+                  opt.price = newPrice;
                 }
               });
             }
+          }
+
+          if (dbName.indexOf("ultra f3") !== -1 || dbName.indexOf("espuma f3") !== -1 || dbName.indexOf("extintores f3") !== -1) {
+            ["concentrado-espuma-f3", "solucion-extintores-f3"].forEach(function (pid) {
+              var prod = productMap[pid];
+              if (prod && Array.isArray(prod.presentations)) {
+                prod.presentations.forEach(function (opt) {
+                  if ((opt.label || "").toLowerCase() === dbPres) {
+                    opt.price = newPrice;
+                  }
+                });
+              }
+            });
           }
         });
         f3Targets.forEach(function (pid) {
