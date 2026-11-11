@@ -164,7 +164,7 @@ window.products = [
         link: 'f3.html',
         type: 'industrial',
         options: [
-            { label: 'Cuñete (18L)', price: 450.00, sku: 'F3-CUN' },
+            { label: 'Cuñete (18L)', price: 220.00, sku: 'F3-CUN' },
             { label: 'Tambor (200L)', price: 4800.00, sku: 'F3-TAM' }
         ]
     },

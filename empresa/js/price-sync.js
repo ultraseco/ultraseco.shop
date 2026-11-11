@@ -34,7 +34,7 @@
         {"id":20,"nombre":"Eco Capturador (Minería)","presentacion":"1 Litro","precio":"85.00"},
         {"id":21,"nombre":"Eco Capturador (Minería)","presentacion":"Galón","precio":"320.00"},
         {"id":22,"nombre":"Eco Capturador (Minería)","presentacion":"Cuñete","precio":"1500.00"},
-        {"id":23,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Cuñete (18L)","precio":"450.00"},
+        {"id":23,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Cuñete (18L)","precio":"220.00"},
         {"id":24,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Tambor (200L)","precio":"4800.00"},
         {"id":25,"nombre":"Aditivo Asfáltico","presentacion":"Tambor (200L)","precio":"3500.00"},
         {"id":26,"nombre":"Aditivo Asfáltico","presentacion":"Granel (1000L)","precio":"16000.00"},
@@ -43,7 +43,7 @@
         {"id":29,"nombre":"Eco Capturador Magnetron","presentacion":"Cuñete","precio":"1650.00"}
     ];
 
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
     const CACHE_KEY = `ultraseco_prices_v${VERSION}`;
     const CACHE_TTL = 1000 * 60 * 5; // 5 minutos
 

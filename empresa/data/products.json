@@ -22,7 +22,7 @@
   {"id": 9, "nombre": "Eco Capturador (Minería)", "presentacion": "1 Litro", "precio": "85.00", "categoria": "Industria"},
   {"id": 11, "nombre": "Eco Capturador (Minería)", "presentacion": "Galón", "precio": "320.00", "categoria": "Industria"},
   {"id": 12, "nombre": "Eco Capturador (Minería)", "presentacion": "Cuñete", "precio": "1500.00", "categoria": "Industria"},
-  {"id": 13, "nombre": "Ultra F3 (Anti-Fuego)", "presentacion": "Cuñete (18L)", "precio": "450.00", "categoria": "Industria"},
+  {"id": 13, "nombre": "Ultra F3 (Anti-Fuego)", "presentacion": "Cuñete (18L)", "precio": "220.00", "categoria": "Industria"},
   {"id": 14, "nombre": "Ultra F3 (Anti-Fuego)", "presentacion": "Tambor (200L)", "precio": "4800.00", "categoria": "Industria"},
   {"id": 15, "nombre": "Aditivo Asfáltico", "presentacion": "Tambor (200L)", "precio": "3500.00", "categoria": "Industria"},
   {"id": 16, "nombre": "Aditivo Asfáltico", "presentacion": "Granel (1000L)", "precio": "16000.00", "categoria": "Industria"},
