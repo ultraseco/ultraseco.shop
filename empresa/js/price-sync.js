@@ -11,38 +11,193 @@
     
     // Snapshot de emergencia (Sincronizado con Neon DB v3.0.0)
     const LOCAL_FALLBACK = [
-        {"id":1,"nombre":"Ultra Seco Solución Interior","presentacion":"1 Litro","precio":"15.99"},
-        {"id":2,"nombre":"Ultra Seco Solución Interior","presentacion":"1 Litro (Atomizador)","precio":"14.99"},
-        {"id":3,"nombre":"Ultra Seco Solución Interior","presentacion":"Galón (3.785L)","precio":"43.00"},
-        {"id":4,"nombre":"Ultra Seco Solución Interior","presentacion":"Cuñete (18L)","precio":"194.00"},
-        {"id":5,"nombre":"Ultra Seco Solución Exterior","presentacion":"1 Litro","precio":"19.50"},
-        {"id":6,"nombre":"Ultra Seco Solución Exterior","presentacion":"1 Litro (Atomizador)","precio":"17.99"},
-        {"id":7,"nombre":"Ultra Seco Solución Exterior","presentacion":"Galón (3.785L)","precio":"54.00"},
-        {"id":8,"nombre":"Ultra Seco Solución Exterior","presentacion":"Cuñete (18L)","precio":"250.00"},
-        {"id":9,"nombre":"Fortificador de Superficies","presentacion":"1 Litro","precio":"19.00"},
-        {"id":10,"nombre":"Fortificador de Superficies","presentacion":"Galón","precio":"52.00"},
-        {"id":11,"nombre":"Fortificador de Superficies","presentacion":"Cuñete","precio":"254.50"},
-        {"id":12,"nombre":"Pintura Súper Hidrofóbica","presentacion":"Galón","precio":"37.00"},
-        {"id":13,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Estuco de 1/4 de galón","precio":"8.50"},
-        {"id":14,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Galón","precio":"22.00"},
-        {"id":30,"nombre":"Estuco Súper Hidrofóbico","presentacion":"Cuñete de 4 galones","precio":"100.00"},
-        {"id":15,"nombre":"Nano Aditivo para Concreto","presentacion":"500gr","precio":"22.00"},
-        {"id":16,"nombre":"Escudo Cerámico","presentacion":"1 Litro","precio":"7.00"},
-        {"id":17,"nombre":"Cera Nano Protectora","presentacion":"1 Litro","precio":"13.00"},
-        {"id":18,"nombre":"Champú Nano-Concentrado","presentacion":"1 Litro","precio":"15.00"},
-        {"id":19,"nombre":"Champú Nano-Concentrado","presentacion":"Galón","precio":"35.00"},
-        {"id":20,"nombre":"Eco Capturador (Minería)","presentacion":"1 Litro","precio":"85.00"},
-        {"id":21,"nombre":"Eco Capturador (Minería)","presentacion":"Galón","precio":"320.00"},
-        {"id":22,"nombre":"Eco Capturador (Minería)","presentacion":"Cuñete","precio":"1500.00"},
-        {"id":23,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Cuñete (18L)","precio":"220.00"},
-        {"id":24,"nombre":"Ultra F3 (Anti-Fuego)","presentacion":"Tambor (200L)","precio":"4800.00"},
-        {"id":25,"nombre":"Aditivo Asfáltico","presentacion":"Tambor (200L)","precio":"3500.00"},
-        {"id":26,"nombre":"Aditivo Asfáltico","presentacion":"Granel (1000L)","precio":"16000.00"},
-        {"id":27,"nombre":"Eco Capturador Magnetron","presentacion":"1 Litro","precio":"95.00"},
-        {"id":28,"nombre":"Eco Capturador Magnetron","presentacion":"Galón","precio":"345.00"},
-        {"id":29,"nombre":"Eco Capturador Magnetron","presentacion":"Cuñete","precio":"1650.00"},
-        {"id":31,"nombre":"Extintor F3","presentacion":"Portátil 10 Lb (4 Lts)","precio":"93.00"}
-    ];
+    {
+        "id": 16,
+        "nombre": "Ultra Seco Solución Interior",
+        "presentacion": "1 Litro",
+        "precio": "15.99"
+    },
+    {
+        "id": 17,
+        "nombre": "Ultra Seco Solución Interior",
+        "presentacion": "Cuñete (18L)",
+        "precio": "194.00"
+    },
+    {
+        "id": 18,
+        "nombre": "Ultra Seco Solución Exterior",
+        "presentacion": "1 Litro",
+        "precio": "19.50"
+    },
+    {
+        "id": 19,
+        "nombre": "Fortificador de Superficies",
+        "presentacion": "Galón",
+        "precio": "57.00"
+    },
+    {
+        "id": 20,
+        "nombre": "Fortificador de Superficies",
+        "presentacion": "Cuñete",
+        "precio": "270.00"
+    },
+    {
+        "id": 21,
+        "nombre": "Pintura Súper Hidrofóbica",
+        "presentacion": "Galón",
+        "precio": "37.00"
+    },
+    {
+        "id": 22,
+        "nombre": "Fortificador de Superficies",
+        "presentacion": "1 Litro",
+        "precio": "21.00"
+    },
+    {
+        "id": 23,
+        "nombre": "Ultra Seco Solución Interior",
+        "presentacion": "1 Litro (Atomizador)",
+        "precio": "14.99"
+    },
+    {
+        "id": 24,
+        "nombre": "Ultra Seco Solución Interior",
+        "presentacion": "Galón (3.785L)",
+        "precio": "43.00"
+    },
+    {
+        "id": 25,
+        "nombre": "Ultra Seco Solución Exterior",
+        "presentacion": "1 Litro (Atomizador)",
+        "precio": "17.99"
+    },
+    {
+        "id": 26,
+        "nombre": "Ultra Seco Solución Exterior",
+        "presentacion": "Galón (3.785L)",
+        "precio": "54.00"
+    },
+    {
+        "id": 27,
+        "nombre": "Ultra Seco Solución Exterior",
+        "presentacion": "Cuñete (18L)",
+        "precio": "250.00"
+    },
+    {
+        "id": 28,
+        "nombre": "Champú Nano-Concentrado",
+        "presentacion": "Galón",
+        "precio": "35.00"
+    },
+    {
+        "id": 29,
+        "nombre": "Eco Capturador (Minería)",
+        "presentacion": "1 Litro",
+        "precio": "85.00"
+    },
+    {
+        "id": 30,
+        "nombre": "Escudo Cerámico",
+        "presentacion": "1 Litro",
+        "precio": "7.00"
+    },
+    {
+        "id": 31,
+        "nombre": "Estuco Súper Hidrofóbico",
+        "presentacion": "Galón",
+        "precio": "25.00"
+    },
+    {
+        "id": 32,
+        "nombre": "Eco Capturador (Minería)",
+        "presentacion": "Galón",
+        "precio": "320.00"
+    },
+    {
+        "id": 33,
+        "nombre": "Nano Aditivo para Concreto",
+        "presentacion": "600gr",
+        "precio": "22.00"
+    },
+    {
+        "id": 34,
+        "nombre": "Cera Nano Protectora",
+        "presentacion": "500ml",
+        "precio": "15.00"
+    },
+    {
+        "id": 35,
+        "nombre": "Eco Capturador (Minería)",
+        "presentacion": "Cuñete",
+        "precio": "1500.00"
+    },
+    {
+        "id": 36,
+        "nombre": "Ultra F3 (Anti-Fuego)",
+        "presentacion": "Tambor (200L)",
+        "precio": "4800.00"
+    },
+    {
+        "id": 37,
+        "nombre": "Ultra F3 (Anti-Fuego)",
+        "presentacion": "Cuñete (18L)",
+        "precio": "220.00"
+    },
+    {
+        "id": 38,
+        "nombre": "Aditivo Asfáltico",
+        "presentacion": "Granel (1000L)",
+        "precio": "16000.00"
+    },
+    {
+        "id": 39,
+        "nombre": "Aditivo Asfáltico",
+        "presentacion": "Tambor (200L)",
+        "precio": "3500.00"
+    },
+    {
+        "id": 40,
+        "nombre": "Champú Nano-Concentrado",
+        "presentacion": "1 Litro",
+        "precio": "12.00"
+    },
+    {
+        "id": 41,
+        "nombre": "Eco Capturador Magnetron",
+        "presentacion": "1 Litro",
+        "precio": "95.00"
+    },
+    {
+        "id": 42,
+        "nombre": "Eco Capturador Magnetron",
+        "presentacion": "Galón",
+        "precio": "345.00"
+    },
+    {
+        "id": 43,
+        "nombre": "Estuco Súper Hidrofóbico",
+        "presentacion": "1/4 Galón",
+        "precio": "8.50"
+    },
+    {
+        "id": 44,
+        "nombre": "Eco Capturador Magnetron",
+        "presentacion": "Cuñete",
+        "precio": "1652.00"
+    },
+    {
+        "id": 45,
+        "nombre": "Pintura Súper Hidrofóbica",
+        "presentacion": "Cuñete (18L)",
+        "precio": "148.00"
+    },
+    {
+        "id": 46,
+        "nombre": "Extintor F3",
+        "presentacion": "Portátil 10 Lb (4 Lts)",
+        "precio": "93.00"
+    }
+];
 
     const VERSION = '3.0.3';
     const CACHE_KEY = `ultraseco_prices_v${VERSION}`;
