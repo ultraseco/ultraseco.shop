@@ -255,6 +255,59 @@
             </div>
         </section>
 
+        <!-- PODCAST -->
+        <section class="mt-20 mb-12 max-w-7xl mx-auto px-4">
+            <div class="glass-panel p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-ultra-blue opacity-5 rounded-full blur-3xl">
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="relative w-48 h-48">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-tr from-ultra-blue to-ultra-cyan rounded-full animate-pulse opacity-20">
+                            </div>
+                            <img src="images/interiores.jpg" alt="Podcast Cover"
+                                class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10">
+                            <div
+                                class="absolute bottom-2 right-2 bg-white text-ultra-blue w-10 h-10 rounded-full flex items-center justify-center shadow-md z-20">
+                                <i class="fa-solid fa-microphone"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 text-center md:text-left">
+                        <span class="text-ultra-cyan font-bold tracking-wider text-sm uppercase mb-2 block">Ultra
+                            Seco
+                            Podcast</span>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Episodio: "Nanotecnología: El Escudo
+                            Invisible"
+                        </h3>
+                        <p class="text-gray-600 mb-6">Descubre cómo nuestra tecnología crea una barrera invisible
+                            antimanchas y contra el moho, protegiendo tus espacios interiores de forma duradera.</p>
+
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div class="flex items-center gap-4 mb-3">
+                                <button onclick="togglePodcast()"
+                                    class="w-12 h-12 bg-ultra-blue text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md">
+                                    <i id="podcast-icon" class="fa-solid fa-play"></i>
+                                </button>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-200 rounded-full cursor-pointer overflow-hidden"
+                                        onclick="seekPodcast(event)">
+                                        <div id="podcast-progress"
+                                            class="h-full bg-ultra-cyan w-0 transition-all duration-100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-gray-500">15:30</span>
+                            </div>
+                            <audio id="podcast-audio" src="audio/podcast-interiores.mp3"
+                                ontimeupdate="updateProgress()"></audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ENEMY SECTION -->
         <section class="max-w-7xl mx-auto px-4 mt-20 relative z-10 mb-20">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
@@ -744,59 +797,6 @@
                         class="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-lg hover:bg-white/10 transition-colors">
                         <i class="fa-brands fa-whatsapp mr-2"></i> Consultar con Experto
                     </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- PODCAST -->
-        <section class="mt-20 mb-12 max-w-7xl mx-auto px-4">
-            <div class="glass-panel p-8 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-ultra-blue opacity-5 rounded-full blur-3xl">
-                </div>
-                <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                    <div class="w-full md:w-1/3 flex justify-center">
-                        <div class="relative w-48 h-48">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-tr from-ultra-blue to-ultra-cyan rounded-full animate-pulse opacity-20">
-                            </div>
-                            <img src="images/interiores.jpg" alt="Podcast Cover"
-                                class="w-full h-full object-cover rounded-full border-4 border-white shadow-xl relative z-10">
-                            <div
-                                class="absolute bottom-2 right-2 bg-white text-ultra-blue w-10 h-10 rounded-full flex items-center justify-center shadow-md z-20">
-                                <i class="fa-solid fa-microphone"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full md:w-2/3 text-center md:text-left">
-                        <span class="text-ultra-cyan font-bold tracking-wider text-sm uppercase mb-2 block">Ultra
-                            Seco
-                            Podcast</span>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Episodio: "Nanotecnología: El Escudo
-                            Invisible"
-                        </h3>
-                        <p class="text-gray-600 mb-6">Descubre cómo nuestra tecnología crea una barrera invisible
-                            antimanchas y contra el moho, protegiendo tus espacios interiores de forma duradera.</p>
-
-                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                            <div class="flex items-center gap-4 mb-3">
-                                <button onclick="togglePodcast()"
-                                    class="w-12 h-12 bg-ultra-blue text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md">
-                                    <i id="podcast-icon" class="fa-solid fa-play"></i>
-                                </button>
-                                <div class="flex-1">
-                                    <div class="h-2 bg-gray-200 rounded-full cursor-pointer overflow-hidden"
-                                        onclick="seekPodcast(event)">
-                                        <div id="podcast-progress"
-                                            class="h-full bg-ultra-cyan w-0 transition-all duration-100">
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="text-xs font-mono text-gray-500">15:30</span>
-                            </div>
-                            <audio id="podcast-audio" src="audio/podcast-interiores.mp3"
-                                ontimeupdate="updateProgress()"></audio>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
