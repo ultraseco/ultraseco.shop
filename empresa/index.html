@@ -535,7 +535,7 @@ button, select, input {
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
 }
 
-/* Bloque de Precio e IVA: ref + IVA en tamaño menor sin negrita, Total en tamaño destacado y negrita */
+/* Bloque de Precio: Precio en tamaño destacado y negrita, IVA incluido debajo */
 .price-block {
   margin-bottom: 1.15rem;
   display: flex;
@@ -546,20 +546,21 @@ button, select, input {
   justify-content: flex-end;
 }
 
-.price-ref-text {
-  font-size: 0.85rem;
-  font-weight: 400; /* No negrita */
-  color: var(--text-muted);
-  line-height: 1.3;
-  letter-spacing: 0.1px;
-}
-
-.price-total-text {
-  font-size: 1.28rem; /* Tamaño de fuente reducido según solicitud para perfecto balance visual */
-  font-weight: 800;   /* Negrita destacada */
+.price-main-text, .price-total-text {
+  font-size: 1.35rem;
+  font-weight: 800;
   color: var(--brand-dark);
   line-height: 1.2;
   letter-spacing: -0.2px;
+}
+
+.price-sub-text, .price-ref-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .price-pending-badge {
@@ -1266,8 +1267,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="estuco">
-              <div class="price-ref-text">ref. 8.50 + IVA</div>
-              <div class="price-total-text">Total: Ref. 9.86</div>
+              <div class="price-main-text">Ref. 8.50</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1305,8 +1306,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="solucion-interior">
-              <div class="price-ref-text">ref. 15.99 + IVA</div>
-              <div class="price-total-text">Total: Ref. 18.55</div>
+              <div class="price-main-text">Ref. 15.99</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1344,8 +1345,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="solucion-exterior">
-              <div class="price-ref-text">ref. 19.50 + IVA</div>
-              <div class="price-total-text">Total: Ref. 22.62</div>
+              <div class="price-main-text">Ref. 19.50</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1383,8 +1384,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="fortificador">
-              <div class="price-ref-text">ref. 21 + IVA</div>
-              <div class="price-total-text">Total: Ref. 24.36</div>
+              <div class="price-main-text">Ref. 21</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1422,8 +1423,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="pintura">
-              <div class="price-ref-text">ref. 37 + IVA</div>
-              <div class="price-total-text">Total: Ref. 42.92</div>
+              <div class="price-main-text">Ref. 37</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1461,8 +1462,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="nanoshield">
-              <div class="price-ref-text">ref. 22 + IVA</div>
-              <div class="price-total-text">Total: Ref. 25.52</div>
+              <div class="price-main-text">Ref. 22</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1500,8 +1501,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="nano-cera-protectora">
-              <div class="price-ref-text">ref. 15 + IVA</div>
-              <div class="price-total-text">Total: Ref. 17.40</div>
+              <div class="price-main-text">Ref. 15</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1539,8 +1540,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="escudo-ceramico">
-              <div class="price-ref-text">ref. 7 + IVA</div>
-              <div class="price-total-text">Total: Ref. 8.12</div>
+              <div class="price-main-text">Ref. 7</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1578,8 +1579,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="concentrado-espuma-f3">
-              <div class="price-ref-text">ref. 220 + IVA</div>
-              <div class="price-total-text">Total: Ref. 255.20</div>
+              <div class="price-main-text">Ref. 220</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1617,8 +1618,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="extintor-f3">
-              <div class="price-ref-text">ref. 83 + IVA</div>
-              <div class="price-total-text">Total: Ref. 96.28</div>
+              <div class="price-main-text">Ref. 83</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1656,8 +1657,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="solucion-extintores-f3">
-              <div class="price-ref-text">ref. 220 + IVA</div>
-              <div class="price-total-text">Total: Ref. 255.20</div>
+              <div class="price-main-text">Ref. 220</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1695,8 +1696,8 @@ button, select, input {
               </select>
             </div>
             <div class="price-block" data-price-block="shampoo-nano-concentrado">
-              <div class="price-ref-text">ref. 12 + IVA</div>
-              <div class="price-total-text">Total: Ref. 13.92</div>
+              <div class="price-main-text">Ref. 12</div>
+              <div class="price-sub-text">IVA incluido</div>
             </div>
             <div class="product-actions-group">
               <div class="product-qty-row">
@@ -1852,7 +1853,7 @@ button, select, input {
             { label: "1 galón", price: 25, sku: "ESTUCO-GAL" },
             { label: "Cuñete (4 galones)", price: 100, sku: "ESTUCO-CUN" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "solucion-interior",
@@ -1867,7 +1868,7 @@ button, select, input {
             { label: "1 galón (3.785L)", price: 43, sku: "US-INT-GAL" },
             { label: "Cuñete (18L)", price: 194, sku: "US-INT-CUN" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "solucion-exterior",
@@ -1882,7 +1883,7 @@ button, select, input {
             { label: "1 galón (3.785L)", price: 54, sku: "US-EXT-GAL" },
             { label: "Cuñete (18L)", price: 250, sku: "US-EXT-CUN" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "fortificador",
@@ -1896,7 +1897,7 @@ button, select, input {
             { label: "1 galón", price: 57, sku: "US-FORT-GAL" },
             { label: "Cuñete", price: 270, sku: "US-FORT-CUN" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "pintura",
@@ -1909,7 +1910,7 @@ button, select, input {
             { label: "1 galón", price: 37, sku: "PINT-GAL" },
             { label: "Cuñete (18L)", price: 148, sku: "PINT-CUN" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "nanoshield",
@@ -1921,7 +1922,7 @@ button, select, input {
           presentations: [
             { label: "600 gramos", price: 22, sku: "NANO-ADIT-600G" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "nano-cera-protectora",
@@ -1934,7 +1935,7 @@ button, select, input {
             { label: "500 ml", price: 15, sku: "CERA-500ML" },
             { label: "1 Litro", price: 13, sku: "CERA-1L" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "escudo-ceramico",
@@ -1946,7 +1947,7 @@ button, select, input {
           presentations: [
             { label: "1 Litro", price: 7, sku: "ESCUDO-1L" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "concentrado-espuma-f3",
@@ -1959,7 +1960,7 @@ button, select, input {
             { label: "Cuñete (18L)", price: 220, sku: "F3-CONC-CUN" },
             { label: "Tambor (200L)", price: 4800, sku: "F3-CONC-TAM" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "extintor-f3",
@@ -1972,7 +1973,7 @@ button, select, input {
             { label: "Portátil 10 Lb (4 Lts)", price: 83, sku: "EXT-F3-10LB" },
             { label: "Portátil 20 Lb (8 Lts)", price: null, pendingNote: "Cotizar con asesor", sku: "EXT-F3-20LB" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "solucion-extintores-f3",
@@ -1985,7 +1986,7 @@ button, select, input {
             { label: "Cuñete (18L)", price: 220, sku: "F3-RECARGA-CUN" },
             { label: "Tambor (200L)", price: 4800, sku: "F3-RECARGA-TAM" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         },
         {
           id: "shampoo-nano-concentrado",
@@ -1998,7 +1999,7 @@ button, select, input {
             { label: "1 Litro", price: 12, sku: "CHAMPU-1L" },
             { label: "1 galón", price: 35, sku: "CHAMPU-GAL" }
           ],
-          taxRate: 0.16
+          taxRate: 0
         }
       ];
       var productMap = {};
@@ -2053,10 +2054,9 @@ button, select, input {
             priceBlock.innerHTML = '<span class="price-pending-badge">' + ((opt && opt.pendingNote) || 'Cotizar con asesor') + '</span>';
           } else {
             var basePrice = parseFloat(opt.price);
-            var total = basePrice * (1 + (product.taxRate || 0.16));
             priceBlock.innerHTML =
-              '<div class="price-ref-text">ref. ' + formatPriceNum(basePrice) + ' + IVA</div>' +
-              '<div class="price-total-text">Total: Ref. ' + formatPriceNum(total) + '</div>';
+              '<div class="price-main-text">Ref. ' + formatPriceNum(basePrice) + '</div>' +
+              '<div class="price-sub-text">IVA incluido</div>';
           }
         }
 
@@ -2074,8 +2074,7 @@ button, select, input {
         var basePrice = parseFloat(itemData.precio) || 0;
         var qty = parseInt(itemData.cantidad, 10) || 1;
         var taxRate = itemData.taxRate || 0.16;
-        var subtotalBase = basePrice * qty;
-        var subtotalTotal = subtotalBase * (1 + taxRate);
+        var subtotal = basePrice * qty;
 
         var imgEl = document.getElementById("modal-prod-img");
         if (imgEl) {
@@ -2095,8 +2094,8 @@ button, select, input {
         var priceEl = document.getElementById("modal-prod-pricing");
         if (priceEl) {
           priceEl.innerHTML =
-            "Total: Ref. " + formatPriceNum(subtotalTotal) +
-            " <span>(Ref. " + formatPriceNum(subtotalBase) + " + IVA)</span>";
+            "Total: Ref. " + formatPriceNum(subtotal) +
+            " <span style='font-size: 0.8rem; font-weight: 600; color: #64748b; margin-left: 6px; text-transform: uppercase;'>(IVA incluido)</span>";
         }
 
         backdrop.style.display = "flex";

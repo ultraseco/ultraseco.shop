@@ -519,8 +519,7 @@
     function formatPriceWithIVA(price) {
         const p = parseFloat(price);
         if (isNaN(p)) return price;
-        const total = p * 1.16;
-        return 'Ref. ' + formatPriceNum(p) + ' + IVA=' + formatPriceNum(total);
+        return 'Ref. ' + formatPriceNum(p);
     }
 
     window.formatPriceNum = window.formatPriceNum || formatPriceNum;
@@ -571,7 +570,7 @@
                     const matchingProducts = products.filter(p => clean(p.nombre).includes(cleanTargetName));
                     if (matchingProducts.length > 0) {
                         el.innerHTML = matchingProducts.map(p => 
-                            '<option value="' + p.presentacion + '" data-price="' + p.precio + '">' + p.presentacion + ' - ' + formatPriceWithIVA(p.precio) + '</option>'
+                            '<option value="' + p.presentacion + '" data-price="' + p.precio + '">' + p.presentacion + ' - Ref. ' + formatPriceNum(p.precio) + '</option>'
                         ).join('');
                     }
                 } else {
@@ -595,7 +594,7 @@
                         if (product) {
                             opt.setAttribute('data-price', product.precio);
                             if (optionText.includes('Ref.') || optionText.includes('+ IVA=') || optionText.includes('$')) {
-                                opt.textContent = product.presentacion + ' - ' + formatPriceWithIVA(product.precio);
+                                opt.textContent = product.presentacion + ' - Ref. ' + formatPriceNum(product.precio);
                             }
                         }
                     });

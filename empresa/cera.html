@@ -376,8 +376,8 @@
                         <div class="relative">
                             <select data-sync-product="Cera Nano Protectora" id="opt-cera" onchange="updatePrice('cera')"
                                 class="w-full p-3.5 sm:p-4 pr-10 bg-slate-900/50 border border-white/20 rounded-xl text-white text-sm sm:text-base font-bold appearance-none cursor-pointer focus:outline-none focus:border-cyan-400 transition truncate">
-                                <option value="0" data-price="15.00">500ml - Ref. 15 + IVA=17.40</option>
-                                <option value="1" data-price="13.00">1 Litro - Ref. 13 + IVA=15.08</option>
+                                <option value="0" data-price="15.00">500ml - Ref. 15</option>
+                                <option value="1" data-price="13.00">1 Litro - Ref. 13</option>
                             </select>
                             <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-cyan-400">
                                 <i class="fa-solid fa-chevron-down"></i>
@@ -403,7 +403,8 @@
                         <div class="text-left sm:text-right min-w-0">
                             <span class="block text-xs text-slate-400 font-bold uppercase mb-1">Inversión Total</span>
                             <span id="price-cera"
-                                class="block price-total-responsive font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 15 + IVA=17.40</span>
+                                class="block price-total-responsive font-black text-cyan-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">Ref. 15</span>
+                            <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wide mt-1">IVA incluido</span>
                         </div>
                     </div>
 
@@ -511,7 +512,7 @@
         1. Vendes "Nano Cera Protectora".
         2. Enfócate en: Protección contra manchas de comida (vino, café, aceite), brillo fácil, y repelencia de suciedad.
         3. Ideal para: Pisos de porcelanato, mármol, granito, y topes de cocina.
-        4. Si preguntan precio: Refiere al panel de configuración "Hogar" arriba (Ref. 13 + IVA=15.08 por Litro).
+        4. Si preguntan precio: Refiere al panel de configuración "Hogar" arriba (Ref. 13 por Litro, IVA incluido).
         5. Tono: Servicial, práctico y enfocado en la limpieza del hogar.`;
 
         // --- LÓGICA DE PRECIOS Y CARRITO ---
@@ -531,13 +532,10 @@
                 const price = parseFloat(select.options[select.selectedIndex].dataset.price);
                 const quantity = qty ? (parseInt(qty.value) || 1) : 1;
                 const totalBase = price * quantity;
-                if (typeof window.formatPriceWithIVA === 'function') {
-                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
-                } else {
-                    const totalConIVA = totalBase * 1.16;
-                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
-                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
-                }
+                const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                priceDisplay.textContent = `Ref. ${formatNum(totalBase)}`;
+            }
+        }
             }
         }
 

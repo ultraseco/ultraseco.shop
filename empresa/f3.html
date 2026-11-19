@@ -1229,8 +1229,8 @@
                                 <label class="block text-sm font-bold text-slate-300 mb-2">Presentación:</label>
                                 <select id="select-f3" data-sync-product="Ultra F3 (Anti-Fuego)" onchange="updateF3Price()"
                                     class="w-full px-4 py-3 border border-slate-300 rounded-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                                    <option data-price="220.00" value="Cuñete (18L)">Cuñete (18L) - Ref. 220 + IVA=255.20</option>
-                                    <option data-price="4800.00" value="Tambor (200L)">Tambor (200L) - Ref. 4800 + IVA=5568</option>
+                                    <option data-price="220.00" value="Cuñete (18L)">Cuñete (18L) - Ref. 220</option>
+                                    <option data-price="4800.00" value="Tambor (200L)">Tambor (200L) - Ref. 4800</option>
                                 </select>
                             </div>
                             
@@ -1242,7 +1242,10 @@
                                 </div>
                                 <div class="flex-1 text-right">
                                     <label class="block text-sm font-bold text-slate-300 mb-2">Precio Unitario:</label>
-                                    <p id="price-f3" class="text-3xl font-black text-amber-500">Ref. 220 + IVA=255.20</p>
+                                    <div class="flex flex-col">
+                                    <p id="price-f3" class="text-3xl font-black text-amber-500 line-height-1">Ref. 220</p>
+                                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">IVA incluido</span>
+                                </div>
                                 </div>
                             </div>
 
@@ -1278,7 +1281,7 @@
                     </div>
                     <div class="bg-slate-900 p-4 rounded-sm">
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-400">Precio
-                                ULTRA-F3:</span><span class="font-bold" id="displayUltraPrice" data-sync-price="Ultra F3 (Anti-Fuego)">Ref. 220 + IVA=255.20</span></div>
+                                ULTRA-F3:</span><span class="font-bold" id="displayUltraPrice" data-sync-price="Ultra F3 (Anti-Fuego)">Ref. 220</span></div>
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-400">Precio AFFF
                                 Importado:</span><span class="font-bold">Ref. 180.00</span></div>
                         <div class="flex justify-between text-sm mb-1"><span class="text-slate-400">Costo Limpieza
@@ -1502,9 +1505,8 @@
                 if (typeof window.formatPriceWithIVA === 'function') {
                     displayEl.innerText = window.formatPriceWithIVA(ultraPrice);
                 } else {
-                    const totalConIVA = ultraPrice * 1.16;
                     const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
-                    displayEl.innerText = `Ref. ${formatNum(ultraPrice)} + IVA=${formatNum(totalConIVA)}`;
+                    displayEl.innerText = `Ref. ${formatNum(ultraPrice)}`;
                 }
                 if (typeof products !== 'undefined' || window.products) {
                     displayEl.classList.add('text-amber-500', 'font-extrabold');
@@ -1530,14 +1532,11 @@
             if (select && priceDisplay) {
                 const price = parseFloat(select.options[select.selectedIndex].dataset.price);
                 const quantity = qty ? (parseInt(qty.value) || 1) : 1;
-                const totalBase = price * quantity;
-                if (typeof window.formatPriceWithIVA === 'function') {
-                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
-                } else {
-                    const totalConIVA = totalBase * 1.16;
-                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
-                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
-                }
+                const total = price * quantity;
+                const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                priceDisplay.textContent = `Ref. ${formatNum(total)}`;
+            }
+        }
             }
         }
 

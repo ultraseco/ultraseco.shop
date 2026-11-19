@@ -241,7 +241,8 @@
                             <div class="text-right">
                                 <p class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Total a Pagar
                                 </p>
-                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">Ref. 0 + IVA=0</div>
+                                <div class="text-3xl font-black text-slate-900" id="cart-total-usd">Ref. 0</div>
+                                <div class="text-xs text-slate-500 font-semibold uppercase tracking-wider mt-0.5">IVA incluido</div>
                                 <div class="text-sm font-bold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full mt-2 border border-emerald-100"
                                     id="cart-total-bs">
                                     <i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span
@@ -446,8 +447,7 @@
         function formatPriceWithIVA(price) {
             const p = parseFloat(price);
             if (isNaN(p)) return price;
-            const total = p * 1.16;
-            return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+            return `Ref. ${formatPriceNum(p)}`;
         }
 
         window.formatPriceNum = window.formatPriceNum || formatPriceNum;
@@ -482,7 +482,7 @@
                 emptyContent.classList.remove('hidden');
 
                 // Set total blocks to 0
-                document.getElementById('cart-total-usd').innerText = 'Ref. 0 + IVA=0';
+                document.getElementById('cart-total-usd').innerText = 'Ref. 0';
                 document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Bs. 0.00 <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV)</span>`;
 
                 // Deshabilitar formulario
@@ -538,7 +538,8 @@
                         </td>
                         <td class="text-right">
                             <div class="text-slate-900 font-black">${formatPriceWithIVA(subtotal)}</div>
-                            <div class="text-xs text-emerald-600 font-bold">Bs. ${subtotalBs}</div>
+                            <div class="text-[10px] text-slate-400 font-semibold uppercase">IVA incluido</div>
+                            <div class="text-xs text-emerald-600 font-bold mt-0.5">Bs. ${subtotalBs}</div>
                         </td>
                         <td class="text-right">
                             <button onclick="eliminarItem(${index})" class="btn-remove" title="Eliminar Producto">
@@ -556,11 +557,10 @@
             carritoData = carritoFiltrado;
 
 
-            // Actualizar Totales con IVA
-            const totalConIVA = totalUSD * 1.16;
-            document.getElementById('cart-total-usd').innerText = formatPriceWithIVA(totalUSD);
-            const totalBs = totalConIVA * tasaBCV;
-            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Total a Pagar: Ref. ${totalConIVA.toFixed(2)} — Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(Tasa Dólar BCV: ${tasaBCV.toFixed(2)})</span>`;
+            // Actualizar Totales (Precio con IVA incluido)
+            document.getElementById('cart-total-usd').innerText = 'Ref. ' + formatPriceNum(totalUSD);
+            const totalBs = totalUSD * tasaBCV;
+            document.getElementById('cart-total-bs').innerHTML = `<i class="fa-solid fa-money-bill-wave mr-1"></i> Total a Pagar: Ref. ${totalUSD.toFixed(2)} — Bs. ${totalBs.toFixed(2)} <span class="text-xs font-normal opacity-75 ml-1">(IVA incluido - Tasa BCV: ${tasaBCV.toFixed(2)})</span>`;
 
             // Refrescar el contador de la barra de navegación usando la funcion en script.js
             if (typeof window.actualizarContadorCarrito === 'function') {

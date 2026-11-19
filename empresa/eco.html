@@ -455,9 +455,9 @@
                                 <label class="block text-sm font-semibold text-gray-600 mb-1">Presentación:</label>
                                 <select id="select-eco" data-sync-product="Eco Capturador (Minería)" onchange="updateEcoPrice()"
                                     class="w-full p-3 rounded-lg border-2 border-gray-100 focus:border-yellow-500 outline-none transition-all">
-                                    <option value="1 Litro" data-price="85.00">1 Litro - Ref. 85 + IVA=98.60</option>
-                                    <option value="Galón" data-price="320.00">Galón - Ref. 320 + IVA=371.20</option>
-                                    <option value="Cuñete" data-price="1500.00">Cuñete - Ref. 1500 + IVA=1740</option>
+                                    <option value="1 Litro" data-price="85.00">1 Litro - Ref. 85</option>
+                                    <option value="Galón" data-price="320.00">Galón - Ref. 320</option>
+                                    <option value="Cuñete" data-price="1500.00">Cuñete - Ref. 1500</option>
                                 </select>
                             </div>
 
@@ -469,7 +469,10 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="text-xs font-bold text-gray-400 uppercase">Precio Unitario</p>
-                                    <p data-sync-price="Eco Capturador (Minería)" id="price-eco" class="text-2xl font-black text-yellow-600">Ref. 85 + IVA=98.60</p>
+                                    <div class="flex flex-col">
+                                        <p data-sync-price="Eco Capturador (Minería)" id="price-eco" class="text-2xl font-black text-yellow-600 line-height-1">Ref. 85</p>
+                                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">IVA incluido</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -940,13 +943,10 @@ TONO: Práctico, educativo y enfocado en la eficiencia operativa. Eres el aliado
                 const price = parseFloat(opt.dataset.price);
                 const quantity = qty ? (parseInt(qty.value) || 1) : 1;
                 const totalBase = price * quantity;
-                if (typeof window.formatPriceWithIVA === 'function') {
-                    priceDisplay.textContent = window.formatPriceWithIVA(totalBase);
-                } else {
-                    const totalConIVA = totalBase * 1.16;
-                    const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
-                    priceDisplay.textContent = `Ref. ${formatNum(totalBase)} + IVA=${formatNum(totalConIVA)}`;
-                }
+                const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
+                priceDisplay.textContent = `Ref. ${formatNum(totalBase)}`;
+            }
+        }
             }
         }
 
