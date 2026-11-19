@@ -59,9 +59,9 @@ window.products = [
         link: 'fortificador.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 19.00, sku: 'US-FORT-1L' },
-            { label: 'Galón', price: 52.00, sku: 'US-FORT-GAL' },
-            { label: 'Cuñete', price: 254.50, sku: 'US-FORT-CUN' },
+            { label: '1 Litro', price: 21.00, sku: 'US-FORT-1L' },
+            { label: 'Galón', price: 57.00, sku: 'US-FORT-GAL' },
+            { label: 'Cuñete', price: 270.00, sku: 'US-FORT-CUN' },
         ]
     },
     {
@@ -98,7 +98,7 @@ window.products = [
         type: 'retail_wholesale',
         options: [
             { label: 'Estuco de 1/4 de galón', price: 8.50, sku: 'ESTUCO-1/4' },
-            { label: 'Galón', price: 22.00, sku: 'ESTUCO-GAL' },
+            { label: 'Galón', price: 25.00, sku: 'ESTUCO-GAL' },
             { label: 'Cuñete de 4 galones', price: 100.00, sku: 'ESTUCO-CUN' },
         ]
     },
@@ -135,7 +135,7 @@ window.products = [
         link: 'champu.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 15.00, sku: 'CHAMPU-1L' },
+            { label: '1 Litro', price: 12.00, sku: 'CHAMPU-1L' },
             { label: 'Galón', price: 35.00, sku: 'CHAMPU-GAL' },
         ]
     },
@@ -192,7 +192,7 @@ window.products = [
         options: [
             { label: '1 Litro', price: 95.00, sku: 'MAG-1L' },
             { label: 'Galón', price: 345.00, sku: 'MAG-GAL' },
-            { label: 'Cuñete', price: 1650.00, sku: 'MAG-CUN' }
+            { label: 'Cuñete', price: 1652.00, sku: 'MAG-CUN' }
         ]
     }
 ];
