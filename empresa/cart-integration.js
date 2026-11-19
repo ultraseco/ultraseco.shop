@@ -7,8 +7,7 @@ function formatPriceNum(num) {
 function formatPriceWithIVA(price) {
     const p = parseFloat(price);
     if (isNaN(p)) return price;
-    const total = p * 1.16;
-    return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+    return `Ref. ${formatPriceNum(p)}`;
 }
 
 function updatePrice(productId) {
@@ -71,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Optional: Update text if it contains price (e.g. "Galón - Ref. 19.00")
                     // We use regex to replace the price part
                     const text = opt.text;
-                    const newText = text.replace(/\$\d+\.?\d*/, `Ref. ${currentPrice.toFixed(2)}`);
+                    const newText = text.replace(/(?:Ref\.\s*|\$)\d+(?:\.\d+)?/, `Ref. ${formatPriceNum(currentPrice)}`);
                     opt.text = newText;
                 }
             });

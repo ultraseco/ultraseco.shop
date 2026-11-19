@@ -255,9 +255,12 @@ function setupModals() {
                     <!-- Items go here -->
                 </div>
                 <div class="p-4 border-t border-gray-200 bg-gray-50">
-                    <div class="flex justify-between text-lg font-bold mb-4">
-                        <span>Total:</span>
-                        <span id="cart-total">Ref. 0 + IVA=0</span>
+                    <div class="flex justify-between items-end mb-4">
+                        <div>
+                            <span class="text-lg font-bold">Total:</span>
+                            <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wide">IVA incluido</span>
+                        </div>
+                        <span id="cart-total" class="text-xl font-black text-slate-900">Ref. 0</span>
                     </div>
                     <button onclick="proceedToCheckout()" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-700 transition">
                         Procesar Compra
@@ -315,7 +318,7 @@ function renderCartModal() {
 
     if (cart.length === 0) {
         container.innerHTML = '<p class="text-center text-gray-500 mt-10">Tu carrito está vacío.</p>';
-        totalEl.innerText = 'Ref. 0 + IVA=0';
+        totalEl.innerText = 'Ref. 0';
         return;
     }
 

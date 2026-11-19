@@ -8,8 +8,7 @@ window.formatPriceNum = function(num) {
 window.formatPriceWithIVA = function(price) {
     const p = parseFloat(price);
     if (isNaN(p)) return price;
-    const total = p * 1.16;
-    return `Ref. ${window.formatPriceNum(p)} + IVA=${window.formatPriceNum(total)}`;
+    return `Ref. ${window.formatPriceNum(p)}`;
 };
 
 // Define showPage globally so it's available immediately

@@ -11,12 +11,11 @@ function formatPriceNum(num) {
 function formatPriceWithIVA(price) {
     const p = parseFloat(price);
     if (isNaN(p)) return price;
-    const total = p * 1.16;
-    return `Ref. ${formatPriceNum(p)} + IVA=${formatPriceNum(total)}`;
+    return `Ref. ${formatPriceNum(p)}`;
 }
 
-window.formatPriceNum = window.formatPriceNum || formatPriceNum;
-window.formatPriceWithIVA = window.formatPriceWithIVA || formatPriceWithIVA;
+window.formatPriceNum = formatPriceNum;
+window.formatPriceWithIVA = formatPriceWithIVA;
 
 // --- PRODUCT DATA (Moved to top for safety) ---
 window.products = [
