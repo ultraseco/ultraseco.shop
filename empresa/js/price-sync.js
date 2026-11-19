@@ -13,176 +13,176 @@
     const LOCAL_FALLBACK = [
     {
         "id": 16,
-        "nombre": "Ultra Seco Solución Interior",
+        "nombre": "Ultra Seco Soluci\u00f3n Interior",
         "presentacion": "1 Litro",
-        "precio": "15.99",
+        "precio": "18.55",
         "costo": "0.00",
         "precio_mayor": "14.50",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:31.887Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:09.894Z"
     },
     {
         "id": 17,
-        "nombre": "Ultra Seco Solución Interior",
-        "presentacion": "Cuñete (18L)",
-        "precio": "194.00",
+        "nombre": "Ultra Seco Soluci\u00f3n Interior",
+        "presentacion": "Cu\u00f1ete (18L)",
+        "precio": "255.04",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:32.312Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:10.382Z"
     },
     {
         "id": 18,
-        "nombre": "Ultra Seco Solución Exterior",
+        "nombre": "Ultra Seco Soluci\u00f3n Exterior",
         "presentacion": "1 Litro",
-        "precio": "19.50",
+        "precio": "22.62",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:32.443Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:10.513Z"
     },
     {
         "id": 19,
         "nombre": "Fortificador de Superficies",
-        "presentacion": "Galón",
-        "precio": "57.00",
+        "presentacion": "Gal\u00f3n",
+        "precio": "52.90",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:32.573Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:10.644Z"
     },
     {
         "id": 20,
         "nombre": "Fortificador de Superficies",
-        "presentacion": "Cuñete",
-        "precio": "270.00",
+        "presentacion": "Cu\u00f1ete",
+        "precio": "250.60",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:32.702Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:10.782Z"
     },
     {
         "id": 21,
-        "nombre": "Pintura Súper Hidrofóbica",
-        "presentacion": "Galón",
+        "nombre": "Pintura S\u00faper Hidrof\u00f3bica",
+        "presentacion": "Gal\u00f3n",
         "precio": "37.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:32.834Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:10.914Z"
     },
     {
         "id": 22,
         "nombre": "Fortificador de Superficies",
         "presentacion": "1 Litro",
-        "precio": "21.00",
+        "precio": "19.49",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:32.964Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.045Z"
     },
     {
         "id": 23,
-        "nombre": "Ultra Seco Solución Interior",
+        "nombre": "Ultra Seco Soluci\u00f3n Interior",
         "presentacion": "1 Litro (Atomizador)",
         "precio": "14.99",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.093Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.176Z"
     },
     {
         "id": 24,
-        "nombre": "Ultra Seco Solución Interior",
-        "presentacion": "Galón (3.785L)",
-        "precio": "43.00",
+        "nombre": "Ultra Seco Soluci\u00f3n Interior",
+        "presentacion": "Gal\u00f3n (3.785L)",
+        "precio": "49.88",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.223Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.306Z"
     },
     {
         "id": 25,
-        "nombre": "Ultra Seco Solución Exterior",
+        "nombre": "Ultra Seco Soluci\u00f3n Exterior",
         "presentacion": "1 Litro (Atomizador)",
         "precio": "17.99",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.354Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.438Z"
     },
     {
         "id": 26,
-        "nombre": "Ultra Seco Solución Exterior",
-        "presentacion": "Galón (3.785L)",
-        "precio": "54.00",
+        "nombre": "Ultra Seco Soluci\u00f3n Exterior",
+        "presentacion": "Gal\u00f3n (3.785L)",
+        "precio": "62.64",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.483Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.567Z"
     },
     {
         "id": 27,
-        "nombre": "Ultra Seco Solución Exterior",
-        "presentacion": "Cuñete (18L)",
-        "precio": "250.00",
+        "nombre": "Ultra Seco Soluci\u00f3n Exterior",
+        "presentacion": "Cu\u00f1ete (18L)",
+        "precio": "290.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.612Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.699Z"
     },
     {
         "id": 28,
-        "nombre": "Champú Nano-Concentrado",
-        "presentacion": "Galón",
+        "nombre": "Champ\u00fa Nano-Concentrado",
+        "presentacion": "Gal\u00f3n",
         "precio": "35.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -190,12 +190,12 @@
         "stock": 100,
         "categoria": "Vehicular",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.744Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.828Z"
     },
     {
         "id": 29,
-        "nombre": "Eco Capturador (Minería)",
+        "nombre": "Eco Capturador (Miner\u00eda)",
         "presentacion": "1 Litro",
         "precio": "85.00",
         "costo": "0.00",
@@ -204,12 +204,12 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:33.874Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:11.957Z"
     },
     {
         "id": 30,
-        "nombre": "Escudo Cerámico",
+        "nombre": "Escudo Cer\u00e1mico",
         "presentacion": "1 Litro",
         "precio": "7.00",
         "costo": "0.00",
@@ -218,27 +218,27 @@
         "stock": 100,
         "categoria": "Hogar",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.003Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.087Z"
     },
     {
         "id": 31,
-        "nombre": "Estuco Súper Hidrofóbico",
-        "presentacion": "Galón",
-        "precio": "25.00",
+        "nombre": "Estuco S\u00faper Hidrof\u00f3bico",
+        "presentacion": "Gal\u00f3n",
+        "precio": "25.52",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.132Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.216Z"
     },
     {
         "id": 32,
-        "nombre": "Eco Capturador (Minería)",
-        "presentacion": "Galón",
+        "nombre": "Eco Capturador (Miner\u00eda)",
+        "presentacion": "Gal\u00f3n",
         "precio": "320.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -246,22 +246,22 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.260Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.348Z"
     },
     {
         "id": 33,
         "nombre": "Nano Aditivo para Concreto",
         "presentacion": "600gr",
-        "precio": "22.00",
+        "precio": "25.52",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.389Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.481Z"
     },
     {
         "id": 34,
@@ -274,13 +274,13 @@
         "stock": 100,
         "categoria": "Hogar",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.518Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.609Z"
     },
     {
         "id": 35,
-        "nombre": "Eco Capturador (Minería)",
-        "presentacion": "Cuñete",
+        "nombre": "Eco Capturador (Miner\u00eda)",
+        "presentacion": "Cu\u00f1ete",
         "precio": "1500.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -288,8 +288,8 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.647Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.738Z"
     },
     {
         "id": 36,
@@ -302,13 +302,13 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.776Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.867Z"
     },
     {
         "id": 37,
         "nombre": "Ultra F3 (Anti-Fuego)",
-        "presentacion": "Cuñete (18L)",
+        "presentacion": "Cu\u00f1ete (18L)",
         "precio": "220.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -316,12 +316,12 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:34.904Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:12.995Z"
     },
     {
         "id": 38,
-        "nombre": "Aditivo Asfáltico",
+        "nombre": "Aditivo Asf\u00e1ltico",
         "presentacion": "Granel (1000L)",
         "precio": "16000.00",
         "costo": "0.00",
@@ -330,12 +330,12 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.037Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.124Z"
     },
     {
         "id": 39,
-        "nombre": "Aditivo Asfáltico",
+        "nombre": "Aditivo Asf\u00e1ltico",
         "presentacion": "Tambor (200L)",
         "precio": "3500.00",
         "costo": "0.00",
@@ -344,12 +344,12 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.166Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.253Z"
     },
     {
         "id": 40,
-        "nombre": "Champú Nano-Concentrado",
+        "nombre": "Champ\u00fa Nano-Concentrado",
         "presentacion": "1 Litro",
         "precio": "12.00",
         "costo": "0.00",
@@ -358,8 +358,8 @@
         "stock": 100,
         "categoria": "Vehicular",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.294Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.383Z"
     },
     {
         "id": 41,
@@ -372,13 +372,13 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.423Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.511Z"
     },
     {
         "id": 42,
         "nombre": "Eco Capturador Magnetron",
-        "presentacion": "Galón",
+        "presentacion": "Gal\u00f3n",
         "precio": "345.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -386,27 +386,27 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.551Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.640Z"
     },
     {
         "id": 43,
-        "nombre": "Estuco Súper Hidrofóbico",
-        "presentacion": "1/4 Galón",
-        "precio": "8.50",
+        "nombre": "Estuco S\u00faper Hidrof\u00f3bico",
+        "presentacion": "1/4 Gal\u00f3n",
+        "precio": "8.70",
         "costo": "0.00",
         "precio_mayor": "0.00",
         "precio_dist": "0.00",
         "stock": 100,
-        "categoria": "Construcción",
+        "categoria": "Construcci\u00f3n",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.679Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.769Z"
     },
     {
         "id": 44,
         "nombre": "Eco Capturador Magnetron",
-        "presentacion": "Cuñete",
+        "presentacion": "Cu\u00f1ete",
         "precio": "1652.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -414,13 +414,13 @@
         "stock": 100,
         "categoria": "Industria",
         "activo": true,
-        "fecha_creacion": "2026-04-27T21:12:36.815Z",
-        "fecha_act": "2026-11-19T16:11:35.809Z"
+        "fecha_creacion": "2026-04-28T01:12:36.815Z",
+        "fecha_act": "2026-11-19T21:33:13.899Z"
     },
     {
         "id": 45,
-        "nombre": "Pintura Súper Hidrofóbica",
-        "presentacion": "Cuñete (18L)",
+        "nombre": "Pintura S\u00faper Hidrof\u00f3bica",
+        "presentacion": "Cu\u00f1ete (18L)",
         "precio": "148.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -428,13 +428,13 @@
         "stock": 100,
         "categoria": "Construccion",
         "activo": true,
-        "fecha_creacion": "2026-05-02T21:59:37.782Z",
-        "fecha_act": "2026-11-19T16:11:35.937Z"
+        "fecha_creacion": "2026-05-03T01:59:37.782Z",
+        "fecha_act": "2026-11-19T21:33:14.030Z"
     },
     {
         "id": 46,
         "nombre": "Extintor F3",
-        "presentacion": "Portátil 10 Lb (4 Lts)",
+        "presentacion": "Port\u00e1til 10 Lb (4 Lts)",
         "precio": "83.00",
         "costo": "0.00",
         "precio_mayor": "0.00",
@@ -442,8 +442,8 @@
         "stock": 0,
         "categoria": "Soluciones Contra el Fuego",
         "activo": true,
-        "fecha_creacion": "2026-11-11T18:17:32.665Z",
-        "fecha_act": "2026-11-19T16:11:36.065Z"
+        "fecha_creacion": "2026-11-11T22:17:32.665Z",
+        "fecha_act": "2026-11-19T21:33:14.159Z"
     }
 ];
 
@@ -600,7 +600,20 @@
                     });
                 }
                 
-                // Disparar el evento change para actualizar el precio mostrado al lado si existe
+                // Actualizar inmediatamente el visor de precio correspondiente si existe
+                const prodId = el.id.replace('opt-', '').replace('select-', '');
+                const priceDisplay = document.getElementById(`price-${prodId}`) || el.closest('.producto-contenedor')?.querySelector(`[id^="price-"]`);
+                const qtyInput = document.getElementById(`qty-${prodId}`) || el.closest('.producto-contenedor')?.querySelector(`[id^="qty-"]`);
+                const selectedOpt = el.options[el.selectedIndex];
+                if (priceDisplay && selectedOpt) {
+                    const price = parseFloat(selectedOpt.getAttribute('data-price') || selectedOpt.dataset.price);
+                    const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+                    if (!isNaN(price)) {
+                        priceDisplay.textContent = 'Ref. ' + formatPriceNum(price * qty);
+                    }
+                }
+                
+                // Disparar el evento change para actualizar cualquier listener adicional
                 el.dispatchEvent(new Event('change'));
             } 
             // Caso 2: El elemento es un encabezado o contenedor, buscar precios dentro de él

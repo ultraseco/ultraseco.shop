@@ -28,10 +28,10 @@ window.products = [
         link: 'interiores.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 15.99, sku: 'US-INT-1L' },
+            { label: '1 Litro', price: 18.55, sku: 'US-INT-1L' },
             { label: '1 Litro (Atomizador)', price: 14.99, sku: 'US-INT-1L-ATOM' },
-            { label: 'Galón (3.785L)', price: 43.00, sku: 'US-INT-GAL' },
-            { label: 'Cuñete (18L)', price: 194.00, sku: 'US-INT-CUN' },
+            { label: 'Galón (3.785L)', price: 49.88, sku: 'US-INT-GAL' },
+            { label: 'Cuñete (18L)', price: 255.04, sku: 'US-INT-CUN' },
         ]
     },
     {
@@ -43,10 +43,10 @@ window.products = [
         link: 'exteriores.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 19.50, sku: 'US-EXT-1L' },
+            { label: '1 Litro', price: 22.62, sku: 'US-EXT-1L' },
             { label: '1 Litro (Atomizador)', price: 17.99, sku: 'US-EXT-1L-ATOM' },
-            { label: 'Galón (3.785L)', price: 54.00, sku: 'US-EXT-GAL' },
-            { label: 'Cuñete (18L)', price: 250.00, sku: 'US-EXT-CUN' },
+            { label: 'Galón (3.785L)', price: 62.64, sku: 'US-EXT-GAL' },
+            { label: 'Cuñete (18L)', price: 290.00, sku: 'US-EXT-CUN' },
         ]
     },
     {
@@ -58,9 +58,9 @@ window.products = [
         link: 'fortificador.html',
         type: 'retail_wholesale',
         options: [
-            { label: '1 Litro', price: 21.00, sku: 'US-FORT-1L' },
-            { label: 'Galón', price: 57.00, sku: 'US-FORT-GAL' },
-            { label: 'Cuñete', price: 270.00, sku: 'US-FORT-CUN' },
+            { label: '1 Litro', price: 19.49, sku: 'US-FORT-1L' },
+            { label: 'Galón', price: 52.90, sku: 'US-FORT-GAL' },
+            { label: 'Cuñete', price: 250.60, sku: 'US-FORT-CUN' },
         ]
     },
     {
@@ -96,9 +96,9 @@ window.products = [
         link: 'estuco.html',
         type: 'retail_wholesale',
         options: [
-            { label: 'Estuco de 1/4 de galón', price: 8.50, sku: 'ESTUCO-1/4' },
-            { label: 'Galón', price: 25.00, sku: 'ESTUCO-GAL' },
-            { label: 'Cuñete de 4 galones', price: 100.00, sku: 'ESTUCO-CUN' },
+            { label: 'Estuco de 1/4 de galón', price: 8.70, sku: 'ESTUCO-1/4' },
+            { label: 'Galón', price: 25.52, sku: 'ESTUCO-GAL' },
+            { label: 'Cuñete de 4 galones', price: 102.08, sku: 'ESTUCO-CUN' },
         ]
     },
     {
