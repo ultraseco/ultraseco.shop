@@ -17,6 +17,9 @@
     
     <title>Estuco Premium | Fusión Estructural Molecular | Ultra Seco</title>
 
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Inter:wght@300;400;600;700;800&display=swap"
@@ -398,16 +401,12 @@
             font-weight: 900;
             line-height: 1.1;
         }
-
-        section {
-            padding: 60px 10% !important;
-        }
     </style>
 </head>
 
 <body>
     <!-- Navigation Bar -->
-    <header
+    <header id="main-header"
         class="fixed top-0 left-0 w-full z-[9999] bg-slate-900/95 backdrop-blur-md border-b border-slate-700 transition-all duration-300 no-print">
         <nav
             style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 5%;">
@@ -453,7 +452,7 @@
     <main>
         <!-- HERO SECTION -->
         <section class="hero">
-            <img src="images/estuco-bg.jpg" alt="Estuco Texture Background" class="hero-video-bg">
+            <img src="images/estuco-luxury-exterior.png" alt="Estuco Texture Background" class="hero-video-bg">
             <div class="hero-grid">
                 <div class="hero-content" style="text-align: left; padding: 0;">
                     <div class="reveal"
@@ -645,7 +644,6 @@
                         </div>
 
                         <button onclick="agregarAlCarritoManual(this)" class="cta-button" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"><i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Agregar al Carrito</button>
-                    </div>
 
                         <!-- Recommended Upsell -->
                         <div
@@ -783,12 +781,14 @@
         // Header Scroll
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(15, 23, 42, 0.95)';
-                header.style.backdropFilter = 'blur(10px)';
-            } else {
-                header.style.background = '#0f172a';
-                header.style.backdropFilter = 'none';
+            if (header) {
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(15, 23, 42, 0.95)';
+                    header.style.backdropFilter = 'blur(10px)';
+                } else {
+                    header.style.background = '#0f172a';
+                    header.style.backdropFilter = 'none';
+                }
             }
         });
 
@@ -803,8 +803,6 @@
                 const totalBase = price * quantity;
                 const formatNum = n => (Math.abs(n - Math.round(n)) < 0.005) ? Math.round(n).toString() : n.toFixed(2);
                 display.textContent = `Ref. ${formatNum(totalBase)}`;
-            }
-        }
             }
         }
 
@@ -830,7 +828,14 @@
             });
         }, { threshold: 0.15 });
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+            // Activar inmediatamente si ya está en viewport
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                el.classList.add('active');
+            }
+        });
 
         // Global addToCart override for visual feedback
         const originalAddToCart = typeof addToCartStatic === 'function' ? addToCartStatic : null;
