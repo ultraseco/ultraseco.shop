@@ -11,6 +11,24 @@ window.formatPriceWithIVA = function(price) {
     return `Ref. ${window.formatPriceNum(p)}`;
 };
 
+// Función global de actualización de precios en páginas de producto
+window.updatePrice = function(productId) {
+    const select = document.getElementById(`opt-${productId}`) || document.getElementById(`select-${productId}`);
+    const qty = document.getElementById(`qty-${productId}`);
+    const priceDisplay = document.getElementById(`price-${productId}`);
+    if (select && priceDisplay) {
+        const selectedOpt = select.options[select.selectedIndex];
+        if (selectedOpt) {
+            const price = parseFloat(selectedOpt.getAttribute('data-price') || selectedOpt.dataset.price);
+            if (!isNaN(price)) {
+                const quantity = qty ? (parseInt(qty.value) || 1) : 1;
+                const totalBase = price * quantity;
+                priceDisplay.textContent = `Ref. ${window.formatPriceNum(totalBase)}`;
+            }
+        }
+    }
+};
+
 // Define showPage globally so it's available immediately
 window.showPage = function (pageId, activeButton) {
     const pages = document.querySelectorAll('.page-content');
